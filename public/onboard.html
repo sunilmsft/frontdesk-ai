@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrontDesk AI — Business Onboarding</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+    .header { background: #1a1a1a; color: white; padding: 16px 24px; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header p { font-size: 13px; color: #999; margin-top: 4px; }
+
+    .container { max-width: 700px; margin: 0 auto; padding: 32px 24px; }
+
+    .section { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px; }
+    .section h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .section .subtitle { font-size: 13px; color: #888; margin-bottom: 16px; }
+
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .field .hint { font-size: 11px; color: #999; margin-bottom: 4px; }
+    .field input, .field textarea, .field select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; }
+    .field textarea { min-height: 100px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+
+    .hours-grid { display: grid; grid-template-columns: 100px 1fr; gap: 8px; align-items: center; }
+    .hours-grid label { font-size: 13px; }
+    .hours-grid input { padding: 8px 10px; }
+
+    .btn { padding: 12px 24px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-primary { background: #2563eb; color: white; width: 100%; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    .success { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 24px; text-align: center; }
+    .success h2 { color: #16a34a; margin-bottom: 8px; }
+    .success p { font-size: 13px; color: #666; }
+    .success .embed-code { background: #f5f5f5; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 11px; margin-top: 12px; word-break: break-all; cursor: pointer; }
+
+    .tone-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tone-option { padding: 8px 16px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+    .tone-option:hover { border-color: #2563eb; }
+    .tone-option.selected { background: #2563eb; color: white; border-color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🏪 FrontDesk AI — Business Onboarding</h1>
+    <p>Tell us about your business and we'll set up your AI assistant in minutes</p>
+  </div>
+
+  <div class="container">
+    <form id="onboardForm">
+
+      <!-- Basic Info -->
+      <div class="section">
+        <h2>Your Business</h2>
+        <div class="subtitle">The basics — what should customers know?</div>
+
+        <div class="field">
+          <label>Business Name *</label>
+          <input type="text" id="bizName" required placeholder="e.g. The Plateau Kitchen">
+        </div>
+        <div class="field">
+          <label>Type of Business *</label>
+          <select id="bizType">
+            <option value="restaurant">Restaurant / Café</option>
+            <option value="salon">Salon / Spa</option>
+            <option value="retail">Retail / Shop</option>
+            <option value="fitness">Gym / Fitness Studio</option>
+            <option value="professional">Professional Services</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Website URL</label>
+          <input type="url" id="bizWebsite" placeholder="https://www.yourbusiness.com">
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="bizPhone" placeholder="(425) 555-1234">
+        </div>
+        <div class="field">
+          <label>Address</label>
+          <input type="text" id="bizAddress" placeholder="123 Main St, Sammamish, WA 98074">
+        </div>
+      </div>
+
+      <!-- Hours -->
+      <div class="section">
+        <h2>Hours of Operation</h2>
+        <div class="subtitle">When are you open? Leave blank for days you're closed.</div>
+
+        <div class="hours-grid">
+          <label>Monday</label><input type="text" id="hoursMon" placeholder="e.g. 9am - 9pm or Closed">
+          <label>Tuesday</label><input type="text" id="hoursTue" placeholder="e.g. 9am - 9pm">
+          <label>Wednesday</label><input type="text" id="hoursWed" placeholder="e.g. 9am - 9pm">
+          <label>Thursday</label><input type="text" id="hoursThu" placeholder="e.g. 9am - 9pm">
+          <label>Friday</label><input type="text" id="hoursFri" placeholder="e.g. 9am - 10pm">
+          <label>Saturday</label><input type="text" id="hoursSat" placeholder="e.g. 10am - 10pm">
+          <label>Sunday</label><input type="text" id="hoursSun" placeholder="e.g. 10am - 8pm">
+        </div>
+      </div>
+
+      <!-- Services / Menu -->
+      <div class="section">
+        <h2>What You Offer</h2>
+        <div class="subtitle">Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.</div>
+
+        <div class="field">
+          <label>Services / Menu / Products *</label>
+          <div class="hint">List your key offerings, prices, popular items, categories, etc.</div>
+          <textarea id="bizOfferings" required placeholder="e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14), Plateau Pancakes ($13)...&#10;&#10;Dinner menu: Grilled Ribeye ($42), Pan-Roasted Halibut ($38)...&#10;&#10;We also have a full bar with craft cocktails."></textarea>
+        </div>
+      </div>
+
+      <!-- Policies -->
+      <div class="section">
+        <h2>Policies & Common Questions</h2>
+        <div class="subtitle">Help the AI answer the questions you get asked the most</div>
+
+        <div class="field">
+          <label>Reservations / Booking</label>
+          <textarea id="bizReservations" placeholder="e.g. We accept reservations for parties of 4+. Walk-ins welcome. Book at opentable.com/plateau-kitchen or call us."></textarea>
+        </div>
+        <div class="field">
+          <label>Parking / Getting There</label>
+          <textarea id="bizParking" rows="2" placeholder="e.g. Free parking in the lot behind the building. Street parking also available."></textarea>
+        </div>
+        <div class="field">
+          <label>Other Policies or FAQs</label>
+          <div class="hint">Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.</div>
+          <textarea id="bizPolicies" placeholder="e.g. We accommodate gluten-free and vegan diets — just let your server know. No outside food or drinks. Kids menu available."></textarea>
+        </div>
+        <div class="field">
+          <label>Anything Else Customers Should Know?</label>
+          <textarea id="bizExtra" placeholder="e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays. We cater events up to 50 people."></textarea>
+        </div>
+      </div>
+
+      <!-- Tone -->
+      <div class="section">
+        <h2>Personality & Tone</h2>
+        <div class="subtitle">How should the AI sound when talking to your customers?</div>
+
+        <div class="tone-options" id="toneOptions">
+          <div class="tone-option selected" onclick="selectTone(this, 'friendly and casual')">😊 Friendly & Casual</div>
+          <div class="tone-option" onclick="selectTone(this, 'warm and professional')">🤝 Warm & Professional</div>
+          <div class="tone-option" onclick="selectTone(this, 'upscale and polished')">✨ Upscale & Polished</div>
+          <div class="tone-option" onclick="selectTone(this, 'fun and energetic')">🎉 Fun & Energetic</div>
+        </div>
+        <input type="hidden" id="bizTone" value="friendly and casual">
+      </div>
+
+      <!-- Theme -->
+      <div class="section">
+        <h2>Widget Appearance</h2>
+        <div class="subtitle">Pick a color that matches your brand</div>
+
+        <div class="field">
+          <label>Theme Color</label>
+          <input type="color" id="bizColor" value="#2563eb" style="height: 44px; padding: 4px; cursor: pointer;">
+        </div>
+        <div class="field">
+          <label>Welcome Message</label>
+          <div class="hint">The first thing customers see when they open the chat</div>
+          <input type="text" id="bizWelcome" placeholder="Hi! 👋 How can I help you today?">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create My AI Assistant</button>
+    </form>
+
+    <!-- Success state -->
+    <div class="success" id="successState">
+      <h2>✅ Your AI Assistant is Live!</h2>
+      <p>Add this code to your website, right before the closing <code>&lt;/body&gt;</code> tag:</p>
+      <div class="embed-code" id="embedCode" onclick="this.select?.(); navigator.clipboard.writeText(this.textContent)"></div>
+      <p style="margin-top: 12px;"><a href="/admin.html">Go to Admin Console →</a></p>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api/admin';
+    let selectedTone = 'friendly and casual';
+
+    function selectTone(el, tone) {
+      document.querySelectorAll('.tone-option').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedTone = tone;
+      document.getElementById('bizTone').value = tone;
+    }
+
+    function buildSystemPrompt(data) {
+      let prompt = `You are a helpful, ${data.tone} virtual assistant for ${data.name}`;
+      if (data.type !== 'other') {
+        const typeLabels = { restaurant: 'restaurant', salon: 'salon', retail: 'shop', fitness: 'fitness studio', professional: 'business' };
+        prompt += `, a local ${typeLabels[data.type] || data.type}`;
+      }
+      if (data.address) prompt += ` located at ${data.address}`;
+      prompt += '.\n\n';
+
+      prompt += 'Your job is to answer customer questions accurately based on the information below. ';
+      prompt += 'Be concise but helpful. If you don\'t know the answer, suggest the customer call or visit the website.\n\n';
+
+      // Contact info
+      const contact = [];
+      if (data.phone) contact.push(`Phone: ${data.phone}`);
+      if (data.website) contact.push(`Website: ${data.website}`);
+      if (data.address) contact.push(`Address: ${data.address}`);
+      if (contact.length) {
+        prompt += '## Contact Information\n' + contact.join('\n') + '\n\n';
+      }
+
+      // Hours
+      const hours = [];
+      const days = [
+        ['Monday', data.hoursMon], ['Tuesday', data.hoursTue], ['Wednesday', data.hoursWed],
+        ['Thursday', data.hoursThu], ['Friday', data.hoursFri], ['Saturday', data.hoursSat], ['Sunday', data.hoursSun]
+      ];
+      days.forEach(([day, h]) => { if (h) hours.push(`${day}: ${h}`); });
+      if (hours.length) {
+        prompt += '## Hours of Operation\n' + hours.join('\n') + '\n\n';
+      }
+
+      // Offerings
+      if (data.offerings) {
+        const label = data.type === 'restaurant' ? 'Menu' : 'Services & Offerings';
+        prompt += `## ${label}\n${data.offerings}\n\n`;
+      }
+
+      // Reservations
+      if (data.reservations) {
+        prompt += `## Reservations / Booking\n${data.reservations}\n\n`;
+      }
+
+      // Parking
+      if (data.parking) {
+        prompt += `## Parking / Getting Here\n${data.parking}\n\n`;
+      }
+
+      // Policies
+      if (data.policies) {
+        prompt += `## Policies\n${data.policies}\n\n`;
+      }
+
+      // Extra
+      if (data.extra) {
+        prompt += `## Additional Information\n${data.extra}\n\n`;
+      }
+
+      prompt += '## Important Rules\n';
+      prompt += '- Only answer based on the information provided above.\n';
+      prompt += '- Do not make up information about menu items, prices, or services.\n';
+      prompt += '- Keep responses concise — 2-3 sentences when possible.\n';
+      prompt += '- If asked about something not covered above, say "I\'m not sure about that — please call us or check our website for details."\n';
+      prompt += `- Always be ${data.tone} in your responses.\n`;
+
+      return prompt;
+    }
+
+    document.getElementById('onboardForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('bizName').value.trim(),
+        type: document.getElementById('bizType').value,
+        website: document.getElementById('bizWebsite').value.trim(),
+        phone: document.getElementById('bizPhone').value.trim(),
+        address: document.getElementById('bizAddress').value.trim(),
+        hoursMon: document.getElementById('hoursMon').value.trim(),
+        hoursTue: document.getElementById('hoursTue').value.trim(),
+        hoursWed: document.getElementById('hoursWed').value.trim(),
+        hoursThu: document.getElementById('hoursThu').value.trim(),
+        hoursFri: document.getElementById('hoursFri').value.trim(),
+        hoursSat: document.getElementById('hoursSat').value.trim(),
+        hoursSun: document.getElementById('hoursSun').value.trim(),
+        offerings: document.getElementById('bizOfferings').value.trim(),
+        reservations: document.getElementById('bizReservations').value.trim(),
+        parking: document.getElementById('bizParking').value.trim(),
+        policies: document.getElementById('bizPolicies').value.trim(),
+        extra: document.getElementById('bizExtra').value.trim(),
+        tone: selectedTone,
+      };
+
+      const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+      const systemPrompt = buildSystemPrompt(data);
+      const welcomeMsg = document.getElementById('bizWelcome').value.trim() || `Hi! 👋 Welcome to ${data.name}. How can I help you?`;
+      const color = document.getElementById('bizColor').value;
+
+      const res = await fetch(`${API}/businesses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          slug: slug,
+          system_prompt: systemPrompt,
+          welcome_message: welcomeMsg,
+          theme_color: color,
+        }),
+      });
+
+      if (res.ok) {
+        document.getElementById('onboardForm').style.display = 'none';
+        const success = document.getElementById('successState');
+        success.style.display = 'block';
+        document.getElementById('embedCode').textContent =
+          `<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${slug}" data-server="${window.location.origin}"><\/script>`;
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Error creating business. Try a different name.');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrontDesk AI — Admin Console</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+    .header { background: #1a1a1a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header .stats { font-size: 13px; color: #999; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .stat-card .label { font-size: 12px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
+    .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+
+    .layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+
+    .panel { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+    .panel-header { padding: 16px 20px; border-bottom: 1px solid #eee; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .panel-body { padding: 0; }
+
+    /* Business list */
+    .biz-list { list-style: none; }
+    .biz-item { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.15s; }
+    .biz-item:hover { background: #f8f8f8; }
+    .biz-item.active { background: #f0f7ff; border-left: 3px solid #2563eb; }
+    .biz-item .name { font-weight: 600; font-size: 14px; }
+    .biz-item .meta { font-size: 12px; color: #888; margin-top: 2px; }
+    .biz-item .color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 1px solid #eee; }
+    .tab { padding: 12px 20px; font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: #888; }
+    .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+
+    /* Conversations */
+    .conv-list { list-style: none; max-height: 500px; overflow-y: auto; }
+    .conv-item { padding: 12px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.15s; }
+    .conv-item:hover { background: #f8f8f8; }
+    .conv-item.active { background: #f0f7ff; }
+    .conv-item .question { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-item .conv-meta { font-size: 11px; color: #999; margin-top: 2px; }
+
+    /* Messages */
+    .messages { padding: 20px; max-height: 500px; overflow-y: auto; }
+    .msg { margin-bottom: 12px; padding: 10px 14px; border-radius: 10px; max-width: 85%; font-size: 13px; line-height: 1.5; }
+    .msg.user { background: #2563eb; color: white; margin-left: auto; border-bottom-right-radius: 4px; }
+    .msg.assistant { background: #f0f0f0; border-bottom-left-radius: 4px; }
+    .msg .msg-time { font-size: 10px; opacity: 0.6; margin-top: 4px; }
+
+    /* Business detail / edit */
+    .biz-detail { padding: 20px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .field input, .field textarea { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; }
+    .field textarea { min-height: 200px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f0f0f0; color: #333; }
+    .btn-secondary:hover { background: #e5e5e5; }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    .empty-state { padding: 40px; text-align: center; color: #999; font-size: 13px; }
+
+    .actions { display: flex; gap: 8px; margin-top: 16px; }
+
+    /* New business modal */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 12px; padding: 24px; width: 500px; max-height: 90vh; overflow-y: auto; }
+    .modal h2 { font-size: 16px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🏪 FrontDesk AI — Admin Console</h1>
+    <div class="stats" id="headerStats"></div>
+  </div>
+
+  <div class="container">
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="layout">
+      <!-- Left: Business list -->
+      <div class="panel">
+        <div class="panel-header">
+          Businesses
+          <button class="btn btn-primary btn-sm" onclick="openNewBizModal()">+ Add</button>
+        </div>
+        <div class="panel-body">
+          <ul class="biz-list" id="bizList"></ul>
+        </div>
+      </div>
+
+      <!-- Right: Detail area -->
+      <div>
+        <div class="panel">
+          <div class="tabs" id="tabs">
+            <div class="tab active" data-tab="conversations" onclick="switchTab('conversations')">Conversations</div>
+            <div class="tab" data-tab="details" onclick="switchTab('details')">Business Info</div>
+          </div>
+
+          <!-- Conversations tab -->
+          <div id="conversationsTab">
+            <div style="display: grid; grid-template-columns: 300px 1fr; min-height: 500px;">
+              <div style="border-right: 1px solid #eee;">
+                <ul class="conv-list" id="convList">
+                  <li class="empty-state">Select a business to view conversations</li>
+                </ul>
+              </div>
+              <div class="messages" id="messageArea">
+                <div class="empty-state">Select a conversation to view messages</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details tab -->
+          <div id="detailsTab" style="display: none;">
+            <div class="biz-detail" id="bizDetail">
+              <div class="empty-state">Select a business to view details</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Business Modal -->
+  <div class="modal-overlay" id="newBizModal">
+    <div class="modal">
+      <h2>Add New Business</h2>
+      <div class="field">
+        <label>Business Name</label>
+        <input type="text" id="newBizName" placeholder="e.g. The Plateau Kitchen">
+      </div>
+      <div class="field">
+        <label>Slug (URL-friendly name)</label>
+        <input type="text" id="newBizSlug" placeholder="e.g. plateau-kitchen">
+      </div>
+      <div class="field">
+        <label>Welcome Message</label>
+        <input type="text" id="newBizWelcome" placeholder="Hi! How can I help you today?">
+      </div>
+      <div class="field">
+        <label>Theme Color</label>
+        <input type="color" id="newBizColor" value="#2563eb" style="height: 40px; padding: 4px;">
+      </div>
+      <div class="field">
+        <label>System Prompt (Business Info)</label>
+        <textarea id="newBizPrompt" placeholder="You are a helpful assistant for [Business Name]. Here is the business information..."></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="createBusiness()">Create Business</button>
+        <button class="btn btn-secondary" onclick="closeNewBizModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api/admin';
+    let selectedBiz = null;
+    let businesses = [];
+
+    // Load everything on start
+    async function init() {
+      await Promise.all([loadStats(), loadBusinesses()]);
+    }
+
+    async function loadStats() {
+      const res = await fetch(`${API}/stats`);
+      const stats = await res.json();
+
+      document.getElementById('statsBar').innerHTML = `
+        <div class="stat-card"><div class="label">Businesses</div><div class="value">${stats.totalBusinesses}</div></div>
+        <div class="stat-card"><div class="label">Conversations</div><div class="value">${stats.totalConversations}</div></div>
+        <div class="stat-card"><div class="label">Messages</div><div class="value">${stats.totalMessages}</div></div>
+        <div class="stat-card"><div class="label">Today</div><div class="value">${stats.todayConversations}</div></div>
+      `;
+    }
+
+    async function loadBusinesses() {
+      const res = await fetch(`${API}/businesses`);
+      businesses = await res.json();
+
+      const list = document.getElementById('bizList');
+      if (businesses.length === 0) {
+        list.innerHTML = '<li class="empty-state">No businesses yet. Click + Add to create one.</li>';
+        return;
+      }
+
+      list.innerHTML = businesses.map(b => `
+        <li class="biz-item ${selectedBiz?.id === b.id ? 'active' : ''}" onclick="selectBusiness('${b.id}')">
+          <div class="name"><span class="color-dot" style="background:${b.theme_color}"></span>${b.name}</div>
+          <div class="meta">${b.slug} · Created ${new Date(b.created_at).toLocaleDateString()}</div>
+        </li>
+      `).join('');
+    }
+
+    async function selectBusiness(id) {
+      selectedBiz = businesses.find(b => b.id === id);
+      await loadBusinesses(); // re-render to show active state
+      await loadConversations(id);
+      renderBizDetail();
+    }
+
+    async function loadConversations(businessId) {
+      const res = await fetch(`${API}/conversations/${businessId}`);
+      const convos = await res.json();
+
+      const list = document.getElementById('convList');
+      if (convos.length === 0) {
+        list.innerHTML = '<li class="empty-state">No conversations yet</li>';
+        document.getElementById('messageArea').innerHTML = '<div class="empty-state">No conversations yet</div>';
+        return;
+      }
+
+      list.innerHTML = convos.map(c => `
+        <li class="conv-item" onclick="loadMessages('${c.id}', this)">
+          <div class="question">${c.first_question || 'No messages'}</div>
+          <div class="conv-meta">${c.message_count} msgs · ${timeAgo(c.last_message_at)}</div>
+        </li>
+      `).join('');
+    }
+
+    async function loadMessages(convId, el) {
+      // Highlight selected conversation
+      document.querySelectorAll('.conv-item').forEach(e => e.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const res = await fetch(`${API}/conversation/${convId}/messages`);
+      const msgs = await res.json();
+
+      const area = document.getElementById('messageArea');
+      area.innerHTML = msgs.map(m => `
+        <div class="msg ${m.role}">
+          ${escapeHtml(m.content)}
+          <div class="msg-time">${new Date(m.sent_at).toLocaleString()}</div>
+        </div>
+      `).join('');
+      area.scrollTop = area.scrollHeight;
+    }
+
+    function renderBizDetail() {
+      if (!selectedBiz) return;
+      const b = selectedBiz;
+      document.getElementById('bizDetail').innerHTML = `
+        <div class="field">
+          <label>Business Name</label>
+          <input type="text" id="editName" value="${escapeAttr(b.name)}">
+        </div>
+        <div class="field">
+          <label>Slug</label>
+          <input type="text" value="${b.slug}" disabled style="background: #f5f5f5; color: #999;">
+        </div>
+        <div class="field">
+          <label>Welcome Message</label>
+          <input type="text" id="editWelcome" value="${escapeAttr(b.welcome_message)}">
+        </div>
+        <div class="field">
+          <label>Theme Color</label>
+          <input type="color" id="editColor" value="${b.theme_color}" style="height: 40px; padding: 4px;">
+        </div>
+        <div class="field">
+          <label>Widget Embed Code</label>
+          <input type="text" readonly value='<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${b.slug}" data-server="${window.location.origin}"><\/script>' 
+                 onclick="this.select()" style="background: #f5f5f5; font-family: monospace; font-size: 11px;">
+        </div>
+        <div class="field">
+          <label>System Prompt</label>
+          <textarea id="editPrompt">${escapeHtml(b.system_prompt)}</textarea>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="saveBusiness()">Save Changes</button>
+        </div>
+      `;
+    }
+
+    async function saveBusiness() {
+      const res = await fetch(`${API}/businesses/${selectedBiz.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('editName').value,
+          system_prompt: document.getElementById('editPrompt').value,
+          welcome_message: document.getElementById('editWelcome').value,
+          theme_color: document.getElementById('editColor').value,
+        }),
+      });
+
+      if (res.ok) {
+        selectedBiz = await res.json();
+        await loadBusinesses();
+        renderBizDetail();
+        alert('Saved!');
+      } else {
+        alert('Error saving. Check console.');
+      }
+    }
+
+    function openNewBizModal() { document.getElementById('newBizModal').classList.add('open'); }
+    function closeNewBizModal() { document.getElementById('newBizModal').classList.remove('open'); }
+
+    async function createBusiness() {
+      const body = {
+        name: document.getElementById('newBizName').value,
+        slug: document.getElementById('newBizSlug').value,
+        system_prompt: document.getElementById('newBizPrompt').value,
+        welcome_message: document.getElementById('newBizWelcome').value || 'Hi! How can I help you today?',
+        theme_color: document.getElementById('newBizColor').value,
+      };
+
+      if (!body.name || !body.slug || !body.system_prompt) {
+        alert('Name, slug, and system prompt are required.');
+        return;
+      }
+
+      const res = await fetch(`${API}/businesses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        closeNewBizModal();
+        await loadBusinesses();
+        await loadStats();
+        // Clear form
+        ['newBizName', 'newBizSlug', 'newBizPrompt', 'newBizWelcome'].forEach(id => document.getElementById(id).value = '');
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Error creating business');
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById('conversationsTab').style.display = tab === 'conversations' ? 'block' : 'none';
+      document.getElementById('detailsTab').style.display = tab === 'details' ? 'block' : 'none';
+    }
+
+    function timeAgo(dateStr) {
+      const diff = Date.now() - new Date(dateStr + 'Z').getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'just now';
+      if (mins < 60) return `${mins}m ago`;
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return `${hrs}h ago`;
+      return `${Math.floor(hrs / 24)}d ago`;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function escapeAttr(str) {
+      return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    init();
+  </script>
+</body>
+</html>

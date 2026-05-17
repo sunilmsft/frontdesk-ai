@@ -4,118 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Plateau Kitchen — Farm-to-Table in Sammamish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Georgia', serif; background: #faf9f6; color: #2d2d2d; line-height: 1.8; }
-
+        body { font-family: 'Inter', sans-serif; background: #faf9f6; color: #2d2d2d; line-height: 1.7; }
         .hero {
-            background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3f 50%, #1a3a2a 100%);
-            color: white;
-            text-align: center;
-            padding: 4rem 2rem 3rem;
+            background: linear-gradient(160deg, #0f2a1d 0%, #1a4a32 40%, #0f2a1d 100%);
+            color: white; text-align: center; padding: 6rem 2rem 5rem;
+            position: relative; overflow: hidden;
         }
-        .hero h1 { font-size: 2.8rem; font-weight: 400; letter-spacing: 2px; }
-        .hero .tagline { font-size: 1.1rem; opacity: 0.85; margin-top: 0.5rem; font-style: italic; }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.03) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero .badge {
+            display: inline-block; padding: 6px 16px;
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 1.5rem; color: rgba(255,255,255,0.7);
+        }
+        .hero h1 { font-family: 'DM Serif Display', serif; font-size: 3.5rem; font-weight: 400; letter-spacing: 1px; }
+        .hero .tagline { font-size: 1.1rem; opacity: 0.7; margin-top: 0.75rem; font-weight: 300; }
         .hero .hours-pill {
-            display: inline-block; margin-top: 1.5rem;
-            padding: 0.5rem 1.5rem; background: rgba(255,255,255,0.15);
-            border-radius: 999px; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 2rem; padding: 10px 24px;
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 999px; font-size: 0.85rem; font-weight: 400;
         }
-
+        .hero .hours-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
         nav {
-            background: #2d5a3f; text-align: center;
-            padding: 0.75rem; position: sticky; top: 0; z-index: 100;
+            background: #fff; text-align: center; padding: 1rem;
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid #eee;
+            backdrop-filter: blur(20px); background: rgba(255,255,255,0.95);
         }
         nav a {
-            color: rgba(255,255,255,0.85); text-decoration: none;
-            padding: 0.5rem 1.25rem; font-size: 0.9rem; font-family: sans-serif;
-            letter-spacing: 1px; text-transform: uppercase;
+            color: #555; text-decoration: none; padding: 0.5rem 1.25rem;
+            font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase;
+            font-weight: 500; transition: color 0.2s;
         }
-        nav a:hover { color: white; }
-
-        .container { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
-
+        nav a:hover { color: #1a4a32; }
+        .container { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+        .section-label {
+            text-align: center; margin-bottom: 0.5rem;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px;
+            color: #1a4a32; font-weight: 600;
+        }
         h2 {
-            font-size: 1.8rem; font-weight: 400; text-align: center;
-            margin-bottom: 2rem; letter-spacing: 1px;
-            border-bottom: 2px solid #d4c5a9; padding-bottom: 0.75rem;
+            font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400;
+            text-align: center; margin-bottom: 2.5rem; color: #1a1a1a;
         }
-
-        .about p { font-size: 1.05rem; text-align: center; max-width: 700px; margin: 0 auto; }
-
-        .menu-section { margin-bottom: 2.5rem; }
+        .about { text-align: center; max-width: 650px; margin: 0 auto; }
+        .about p { font-size: 1.05rem; color: #555; font-weight: 300; line-height: 1.9; }
+        .menu-section { margin-bottom: 3rem; }
         .menu-section h3 {
-            font-size: 1.2rem; color: #2d5a3f; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 1rem; font-family: sans-serif;
+            font-size: 0.75rem; color: #1a4a32; text-transform: uppercase;
+            letter-spacing: 3px; margin-bottom: 1.25rem; font-weight: 600;
+            padding-bottom: 0.5rem; border-bottom: 1px solid #e8e4dc;
         }
-        .menu-item {
-            display: flex; justify-content: space-between; align-items: baseline;
-            padding: 0.5rem 0; border-bottom: 1px dotted #d4c5a9;
+        .menu-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.75rem 0; }
+        .menu-item + .menu-item { border-top: 1px solid #f0ede8; }
+        .menu-item .name { font-weight: 500; font-size: 0.95rem; }
+        .menu-item .desc { font-size: 0.82rem; color: #888; margin-top: 2px; }
+        .menu-item .price { font-weight: 600; color: #1a4a32; white-space: nowrap; margin-left: 1.5rem; font-size: 0.95rem; }
+        .dietary {
+            display: inline-block; font-size: 0.65rem; color: #fff; background: #1a4a32;
+            padding: 1px 6px; border-radius: 3px; margin-left: 6px; font-weight: 500;
+            vertical-align: middle; letter-spacing: 0.5px;
         }
-        .menu-item .name { font-weight: 600; }
-        .menu-item .desc { font-size: 0.88rem; color: #666; font-style: italic; }
-        .menu-item .price { font-weight: 600; color: #2d5a3f; white-space: nowrap; margin-left: 1rem; }
-        .dietary { font-size: 0.75rem; color: #888; font-family: sans-serif; }
-
-        .info-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem; margin-top: 1rem;
-        }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1rem; }
+        @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr; } }
         .info-card {
-            background: white; border-radius: 12px; padding: 1.5rem;
-            border: 1px solid #e8e4dc; text-align: center;
+            background: white; border-radius: 14px; padding: 1.75rem;
+            border: 1px solid #eee; text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .info-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        .info-card h4 { font-family: sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #2d5a3f; margin-bottom: 0.5rem; }
-        .info-card p { font-size: 0.9rem; color: #555; }
-
+        .info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .info-card .icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .info-card h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #1a4a32; margin-bottom: 0.5rem; font-weight: 600; }
+        .info-card p { font-size: 0.85rem; color: #666; line-height: 1.6; }
         .cta-banner {
-            background: #2d5a3f; color: white; text-align: center;
-            padding: 2.5rem 2rem; margin-top: 2rem;
+            background: linear-gradient(160deg, #0f2a1d, #1a4a32);
+            color: white; text-align: center; padding: 4rem 2rem; margin-top: 1rem;
         }
-        .cta-banner h2 { color: white; border: none; margin-bottom: 0.5rem; }
-        .cta-banner p { opacity: 0.85; }
-        .cta-banner .phone { font-size: 1.5rem; font-weight: 600; margin-top: 1rem; }
-
-        footer {
-            text-align: center; padding: 1.5rem;
-            font-size: 0.8rem; color: #999; font-family: sans-serif;
+        .cta-banner h2 { color: white; margin-bottom: 0.75rem; }
+        .cta-banner p { opacity: 0.7; font-weight: 300; }
+        .cta-banner .phone { font-family: 'DM Serif Display', serif; font-size: 1.75rem; margin-top: 1.25rem; letter-spacing: 1px; }
+        .cta-banner .btn-reserve {
+            display: inline-block; margin-top: 1.5rem; padding: 12px 32px;
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 999px;
+            color: white; text-decoration: none; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 500;
+            transition: all 0.2s;
         }
+        .cta-banner .btn-reserve:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); }
+        footer { text-align: center; padding: 2rem; font-size: 0.75rem; color: #bbb; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
     <div class="hero">
-        <h1>The Plateau Kitchen</h1>
-        <div class="tagline">Farm-to-table dining on the Sammamish Plateau</div>
-        <div class="hours-pill">Tue–Sun · Lunch · Dinner · Weekend Brunch</div>
+        <div class="hero-content">
+            <div class="badge">Est. 2024 &middot; Sammamish, WA</div>
+            <h1>The Plateau Kitchen</h1>
+            <div class="tagline">Farm-to-table dining on the Sammamish Plateau</div>
+            <div class="hours-pill">
+                <span class="hours-dot"></span>
+                Open Tue&ndash;Sun &middot; Lunch &middot; Dinner &middot; Weekend Brunch
+            </div>
+        </div>
     </div>
-
     <nav>
         <a href="#about">About</a>
         <a href="#menu">Menu</a>
         <a href="#info">Visit</a>
         <a href="#contact">Contact</a>
     </nav>
-
     <div class="container" id="about">
-        <h2>Our Story</h2>
+        <div class="section-label">Our Story</div>
+        <h2>Honest Food, Local Roots</h2>
         <div class="about">
-            <p>
-                The Plateau Kitchen started with a simple idea: serve honest food made from ingredients
-                grown within 100 miles. We partner with local farms — Full Circle, Alvarez Farms,
-                Skagit River Ranch — to bring the Pacific Northwest to your plate. Every dish tells a
-                story of the land and the people who tend it.
-            </p>
+            <p>The Plateau Kitchen started with a simple idea: serve honest food made from ingredients grown within 100 miles. We partner with local farms &mdash; Full Circle, Alvarez Farms, Skagit River Ranch &mdash; to bring the Pacific Northwest to your plate. Every dish tells a story of the land and the people who tend it.</p>
         </div>
     </div>
-
     <div class="container" id="menu">
-        <h2>Sample Menu</h2>
-
+        <div class="section-label">What We Serve</div>
+        <h2>The Menu</h2>
         <div class="menu-section">
             <h3>Starters</h3>
             <div class="menu-item">
-                <div><span class="name">Roasted Beet & Goat Cheese Salad</span> <span class="dietary">GF</span><br><span class="desc">Local beets, chèvre, arugula, candied walnuts</span></div>
+                <div><span class="name">Roasted Beet &amp; Goat Cheese Salad</span> <span class="dietary">GF</span><br><span class="desc">Local beets, ch&egrave;vre, arugula, candied walnuts</span></div>
                 <div class="price">$14</div>
             </div>
             <div class="menu-item">
@@ -123,11 +145,10 @@
                 <div class="price">$18</div>
             </div>
             <div class="menu-item">
-                <div><span class="name">Crispy Brussels Sprouts</span> <span class="dietary">GF · Vegan</span><br><span class="desc">Apple cider glaze, toasted almonds</span></div>
+                <div><span class="name">Crispy Brussels Sprouts</span> <span class="dietary">GF</span> <span class="dietary">V</span><br><span class="desc">Apple cider glaze, toasted almonds</span></div>
                 <div class="price">$13</div>
             </div>
         </div>
-
         <div class="menu-section">
             <h3>Mains</h3>
             <div class="menu-item">
@@ -143,11 +164,10 @@
                 <div class="price">$38</div>
             </div>
             <div class="menu-item">
-                <div><span class="name">Roasted Cauliflower Steak</span> <span class="dietary">GF · Vegan</span><br><span class="desc">Romesco, crispy chickpeas, herb oil</span></div>
+                <div><span class="name">Roasted Cauliflower Steak</span> <span class="dietary">GF</span> <span class="dietary">V</span><br><span class="desc">Romesco, crispy chickpeas, herb oil</span></div>
                 <div class="price">$22</div>
             </div>
         </div>
-
         <div class="menu-section">
             <h3>Weekend Brunch</h3>
             <div class="menu-item">
@@ -164,56 +184,25 @@
             </div>
         </div>
     </div>
-
     <div class="container" id="info">
-        <h2>Visit Us</h2>
+        <div class="section-label">Plan Your Visit</div>
+        <h2>Find Us</h2>
         <div class="info-grid">
-            <div class="info-card">
-                <div class="icon">📍</div>
-                <h4>Location</h4>
-                <p>22530 SE 4th St<br>Sammamish, WA 98074</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">🕐</div>
-                <h4>Hours</h4>
-                <p>Tue–Thu: 11:30am–9pm<br>Fri: 11:30am–10pm<br>Sat–Sun: 10am–10pm/8pm<br>Mon: Closed</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">🅿️</div>
-                <h4>Parking</h4>
-                <p>Free lot behind the building<br>+ street parking on SE 4th</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">🐕</div>
-                <h4>Dog-Friendly</h4>
-                <p>Patio seating welcomes your pup!<br>Water bowls provided.</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">🎵</div>
-                <h4>Live Music</h4>
-                <p>Friday evenings 7–9pm<br>Local acoustic artists</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">🍸</div>
-                <h4>Happy Hour</h4>
-                <p>Tue–Fri, 3–5:30pm<br>$3 off apps, $2 off drinks</p>
-            </div>
+            <div class="info-card"><div class="icon">&#x1F4CD;</div><h4>Location</h4><p>22530 SE 4th St<br>Sammamish, WA 98074</p></div>
+            <div class="info-card"><div class="icon">&#x1F550;</div><h4>Hours</h4><p>Tue&ndash;Thu: 11:30am&ndash;9pm<br>Fri: 11:30am&ndash;10pm<br>Sat&ndash;Sun: 10am&ndash;10pm/8pm<br>Mon: Closed</p></div>
+            <div class="info-card"><div class="icon">&#x1F17F;&#xFE0F;</div><h4>Parking</h4><p>Free lot behind the building<br>+ street parking on SE 4th</p></div>
+            <div class="info-card"><div class="icon">&#x1F415;</div><h4>Dog-Friendly</h4><p>Patio seating welcomes your pup!<br>Water bowls provided.</p></div>
+            <div class="info-card"><div class="icon">&#x1F3B5;</div><h4>Live Music</h4><p>Friday evenings 7&ndash;9pm<br>Local acoustic artists</p></div>
+            <div class="info-card"><div class="icon">&#x1F378;</div><h4>Happy Hour</h4><p>Tue&ndash;Fri, 3&ndash;5:30pm<br>$3 off apps, $2 off drinks</p></div>
         </div>
     </div>
-
     <div class="cta-banner" id="contact">
         <h2>Make a Reservation</h2>
-        <p>Reservations recommended for parties of 4+ on Friday & Saturday.</p>
+        <p>Reservations recommended for parties of 4+ on Friday &amp; Saturday.</p>
         <div class="phone">(425) 555-0142</div>
+        <a href="tel:+14255550142" class="btn-reserve">Call to Reserve</a>
     </div>
-
-    <footer>
-        © 2026 The Plateau Kitchen · Sammamish, WA · This is a demo restaurant for FrontDesk AI
-    </footer>
-
-    <!-- FrontDesk AI Chat Widget -->
-    <script src="/widget/frontdesk-widget.js"
-            data-business="plateau-kitchen"
-            data-server=""></script>
+    <footer>&copy; 2026 The Plateau Kitchen &middot; Sammamish, WA &middot; This is a demo restaurant for FrontDesk AI</footer>
+    <script src="/widget/frontdesk-widget.js" data-business="plateau-kitchen" data-server=""></script>
 </body>
 </html>

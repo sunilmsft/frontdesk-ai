@@ -67,6 +67,31 @@ router.post('/businesses', (req, res) => {
 });
 
 /**
+ * PUT /api/admin/businesses/:id — Update a business
+ */
+router.put('/businesses/:id', (req, res) => {
+  const { name, system_prompt, welcome_message, theme_color } = req.body;
+  const business = db.prepare('SELECT * FROM businesses WHERE id = ?').get(req.params.id);
+
+  if (!business) {
+    return res.status(404).json({ error: 'Business not found' });
+  }
+
+  db.prepare(
+    'UPDATE businesses SET name = ?, system_prompt = ?, welcome_message = ?, theme_color = ? WHERE id = ?'
+  ).run(
+    name || business.name,
+    system_prompt || business.system_prompt,
+    welcome_message || business.welcome_message,
+    theme_color || business.theme_color,
+    req.params.id
+  );
+
+  const updated = db.prepare('SELECT * FROM businesses WHERE id = ?').get(req.params.id);
+  res.json(updated);
+});
+
+/**
  * GET /api/admin/conversations/:businessId — Recent conversations for a business
  */
 router.get('/conversations/:businessId', (req, res) => {

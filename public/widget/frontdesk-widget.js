@@ -30,7 +30,7 @@
     .catch(err => console.error('FrontDesk: Failed to load business info', err));
 
   function injectWidget(biz) {
-    const color = biz.theme_color || '#2563eb';
+    const color = biz.theme_color || '#0d9488';
 
     // Create styles
     const style = document.createElement('style');
@@ -40,31 +40,39 @@
         width: 60px; height: 60px; border-radius: 50%;
         background: ${color}; color: white;
         border: none; cursor: pointer;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 0 ${color}40;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.6rem;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+        animation: fd-pulse 3s ease-in-out infinite;
       }
-      #fd-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,0,0,0.3); }
-      #fd-bubble.open { transform: rotate(45deg) scale(1); }
-      #fd-bubble.open::after { content: '✕'; font-size: 1.4rem; }
-      #fd-bubble:not(.open)::after { content: '💬'; }
+      @keyframes fd-pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 0 ${color}40; } 50% { box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 8px ${color}00; } }
+      #fd-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,0,0,0.25); animation: none; }
+      #fd-bubble.open { transform: rotate(0deg) scale(1); animation: none; }
+      #fd-bubble svg { width: 28px; height: 28px; fill: white; transition: transform 0.3s, opacity 0.3s; }
+      #fd-bubble .fd-icon-close { display: none; }
+      #fd-bubble.open .fd-icon-chat { display: none; }
+      #fd-bubble.open .fd-icon-close { display: block; }
 
       #fd-chat {
         position: fixed; bottom: 96px; right: 24px; z-index: 99998;
         width: 380px; max-width: calc(100vw - 48px);
         height: 520px; max-height: calc(100vh - 120px);
-        background: white; border-radius: 16px;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-        display: none; flex-direction: column;
+        background: white; border-radius: 20px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+        display: flex; flex-direction: column;
         overflow: hidden;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        opacity: 0; visibility: hidden;
+        transform: translateY(16px) scale(0.96);
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    visibility 0.3s;
       }
-      #fd-chat.open { display: flex; }
+      #fd-chat.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
 
       #fd-header {
         background: ${color}; color: white;
-        padding: 1rem 1.25rem;
+        padding: 1.1rem 1.25rem;
         display: flex; align-items: center; gap: 0.75rem;
       }
       #fd-header-dot { width: 10px; height: 10px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
@@ -76,10 +84,12 @@
         display: flex; flex-direction: column; gap: 0.5rem;
       }
       .fd-msg {
-        max-width: 85%; padding: 0.6rem 0.85rem;
-        border-radius: 14px; font-size: 0.9rem; line-height: 1.5;
+        max-width: 85%; padding: 0.65rem 0.9rem;
+        border-radius: 16px; font-size: 0.88rem; line-height: 1.55;
         word-wrap: break-word;
+        animation: fd-msg-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      @keyframes fd-msg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       .fd-msg.assistant {
         align-self: flex-start;
         background: #f1f5f9; color: #1e293b;
@@ -93,7 +103,15 @@
       .fd-msg.typing {
         align-self: flex-start;
         background: #f1f5f9; color: #94a3b8;
-        font-style: italic;
+      }
+      .fd-msg.typing::after {
+        content: ''; display: inline-block;
+        animation: fd-dots 1.4s infinite;
+      }
+      @keyframes fd-dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60%, 100% { content: '...'; }
       }
 
       #fd-input-area {
@@ -114,9 +132,11 @@
       #fd-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
       #fd-powered {
-        text-align: center; padding: 0.4rem;
-        font-size: 0.65rem; color: #94a3b8;
+        text-align: center; padding: 0.5rem;
+        font-size: 0.6rem; color: #c0c8d4; letter-spacing: 0.3px;
       }
+      #fd-powered a { color: #94a3b8; text-decoration: none; }
+      #fd-powered a:hover { color: #64748b; }
     `;
     document.head.appendChild(style);
 
@@ -136,7 +156,7 @@
         <input id="fd-input" type="text" placeholder="Type your question..." autocomplete="off">
         <button id="fd-send">Send</button>
       </div>
-      <div id="fd-powered">Powered by FrontDesk AI</div>
+      <div id="fd-powered"><a href="#">Powered by FrontDesk AI</a></div>
     `;
     document.body.appendChild(chat);
 
@@ -144,6 +164,10 @@
     const bubble = document.createElement('button');
     bubble.id = 'fd-bubble';
     bubble.setAttribute('aria-label', 'Chat with us');
+    bubble.innerHTML = `
+      <svg class="fd-icon-chat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z" fill="none"/><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      <svg class="fd-icon-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    `;
     document.body.appendChild(bubble);
 
     // Events

@@ -11,7 +11,7 @@ db.exec(`
     slug TEXT UNIQUE NOT NULL,
     system_prompt TEXT NOT NULL,
     welcome_message TEXT DEFAULT 'Hi! How can I help you today?',
-    theme_color TEXT DEFAULT '#2563eb',
+    theme_color TEXT DEFAULT '#0d9488',
     active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT (datetime('now'))
   );

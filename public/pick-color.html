@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrontDesk AI — Pick a Widget Color</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #f5f5f5; color: #333; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+  p.sub { color: #888; font-size: 0.9rem; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+  .card {
+    background: white; border-radius: 16px; overflow: hidden; cursor: pointer;
+    border: 3px solid transparent; transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .card.selected { border-color: #333; }
+  .card-header { padding: 1rem 1rem 0.75rem; color: white; }
+  .card-header h3 { font-size: 0.85rem; font-weight: 600; }
+  .card-header span { font-size: 0.7rem; opacity: 0.8; }
+  .card-preview { padding: 0.75rem 1rem 1rem; }
+  .preview-msg {
+    padding: 0.5rem 0.75rem; border-radius: 12px; font-size: 0.78rem;
+    margin-bottom: 0.4rem; max-width: 85%; line-height: 1.4;
+  }
+  .preview-msg.bot { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; }
+  .preview-msg.user { color: white; margin-left: auto; border-bottom-right-radius: 4px; text-align: right; }
+  .preview-input {
+    display: flex; gap: 0.4rem; margin-top: 0.5rem;
+  }
+  .preview-input div {
+    flex: 1; border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 0.4rem 0.6rem; font-size: 0.75rem; color: #aaa;
+  }
+  .preview-input button {
+    border: none; color: white; border-radius: 8px;
+    padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600;
+  }
+  .bubble-row { text-align: right; padding: 0 1rem 1rem; }
+  .mini-bubble {
+    display: inline-flex; width: 36px; height: 36px; border-radius: 50%;
+    align-items: center; justify-content: center; font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .actions { margin-top: 2rem; text-align: center; }
+  .actions button {
+    padding: 12px 36px; border-radius: 10px; border: none;
+    font-size: 1rem; font-weight: 600; color: white;
+    cursor: pointer; background: #333; transition: background 0.2s;
+  }
+  .actions button:hover { background: #111; }
+  .actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+  #status { margin-top: 1rem; font-size: 0.85rem; color: #666; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Pick your widget color</h1>
+  <p class="sub">Click a card to preview, then hit Apply. Each business can have its own color later.</p>
+  <div class="grid" id="grid"></div>
+  <div class="actions">
+    <button id="apply-btn" disabled onclick="applyColor()">Apply Selected Color</button>
+    <div id="status"></div>
+  </div>
+</div>
+<script>
+const colors = [
+  { name: 'Indigo', hex: '#6366f1', desc: 'Modern SaaS' },
+  { name: 'Blue', hex: '#3b82f6', desc: 'Clean & trustworthy' },
+  { name: 'Sky', hex: '#0ea5e9', desc: 'Friendly & open' },
+  { name: 'Violet', hex: '#8b5cf6', desc: 'Trendy & unique' },
+  { name: 'Rose', hex: '#f43f5e', desc: 'Bold & energetic' },
+  { name: 'Coral', hex: '#fb7185', desc: 'Warm & inviting' },
+  { name: 'Amber', hex: '#f59e0b', desc: 'Cheerful & warm' },
+  { name: 'Orange', hex: '#f97316', desc: 'Energetic & fun' },
+  { name: 'Teal', hex: '#14b8a6', desc: 'Fresh & balanced' },
+  { name: 'Emerald', hex: '#10b981', desc: 'Natural & calm' },
+  { name: 'Slate', hex: '#475569', desc: 'Professional & neutral' },
+  { name: 'Zinc', hex: '#3f3f46', desc: 'Minimal & sleek' },
+];
+
+let selected = null;
+const grid = document.getElementById('grid');
+
+colors.forEach(c => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.hex = c.hex;
+  card.innerHTML = `
+    <div class="card-header" style="background:${c.hex}">
+      <h3>${c.name}</h3>
+      <span>${c.hex} · ${c.desc}</span>
+    </div>
+    <div class="card-preview">
+      <div class="preview-msg bot">Hi! How can I help you today?</div>
+      <div class="preview-msg user" style="background:${c.hex}">What are your hours?</div>
+      <div class="preview-input">
+        <div>Type your question...</div>
+        <button style="background:${c.hex}">Send</button>
+      </div>
+    </div>
+    <div class="bubble-row">
+      <div class="mini-bubble" style="background:${c.hex}">💬</div>
+    </div>
+  `;
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.card').forEach(el => el.classList.remove('selected'));
+    card.classList.add('selected');
+    selected = c.hex;
+    document.getElementById('apply-btn').disabled = false;
+    document.getElementById('apply-btn').style.background = c.hex;
+  });
+  grid.appendChild(card);
+});
+
+async function applyColor() {
+  if (!selected) return;
+  const btn = document.getElementById('apply-btn');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+  btn.textContent = 'Applying...';
+  try {
+    const res = await fetch('/api/admin/businesses');
+    const businesses = await res.json();
+    if (businesses.length > 0) {
+      await fetch(`/api/admin/businesses/${businesses[0].id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme_color: selected }),
+      });
+    }
+    status.textContent = `✓ Color set to ${selected}. Refresh localhost:3001 to see it live!`;
+    status.style.color = '#10b981';
+  } catch (e) {
+    status.textContent = 'Error updating color. Is the server running?';
+    status.style.color = '#ef4444';
+  }
+  btn.textContent = 'Apply Selected Color';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

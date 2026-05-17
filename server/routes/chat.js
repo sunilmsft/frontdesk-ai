@@ -1,13 +1,11 @@
 const express = require('express');
-const Anthropic = require('@anthropic-ai/sdk').default;
+const OpenAI = require('openai');
 const db = require('../db/database');
 const crypto = require('crypto');
 
 const router = express.Router();
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 /**
  * POST /api/chat — Handle a customer message
@@ -48,21 +46,24 @@ router.post('/chat', async (req, res) => {
     'SELECT role, content FROM messages WHERE conversation_id = ? ORDER BY sent_at ASC LIMIT 20'
   ).all(convId);
 
-  // Build Claude messages array
-  const claudeMessages = history.map(m => ({
-    role: m.role,
-    content: m.content,
-  }));
+  // Build OpenAI messages array
+  // Inject current date so the AI knows what day it is
+  const now = new Date();
+  const dateContext = `\n\nCurrent date and time: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}, ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}.`;
+
+  const openaiMessages = [
+    { role: 'system', content: business.system_prompt + dateContext },
+    ...history.map(m => ({ role: m.role, content: m.content })),
+  ];
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
       max_tokens: 300,
-      system: business.system_prompt,
-      messages: claudeMessages,
+      messages: openaiMessages,
     });
 
-    const reply = response.content[0].text;
+    const reply = response.choices[0].message.content;
 
     // Log the assistant reply
     db.prepare('INSERT INTO messages (conversation_id, role, content) VALUES (?, ?, ?)')
@@ -75,7 +76,7 @@ router.post('/chat', async (req, res) => {
 
     res.json({ conversationId: convId, reply });
   } catch (err) {
-    console.error('Claude API error:', err.message);
+    console.error('OpenAI API error:', err.message);
     res.status(500).json({
       error: 'Sorry, I\'m having trouble right now. Please call us directly!',
     });

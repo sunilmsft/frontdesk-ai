@@ -13,7 +13,7 @@ AI-powered chat widget for local businesses. Customers get instant answers about
 
 ### Prerequisites
 - Node.js 18+
-- An [Anthropic API key](https://console.anthropic.com/)
+- An [OpenAI API key](https://platform.openai.com/api-keys)
 
 ### Setup
 
@@ -27,7 +27,7 @@ npm install
 
 # Configure
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+# Edit .env and add your OPENAI_API_KEY
 
 # Run
 npm start
