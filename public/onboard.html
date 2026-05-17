@@ -169,15 +169,14 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Create My AI Assistant</button>
+      <button type="submit" class="btn btn-primary">Submit My Business Info</button>
     </form>
 
     <!-- Success state -->
     <div class="success" id="successState">
-      <h2>✅ Your AI Assistant is Live!</h2>
-      <p>Add this code to your website, right before the closing <code>&lt;/body&gt;</code> tag:</p>
-      <div class="embed-code" id="embedCode" onclick="this.select?.(); navigator.clipboard.writeText(this.textContent)"></div>
-      <p style="margin-top: 12px;"><a href="/admin.html">Go to Admin Console →</a></p>
+      <h2>✅ We've Got Your Info!</h2>
+      <p>Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.</p>
+      <p style="margin-top: 12px; font-size: 13px; color: #888;">Questions? Just reply to the message that brought you here.</p>
     </div>
   </div>
 
@@ -289,12 +288,12 @@
       const welcomeMsg = document.getElementById('bizWelcome').value.trim() || `Hi! 👋 Welcome to ${data.name}. How can I help you?`;
       const color = document.getElementById('bizColor').value;
 
-      const res = await fetch(`${API}/businesses`, {
+      const res = await fetch(`${API}/submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: data.name,
-          slug: slug,
+          business_name: data.name,
+          form_data: data,
           system_prompt: systemPrompt,
           welcome_message: welcomeMsg,
           theme_color: color,
@@ -303,13 +302,10 @@
 
       if (res.ok) {
         document.getElementById('onboardForm').style.display = 'none';
-        const success = document.getElementById('successState');
-        success.style.display = 'block';
-        document.getElementById('embedCode').textContent =
-          `<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${slug}" data-server="${window.location.origin}"><\/script>`;
+        document.getElementById('successState').style.display = 'block';
       } else {
         const err = await res.json();
-        alert(err.error || 'Error creating business. Try a different name.');
+        alert(err.error || 'Something went wrong. Please try again.');
       }
     });
   </script>

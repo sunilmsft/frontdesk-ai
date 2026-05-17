@@ -36,6 +36,17 @@ db.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_conversations_business ON conversations(business_id);
   CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id);
+
+  CREATE TABLE IF NOT EXISTS submissions (
+    id TEXT PRIMARY KEY,
+    business_name TEXT NOT NULL,
+    form_data TEXT NOT NULL,
+    system_prompt TEXT NOT NULL,
+    welcome_message TEXT,
+    theme_color TEXT DEFAULT '#0d9488',
+    status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'approved', 'rejected')),
+    submitted_at TEXT DEFAULT (datetime('now'))
+  );
 `);
 
 module.exports = db;

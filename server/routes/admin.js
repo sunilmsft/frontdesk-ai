@@ -118,4 +118,58 @@ router.get('/conversation/:id/messages', (req, res) => {
   res.json(messages);
 });
 
+/**
+ * POST /api/admin/submissions — Save a new onboarding submission (no auth, customer-facing)
+ */
+router.post('/submissions', (req, res) => {
+  const { business_name, form_data, system_prompt, welcome_message, theme_color } = req.body;
+
+  if (!business_name || !form_data || !system_prompt) {
+    return res.status(400).json({ error: 'business_name, form_data, and system_prompt are required' });
+  }
+
+  const id = require('crypto').randomUUID();
+  db.prepare(
+    'INSERT INTO submissions (id, business_name, form_data, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(id, business_name, JSON.stringify(form_data), system_prompt, welcome_message || 'Hi! How can I help you today?', theme_color || '#0d9488');
+
+  res.status(201).json({ id, message: 'Submission received! We\'ll review and set up your assistant shortly.' });
+});
+
+/**
+ * GET /api/admin/submissions — List all submissions
+ */
+router.get('/submissions', (req, res) => {
+  const submissions = db.prepare('SELECT * FROM submissions ORDER BY submitted_at DESC').all();
+  res.json(submissions);
+});
+
+/**
+ * POST /api/admin/submissions/:id/approve — Approve a submission and create the business
+ */
+router.post('/submissions/:id/approve', (req, res) => {
+  const sub = db.prepare('SELECT * FROM submissions WHERE id = ?').get(req.params.id);
+  if (!sub) return res.status(404).json({ error: 'Submission not found' });
+  if (sub.status === 'approved') return res.status(400).json({ error: 'Already approved' });
+
+  const slug = sub.business_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+  const bizId = require('crypto').randomUUID();
+
+  try {
+    db.prepare(
+      'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(bizId, sub.business_name, slug, sub.system_prompt, sub.welcome_message, sub.theme_color);
+
+    db.prepare("UPDATE submissions SET status = 'approved' WHERE id = ?").run(req.params.id);
+
+    const business = db.prepare('SELECT * FROM businesses WHERE id = ?').get(bizId);
+    res.json({ business, message: 'Business created and live!' });
+  } catch (err) {
+    if (err.message.includes('UNIQUE constraint')) {
+      return res.status(409).json({ error: 'A business with that slug already exists' });
+    }
+    throw err;
+  }
+});
+
 module.exports = router;

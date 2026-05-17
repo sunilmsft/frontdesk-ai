@@ -107,6 +107,7 @@
           <div class="tabs" id="tabs">
             <div class="tab active" data-tab="conversations" onclick="switchTab('conversations')">Conversations</div>
             <div class="tab" data-tab="details" onclick="switchTab('details')">Business Info</div>
+            <div class="tab" data-tab="submissions" onclick="switchTab('submissions')">Submissions <span id="subBadge" style="background:#ef4444;color:white;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;display:none;"></span></div>
           </div>
 
           <!-- Conversations tab -->
@@ -127,6 +128,13 @@
           <div id="detailsTab" style="display: none;">
             <div class="biz-detail" id="bizDetail">
               <div class="empty-state">Select a business to view details</div>
+            </div>
+          </div>
+
+          <!-- Submissions tab -->
+          <div id="submissionsTab" style="display: none;">
+            <div class="biz-detail" id="submissionsList">
+              <div class="empty-state">Loading submissions...</div>
             </div>
           </div>
         </div>
@@ -172,7 +180,18 @@
 
     // Load everything on start
     async function init() {
-      await Promise.all([loadStats(), loadBusinesses()]);
+      await Promise.all([loadStats(), loadBusinesses(), loadSubmissionsBadge()]);
+    }
+
+    async function loadSubmissionsBadge() {
+      const res = await fetch(`${API}/submissions`);
+      const subs = await res.json();
+      const pending = subs.filter(s => s.status === 'pending');
+      const badge = document.getElementById('subBadge');
+      if (pending.length > 0) {
+        badge.textContent = pending.length;
+        badge.style.display = 'inline';
+      }
     }
 
     async function loadStats() {
@@ -346,6 +365,76 @@
       document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
       document.getElementById('conversationsTab').style.display = tab === 'conversations' ? 'block' : 'none';
       document.getElementById('detailsTab').style.display = tab === 'details' ? 'block' : 'none';
+      document.getElementById('submissionsTab').style.display = tab === 'submissions' ? 'block' : 'none';
+      if (tab === 'submissions') loadSubmissions();
+    }
+
+    async function loadSubmissions() {
+      const res = await fetch(`${API}/submissions`);
+      const subs = await res.json();
+
+      const container = document.getElementById('submissionsList');
+      const pending = subs.filter(s => s.status === 'pending');
+
+      // Update badge
+      const badge = document.getElementById('subBadge');
+      if (pending.length > 0) {
+        badge.textContent = pending.length;
+        badge.style.display = 'inline';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      if (subs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No submissions yet. Share the onboarding link with businesses.</div>';
+        return;
+      }
+
+      container.innerHTML = subs.map(s => {
+        const formData = JSON.parse(s.form_data);
+        const statusColor = s.status === 'pending' ? '#f59e0b' : s.status === 'approved' ? '#10b981' : '#ef4444';
+        const statusLabel = s.status.charAt(0).toUpperCase() + s.status.slice(1);
+        return `
+          <div style="border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div>
+                <strong style="font-size: 16px;">${escapeHtml(s.business_name)}</strong>
+                <span style="background: ${statusColor}; color: white; padding: 2px 10px; border-radius: 10px; font-size: 11px; margin-left: 8px;">${statusLabel}</span>
+              </div>
+              <span style="font-size: 12px; color: #999;">${new Date(s.submitted_at + 'Z').toLocaleString()}</span>
+            </div>
+            <div style="font-size: 13px; color: #666; margin-bottom: 8px;">
+              ${formData.type ? '<strong>Type:</strong> ' + escapeHtml(formData.type) + ' · ' : ''}
+              ${formData.phone ? '<strong>Phone:</strong> ' + escapeHtml(formData.phone) + ' · ' : ''}
+              ${formData.website ? '<strong>Website:</strong> ' + escapeHtml(formData.website) : ''}
+            </div>
+            <details style="margin-bottom: 12px;">
+              <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
+              <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
+            </details>
+            ${s.status === 'pending' ? `
+              <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Approve & Create Business</button>
+              </div>
+            ` : s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function approveSubmission(id) {
+      if (!confirm('This will create the business and make the widget live. Continue?')) return;
+      const res = await fetch(`${API}/submissions/${id}/approve`, { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        alert(`${data.business.name} is now live! Slug: ${data.business.slug}`);
+        await loadSubmissions();
+        await loadBusinesses();
+        await loadStats();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Error approving submission');
+      }
     }
 
     function timeAgo(dateStr) {
