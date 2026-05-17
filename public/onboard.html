@@ -42,6 +42,17 @@
     .tone-option { padding: 8px 16px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
     .tone-option:hover { border-color: #2563eb; }
     .tone-option.selected { background: #2563eb; color: white; border-color: #2563eb; }
+
+    .theme-options { display: flex; gap: 10px; flex-wrap: wrap; }
+    .theme-option {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 10px 14px; border: 2px solid #eee; border-radius: 10px;
+      cursor: pointer; transition: all 0.15s; min-width: 72px;
+    }
+    .theme-option:hover { border-color: #ccc; }
+    .theme-option.selected { border-color: #333; background: #f8f8f8; }
+    .theme-swatch { width: 36px; height: 36px; border-radius: 50%; }
+    .theme-option span { font-size: 11px; color: #666; font-weight: 500; }
   </style>
 </head>
 <body>
@@ -156,11 +167,46 @@
       <!-- Theme -->
       <div class="section">
         <h2>Widget Appearance</h2>
-        <div class="subtitle">Pick a color that matches your brand</div>
+        <div class="subtitle">Pick a style that fits your brand</div>
 
         <div class="field">
-          <label>Theme Color</label>
-          <input type="color" id="bizColor" value="#2563eb" style="height: 44px; padding: 4px; cursor: pointer;">
+          <label>Theme</label>
+          <div class="theme-options" id="themeOptions">
+            <div class="theme-option selected" onclick="selectTheme(this, '#6366f1')" data-color="#6366f1">
+              <div class="theme-swatch" style="background:#6366f1"></div>
+              <span>Indigo</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#3b82f6')" data-color="#3b82f6">
+              <div class="theme-swatch" style="background:#3b82f6"></div>
+              <span>Blue</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#0ea5e9')" data-color="#0ea5e9">
+              <div class="theme-swatch" style="background:#0ea5e9"></div>
+              <span>Sky</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#14b8a6')" data-color="#14b8a6">
+              <div class="theme-swatch" style="background:#14b8a6"></div>
+              <span>Teal</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#f43f5e')" data-color="#f43f5e">
+              <div class="theme-swatch" style="background:#f43f5e"></div>
+              <span>Rose</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#f97316')" data-color="#f97316">
+              <div class="theme-swatch" style="background:#f97316"></div>
+              <span>Orange</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#475569')" data-color="#475569">
+              <div class="theme-swatch" style="background:#475569"></div>
+              <span>Slate</span>
+            </div>
+            <div class="theme-option" onclick="selectTheme(this, '#1a1a1a')" data-color="#1a1a1a">
+              <div class="theme-swatch" style="background:#1a1a1a"></div>
+              <span>Dark</span>
+            </div>
+          </div>
+          <div id="autoDetectMsg" style="font-size: 12px; color: #10b981; margin-top: 8px; display: none;"></div>
+          <input type="hidden" id="bizColor" value="#6366f1">
         </div>
         <div class="field">
           <label>Welcome Message</label>
@@ -190,6 +236,38 @@
       selectedTone = tone;
       document.getElementById('bizTone').value = tone;
     }
+
+    function selectTheme(el, color) {
+      document.querySelectorAll('.theme-option').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('bizColor').value = color;
+    }
+
+    // Auto-detect brand color when website URL is entered
+    document.getElementById('bizWebsite').addEventListener('blur', async function() {
+      const url = this.value.trim();
+      if (!url) return;
+      try {
+        const res = await fetch(`${API.replace('/admin', '')}/detect-color?url=${encodeURIComponent(url)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.color) {
+            // Find closest preset or use detected color
+            document.getElementById('bizColor').value = data.color;
+            const msg = document.getElementById('autoDetectMsg');
+            msg.innerHTML = `🎨 We detected <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${data.color};vertical-align:middle;margin:0 4px;"></span> <strong>${data.color}</strong> from your website. We'll match your widget to your brand!`;
+            msg.style.display = 'block';
+            // Highlight matching preset if any, otherwise deselect all
+            const presets = document.querySelectorAll('.theme-option');
+            let matched = false;
+            presets.forEach(p => {
+              if (p.dataset.color === data.color) { p.classList.add('selected'); matched = true; }
+              else p.classList.remove('selected');
+            });
+          }
+        }
+      } catch(e) { /* silent fail — auto-detect is a nice-to-have */ }
+    });
 
     function buildSystemPrompt(data) {
       let prompt = `You are a helpful, ${data.tone} virtual assistant for ${data.name}`;

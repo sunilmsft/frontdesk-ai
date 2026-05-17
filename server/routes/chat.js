@@ -98,4 +98,68 @@ router.get('/business/:slug', (req, res) => {
   res.json(business);
 });
 
+/**
+ * GET /api/detect-color?url=... — Try to detect the brand color from a website
+ */
+router.get('/detect-color', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'url is required' });
+
+  try {
+    // Validate URL format
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return res.status(400).json({ error: 'Invalid URL' });
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'FrontDesk-AI-Bot/1.0' },
+    });
+    clearTimeout(timeout);
+
+    const html = await response.text();
+
+    // Try to find brand color from common patterns
+    let color = null;
+
+    // 1. theme-color meta tag
+    const themeMatch = html.match(/<meta[^>]*name=["']theme-color["'][^>]*content=["'](#[0-9a-fA-F]{3,8})["']/i)
+      || html.match(/<meta[^>]*content=["'](#[0-9a-fA-F]{3,8})["'][^>]*name=["']theme-color["']/i);
+    if (themeMatch) color = themeMatch[1];
+
+    // 2. msapplication-TileColor
+    if (!color) {
+      const tileMatch = html.match(/<meta[^>]*name=["']msapplication-TileColor["'][^>]*content=["'](#[0-9a-fA-F]{3,8})["']/i)
+        || html.match(/<meta[^>]*content=["'](#[0-9a-fA-F]{3,8})["'][^>]*name=["']msapplication-TileColor["']/i);
+      if (tileMatch) color = tileMatch[1];
+    }
+
+    // 3. Most common hex color in inline styles (skip black/white/grays)
+    if (!color) {
+      const hexColors = html.match(/#[0-9a-fA-F]{6}/g) || [];
+      const counts = {};
+      hexColors.forEach(c => {
+        const lower = c.toLowerCase();
+        // Skip near-black, near-white, and pure grays
+        if (['#000000', '#ffffff', '#fff', '#333333', '#666666', '#999999', '#cccccc', '#f5f5f5', '#eeeeee', '#e5e5e5', '#dddddd'].includes(lower)) return;
+        const r = parseInt(lower.slice(1,3), 16);
+        const g = parseInt(lower.slice(3,5), 16);
+        const b = parseInt(lower.slice(5,7), 16);
+        if (Math.abs(r - g) < 10 && Math.abs(g - b) < 10) return; // skip grays
+        counts[lower] = (counts[lower] || 0) + 1;
+      });
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      if (sorted.length > 0) color = sorted[0][0];
+    }
+
+    res.json({ color: color || null });
+  } catch (err) {
+    res.json({ color: null });
+  }
+});
+
 module.exports = router;
