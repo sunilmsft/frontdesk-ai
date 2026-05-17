@@ -1,0 +1,28 @@
+{
+  "name": "frontdesk-ai",
+  "version": "0.1.0",
+  "description": "AI-powered customer chat for local businesses. Answers questions 24/7 like your best employee.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "keywords": [
+    "chatbot",
+    "ai",
+    "small-business",
+    "restaurant",
+    "customer-service"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.96.0",
+    "better-sqlite3": "^12.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

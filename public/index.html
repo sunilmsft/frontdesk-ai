@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Plateau Kitchen — Farm-to-Table in Sammamish</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; background: #faf9f6; color: #2d2d2d; line-height: 1.8; }
+
+        .hero {
+            background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3f 50%, #1a3a2a 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+        }
+        .hero h1 { font-size: 2.8rem; font-weight: 400; letter-spacing: 2px; }
+        .hero .tagline { font-size: 1.1rem; opacity: 0.85; margin-top: 0.5rem; font-style: italic; }
+        .hero .hours-pill {
+            display: inline-block; margin-top: 1.5rem;
+            padding: 0.5rem 1.5rem; background: rgba(255,255,255,0.15);
+            border-radius: 999px; font-size: 0.9rem;
+        }
+
+        nav {
+            background: #2d5a3f; text-align: center;
+            padding: 0.75rem; position: sticky; top: 0; z-index: 100;
+        }
+        nav a {
+            color: rgba(255,255,255,0.85); text-decoration: none;
+            padding: 0.5rem 1.25rem; font-size: 0.9rem; font-family: sans-serif;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        nav a:hover { color: white; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+
+        h2 {
+            font-size: 1.8rem; font-weight: 400; text-align: center;
+            margin-bottom: 2rem; letter-spacing: 1px;
+            border-bottom: 2px solid #d4c5a9; padding-bottom: 0.75rem;
+        }
+
+        .about p { font-size: 1.05rem; text-align: center; max-width: 700px; margin: 0 auto; }
+
+        .menu-section { margin-bottom: 2.5rem; }
+        .menu-section h3 {
+            font-size: 1.2rem; color: #2d5a3f; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 1rem; font-family: sans-serif;
+        }
+        .menu-item {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 0.5rem 0; border-bottom: 1px dotted #d4c5a9;
+        }
+        .menu-item .name { font-weight: 600; }
+        .menu-item .desc { font-size: 0.88rem; color: #666; font-style: italic; }
+        .menu-item .price { font-weight: 600; color: #2d5a3f; white-space: nowrap; margin-left: 1rem; }
+        .dietary { font-size: 0.75rem; color: #888; font-family: sans-serif; }
+
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin-top: 1rem;
+        }
+        .info-card {
+            background: white; border-radius: 12px; padding: 1.5rem;
+            border: 1px solid #e8e4dc; text-align: center;
+        }
+        .info-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .info-card h4 { font-family: sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #2d5a3f; margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.9rem; color: #555; }
+
+        .cta-banner {
+            background: #2d5a3f; color: white; text-align: center;
+            padding: 2.5rem 2rem; margin-top: 2rem;
+        }
+        .cta-banner h2 { color: white; border: none; margin-bottom: 0.5rem; }
+        .cta-banner p { opacity: 0.85; }
+        .cta-banner .phone { font-size: 1.5rem; font-weight: 600; margin-top: 1rem; }
+
+        footer {
+            text-align: center; padding: 1.5rem;
+            font-size: 0.8rem; color: #999; font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>The Plateau Kitchen</h1>
+        <div class="tagline">Farm-to-table dining on the Sammamish Plateau</div>
+        <div class="hours-pill">Tue–Sun · Lunch · Dinner · Weekend Brunch</div>
+    </div>
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#info">Visit</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="container" id="about">
+        <h2>Our Story</h2>
+        <div class="about">
+            <p>
+                The Plateau Kitchen started with a simple idea: serve honest food made from ingredients
+                grown within 100 miles. We partner with local farms — Full Circle, Alvarez Farms,
+                Skagit River Ranch — to bring the Pacific Northwest to your plate. Every dish tells a
+                story of the land and the people who tend it.
+            </p>
+        </div>
+    </div>
+
+    <div class="container" id="menu">
+        <h2>Sample Menu</h2>
+
+        <div class="menu-section">
+            <h3>Starters</h3>
+            <div class="menu-item">
+                <div><span class="name">Roasted Beet & Goat Cheese Salad</span> <span class="dietary">GF</span><br><span class="desc">Local beets, chèvre, arugula, candied walnuts</span></div>
+                <div class="price">$14</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Dungeness Crab Cakes</span><br><span class="desc">Two pan-seared cakes, remoulade, microgreens</span></div>
+                <div class="price">$18</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Crispy Brussels Sprouts</span> <span class="dietary">GF · Vegan</span><br><span class="desc">Apple cider glaze, toasted almonds</span></div>
+                <div class="price">$13</div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h3>Mains</h3>
+            <div class="menu-item">
+                <div><span class="name">Grilled Salmon Bowl</span> <span class="dietary">GF</span><br><span class="desc">Wild sockeye, quinoa, seasonal vegetables, lemon dill</span></div>
+                <div class="price">$24</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Plateau Burger</span><br><span class="desc">Wagyu blend, white cheddar, brioche bun, hand-cut fries</span></div>
+                <div class="price">$19</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Pan-Roasted Halibut</span> <span class="dietary">GF</span><br><span class="desc">Spring pea risotto, lemon beurre blanc</span></div>
+                <div class="price">$38</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Roasted Cauliflower Steak</span> <span class="dietary">GF · Vegan</span><br><span class="desc">Romesco, crispy chickpeas, herb oil</span></div>
+                <div class="price">$22</div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h3>Weekend Brunch</h3>
+            <div class="menu-item">
+                <div><span class="name">Eggs Benedict</span><br><span class="desc">Smoked salmon or ham, English muffin, hollandaise</span></div>
+                <div class="price">$18</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Avocado Toast</span><br><span class="desc">Sourdough, poached eggs, everything seasoning, microgreens</span></div>
+                <div class="price">$15</div>
+            </div>
+            <div class="menu-item">
+                <div><span class="name">Shakshuka</span><br><span class="desc">Baked eggs, spiced tomato, feta, grilled bread</span></div>
+                <div class="price">$16</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="info">
+        <h2>Visit Us</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">📍</div>
+                <h4>Location</h4>
+                <p>22530 SE 4th St<br>Sammamish, WA 98074</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🕐</div>
+                <h4>Hours</h4>
+                <p>Tue–Thu: 11:30am–9pm<br>Fri: 11:30am–10pm<br>Sat–Sun: 10am–10pm/8pm<br>Mon: Closed</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🅿️</div>
+                <h4>Parking</h4>
+                <p>Free lot behind the building<br>+ street parking on SE 4th</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🐕</div>
+                <h4>Dog-Friendly</h4>
+                <p>Patio seating welcomes your pup!<br>Water bowls provided.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🎵</div>
+                <h4>Live Music</h4>
+                <p>Friday evenings 7–9pm<br>Local acoustic artists</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🍸</div>
+                <h4>Happy Hour</h4>
+                <p>Tue–Fri, 3–5:30pm<br>$3 off apps, $2 off drinks</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-banner" id="contact">
+        <h2>Make a Reservation</h2>
+        <p>Reservations recommended for parties of 4+ on Friday & Saturday.</p>
+        <div class="phone">(425) 555-0142</div>
+    </div>
+
+    <footer>
+        © 2026 The Plateau Kitchen · Sammamish, WA · This is a demo restaurant for FrontDesk AI
+    </footer>
+
+    <!-- FrontDesk AI Chat Widget -->
+    <script src="/widget/frontdesk-widget.js"
+            data-business="plateau-kitchen"
+            data-server=""></script>
+</body>
+</html>
