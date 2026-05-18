@@ -53,12 +53,25 @@
     .theme-option.selected { border-color: #333; background: #f8f8f8; }
     .theme-swatch { width: 36px; height: 36px; border-radius: 50%; }
     .theme-option span { font-size: 11px; color: #666; font-weight: 500; }
+
+    .lang-toggle { display: flex; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; width: fit-content; }
+    .lang-btn { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: white; color: #666; transition: all 0.15s; }
+    .lang-btn.active { background: #1a1a1a; color: white; }
+    .lang-btn:hover:not(.active) { background: #f5f5f5; }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>🏪 FrontDesk AI — Business Onboarding</h1>
-    <p>Tell us about your business and we'll set up your AI assistant in minutes</p>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1 data-i18n="header_title">🏪 FrontDesk AI — Business Onboarding</h1>
+        <p data-i18n="header_sub">Tell us about your business and we'll set up your AI assistant in minutes</p>
+      </div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('es')">Español</button>
+      </div>
+    </div>
   </div>
 
   <div class="container">
@@ -66,111 +79,111 @@
 
       <!-- Basic Info -->
       <div class="section">
-        <h2>Your Business</h2>
-        <div class="subtitle">The basics — what should customers know?</div>
+        <h2 data-i18n="sec_business">Your Business</h2>
+        <div class="subtitle" data-i18n="sec_business_sub">The basics — what should customers know?</div>
 
         <div class="field">
-          <label>Business Name *</label>
-          <input type="text" id="bizName" required placeholder="e.g. The Plateau Kitchen">
+          <label data-i18n="lbl_name">Business Name *</label>
+          <input type="text" id="bizName" required data-i18n-ph="ph_name" placeholder="e.g. The Plateau Kitchen">
         </div>
         <div class="field">
-          <label>Type of Business *</label>
+          <label data-i18n="lbl_type">Type of Business *</label>
           <select id="bizType">
-            <option value="restaurant">Restaurant / Café</option>
-            <option value="salon">Salon / Spa</option>
-            <option value="retail">Retail / Shop</option>
-            <option value="fitness">Gym / Fitness Studio</option>
-            <option value="professional">Professional Services</option>
-            <option value="other">Other</option>
+            <option value="restaurant" data-i18n="opt_restaurant">Restaurant / Café</option>
+            <option value="salon" data-i18n="opt_salon">Salon / Spa</option>
+            <option value="retail" data-i18n="opt_retail">Retail / Shop</option>
+            <option value="fitness" data-i18n="opt_fitness">Gym / Fitness Studio</option>
+            <option value="professional" data-i18n="opt_professional">Professional Services</option>
+            <option value="other" data-i18n="opt_other">Other</option>
           </select>
         </div>
         <div class="field">
-          <label>Website URL</label>
+          <label data-i18n="lbl_website">Website URL</label>
           <input type="url" id="bizWebsite" placeholder="https://www.yourbusiness.com">
         </div>
         <div class="field">
-          <label>Phone Number</label>
-          <input type="tel" id="bizPhone" placeholder="(425) 555-1234">
+          <label data-i18n="lbl_phone">Phone Number</label>
+          <input type="tel" id="bizPhone" data-i18n-ph="ph_phone" placeholder="(425) 555-1234">
         </div>
         <div class="field">
-          <label>Address</label>
-          <input type="text" id="bizAddress" placeholder="123 Main St, Sammamish, WA 98074">
+          <label data-i18n="lbl_address">Address</label>
+          <input type="text" id="bizAddress" data-i18n-ph="ph_address" placeholder="123 Main St, Sammamish, WA 98074">
         </div>
       </div>
 
       <!-- Hours -->
       <div class="section">
-        <h2>Hours of Operation</h2>
-        <div class="subtitle">When are you open? Leave blank for days you're closed.</div>
+        <h2 data-i18n="sec_hours">Hours of Operation</h2>
+        <div class="subtitle" data-i18n="sec_hours_sub">When are you open? Leave blank for days you're closed.</div>
 
         <div class="hours-grid">
-          <label>Monday</label><input type="text" id="hoursMon" placeholder="e.g. 9am - 9pm or Closed">
-          <label>Tuesday</label><input type="text" id="hoursTue" placeholder="e.g. 9am - 9pm">
-          <label>Wednesday</label><input type="text" id="hoursWed" placeholder="e.g. 9am - 9pm">
-          <label>Thursday</label><input type="text" id="hoursThu" placeholder="e.g. 9am - 9pm">
-          <label>Friday</label><input type="text" id="hoursFri" placeholder="e.g. 9am - 10pm">
-          <label>Saturday</label><input type="text" id="hoursSat" placeholder="e.g. 10am - 10pm">
-          <label>Sunday</label><input type="text" id="hoursSun" placeholder="e.g. 10am - 8pm">
+          <label data-i18n="day_mon">Monday</label><input type="text" id="hoursMon" data-i18n-ph="ph_hours" placeholder="e.g. 9am - 9pm or Closed">
+          <label data-i18n="day_tue">Tuesday</label><input type="text" id="hoursTue" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
+          <label data-i18n="day_wed">Wednesday</label><input type="text" id="hoursWed" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
+          <label data-i18n="day_thu">Thursday</label><input type="text" id="hoursThu" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
+          <label data-i18n="day_fri">Friday</label><input type="text" id="hoursFri" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 10pm">
+          <label data-i18n="day_sat">Saturday</label><input type="text" id="hoursSat" data-i18n-ph="ph_hours2" placeholder="e.g. 10am - 10pm">
+          <label data-i18n="day_sun">Sunday</label><input type="text" id="hoursSun" data-i18n-ph="ph_hours2" placeholder="e.g. 10am - 8pm">
         </div>
       </div>
 
       <!-- Services / Menu -->
       <div class="section">
-        <h2>What You Offer</h2>
-        <div class="subtitle">Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.</div>
+        <h2 data-i18n="sec_offerings">What You Offer</h2>
+        <div class="subtitle" data-i18n="sec_offerings_sub">Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.</div>
 
         <div class="field">
-          <label>Services / Menu / Products *</label>
-          <div class="hint">List your key offerings, prices, popular items, categories, etc.</div>
-          <textarea id="bizOfferings" required placeholder="e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14), Plateau Pancakes ($13)...&#10;&#10;Dinner menu: Grilled Ribeye ($42), Pan-Roasted Halibut ($38)...&#10;&#10;We also have a full bar with craft cocktails."></textarea>
+          <label data-i18n="lbl_offerings">Services / Menu / Products *</label>
+          <div class="hint" data-i18n="hint_offerings">List your key offerings, prices, popular items, categories, etc.</div>
+          <textarea id="bizOfferings" required data-i18n-ph="ph_offerings" placeholder="e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14), Plateau Pancakes ($13)...&#10;&#10;Dinner menu: Grilled Ribeye ($42), Pan-Roasted Halibut ($38)...&#10;&#10;We also have a full bar with craft cocktails."></textarea>
         </div>
       </div>
 
       <!-- Policies -->
       <div class="section">
-        <h2>Policies & Common Questions</h2>
-        <div class="subtitle">Help the AI answer the questions you get asked the most</div>
+        <h2 data-i18n="sec_policies">Policies & Common Questions</h2>
+        <div class="subtitle" data-i18n="sec_policies_sub">Help the AI answer the questions you get asked the most</div>
 
         <div class="field">
-          <label>Reservations / Booking</label>
-          <textarea id="bizReservations" placeholder="e.g. We accept reservations for parties of 4+. Walk-ins welcome. Book at opentable.com/plateau-kitchen or call us."></textarea>
+          <label data-i18n="lbl_reservations">Reservations / Booking</label>
+          <textarea id="bizReservations" data-i18n-ph="ph_reservations" placeholder="e.g. We accept reservations for parties of 4+. Walk-ins welcome. Book at opentable.com/plateau-kitchen or call us."></textarea>
         </div>
         <div class="field">
-          <label>Parking / Getting There</label>
-          <textarea id="bizParking" rows="2" placeholder="e.g. Free parking in the lot behind the building. Street parking also available."></textarea>
+          <label data-i18n="lbl_parking">Parking / Getting There</label>
+          <textarea id="bizParking" rows="2" data-i18n-ph="ph_parking" placeholder="e.g. Free parking in the lot behind the building. Street parking also available."></textarea>
         </div>
         <div class="field">
-          <label>Other Policies or FAQs</label>
-          <div class="hint">Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.</div>
-          <textarea id="bizPolicies" placeholder="e.g. We accommodate gluten-free and vegan diets — just let your server know. No outside food or drinks. Kids menu available."></textarea>
+          <label data-i18n="lbl_policies">Other Policies or FAQs</label>
+          <div class="hint" data-i18n="hint_policies">Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.</div>
+          <textarea id="bizPolicies" data-i18n-ph="ph_policies" placeholder="e.g. We accommodate gluten-free and vegan diets — just let your server know. No outside food or drinks. Kids menu available."></textarea>
         </div>
         <div class="field">
-          <label>Anything Else Customers Should Know?</label>
-          <textarea id="bizExtra" placeholder="e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays. We cater events up to 50 people."></textarea>
+          <label data-i18n="lbl_extra">Anything Else Customers Should Know?</label>
+          <textarea id="bizExtra" data-i18n-ph="ph_extra" placeholder="e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays. We cater events up to 50 people."></textarea>
         </div>
       </div>
 
       <!-- Tone -->
       <div class="section">
-        <h2>Personality & Tone</h2>
-        <div class="subtitle">How should the AI sound when talking to your customers?</div>
+        <h2 data-i18n="sec_tone">Personality & Tone</h2>
+        <div class="subtitle" data-i18n="sec_tone_sub">How should the AI sound when talking to your customers?</div>
 
         <div class="tone-options" id="toneOptions">
-          <div class="tone-option selected" onclick="selectTone(this, 'friendly and casual')">😊 Friendly & Casual</div>
-          <div class="tone-option" onclick="selectTone(this, 'warm and professional')">🤝 Warm & Professional</div>
-          <div class="tone-option" onclick="selectTone(this, 'upscale and polished')">✨ Upscale & Polished</div>
-          <div class="tone-option" onclick="selectTone(this, 'fun and energetic')">🎉 Fun & Energetic</div>
+          <div class="tone-option selected" data-i18n="tone_friendly" onclick="selectTone(this, 'friendly and casual')">😊 Friendly & Casual</div>
+          <div class="tone-option" data-i18n="tone_warm" onclick="selectTone(this, 'warm and professional')">🤝 Warm & Professional</div>
+          <div class="tone-option" data-i18n="tone_upscale" onclick="selectTone(this, 'upscale and polished')">✨ Upscale & Polished</div>
+          <div class="tone-option" data-i18n="tone_fun" onclick="selectTone(this, 'fun and energetic')">🎉 Fun & Energetic</div>
         </div>
         <input type="hidden" id="bizTone" value="friendly and casual">
       </div>
 
       <!-- Theme -->
       <div class="section">
-        <h2>Widget Appearance</h2>
-        <div class="subtitle">Pick a style that fits your brand</div>
+        <h2 data-i18n="sec_widget">Widget Appearance</h2>
+        <div class="subtitle" data-i18n="sec_widget_sub">Pick a style that fits your brand</div>
 
         <div class="field">
-          <label>Theme</label>
+          <label data-i18n="lbl_theme">Theme</label>
           <div class="theme-options" id="themeOptions">
             <div class="theme-option selected" onclick="selectTheme(this, '#6366f1')" data-color="#6366f1">
               <div class="theme-swatch" style="background:#6366f1"></div>
@@ -209,26 +222,163 @@
           <input type="hidden" id="bizColor" value="#6366f1">
         </div>
         <div class="field">
-          <label>Welcome Message</label>
-          <div class="hint">The first thing customers see when they open the chat</div>
-          <input type="text" id="bizWelcome" placeholder="Hi! 👋 How can I help you today?">
+          <label data-i18n="lbl_welcome">Welcome Message</label>
+          <div class="hint" data-i18n="hint_welcome">The first thing customers see when they open the chat</div>
+          <input type="text" id="bizWelcome" data-i18n-ph="ph_welcome" placeholder="Hi! 👋 How can I help you today?">
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit My Business Info</button>
+      <button type="submit" class="btn btn-primary" data-i18n="btn_submit">Submit My Business Info</button>
     </form>
 
     <!-- Success state -->
     <div class="success" id="successState">
-      <h2>✅ We've Got Your Info!</h2>
-      <p>Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.</p>
-      <p style="margin-top: 12px; font-size: 13px; color: #888;">Questions? Just reply to the message that brought you here.</p>
+      <h2 data-i18n="success_title">✅ We've Got Your Info!</h2>
+      <p data-i18n="success_msg">Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.</p>
+      <p style="margin-top: 12px; font-size: 13px; color: #888;" data-i18n="success_questions">Questions? Just reply to the message that brought you here.</p>
     </div>
   </div>
 
   <script>
     const API = window.location.origin + '/api/admin';
     let selectedTone = 'friendly and casual';
+    let currentLang = 'en';
+
+    const translations = {
+      es: {
+        header_title: '🏪 FrontDesk AI — Registro de Negocio',
+        header_sub: 'Cuéntanos sobre tu negocio y configuraremos tu asistente de IA en minutos',
+        sec_business: 'Tu Negocio',
+        sec_business_sub: 'Lo básico — ¿qué deben saber tus clientes?',
+        lbl_name: 'Nombre del Negocio *',
+        ph_name: 'ej. La Cocina del Plateau',
+        lbl_type: 'Tipo de Negocio *',
+        opt_restaurant: 'Restaurante / Café',
+        opt_salon: 'Salón / Spa',
+        opt_retail: 'Tienda / Comercio',
+        opt_fitness: 'Gimnasio / Estudio de Fitness',
+        opt_professional: 'Servicios Profesionales',
+        opt_other: 'Otro',
+        lbl_website: 'Sitio Web',
+        lbl_phone: 'Número de Teléfono',
+        ph_phone: '(425) 555-1234',
+        lbl_address: 'Dirección',
+        ph_address: '123 Main St, Sammamish, WA 98074',
+        sec_hours: 'Horario de Atención',
+        sec_hours_sub: '¿Cuándo estás abierto? Deja en blanco los días que estés cerrado.',
+        day_mon: 'Lunes', day_tue: 'Martes', day_wed: 'Miércoles', day_thu: 'Jueves',
+        day_fri: 'Viernes', day_sat: 'Sábado', day_sun: 'Domingo',
+        ph_hours: 'ej. 9am - 9pm o Cerrado',
+        ph_hours2: 'ej. 9am - 9pm',
+        sec_offerings: 'Lo Que Ofreces',
+        sec_offerings_sub: 'Describe tus servicios principales, productos o menú. Cuanto más detalle, mejor podrá responder la IA.',
+        lbl_offerings: 'Servicios / Menú / Productos *',
+        hint_offerings: 'Lista tus ofertas principales, precios, artículos populares, categorías, etc.',
+        ph_offerings: 'ej. Limpieza de casa: Limpieza básica ($100), Limpieza profunda ($200)...\n\nTambién ofrecemos limpieza de oficinas y servicios de mudanza.',
+        sec_policies: 'Políticas y Preguntas Frecuentes',
+        sec_policies_sub: 'Ayuda a la IA a responder las preguntas que más te hacen',
+        lbl_reservations: 'Reservaciones / Citas',
+        ph_reservations: 'ej. Aceptamos citas con 24 horas de anticipación. Llámenos o envíe un mensaje de texto.',
+        lbl_parking: 'Estacionamiento / Cómo Llegar',
+        ph_parking: 'ej. Estacionamiento gratis en el lote detrás del edificio.',
+        lbl_policies: 'Otras Políticas o Preguntas Frecuentes',
+        hint_policies: 'Política de cancelación, áreas de servicio, requisitos especiales, etc.',
+        ph_policies: 'ej. Cancelaciones con 24 horas de anticipación. Servimos el área de Eastside Seattle.',
+        lbl_extra: '¿Algo Más Que Tus Clientes Deban Saber?',
+        ph_extra: 'ej. Ofrecemos descuentos para clientes recurrentes. Servicio disponible los fines de semana.',
+        sec_tone: 'Personalidad y Tono',
+        sec_tone_sub: '¿Cómo debe sonar la IA al hablar con tus clientes?',
+        tone_friendly: '😊 Amigable y Casual',
+        tone_warm: '🤝 Cálido y Profesional',
+        tone_upscale: '✨ Elegante y Refinado',
+        tone_fun: '🎉 Divertido y Enérgico',
+        sec_widget: 'Apariencia del Chat',
+        sec_widget_sub: 'Elige un estilo que combine con tu marca',
+        lbl_theme: 'Tema',
+        lbl_welcome: 'Mensaje de Bienvenida',
+        hint_welcome: 'Lo primero que ven los clientes al abrir el chat',
+        ph_welcome: '¡Hola! 👋 ¿En qué puedo ayudarte hoy?',
+        btn_submit: 'Enviar Información de Mi Negocio',
+        success_title: '✅ ¡Recibimos Tu Información!',
+        success_msg: '¡Gracias! Revisaremos tus datos y configuraremos tu asistente de IA en 24 horas. Te avisaremos cuando esté listo.',
+        success_questions: '¿Preguntas? Solo responde al mensaje que te trajo aquí.',
+      },
+      en: {
+        header_title: '🏪 FrontDesk AI — Business Onboarding',
+        header_sub: "Tell us about your business and we'll set up your AI assistant in minutes",
+        sec_business: 'Your Business',
+        sec_business_sub: 'The basics — what should customers know?',
+        lbl_name: 'Business Name *',
+        ph_name: 'e.g. The Plateau Kitchen',
+        lbl_type: 'Type of Business *',
+        opt_restaurant: 'Restaurant / Café',
+        opt_salon: 'Salon / Spa',
+        opt_retail: 'Retail / Shop',
+        opt_fitness: 'Gym / Fitness Studio',
+        opt_professional: 'Professional Services',
+        opt_other: 'Other',
+        lbl_website: 'Website URL',
+        lbl_phone: 'Phone Number',
+        ph_phone: '(425) 555-1234',
+        lbl_address: 'Address',
+        ph_address: '123 Main St, Sammamish, WA 98074',
+        sec_hours: 'Hours of Operation',
+        sec_hours_sub: "When are you open? Leave blank for days you're closed.",
+        day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday', day_thu: 'Thursday',
+        day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
+        ph_hours: 'e.g. 9am - 9pm or Closed',
+        ph_hours2: 'e.g. 9am - 9pm',
+        sec_offerings: 'What You Offer',
+        sec_offerings_sub: "Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.",
+        lbl_offerings: 'Services / Menu / Products *',
+        hint_offerings: 'List your key offerings, prices, popular items, categories, etc.',
+        ph_offerings: "e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14)...\n\nWe also have a full bar with craft cocktails.",
+        sec_policies: 'Policies & Common Questions',
+        sec_policies_sub: 'Help the AI answer the questions you get asked the most',
+        lbl_reservations: 'Reservations / Booking',
+        ph_reservations: 'e.g. We accept reservations for parties of 4+. Walk-ins welcome.',
+        lbl_parking: 'Parking / Getting There',
+        ph_parking: 'e.g. Free parking in the lot behind the building.',
+        lbl_policies: 'Other Policies or FAQs',
+        hint_policies: 'Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.',
+        ph_policies: 'e.g. We accommodate gluten-free and vegan diets — just let your server know.',
+        lbl_extra: 'Anything Else Customers Should Know?',
+        ph_extra: 'e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays.',
+        sec_tone: 'Personality & Tone',
+        sec_tone_sub: 'How should the AI sound when talking to your customers?',
+        tone_friendly: '😊 Friendly & Casual',
+        tone_warm: '🤝 Warm & Professional',
+        tone_upscale: '✨ Upscale & Polished',
+        tone_fun: '🎉 Fun & Energetic',
+        sec_widget: 'Widget Appearance',
+        sec_widget_sub: 'Pick a style that fits your brand',
+        lbl_theme: 'Theme',
+        lbl_welcome: 'Welcome Message',
+        hint_welcome: 'The first thing customers see when they open the chat',
+        ph_welcome: 'Hi! 👋 How can I help you today?',
+        btn_submit: 'Submit My Business Info',
+        success_title: "✅ We've Got Your Info!",
+        success_msg: "Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.",
+        success_questions: 'Questions? Just reply to the message that brought you here.',
+      }
+    };
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+      document.documentElement.lang = lang;
+
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (t[key]) el.placeholder = t[key];
+      });
+    }
 
     function selectTone(el, tone) {
       document.querySelectorAll('.tone-option').forEach(e => e.classList.remove('selected'));
@@ -333,6 +483,7 @@
       prompt += '- Keep responses concise — 2-3 sentences when possible.\n';
       prompt += '- If asked about something not covered above, say "I\'m not sure about that — please call us or check our website for details."\n';
       prompt += `- Always be ${data.tone} in your responses.\n`;
+      prompt += '- IMPORTANT: Always respond in the same language the customer uses. If they write in Spanish, reply in Spanish. If they write in English, reply in English.\n';
 
       return prompt;
     }
