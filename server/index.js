@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
-const db = require('./db/database');
+const { db, initDb } = require('./db/database');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -31,28 +31,33 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Seed the demo business (The Plateau Kitchen) on first run
-const existing = db.prepare('SELECT id FROM businesses WHERE slug = ?').get('plateau-kitchen');
-if (!existing) {
-  const promptPath = path.join(__dirname, 'prompts', 'plateau-kitchen.txt');
-  const systemPrompt = fs.readFileSync(promptPath, 'utf-8');
+// Initialize DB and start server
+async function start() {
+  await initDb();
 
-  const id = require('crypto').randomUUID();
-  db.prepare(
-    'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(
-    id,
-    'The Plateau Kitchen',
-    'plateau-kitchen',
-    systemPrompt,
-    "Hi! 👋 Welcome to The Plateau Kitchen. I can help with our menu, hours, reservations, or anything else. What can I do for you?",
-    '#059669'
-  );
-  console.log('  ✅ Demo business "The Plateau Kitchen" seeded');
-}
+  // Seed the demo business (The Plateau Kitchen) on first run
+  const existing = await db.execute({ sql: 'SELECT id FROM businesses WHERE slug = ?', args: ['plateau-kitchen'] });
+  if (existing.rows.length === 0) {
+    const promptPath = path.join(__dirname, 'prompts', 'plateau-kitchen.txt');
+    const systemPrompt = fs.readFileSync(promptPath, 'utf-8');
 
-app.listen(PORT, () => {
-  console.log(`
+    const id = require('crypto').randomUUID();
+    await db.execute({
+      sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)',
+      args: [
+        id,
+        'The Plateau Kitchen',
+        'plateau-kitchen',
+        systemPrompt,
+        "Hi! 👋 Welcome to The Plateau Kitchen. I can help with our menu, hours, reservations, or anything else. What can I do for you?",
+        '#059669'
+      ]
+    });
+    console.log('  ✅ Demo business "The Plateau Kitchen" seeded');
+  }
+
+  app.listen(PORT, () => {
+    console.log(`
   ┌──────────────────────────────────────────────┐
   │                                              │
   │   🏪 FrontDesk AI v0.1.0                     │
@@ -67,5 +72,11 @@ app.listen(PORT, () => {
   │   Slug: plateau-kitchen                      │
   │                                              │
   └──────────────────────────────────────────────┘
-  `);
+    `);
+  });
+}
+
+start().catch(err => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });

@@ -1,6 +1,6 @@
 const express = require('express');
 const OpenAI = require('openai');
-const db = require('../db/database');
+const { db } = require('../db/database');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -25,7 +25,8 @@ router.post('/chat', async (req, res) => {
   }
 
   // Look up the business
-  const business = db.prepare('SELECT * FROM businesses WHERE id = ? AND active = 1').get(businessId);
+  const bizResult = await db.execute({ sql: 'SELECT * FROM businesses WHERE id = ? AND active = 1', args: [businessId] });
+  const business = bizResult.rows[0];
   if (!business) {
     return res.status(404).json({ error: 'Business not found' });
   }
@@ -34,17 +35,17 @@ router.post('/chat', async (req, res) => {
   let convId = conversationId;
   if (!convId) {
     convId = crypto.randomUUID();
-    db.prepare('INSERT INTO conversations (id, business_id) VALUES (?, ?)').run(convId, businessId);
+    await db.execute({ sql: 'INSERT INTO conversations (id, business_id) VALUES (?, ?)', args: [convId, businessId] });
   }
 
   // Log the user message
-  db.prepare('INSERT INTO messages (conversation_id, role, content) VALUES (?, ?, ?)')
-    .run(convId, 'user', message);
+  await db.execute({ sql: 'INSERT INTO messages (conversation_id, role, content) VALUES (?, ?, ?)', args: [convId, 'user', message] });
 
   // Get conversation history (last 20 messages for context)
-  const history = db.prepare(
-    'SELECT role, content FROM messages WHERE conversation_id = ? ORDER BY sent_at ASC LIMIT 20'
-  ).all(convId);
+  const historyResult = await db.execute({
+    sql: 'SELECT role, content FROM messages WHERE conversation_id = ? ORDER BY sent_at ASC LIMIT 20',
+    args: [convId]
+  });
 
   // Build OpenAI messages array
   // Inject current date so the AI knows what day it is
@@ -53,7 +54,7 @@ router.post('/chat', async (req, res) => {
 
   const openaiMessages = [
     { role: 'system', content: business.system_prompt + dateContext },
-    ...history.map(m => ({ role: m.role, content: m.content })),
+    ...historyResult.rows.map(m => ({ role: m.role, content: m.content })),
   ];
 
   try {
@@ -66,13 +67,13 @@ router.post('/chat', async (req, res) => {
     const reply = response.choices[0].message.content;
 
     // Log the assistant reply
-    db.prepare('INSERT INTO messages (conversation_id, role, content) VALUES (?, ?, ?)')
-      .run(convId, 'assistant', reply);
+    await db.execute({ sql: 'INSERT INTO messages (conversation_id, role, content) VALUES (?, ?, ?)', args: [convId, 'assistant', reply] });
 
     // Update conversation stats
-    db.prepare(
-      'UPDATE conversations SET message_count = message_count + 2, last_message_at = datetime(\'now\') WHERE id = ?'
-    ).run(convId);
+    await db.execute({
+      sql: "UPDATE conversations SET message_count = message_count + 2, last_message_at = datetime('now') WHERE id = ?",
+      args: [convId]
+    });
 
     res.json({ conversationId: convId, reply });
   } catch (err) {
@@ -86,16 +87,17 @@ router.post('/chat', async (req, res) => {
 /**
  * GET /api/business/:slug — Get business info for the widget
  */
-router.get('/business/:slug', (req, res) => {
-  const business = db.prepare(
-    'SELECT id, name, slug, welcome_message, theme_color FROM businesses WHERE slug = ? AND active = 1'
-  ).get(req.params.slug);
+router.get('/business/:slug', async (req, res) => {
+  const result = await db.execute({
+    sql: 'SELECT id, name, slug, welcome_message, theme_color FROM businesses WHERE slug = ? AND active = 1',
+    args: [req.params.slug]
+  });
 
-  if (!business) {
+  if (!result.rows[0]) {
     return res.status(404).json({ error: 'Business not found' });
   }
 
-  res.json(business);
+  res.json(result.rows[0]);
 });
 
 /**
