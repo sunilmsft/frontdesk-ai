@@ -26,6 +26,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
 
+// Clean URLs for static pages
+app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));
+app.get('/pitch', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
