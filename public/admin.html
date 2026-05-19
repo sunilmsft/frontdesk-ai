@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FrontDesk AI — Admin Console</title>
+  <title>FrontDesk AI — Command Center</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
 
     .header { background: #1a1a1a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
     .header h1 { font-size: 18px; font-weight: 600; }
-    .header .stats { font-size: 13px; color: #999; }
+    .header .stats { font-size: 13px; color: #999; display: flex; align-items: center; gap: 16px; }
+    .header .logout-btn { background: none; border: 1px solid #555; color: #ccc; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; }
+    .header .logout-btn:hover { border-color: #f87171; color: #f87171; }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
 
@@ -82,8 +84,10 @@
 </head>
 <body>
   <div class="header">
-    <h1>🏪 FrontDesk AI — Admin Console</h1>
-    <div class="stats" id="headerStats"></div>
+    <h1>🏪 Command Center</h1>
+    <div class="stats" id="headerStats">
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
   </div>
 
   <div class="container">
@@ -178,13 +182,35 @@
     let selectedBiz = null;
     let businesses = [];
 
+    // --- Auth ---
+    const token = localStorage.getItem('admin_token');
+    if (!token) {
+      window.location.href = '/admin-login.html';
+    }
+
+    async function authFetch(url, options = {}) {
+      options.headers = { ...options.headers, 'Authorization': `Bearer ${token}` };
+      const res = await fetch(url, options);
+      if (res.status === 401) {
+        localStorage.removeItem('admin_token');
+        window.location.href = '/admin-login.html';
+        return;
+      }
+      return res;
+    }
+
+    function logout() {
+      localStorage.removeItem('admin_token');
+      window.location.href = '/admin-login.html';
+    }
+
     // Load everything on start
     async function init() {
       await Promise.all([loadStats(), loadBusinesses(), loadSubmissionsBadge()]);
     }
 
     async function loadSubmissionsBadge() {
-      const res = await fetch(`${API}/submissions`);
+      const res = await authFetch(`${API}/submissions`);
       const subs = await res.json();
       const pending = subs.filter(s => s.status === 'pending');
       const badge = document.getElementById('subBadge');
@@ -195,7 +221,7 @@
     }
 
     async function loadStats() {
-      const res = await fetch(`${API}/stats`);
+      const res = await authFetch(`${API}/stats`);
       const stats = await res.json();
 
       document.getElementById('statsBar').innerHTML = `
@@ -207,7 +233,7 @@
     }
 
     async function loadBusinesses() {
-      const res = await fetch(`${API}/businesses`);
+      const res = await authFetch(`${API}/businesses`);
       businesses = await res.json();
 
       const list = document.getElementById('bizList');
@@ -232,7 +258,7 @@
     }
 
     async function loadConversations(businessId) {
-      const res = await fetch(`${API}/conversations/${businessId}`);
+      const res = await authFetch(`${API}/conversations/${businessId}`);
       const convos = await res.json();
 
       const list = document.getElementById('convList');
@@ -255,7 +281,7 @@
       document.querySelectorAll('.conv-item').forEach(e => e.classList.remove('active'));
       if (el) el.classList.add('active');
 
-      const res = await fetch(`${API}/conversation/${convId}/messages`);
+      const res = await authFetch(`${API}/conversation/${convId}/messages`);
       const msgs = await res.json();
 
       const area = document.getElementById('messageArea');
@@ -304,7 +330,7 @@
     }
 
     async function saveBusiness() {
-      const res = await fetch(`${API}/businesses/${selectedBiz.id}`, {
+      const res = await authFetch(`${API}/businesses/${selectedBiz.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -342,7 +368,7 @@
         return;
       }
 
-      const res = await fetch(`${API}/businesses`, {
+      const res = await authFetch(`${API}/businesses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -370,7 +396,7 @@
     }
 
     async function loadSubmissions() {
-      const res = await fetch(`${API}/submissions`);
+      const res = await authFetch(`${API}/submissions`);
       const subs = await res.json();
 
       const container = document.getElementById('submissionsList');
@@ -424,7 +450,7 @@
 
     async function approveSubmission(id) {
       if (!confirm('This will create the business and make the widget live. Continue?')) return;
-      const res = await fetch(`${API}/submissions/${id}/approve`, { method: 'POST' });
+      const res = await authFetch(`${API}/submissions/${id}/approve`, { method: 'POST' });
       if (res.ok) {
         const data = await res.json();
         alert(`${data.business.name} is now live! Slug: ${data.business.slug}`);

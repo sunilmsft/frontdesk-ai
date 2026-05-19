@@ -105,3 +105,9 @@
 - [ ] Landing page builder for businesses without websites (Kesia is first use case)
 - [ ] Admin dashboard in Portuguese/Spanish for non-English business owners
 - [ ] Translate admin analytics to owner's preferred language
+- [ ] Logo generation add-on — AI-generated logos via DALL-E ($25 one-time or free on $59+ tiers, cost ~$0.25)
+- [ ] Business card design for $99 tier
+- [ ] Custom domain registration workflow (Cloudflare, $10/mo add-on)
+- [ ] Editable submissions — let business owners edit their info after submitting (quick: edit link on success screen; better: part of owner console)
+- [ ] AI business name generator on onboarding form (for owners without a name yet — uses GPT to suggest names based on their service type, area, and language)
+- [ ] Service tier picker on onboarding form (show available packages so they can pick and choose what they want)

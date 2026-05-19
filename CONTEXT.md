@@ -57,3 +57,38 @@ AI-powered chat widget for local businesses. Customers get instant answers about
 ## Subscription Tracker
 - OpenAI API (free tier with sharing, $10 credit balance)
 - Render (free tier, auto-deploys from GitHub)
+
+## Personal PC Migration (DO BEFORE FIRST PAID CUSTOMER)
+### Step-by-Step
+1. **GitHub Copilot Pro+** — Subscribe at github.com/features/copilot ($39/month) with personal GitHub account (sunilmsft)
+2. **Install VS Code** on personal laptop
+3. **Install GitHub Copilot extension** — sign in with personal GitHub account
+4. **Clone the repo** — `git clone https://github.com/sunilmsft/frontdesk-ai.git`
+5. **Install Node.js** (v18+) — download from nodejs.org
+6. **Create `.env` file** in project root with your OpenAI API key:
+   ```
+   OPENAI_API_KEY=sk-your-key-here
+   NODE_ENV=production
+   ```
+7. **Run `npm install`** then `npm run dev` to verify everything works locally
+8. **Verify Render deployment** — Render is linked to GitHub repo, so deploys still work automatically
+9. **Memory files** — Copilot memory is tied to your GitHub account, not the machine. If using same GitHub account, memories carry over. If different account, copy `/memories/repo/` contents manually.
+10. **Test the full flow** — submit a test onboarding form, approve in admin, chat with the widget
+11. **Regenerate OpenAI API key** — old one was exposed in chat history
+
+### Costs After Migration
+| Item | Monthly Cost |
+|------|-------------|
+| GitHub Copilot Pro+ | $39 |
+| Render (always-on) | $7 |
+| PostgreSQL (Render/Supabase) | $0-7 |
+| OpenAI API (per customer) | ~$0.30-0.75 |
+| Domain (per customer, if needed) | ~$0.83-1.25 |
+| Cloud storage (Cloudinary free) | $0 |
+| **Fixed (before customers)** | **~$46-53** |
+| **Per customer** | **~$1.13-2.00** |
+
+## Add-Ons & Upsells
+- **Logo Generation** — AI-generated logos via DALL-E. Add-on at $25 one-time for $29 tier, free on $59+ tiers. Cost: ~$0.25 per customer.
+- **Custom Domain** — Register via Cloudflare (~$10-15/year). Charge $10/month. ~$105-110/year profit per domain.
+- **Business Card Design** — Include in $99 tier. Generate matching business card from logo + contact info.

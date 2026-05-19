@@ -1,7 +1,49 @@
 const express = require('express');
 const db = require('../db/database');
+const { requireAuth, generateToken } = require('../middleware/auth');
 
 const router = express.Router();
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+/**
+ * POST /api/admin/login — Authenticate admin
+ */
+router.post('/login', (req, res) => {
+  const { password } = req.body;
+
+  if (!ADMIN_PASSWORD) {
+    return res.status(500).json({ error: 'ADMIN_PASSWORD not configured on server' });
+  }
+
+  if (!password || password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Invalid password' });
+  }
+
+  const token = generateToken();
+  res.json({ token });
+});
+
+/**
+ * POST /api/admin/submissions — Save a new onboarding submission (PUBLIC — no auth)
+ */
+router.post('/submissions', (req, res) => {
+  const { business_name, form_data, system_prompt, welcome_message, theme_color } = req.body;
+
+  if (!business_name || !form_data || !system_prompt) {
+    return res.status(400).json({ error: 'business_name, form_data, and system_prompt are required' });
+  }
+
+  const id = require('crypto').randomUUID();
+  db.prepare(
+    'INSERT INTO submissions (id, business_name, form_data, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(id, business_name, JSON.stringify(form_data), system_prompt, welcome_message || 'Hi! How can I help you today?', theme_color || '#0d9488');
+
+  res.status(201).json({ id, message: 'Submission received! We\'ll review and set up your assistant shortly.' });
+});
+
+// --- All routes below require authentication ---
+router.use(requireAuth);
 
 /**
  * GET /api/admin/stats — Dashboard stats across all businesses
@@ -116,24 +158,6 @@ router.get('/conversation/:id/messages', (req, res) => {
   ).all(req.params.id);
 
   res.json(messages);
-});
-
-/**
- * POST /api/admin/submissions — Save a new onboarding submission (no auth, customer-facing)
- */
-router.post('/submissions', (req, res) => {
-  const { business_name, form_data, system_prompt, welcome_message, theme_color } = req.body;
-
-  if (!business_name || !form_data || !system_prompt) {
-    return res.status(400).json({ error: 'business_name, form_data, and system_prompt are required' });
-  }
-
-  const id = require('crypto').randomUUID();
-  db.prepare(
-    'INSERT INTO submissions (id, business_name, form_data, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(id, business_name, JSON.stringify(form_data), system_prompt, welcome_message || 'Hi! How can I help you today?', theme_color || '#0d9488');
-
-  res.status(201).json({ id, message: 'Submission received! We\'ll review and set up your assistant shortly.' });
 });
 
 /**
