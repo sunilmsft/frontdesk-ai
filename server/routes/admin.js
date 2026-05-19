@@ -181,6 +181,7 @@ router.get('/submissions', async (req, res) => {
 
 /**
  * POST /api/admin/submissions/:id/approve — Approve a submission and create the business
+ * Body (optional overrides): { business_name, system_prompt, welcome_message, theme_color }
  */
 router.post('/submissions/:id/approve', async (req, res) => {
   const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
@@ -188,13 +189,19 @@ router.post('/submissions/:id/approve', async (req, res) => {
   if (!sub) return res.status(404).json({ error: 'Submission not found' });
   if (sub.status === 'approved') return res.status(400).json({ error: 'Already approved' });
 
-  const slug = sub.business_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+  // Allow overrides from the review form
+  const bizName = req.body.business_name || sub.business_name;
+  const sysPrompt = req.body.system_prompt || sub.system_prompt;
+  const welcomeMsg = req.body.welcome_message || sub.welcome_message;
+  const color = req.body.theme_color || sub.theme_color;
+
+  const slug = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
   const bizId = require('crypto').randomUUID();
 
   try {
     await db.execute({
       sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)',
-      args: [bizId, sub.business_name, slug, sub.system_prompt, sub.welcome_message, sub.theme_color]
+      args: [bizId, bizName, slug, sysPrompt, welcomeMsg, color]
     });
 
     await db.execute({ sql: "UPDATE submissions SET status = 'approved' WHERE id = ?", args: [req.params.id] });

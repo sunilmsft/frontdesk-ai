@@ -300,7 +300,9 @@
     <div class="success" id="successState">
       <h2 data-i18n="success_title">✅ We've Got Your Info!</h2>
       <p data-i18n="success_msg">Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.</p>
-      <p style="margin-top: 12px; font-size: 13px; color: #888;" data-i18n="success_questions">Questions? Just reply to the message that brought you here.</p>
+      <div id="submissionSummary" style="text-align: left; background: white; border: 1px solid #d1fae5; border-radius: 8px; padding: 16px; margin-top: 16px;"></div>
+      <p style="margin-top: 16px; font-size: 13px; color: #666;" data-i18n="success_changes">Need to make changes? Text or WhatsApp us and we'll update your info.</p>
+      <p style="margin-top: 8px; font-size: 13px; color: #888;" data-i18n="success_questions">Questions? Just reply to the message that brought you here.</p>
     </div>
   </div>
 
@@ -389,6 +391,7 @@
         btn_submit: 'Enviar Información de Mi Negocio',
         success_title: '✅ ¡Recibimos Tu Información!',
         success_msg: '¡Gracias! Revisaremos tus datos y configuraremos tu asistente de IA en 24 horas. Te avisaremos cuando esté listo.',
+        success_changes: '¿Necesitas hacer cambios? Envíanos un mensaje de texto o WhatsApp y actualizaremos tu información.',
         success_questions: '¿Preguntas? Solo responde al mensaje que te trajo aquí.',
       },
       pt: {
@@ -470,6 +473,7 @@
         btn_submit: 'Enviar Informações do Meu Negócio',
         success_title: '✅ Recebemos Suas Informações!',
         success_msg: 'Obrigado! Vamos revisar seus dados e configurar seu assistente de IA em 24 horas. Entraremos em contato quando estiver pronto.',
+        success_changes: 'Precisa fazer alterações? Envie uma mensagem de texto ou WhatsApp e atualizaremos suas informações.',
         success_questions: 'Dúvidas? Basta responder à mensagem que trouxe você aqui.',
       },
       en: {
@@ -551,6 +555,7 @@
         btn_submit: 'Submit My Business Info',
         success_title: "✅ We've Got Your Info!",
         success_msg: "Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.",
+        success_changes: 'Need to make changes? Text or WhatsApp us and we\'ll update your info.',
         success_questions: 'Questions? Just reply to the message that brought you here.',
       }
     };
@@ -747,11 +752,43 @@
       if (res.ok) {
         document.getElementById('onboardForm').style.display = 'none';
         document.getElementById('successState').style.display = 'block';
+
+        // Build submission summary
+        const summaryLabels = {
+          en: { name: 'Business Name', type: 'Type', phone: 'Phone', area: 'Areas Serviced', website: 'Website', offerings: 'Services', tone: 'Tone' },
+          es: { name: 'Nombre', type: 'Tipo', phone: 'Teléfono', area: 'Áreas', website: 'Sitio Web', offerings: 'Servicios', tone: 'Tono' },
+          pt: { name: 'Nome', type: 'Tipo', phone: 'Telefone', area: 'Áreas Atendidas', website: 'Site', offerings: 'Serviços', tone: 'Tom' },
+        };
+        const labels = summaryLabels[currentLang] || summaryLabels.en;
+        const summaryItems = [
+          { label: labels.name, value: data.name },
+          { label: labels.type, value: data.type },
+          { label: labels.phone, value: data.phone },
+          { label: labels.area, value: data.serviceArea },
+          { label: labels.website, value: data.website },
+          { label: labels.offerings, value: data.offerings },
+          { label: labels.tone, value: data.tone },
+        ].filter(item => item.value);
+
+        document.getElementById('submissionSummary').innerHTML = `
+          <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #1a1a1a;">📋 ${currentLang === 'pt' ? 'Resumo do Envio' : currentLang === 'es' ? 'Resumen del Envío' : 'Your Submission Summary'}</h3>
+          ${summaryItems.map(item => `
+            <div style="display: flex; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px;">
+              <span style="font-weight: 600; color: #555; min-width: 130px;">${item.label}</span>
+              <span style="color: #1a1a1a;">${escapeHtml(item.value)}</span>
+            </div>
+          `).join('')}
+        `;
       } else {
         const err = await res.json();
         alert(err.error || 'Something went wrong. Please try again.');
       }
     });
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
   </script>
 </body>
 </html>

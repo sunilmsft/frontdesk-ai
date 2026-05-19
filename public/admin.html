@@ -420,11 +420,15 @@
         const formData = JSON.parse(s.form_data);
         const statusColor = s.status === 'pending' ? '#f59e0b' : s.status === 'approved' ? '#10b981' : '#ef4444';
         const statusLabel = s.status.charAt(0).toUpperCase() + s.status.slice(1);
+        const isPending = s.status === 'pending';
         return `
           <div style="border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <div>
-                <strong style="font-size: 16px;">${escapeHtml(s.business_name)}</strong>
+                ${isPending
+                  ? `<input type="text" id="sub-name-${s.id}" value="${escapeAttr(s.business_name)}" style="font-size: 16px; font-weight: 700; border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px; width: 300px;">`
+                  : `<strong style="font-size: 16px;">${escapeHtml(s.business_name)}</strong>`
+                }
                 <span style="background: ${statusColor}; color: white; padding: 2px 10px; border-radius: 10px; font-size: 11px; margin-left: 8px;">${statusLabel}</span>
               </div>
               <span style="font-size: 12px; color: #999;">${new Date(s.submitted_at + 'Z').toLocaleString()}</span>
@@ -433,14 +437,30 @@
               ${formData.type ? '<strong>Type:</strong> ' + escapeHtml(formData.type) + ' · ' : ''}
               ${formData.phone ? '<strong>Phone:</strong> ' + escapeHtml(formData.phone) + ' · ' : ''}
               ${formData.website ? '<strong>Website:</strong> ' + escapeHtml(formData.website) : ''}
+              ${formData.serviceArea ? ' · <strong>Area:</strong> ' + escapeHtml(formData.serviceArea) : ''}
             </div>
-            <details style="margin-bottom: 12px;">
-              <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
-              <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
-            </details>
-            ${s.status === 'pending' ? `
+            ${isPending ? `
+              <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">Welcome Message</label>
+                <input type="text" id="sub-welcome-${s.id}" value="${escapeAttr(s.welcome_message || '')}" style="width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+              </div>
+              <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">Theme Color</label>
+                <input type="color" id="sub-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 36px; padding: 2px; border: 1px solid #ddd; border-radius: 6px;">
+              </div>
+              <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">System Prompt (AI Instructions)</label>
+                <textarea id="sub-prompt-${s.id}" style="width: 100%; min-height: 200px; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; font-family: monospace; resize: vertical;">${escapeHtml(s.system_prompt)}</textarea>
+              </div>
+            ` : `
+              <details style="margin-bottom: 12px;">
+                <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
+                <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
+              </details>
+            `}
+            ${isPending ? `
               <div class="actions">
-                <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Approve & Create Business</button>
+                <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Review & Create Business</button>
               </div>
             ` : s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
           </div>
@@ -449,8 +469,28 @@
     }
 
     async function approveSubmission(id) {
-      if (!confirm('This will create the business and make the widget live. Continue?')) return;
-      const res = await authFetch(`${API}/submissions/${id}/approve`, { method: 'POST' });
+      const name = document.getElementById(`sub-name-${id}`).value.trim();
+      const prompt = document.getElementById(`sub-prompt-${id}`).value.trim();
+      const welcome = document.getElementById(`sub-welcome-${id}`).value.trim();
+      const color = document.getElementById(`sub-color-${id}`).value;
+
+      if (!name || !prompt) {
+        alert('Business name and system prompt are required.');
+        return;
+      }
+
+      if (!confirm(`Create "${name}" and make the widget live?`)) return;
+
+      const res = await authFetch(`${API}/submissions/${id}/approve`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          business_name: name,
+          system_prompt: prompt,
+          welcome_message: welcome,
+          theme_color: color,
+        }),
+      });
       if (res.ok) {
         const data = await res.json();
         alert(`${data.business.name} is now live! Slug: ${data.business.slug}`);
