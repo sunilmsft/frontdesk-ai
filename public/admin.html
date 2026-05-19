@@ -332,7 +332,39 @@
     function renderBizDetail() {
       if (!selectedBiz) return;
       const b = selectedBiz;
+      const planOptions = ['chat-only', 'chat-site', 'full-package'].map(p =>
+        `<option value="${p}" ${b.plan === p ? 'selected' : ''}>${p === 'chat-only' ? '💬 Chat Only' : p === 'chat-site' ? '💬🌐 Chat + Website' : '💬🌐🔗 Full Package'}</option>`
+      ).join('');
+
       document.getElementById('bizDetail').innerHTML = `
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">Customer Profile</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="field" style="margin-bottom: 0;">
+              <label>Owner Name</label>
+              <input type="text" id="editOwner" value="${escapeAttr(b.owner_name || '')}">
+            </div>
+            <div class="field" style="margin-bottom: 0;">
+              <label>Phone</label>
+              <input type="text" id="editPhone" value="${escapeAttr(b.phone || '')}">
+            </div>
+            <div class="field" style="margin-bottom: 0;">
+              <label>Business Type</label>
+              <input type="text" id="editBizType" value="${escapeAttr(b.business_type || '')}">
+            </div>
+            <div class="field" style="margin-bottom: 0;">
+              <label>Service Area</label>
+              <input type="text" id="editServiceArea" value="${escapeAttr(b.service_area || '')}">
+            </div>
+          </div>
+          <div class="field" style="margin-top: 12px; margin-bottom: 0;">
+            <label>Plan</label>
+            <select id="editPlan" style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit;">
+              ${planOptions}
+            </select>
+          </div>
+        </div>
+
         <div class="field">
           <label>Business Name</label>
           <input type="text" id="editName" value="${escapeAttr(b.name)}">
@@ -373,6 +405,11 @@
           system_prompt: document.getElementById('editPrompt').value,
           welcome_message: document.getElementById('editWelcome').value,
           theme_color: document.getElementById('editColor').value,
+          owner_name: document.getElementById('editOwner').value,
+          phone: document.getElementById('editPhone').value,
+          business_type: document.getElementById('editBizType').value,
+          service_area: document.getElementById('editServiceArea').value,
+          plan: document.getElementById('editPlan').value,
         }),
       });
       if (res.ok) {

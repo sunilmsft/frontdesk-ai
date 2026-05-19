@@ -117,7 +117,7 @@ router.post('/businesses', async (req, res) => {
  * PUT /api/admin/businesses/:id — Update a business
  */
 router.put('/businesses/:id', async (req, res) => {
-  const { name, system_prompt, welcome_message, theme_color } = req.body;
+  const { name, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, plan } = req.body;
   const bizResult = await db.execute({ sql: 'SELECT * FROM businesses WHERE id = ?', args: [req.params.id] });
   const business = bizResult.rows[0];
 
@@ -126,12 +126,18 @@ router.put('/businesses/:id', async (req, res) => {
   }
 
   await db.execute({
-    sql: 'UPDATE businesses SET name = ?, system_prompt = ?, welcome_message = ?, theme_color = ? WHERE id = ?',
+    sql: `UPDATE businesses SET name = ?, system_prompt = ?, welcome_message = ?, theme_color = ?,
+          owner_name = ?, phone = ?, business_type = ?, service_area = ?, plan = ? WHERE id = ?`,
     args: [
       name || business.name,
       system_prompt || business.system_prompt,
       welcome_message || business.welcome_message,
       theme_color || business.theme_color,
+      owner_name !== undefined ? owner_name : business.owner_name,
+      phone !== undefined ? phone : business.phone,
+      business_type !== undefined ? business_type : business.business_type,
+      service_area !== undefined ? service_area : business.service_area,
+      plan !== undefined ? plan : business.plan,
       req.params.id
     ]
   });
@@ -195,13 +201,20 @@ router.post('/submissions/:id/approve', async (req, res) => {
   const welcomeMsg = req.body.welcome_message || sub.welcome_message;
   const color = req.body.theme_color || sub.theme_color;
 
+  // Extract profile fields from form_data
+  const formData = JSON.parse(sub.form_data);
+  const ownerName = formData.ownerName || null;
+  const phone = formData.phone || null;
+  const businessType = formData.type || null;
+  const serviceArea = formData.serviceArea || null;
+
   const slug = bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
   const bizId = require('crypto').randomUUID();
 
   try {
     await db.execute({
-      sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)',
-      args: [bizId, bizName, slug, sysPrompt, welcomeMsg, color]
+      sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      args: [bizId, bizName, slug, sysPrompt, welcomeMsg, color, ownerName, phone, businessType, serviceArea]
     });
 
     await db.execute({ sql: "UPDATE submissions SET status = 'approved' WHERE id = ?", args: [req.params.id] });

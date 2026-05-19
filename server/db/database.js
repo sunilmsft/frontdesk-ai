@@ -38,6 +38,21 @@ async function initDb() {
 
     CREATE INDEX IF NOT EXISTS idx_conversations_business ON conversations(business_id);
     CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id);
+  `);
+
+  // Add profile columns (safe migration — ignores if already exist)
+  const migrationCols = [
+    ['businesses', 'owner_name', 'TEXT'],
+    ['businesses', 'phone', 'TEXT'],
+    ['businesses', 'business_type', 'TEXT'],
+    ['businesses', 'service_area', 'TEXT'],
+    ['businesses', 'plan', "TEXT DEFAULT 'chat-only'"],
+  ];
+  for (const [table, col, type] of migrationCols) {
+    try { await db.execute(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`); } catch (_) {}
+  }
+
+  await db.executeMultiple(`
 
     CREATE TABLE IF NOT EXISTS submissions (
       id TEXT PRIMARY KEY,
