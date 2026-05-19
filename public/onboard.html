@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FrontDesk AI — Business Onboarding</title>
+  <title>Business Onboarding</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
@@ -58,14 +58,24 @@
     .lang-btn { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: white; color: #666; transition: all 0.15s; }
     .lang-btn.active { background: #1a1a1a; color: white; }
     .lang-btn:hover:not(.active) { background: #f5f5f5; }
+
+    .checkbox-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .checkbox-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; padding: 8px 14px; border: 1px solid #ddd; border-radius: 20px; transition: all 0.15s; }
+    .checkbox-group label:hover { border-color: #2563eb; }
+    .checkbox-group input[type="checkbox"] { accent-color: #2563eb; }
+    .checkbox-group label:has(input:checked) { background: #eff6ff; border-color: #2563eb; }
+
+    .photo-hint-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 16px; margin-top: 8px; }
+    .photo-hint-box p { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+    .photo-hint-box ul { font-size: 12px; color: #64748b; margin-left: 16px; }
   </style>
 </head>
 <body>
   <div class="header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div>
-        <h1 data-i18n="header_title">🏪 FrontDesk AI — Business Onboarding</h1>
-        <p data-i18n="header_sub">Tell us about your business and we'll set up your AI assistant in minutes</p>
+        <h1 data-i18n="header_title">🏪 Business Onboarding</h1>
+        <p data-i18n="header_sub">Tell us about your business and we'll get you set up online in no time</p>
       </div>
       <div class="lang-toggle">
         <button class="lang-btn active" onclick="setLang('en')">English</button>
@@ -85,13 +95,14 @@
 
         <div class="field">
           <label data-i18n="lbl_name">Business Name *</label>
-          <input type="text" id="bizName" required data-i18n-ph="ph_name" placeholder="e.g. The Plateau Kitchen">
+          <input type="text" id="bizName" required data-i18n-ph="ph_name" placeholder="e.g. Sparkle Clean Services">
         </div>
         <div class="field">
           <label data-i18n="lbl_type">Type of Business *</label>
           <select id="bizType">
             <option value="restaurant" data-i18n="opt_restaurant">Restaurant / Café</option>
             <option value="salon" data-i18n="opt_salon">Salon / Spa</option>
+            <option value="home_services" data-i18n="opt_home_services">Home Services (Cleaning, Landscaping, etc.)</option>
             <option value="retail" data-i18n="opt_retail">Retail / Shop</option>
             <option value="fitness" data-i18n="opt_fitness">Gym / Fitness Studio</option>
             <option value="professional" data-i18n="opt_professional">Professional Services</option>
@@ -99,22 +110,53 @@
           </select>
         </div>
         <div class="field">
+          <label data-i18n="lbl_website_status">Do you have a website? *</label>
+          <select id="bizWebsiteStatus" onchange="toggleWebsiteUrl()">
+            <option value="have_one" data-i18n="opt_have_website">Yes, I have a website</option>
+            <option value="need_one" data-i18n="opt_need_website">No, I need help setting one up</option>
+            <option value="not_sure" data-i18n="opt_not_sure_website">Not sure — I'd like to learn more</option>
+          </select>
+        </div>
+        <div class="field" id="websiteUrlField">
           <label data-i18n="lbl_website">Website URL</label>
           <input type="url" id="bizWebsite" placeholder="https://www.yourbusiness.com">
         </div>
         <div class="field">
-          <label data-i18n="lbl_phone">Phone Number</label>
-          <input type="tel" id="bizPhone" data-i18n-ph="ph_phone" placeholder="(425) 555-1234">
+          <label data-i18n="lbl_phone">Phone Number *</label>
+          <input type="tel" id="bizPhone" required data-i18n-ph="ph_phone" placeholder="(425) 555-1234">
         </div>
         <div class="field">
-          <label data-i18n="lbl_address">Address</label>
+          <label data-i18n="lbl_address">Address <span style="font-weight:400;color:#999;font-size:11px" data-i18n="optional">(optional)</span></label>
           <input type="text" id="bizAddress" data-i18n-ph="ph_address" placeholder="123 Main St, Sammamish, WA 98074">
+        </div>
+        <div class="field">
+          <label data-i18n="lbl_service_area">Areas Serviced *</label>
+          <div class="hint" data-i18n="hint_service_area">Where do you serve customers? List cities, neighborhoods, or zip codes.</div>
+          <input type="text" id="bizServiceArea" required data-i18n-ph="ph_service_area" placeholder="e.g. Sammamish, Issaquah, Bellevue, Redmond">
+        </div>
+      </div>
+
+      <!-- Website Languages -->
+      <div class="section">
+        <h2 data-i18n="sec_languages">Website Languages</h2>
+        <div class="subtitle" data-i18n="sec_languages_sub">Which languages should your website and chat support? Visitors will be able to switch between them.</div>
+
+        <div class="checkbox-group" id="langCheckboxes">
+          <label><input type="checkbox" value="en" checked> 🇺🇸 English</label>
+          <label><input type="checkbox" value="pt"> 🇧🇷 Português</label>
+          <label><input type="checkbox" value="es"> 🇪🇸 Español</label>
+          <label><input type="checkbox" value="zh"> 🇨🇳 中文</label>
+          <label><input type="checkbox" value="ko"> 🇰🇷 한국어</label>
+          <label><input type="checkbox" value="other"> <span data-i18n="lang_other">Other</span></label>
+        </div>
+        <div class="field" id="otherLangField" style="display:none; margin-top: 12px;">
+          <input type="text" id="bizOtherLang" data-i18n-ph="ph_other_lang" placeholder="e.g. French, Hindi, Japanese">
         </div>
       </div>
 
       <!-- Hours -->
       <div class="section">
-        <h2 data-i18n="sec_hours">Hours of Operation</h2>
+        <h2 data-i18n="sec_hours">Hours of Operation <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
         <div class="subtitle" data-i18n="sec_hours_sub">When are you open? Leave blank for days you're closed.</div>
 
         <div class="hours-grid">
@@ -136,31 +178,53 @@
         <div class="field">
           <label data-i18n="lbl_offerings">Services / Menu / Products *</label>
           <div class="hint" data-i18n="hint_offerings">List your key offerings, prices, popular items, categories, etc.</div>
-          <textarea id="bizOfferings" required data-i18n-ph="ph_offerings" placeholder="e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14), Plateau Pancakes ($13)...&#10;&#10;Dinner menu: Grilled Ribeye ($42), Pan-Roasted Halibut ($38)...&#10;&#10;We also have a full bar with craft cocktails."></textarea>
+          <textarea id="bizOfferings" required data-i18n-ph="ph_offerings" placeholder="e.g. Regular Cleaning ($120), Deep Cleaning ($250), Move-in/Move-out ($300)...&#10;&#10;We also offer window cleaning and carpet shampooing.&#10;&#10;All supplies included. Eco-friendly products available."></textarea>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="section">
+        <h2 data-i18n="sec_photos">Photos of Your Business <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
+        <div class="subtitle" data-i18n="sec_photos_sub">Photos help your website look professional and build trust with new customers.</div>
+
+        <div class="photo-hint-box">
+          <p data-i18n="photos_hint"><strong>Great photos to share:</strong></p>
+          <ul>
+            <li data-i18n="photos_hint_1">Your work (before/after, finished projects, food, products)</li>
+            <li data-i18n="photos_hint_2">You or your team in action</li>
+            <li data-i18n="photos_hint_3">Your space or storefront</li>
+            <li data-i18n="photos_hint_4">Happy customers (with their permission!)</li>
+          </ul>
+        </div>
+
+        <div class="field" style="margin-top: 16px;">
+          <label data-i18n="lbl_photos_link">Link to Photos</label>
+          <div class="hint" data-i18n="hint_photos_link">Share a Google Drive, Dropbox, or iCloud link with your photos. Or just text/WhatsApp them to us — we'll add them for you!</div>
+          <input type="text" id="bizPhotosLink" data-i18n-ph="ph_photos_link" placeholder="e.g. https://drive.google.com/... or just type 'I'll text them'">
         </div>
       </div>
 
       <!-- Policies -->
       <div class="section">
-        <h2 data-i18n="sec_policies">Policies & Common Questions</h2>
+        <h2 data-i18n="sec_policies">Policies & Common Questions <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
         <div class="subtitle" data-i18n="sec_policies_sub">Help the AI answer the questions you get asked the most</div>
 
         <div class="field">
           <label data-i18n="lbl_reservations">Reservations / Booking</label>
-          <textarea id="bizReservations" data-i18n-ph="ph_reservations" placeholder="e.g. We accept reservations for parties of 4+. Walk-ins welcome. Book at opentable.com/plateau-kitchen or call us."></textarea>
+          <textarea id="bizReservations" data-i18n-ph="ph_reservations" placeholder="e.g. Book online or call/text us. We usually respond within 1 hour. Same-week availability."></textarea>
         </div>
         <div class="field">
           <label data-i18n="lbl_parking">Parking / Getting There</label>
-          <textarea id="bizParking" rows="2" data-i18n-ph="ph_parking" placeholder="e.g. Free parking in the lot behind the building. Street parking also available."></textarea>
+          <textarea id="bizParking" rows="2" data-i18n-ph="ph_parking" placeholder="e.g. We come to you! Service area covers Eastside Seattle."></textarea>
         </div>
         <div class="field">
           <label data-i18n="lbl_policies">Other Policies or FAQs</label>
           <div class="hint" data-i18n="hint_policies">Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.</div>
-          <textarea id="bizPolicies" data-i18n-ph="ph_policies" placeholder="e.g. We accommodate gluten-free and vegan diets — just let your server know. No outside food or drinks. Kids menu available."></textarea>
+          <textarea id="bizPolicies" data-i18n-ph="ph_policies" placeholder="e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured during service."></textarea>
         </div>
         <div class="field">
           <label data-i18n="lbl_extra">Anything Else Customers Should Know?</label>
-          <textarea id="bizExtra" data-i18n-ph="ph_extra" placeholder="e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays. We cater events up to 50 people."></textarea>
+          <textarea id="bizExtra" data-i18n-ph="ph_extra" placeholder="e.g. 10% discount for recurring weekly clients. We're fully insured and bonded. Bilingual team (English & Portuguese)."></textarea>
         </div>
       </div>
 
@@ -247,24 +311,47 @@
 
     const translations = {
       es: {
-        header_title: '🏪 FrontDesk AI — Registro de Negocio',
-        header_sub: 'Cuéntanos sobre tu negocio y configuraremos tu asistente de IA en minutos',
+        header_title: '🏪 Registro de Negocio',
+        header_sub: 'Cuéntanos sobre tu negocio y te ayudaremos a estar en línea en poco tiempo',
         sec_business: 'Tu Negocio',
         sec_business_sub: 'Lo básico — ¿qué deben saber tus clientes?',
         lbl_name: 'Nombre del Negocio *',
-        ph_name: 'ej. La Cocina del Plateau',
+        ph_name: 'ej. Servicios de Limpieza Brillante',
         lbl_type: 'Tipo de Negocio *',
         opt_restaurant: 'Restaurante / Café',
         opt_salon: 'Salón / Spa',
         opt_retail: 'Tienda / Comercio',
         opt_fitness: 'Gimnasio / Estudio de Fitness',
+        opt_home_services: 'Servicios del Hogar (Limpieza, Jardinería, etc.)',
         opt_professional: 'Servicios Profesionales',
         opt_other: 'Otro',
-        lbl_website: 'Sitio Web',
-        lbl_phone: 'Número de Teléfono',
+        optional: '(opcional)',
+        lbl_website_status: '¿Tienes un sitio web? *',
+        opt_have_website: 'Sí, tengo un sitio web',
+        opt_need_website: 'No, necesito ayuda para crear uno',
+        opt_not_sure_website: 'No estoy seguro/a — me gustaría saber más',
+        lbl_website: 'URL del Sitio Web',
+        lbl_phone: 'Número de Teléfono *',
+        sec_languages: 'Idiomas del Sitio Web',
+        sec_languages_sub: '¿En qué idiomas debe estar tu sitio web y chat? Los visitantes podrán cambiar entre ellos.',
+        lang_other: 'Otro',
+        ph_other_lang: 'ej. Francés, Hindi, Japonés',
+        sec_photos: 'Fotos de Tu Negocio',
+        sec_photos_sub: 'Las fotos ayudan a que tu sitio web se vea profesional y genere confianza con nuevos clientes.',
+        photos_hint: 'Buenas fotos para compartir:',
+        photos_hint_1: 'Tu trabajo (antes/después, proyectos terminados, comida, productos)',
+        photos_hint_2: 'Tú o tu equipo en acción',
+        photos_hint_3: 'Tu local o fachada',
+        photos_hint_4: 'Clientes contentos (¡con su permiso!)',
+        lbl_photos_link: 'Enlace a Fotos',
+        hint_photos_link: 'Comparte un enlace de Google Drive, Dropbox o iCloud con tus fotos. O simplemente envíalas por texto/WhatsApp — ¡las agregaremos por ti!',
+        ph_photos_link: 'ej. https://drive.google.com/... o escribe "Las enviaré por texto"',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Dirección',
         ph_address: '123 Main St, Sammamish, WA 98074',
+        lbl_service_area: 'Áreas de Servicio *',
+        hint_service_area: '¿Dónde atiendes a tus clientes? Lista ciudades, vecindarios o códigos postales.',
+        ph_service_area: 'ej. Sammamish, Issaquah, Bellevue, Redmond',
         sec_hours: 'Horario de Atención',
         sec_hours_sub: '¿Cuándo estás abierto? Deja en blanco los días que estés cerrado.',
         day_mon: 'Lunes', day_tue: 'Martes', day_wed: 'Miércoles', day_thu: 'Jueves',
@@ -275,18 +362,18 @@
         sec_offerings_sub: 'Describe tus servicios principales, productos o menú. Cuanto más detalle, mejor podrá responder la IA.',
         lbl_offerings: 'Servicios / Menú / Productos *',
         hint_offerings: 'Lista tus ofertas principales, precios, artículos populares, categorías, etc.',
-        ph_offerings: 'ej. Limpieza de casa: Limpieza básica ($100), Limpieza profunda ($200)...\n\nTambién ofrecemos limpieza de oficinas y servicios de mudanza.',
+        ph_offerings: 'ej. Limpieza regular ($120), Limpieza profunda ($250), Mudanza ($300)...\n\nTambién ofrecemos limpieza de ventanas y alfombras.\n\nTodos los materiales incluidos.',
         sec_policies: 'Políticas y Preguntas Frecuentes',
         sec_policies_sub: 'Ayuda a la IA a responder las preguntas que más te hacen',
         lbl_reservations: 'Reservaciones / Citas',
-        ph_reservations: 'ej. Aceptamos citas con 24 horas de anticipación. Llámenos o envíe un mensaje de texto.',
+        ph_reservations: 'ej. Reserve en línea o llámenos/envíe un mensaje. Respondemos en 1 hora.',
         lbl_parking: 'Estacionamiento / Cómo Llegar',
-        ph_parking: 'ej. Estacionamiento gratis en el lote detrás del edificio.',
+        ph_parking: 'ej. ¡Vamos a tu casa! Área de servicio: Eastside Seattle.',
         lbl_policies: 'Otras Políticas o Preguntas Frecuentes',
         hint_policies: 'Política de cancelación, áreas de servicio, requisitos especiales, etc.',
-        ph_policies: 'ej. Cancelaciones con 24 horas de anticipación. Servimos el área de Eastside Seattle.',
+        ph_policies: 'ej. Política de cancelación de 24 horas. Traemos nuestros propios materiales. Mascotas deben estar aseguradas.',
         lbl_extra: '¿Algo Más Que Tus Clientes Deban Saber?',
-        ph_extra: 'ej. Ofrecemos descuentos para clientes recurrentes. Servicio disponible los fines de semana.',
+        ph_extra: 'ej. 10% de descuento para clientes recurrentes semanales. Estamos asegurados. Equipo bilingüe.',
         sec_tone: 'Personalidad y Tono',
         sec_tone_sub: '¿Cómo debe sonar la IA al hablar con tus clientes?',
         tone_friendly: '😊 Amigable y Casual',
@@ -305,24 +392,47 @@
         success_questions: '¿Preguntas? Solo responde al mensaje que te trajo aquí.',
       },
       pt: {
-        header_title: '🏪 FrontDesk AI — Cadastro de Negócio',
-        header_sub: 'Conte-nos sobre seu negócio e configuraremos seu assistente de IA em minutos',
+        header_title: '🏪 Cadastro de Negócio',
+        header_sub: 'Conte-nos sobre seu negócio e vamos te colocar online rapidinho',
         sec_business: 'Seu Negócio',
         sec_business_sub: 'O básico — o que seus clientes precisam saber?',
         lbl_name: 'Nome do Negócio *',
-        ph_name: 'ex. Limpeza da Kesia',
+        ph_name: 'ex. Limpeza Brilhante',
         lbl_type: 'Tipo de Negócio *',
         opt_restaurant: 'Restaurante / Café',
         opt_salon: 'Salão / Spa',
         opt_retail: 'Loja / Comércio',
         opt_fitness: 'Academia / Estúdio de Fitness',
+        opt_home_services: 'Serviços Domésticos (Limpeza, Jardinagem, etc.)',
         opt_professional: 'Serviços Profissionais',
         opt_other: 'Outro',
-        lbl_website: 'Site',
-        lbl_phone: 'Telefone',
+        optional: '(opcional)',
+        lbl_website_status: 'Você tem um site? *',
+        opt_have_website: 'Sim, eu tenho um site',
+        opt_need_website: 'Não, preciso de ajuda para criar um',
+        opt_not_sure_website: 'Não tenho certeza — gostaria de saber mais',
+        lbl_website: 'URL do Site',
+        lbl_phone: 'Telefone *',
+        sec_languages: 'Idiomas do Site',
+        sec_languages_sub: 'Em quais idiomas seu site e chat devem funcionar? Os visitantes poderão alternar entre eles.',
+        lang_other: 'Outro',
+        ph_other_lang: 'ex. Francês, Hindi, Japonês',
+        sec_photos: 'Fotos do Seu Negócio',
+        sec_photos_sub: 'Fotos ajudam seu site a parecer profissional e gerar confiança com novos clientes.',
+        photos_hint: 'Boas fotos para compartilhar:',
+        photos_hint_1: 'Seu trabalho (antes/depois, projetos finalizados, comida, produtos)',
+        photos_hint_2: 'Você ou sua equipe em ação',
+        photos_hint_3: 'Seu espaço ou fachada',
+        photos_hint_4: 'Clientes satisfeitos (com permissão deles!)',
+        lbl_photos_link: 'Link para Fotos',
+        hint_photos_link: 'Compartilhe um link do Google Drive, Dropbox ou iCloud com suas fotos. Ou simplesmente envie por texto/WhatsApp — nós adicionamos para você!',
+        ph_photos_link: 'ex. https://drive.google.com/... ou escreva "Vou enviar por mensagem"',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Endereço',
         ph_address: '123 Main St, Sammamish, WA 98074',
+        lbl_service_area: 'Áreas Atendidas *',
+        hint_service_area: 'Onde você atende seus clientes? Liste cidades, bairros ou CEPs.',
+        ph_service_area: 'ex. Sammamish, Issaquah, Bellevue, Redmond',
         sec_hours: 'Horário de Funcionamento',
         sec_hours_sub: 'Quando você está aberto? Deixe em branco os dias que estiver fechado.',
         day_mon: 'Segunda', day_tue: 'Terça', day_wed: 'Quarta', day_thu: 'Quinta',
@@ -333,18 +443,18 @@
         sec_offerings_sub: 'Descreva seus principais serviços, produtos ou cardápio. Quanto mais detalhes, melhor a IA poderá responder.',
         lbl_offerings: 'Serviços / Cardápio / Produtos *',
         hint_offerings: 'Liste seus principais serviços, preços, itens populares, categorias, etc.',
-        ph_offerings: 'ex. Limpeza residencial: Limpeza básica ($100), Limpeza profunda ($200)...\n\nTambém oferecemos limpeza de escritórios e serviços de mudança.',
+        ph_offerings: 'ex. Limpeza regular ($120), Limpeza profunda ($250), Mudança ($300)...\n\nTambém oferecemos limpeza de janelas e carpetes.\n\nTodos os materiais incluídos.',
         sec_policies: 'Políticas e Perguntas Frequentes',
         sec_policies_sub: 'Ajude a IA a responder as perguntas que seus clientes mais fazem',
         lbl_reservations: 'Reservas / Agendamentos',
-        ph_reservations: 'ex. Aceitamos agendamentos com 24 horas de antecedência. Ligue ou envie mensagem.',
+        ph_reservations: 'ex. Agende online ou ligue/envie mensagem. Respondemos em 1 hora.',
         lbl_parking: 'Estacionamento / Como Chegar',
-        ph_parking: 'ex. Estacionamento gratuito no local. Também atendemos em domicílio.',
+        ph_parking: 'ex. Vamos até você! Área de atendimento: Eastside Seattle.',
         lbl_policies: 'Outras Políticas ou Perguntas Frequentes',
         hint_policies: 'Política de cancelamento, áreas de atendimento, requisitos especiais, etc.',
-        ph_policies: 'ex. Cancelamentos com 24 horas de antecedência. Atendemos a região de Eastside Seattle.',
+        ph_policies: 'ex. Política de cancelamento de 24 horas. Trazemos nossos próprios materiais. Animais devem estar seguros.',
         lbl_extra: 'Mais Alguma Coisa Que Seus Clientes Devem Saber?',
-        ph_extra: 'ex. Oferecemos descontos para clientes recorrentes. Atendemos aos finais de semana.',
+        ph_extra: 'ex. 10% de desconto para clientes recorrentes semanais. Somos segurados. Equipe bilíngue (Português e Inglês).',
         sec_tone: 'Personalidade e Tom',
         sec_tone_sub: 'Como a IA deve falar com seus clientes?',
         tone_friendly: '😊 Amigável e Casual',
@@ -363,24 +473,47 @@
         success_questions: 'Dúvidas? Basta responder à mensagem que trouxe você aqui.',
       },
       en: {
-        header_title: '🏪 FrontDesk AI — Business Onboarding',
-        header_sub: "Tell us about your business and we'll set up your AI assistant in minutes",
+        header_title: '🏪 Business Onboarding',
+        header_sub: "Tell us about your business and we'll get you set up online in no time",
         sec_business: 'Your Business',
         sec_business_sub: 'The basics — what should customers know?',
         lbl_name: 'Business Name *',
-        ph_name: 'e.g. The Plateau Kitchen',
+        ph_name: 'e.g. Sparkle Clean Services',
         lbl_type: 'Type of Business *',
         opt_restaurant: 'Restaurant / Café',
         opt_salon: 'Salon / Spa',
         opt_retail: 'Retail / Shop',
         opt_fitness: 'Gym / Fitness Studio',
+        opt_home_services: 'Home Services (Cleaning, Landscaping, etc.)',
         opt_professional: 'Professional Services',
         opt_other: 'Other',
+        optional: '(optional)',
+        lbl_website_status: 'Do you have a website? *',
+        opt_have_website: 'Yes, I have a website',
+        opt_need_website: 'No, I need help setting one up',
+        opt_not_sure_website: 'Not sure — I\'d like to learn more',
         lbl_website: 'Website URL',
-        lbl_phone: 'Phone Number',
+        lbl_phone: 'Phone Number *',
+        sec_languages: 'Website Languages',
+        sec_languages_sub: 'Which languages should your website and chat support? Visitors will be able to switch between them.',
+        lang_other: 'Other',
+        ph_other_lang: 'e.g. French, Hindi, Japanese',
+        sec_photos: 'Photos of Your Business',
+        sec_photos_sub: 'Photos help your website look professional and build trust with new customers.',
+        photos_hint: 'Great photos to share:',
+        photos_hint_1: 'Your work (before/after, finished projects, food, products)',
+        photos_hint_2: 'You or your team in action',
+        photos_hint_3: 'Your space or storefront',
+        photos_hint_4: 'Happy customers (with their permission!)',
+        lbl_photos_link: 'Link to Photos',
+        hint_photos_link: "Share a Google Drive, Dropbox, or iCloud link with your photos. Or just text/WhatsApp them to us — we'll add them for you!",
+        ph_photos_link: 'e.g. https://drive.google.com/... or just type \'I\'ll text them\'',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Address',
         ph_address: '123 Main St, Sammamish, WA 98074',
+        lbl_service_area: 'Areas Serviced *',
+        hint_service_area: 'Where do you serve customers? List cities, neighborhoods, or zip codes.',
+        ph_service_area: 'e.g. Sammamish, Issaquah, Bellevue, Redmond',
         sec_hours: 'Hours of Operation',
         sec_hours_sub: "When are you open? Leave blank for days you're closed.",
         day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday', day_thu: 'Thursday',
@@ -391,18 +524,18 @@
         sec_offerings_sub: "Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.",
         lbl_offerings: 'Services / Menu / Products *',
         hint_offerings: 'List your key offerings, prices, popular items, categories, etc.',
-        ph_offerings: "e.g. Brunch menu: Eggs Benedict ($16), Avocado Toast ($14)...\n\nWe also have a full bar with craft cocktails.",
+        ph_offerings: "e.g. Regular Cleaning ($120), Deep Cleaning ($250), Move-in/Move-out ($300)...\n\nWe also offer window cleaning and carpet shampooing.\n\nAll supplies included.",
         sec_policies: 'Policies & Common Questions',
         sec_policies_sub: 'Help the AI answer the questions you get asked the most',
         lbl_reservations: 'Reservations / Booking',
-        ph_reservations: 'e.g. We accept reservations for parties of 4+. Walk-ins welcome.',
+        ph_reservations: 'e.g. Book online or call/text us. We usually respond within 1 hour.',
         lbl_parking: 'Parking / Getting There',
-        ph_parking: 'e.g. Free parking in the lot behind the building.',
+        ph_parking: 'e.g. We come to you! Service area covers Eastside Seattle.',
         lbl_policies: 'Other Policies or FAQs',
         hint_policies: 'Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.',
-        ph_policies: 'e.g. We accommodate gluten-free and vegan diets — just let your server know.',
+        ph_policies: 'e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured.',
         lbl_extra: 'Anything Else Customers Should Know?',
-        ph_extra: 'e.g. We have live jazz on Friday evenings. Happy hour is 4-6pm weekdays.',
+        ph_extra: 'e.g. 10% discount for recurring weekly clients. Fully insured and bonded. Bilingual team.',
         sec_tone: 'Personality & Tone',
         sec_tone_sub: 'How should the AI sound when talking to your customers?',
         tone_friendly: '😊 Friendly & Casual',
@@ -452,6 +585,19 @@
       document.getElementById('bizColor').value = color;
     }
 
+    // Toggle website URL field based on website status
+    function toggleWebsiteUrl() {
+      const status = document.getElementById('bizWebsiteStatus').value;
+      document.getElementById('websiteUrlField').style.display = status === 'have_one' ? 'block' : 'none';
+    }
+
+    // Toggle "Other language" text field
+    document.getElementById('langCheckboxes').addEventListener('change', function(e) {
+      if (e.target.value === 'other') {
+        document.getElementById('otherLangField').style.display = e.target.checked ? 'block' : 'none';
+      }
+    });
+
     // Auto-detect brand color when website URL is entered
     document.getElementById('bizWebsite').addEventListener('blur', async function() {
       const url = this.value.trim();
@@ -481,7 +627,7 @@
     function buildSystemPrompt(data) {
       let prompt = `You are a helpful, ${data.tone} virtual assistant for ${data.name}`;
       if (data.type !== 'other') {
-        const typeLabels = { restaurant: 'restaurant', salon: 'salon', retail: 'shop', fitness: 'fitness studio', professional: 'business' };
+        const typeLabels = { restaurant: 'restaurant', salon: 'salon', home_services: 'home services business', retail: 'shop', fitness: 'fitness studio', professional: 'business' };
         prompt += `, a local ${typeLabels[data.type] || data.type}`;
       }
       if (data.address) prompt += ` located at ${data.address}`;
@@ -497,6 +643,11 @@
       if (data.address) contact.push(`Address: ${data.address}`);
       if (contact.length) {
         prompt += '## Contact Information\n' + contact.join('\n') + '\n\n';
+      }
+
+      // Service Area
+      if (data.serviceArea) {
+        prompt += `## Areas Serviced\n${data.serviceArea}\n\n`;
       }
 
       // Hours
@@ -554,8 +705,10 @@
         name: document.getElementById('bizName').value.trim(),
         type: document.getElementById('bizType').value,
         website: document.getElementById('bizWebsite').value.trim(),
+        websiteStatus: document.getElementById('bizWebsiteStatus').value,
         phone: document.getElementById('bizPhone').value.trim(),
         address: document.getElementById('bizAddress').value.trim(),
+        serviceArea: document.getElementById('bizServiceArea').value.trim(),
         hoursMon: document.getElementById('hoursMon').value.trim(),
         hoursTue: document.getElementById('hoursTue').value.trim(),
         hoursWed: document.getElementById('hoursWed').value.trim(),
@@ -569,6 +722,9 @@
         policies: document.getElementById('bizPolicies').value.trim(),
         extra: document.getElementById('bizExtra').value.trim(),
         tone: selectedTone,
+        languages: Array.from(document.querySelectorAll('#langCheckboxes input:checked')).map(cb => cb.value).filter(v => v !== 'other'),
+        otherLanguages: document.getElementById('bizOtherLang').value.trim(),
+        photosLink: document.getElementById('bizPhotosLink').value.trim(),
       };
 
       const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
