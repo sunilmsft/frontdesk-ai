@@ -216,4 +216,28 @@ router.post('/submissions/:id/approve', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/admin/submissions/:id/reject — Reject a submission
+ */
+router.post('/submissions/:id/reject', async (req, res) => {
+  const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
+  const sub = subResult.rows[0];
+  if (!sub) return res.status(404).json({ error: 'Submission not found' });
+  if (sub.status !== 'pending') return res.status(400).json({ error: 'Can only reject pending submissions' });
+
+  await db.execute({ sql: "UPDATE submissions SET status = 'rejected' WHERE id = ?", args: [req.params.id] });
+  res.json({ message: 'Submission rejected' });
+});
+
+/**
+ * DELETE /api/admin/submissions/:id — Permanently delete a submission
+ */
+router.delete('/submissions/:id', async (req, res) => {
+  const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
+  if (!subResult.rows[0]) return res.status(404).json({ error: 'Submission not found' });
+
+  await db.execute({ sql: 'DELETE FROM submissions WHERE id = ?', args: [req.params.id] });
+  res.json({ message: 'Submission deleted' });
+});
+
 module.exports = router;

@@ -21,20 +21,22 @@
     .stat-card .label { font-size: 12px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
     .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
 
-    .layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+    .layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; }
 
     .panel { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
     .panel-header { padding: 16px 20px; border-bottom: 1px solid #eee; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
     .panel-body { padding: 0; }
 
-    /* Business list */
-    .biz-list { list-style: none; }
-    .biz-item { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.15s; }
-    .biz-item:hover { background: #f8f8f8; }
-    .biz-item.active { background: #f0f7ff; border-left: 3px solid #2563eb; }
-    .biz-item .name { font-weight: 600; font-size: 14px; }
-    .biz-item .meta { font-size: 12px; color: #888; margin-top: 2px; }
-    .biz-item .color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    /* Sidebar nav items */
+    .sidebar-section { padding: 12px 0 4px 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #aaa; }
+    .sidebar-item { padding: 12px 20px; cursor: pointer; transition: background 0.15s; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid transparent; }
+    .sidebar-item:hover { background: #f8f8f8; }
+    .sidebar-item.active { background: #f0f7ff; border-left-color: #2563eb; }
+    .sidebar-item .name { font-weight: 500; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .sidebar-item .meta { font-size: 11px; color: #888; }
+    .sidebar-item .badge { background: #ef4444; color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; min-width: 20px; text-align: center; }
+    .sidebar-item .color-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+    .sidebar-divider { height: 1px; background: #eee; margin: 8px 0; }
 
     /* Tabs */
     .tabs { display: flex; border-bottom: 1px solid #eee; }
@@ -69,11 +71,17 @@
     .btn-primary:hover { background: #1d4ed8; }
     .btn-secondary { background: #f0f0f0; color: #333; }
     .btn-secondary:hover { background: #e5e5e5; }
+    .btn-danger { background: #fef2f2; color: #dc2626; }
+    .btn-danger:hover { background: #fee2e2; }
     .btn-sm { padding: 6px 14px; font-size: 12px; }
 
     .empty-state { padding: 40px; text-align: center; color: #999; font-size: 13px; }
 
     .actions { display: flex; gap: 8px; margin-top: 16px; }
+
+    /* Right panel title */
+    .panel-title { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .panel-title h2 { font-size: 15px; font-weight: 600; }
 
     /* New business modal */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center; }
@@ -94,51 +102,62 @@
     <div class="stats-bar" id="statsBar"></div>
 
     <div class="layout">
-      <!-- Left: Business list -->
+      <!-- Left: Sidebar -->
       <div class="panel">
-        <div class="panel-header">
-          Businesses
-          <button class="btn btn-primary btn-sm" onclick="openNewBizModal()">+ Add</button>
-        </div>
         <div class="panel-body">
-          <ul class="biz-list" id="bizList"></ul>
+          <div class="sidebar-item active" id="sidebarInbox" onclick="showInbox()">
+            <div class="name">📥 Inbox</div>
+            <span class="badge" id="inboxBadge" style="display:none;">0</span>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="sidebar-section">Businesses</div>
+          <div id="bizList"></div>
+          <div class="sidebar-item" onclick="openNewBizModal()" style="color: #2563eb; border-left-color: transparent;">
+            <div class="name" style="font-size: 12px;">+ Add Business</div>
+          </div>
         </div>
       </div>
 
-      <!-- Right: Detail area -->
+      <!-- Right: Context panel -->
       <div>
-        <div class="panel">
-          <div class="tabs" id="tabs">
-            <div class="tab active" data-tab="conversations" onclick="switchTab('conversations')">Conversations</div>
-            <div class="tab" data-tab="details" onclick="switchTab('details')">Business Info</div>
-            <div class="tab" data-tab="submissions" onclick="switchTab('submissions')">Submissions <span id="subBadge" style="background:#ef4444;color:white;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;display:none;"></span></div>
-          </div>
-
-          <!-- Conversations tab -->
-          <div id="conversationsTab">
-            <div style="display: grid; grid-template-columns: 300px 1fr; min-height: 500px;">
-              <div style="border-right: 1px solid #eee;">
-                <ul class="conv-list" id="convList">
-                  <li class="empty-state">Select a business to view conversations</li>
-                </ul>
-              </div>
-              <div class="messages" id="messageArea">
-                <div class="empty-state">Select a conversation to view messages</div>
-              </div>
+        <div class="panel" id="rightPanel">
+          <!-- Inbox view (default) -->
+          <div id="inboxView">
+            <div class="panel-title">
+              <h2>Onboarding Pipeline</h2>
+              <span style="font-size: 12px; color: #999;" id="inboxSummary"></span>
             </div>
-          </div>
-
-          <!-- Details tab -->
-          <div id="detailsTab" style="display: none;">
-            <div class="biz-detail" id="bizDetail">
-              <div class="empty-state">Select a business to view details</div>
-            </div>
-          </div>
-
-          <!-- Submissions tab -->
-          <div id="submissionsTab" style="display: none;">
             <div class="biz-detail" id="submissionsList">
               <div class="empty-state">Loading submissions...</div>
+            </div>
+          </div>
+
+          <!-- Business view (shown when a business is selected) -->
+          <div id="businessView" style="display: none;">
+            <div class="panel-title">
+              <h2 id="bizViewTitle" style="display: flex; align-items: center; gap: 10px;">
+                <span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span>
+                Business
+              </h2>
+            </div>
+            <div class="tabs" id="bizTabs">
+              <div class="tab active" data-tab="conversations" onclick="switchBizTab('conversations')">Conversations</div>
+              <div class="tab" data-tab="settings" onclick="switchBizTab('settings')">Settings</div>
+            </div>
+            <div id="conversationsTab">
+              <div style="display: grid; grid-template-columns: 280px 1fr; min-height: 500px;">
+                <div style="border-right: 1px solid #eee;">
+                  <ul class="conv-list" id="convList">
+                    <li class="empty-state">No conversations yet</li>
+                  </ul>
+                </div>
+                <div class="messages" id="messageArea">
+                  <div class="empty-state">Select a conversation to view messages</div>
+                </div>
+              </div>
+            </div>
+            <div id="settingsTab" style="display: none;">
+              <div class="biz-detail" id="bizDetail"></div>
             </div>
           </div>
         </div>
@@ -181,12 +200,12 @@
     const API = window.location.origin + '/api/admin';
     let selectedBiz = null;
     let businesses = [];
+    let currentView = 'inbox'; // 'inbox' or 'business'
+    let currentBizTab = 'conversations';
 
     // --- Auth ---
     const token = localStorage.getItem('admin_token');
-    if (!token) {
-      window.location.href = '/admin-login.html';
-    }
+    if (!token) window.location.href = '/admin-login.html';
 
     async function authFetch(url, options = {}) {
       options.headers = { ...options.headers, 'Authorization': `Bearer ${token}` };
@@ -204,26 +223,15 @@
       window.location.href = '/admin-login.html';
     }
 
-    // Load everything on start
+    // --- Init ---
     async function init() {
-      await Promise.all([loadStats(), loadBusinesses(), loadSubmissionsBadge()]);
+      await Promise.all([loadStats(), loadBusinesses(), loadSubmissions()]);
     }
 
-    async function loadSubmissionsBadge() {
-      const res = await authFetch(`${API}/submissions`);
-      const subs = await res.json();
-      const pending = subs.filter(s => s.status === 'pending');
-      const badge = document.getElementById('subBadge');
-      if (pending.length > 0) {
-        badge.textContent = pending.length;
-        badge.style.display = 'inline';
-      }
-    }
-
+    // --- Stats ---
     async function loadStats() {
       const res = await authFetch(`${API}/stats`);
       const stats = await res.json();
-
       document.getElementById('statsBar').innerHTML = `
         <div class="stat-card"><div class="label">Businesses</div><div class="value">${stats.totalBusinesses}</div></div>
         <div class="stat-card"><div class="label">Conversations</div><div class="value">${stats.totalConversations}</div></div>
@@ -232,58 +240,84 @@
       `;
     }
 
+    // --- Sidebar ---
     async function loadBusinesses() {
       const res = await authFetch(`${API}/businesses`);
       businesses = await res.json();
+      renderSidebar();
+    }
 
+    function renderSidebar() {
       const list = document.getElementById('bizList');
       if (businesses.length === 0) {
-        list.innerHTML = '<li class="empty-state">No businesses yet. Click + Add to create one.</li>';
+        list.innerHTML = '<div style="padding: 12px 20px; font-size: 12px; color: #999;">No businesses yet</div>';
         return;
       }
-
       list.innerHTML = businesses.map(b => `
-        <li class="biz-item ${selectedBiz?.id === b.id ? 'active' : ''}" onclick="selectBusiness('${b.id}')">
-          <div class="name"><span class="color-dot" style="background:${b.theme_color}"></span>${b.name}</div>
-          <div class="meta">${b.slug} · Created ${new Date(b.created_at).toLocaleDateString()}</div>
-        </li>
+        <div class="sidebar-item ${selectedBiz?.id === b.id ? 'active' : ''}" onclick="selectBusiness('${b.id}')">
+          <div class="name"><span class="color-dot" style="background:${b.theme_color}"></span> ${escapeHtml(b.name)}</div>
+          <div class="meta">${b.slug}</div>
+        </div>
       `).join('');
     }
 
+    // --- View switching ---
+    function showInbox() {
+      currentView = 'inbox';
+      selectedBiz = null;
+      renderSidebar();
+      document.getElementById('sidebarInbox').classList.add('active');
+      document.getElementById('inboxView').style.display = 'block';
+      document.getElementById('businessView').style.display = 'none';
+      loadSubmissions();
+    }
+
     async function selectBusiness(id) {
+      currentView = 'business';
       selectedBiz = businesses.find(b => b.id === id);
-      await loadBusinesses(); // re-render to show active state
+      renderSidebar();
+      document.getElementById('sidebarInbox').classList.remove('active');
+      document.getElementById('inboxView').style.display = 'none';
+      document.getElementById('businessView').style.display = 'block';
+      document.getElementById('bizViewTitle').innerHTML = `<span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span> ${escapeHtml(selectedBiz.name)}`;
+      // Reset to conversations tab
+      currentBizTab = 'conversations';
+      switchBizTab('conversations');
       await loadConversations(id);
       renderBizDetail();
     }
 
+    function switchBizTab(tab) {
+      currentBizTab = tab;
+      document.querySelectorAll('#bizTabs .tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`#bizTabs .tab[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById('conversationsTab').style.display = tab === 'conversations' ? 'block' : 'none';
+      document.getElementById('settingsTab').style.display = tab === 'settings' ? 'block' : 'none';
+    }
+
+    // --- Conversations ---
     async function loadConversations(businessId) {
       const res = await authFetch(`${API}/conversations/${businessId}`);
       const convos = await res.json();
-
       const list = document.getElementById('convList');
       if (convos.length === 0) {
         list.innerHTML = '<li class="empty-state">No conversations yet</li>';
         document.getElementById('messageArea').innerHTML = '<div class="empty-state">No conversations yet</div>';
         return;
       }
-
       list.innerHTML = convos.map(c => `
         <li class="conv-item" onclick="loadMessages('${c.id}', this)">
-          <div class="question">${c.first_question || 'No messages'}</div>
+          <div class="question">${escapeHtml(c.first_question || 'No messages')}</div>
           <div class="conv-meta">${c.message_count} msgs · ${timeAgo(c.last_message_at)}</div>
         </li>
       `).join('');
     }
 
     async function loadMessages(convId, el) {
-      // Highlight selected conversation
       document.querySelectorAll('.conv-item').forEach(e => e.classList.remove('active'));
       if (el) el.classList.add('active');
-
       const res = await authFetch(`${API}/conversation/${convId}/messages`);
       const msgs = await res.json();
-
       const area = document.getElementById('messageArea');
       area.innerHTML = msgs.map(m => `
         <div class="msg ${m.role}">
@@ -294,6 +328,7 @@
       area.scrollTop = area.scrollHeight;
     }
 
+    // --- Business Settings ---
     function renderBizDetail() {
       if (!selectedBiz) return;
       const b = selectedBiz;
@@ -316,7 +351,7 @@
         </div>
         <div class="field">
           <label>Widget Embed Code</label>
-          <input type="text" readonly value='<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${b.slug}" data-server="${window.location.origin}"><\/script>' 
+          <input type="text" readonly value='<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${b.slug}" data-server="${window.location.origin}"><\/script>'
                  onclick="this.select()" style="background: #f5f5f5; font-family: monospace; font-size: 11px;">
         </div>
         <div class="field">
@@ -340,17 +375,18 @@
           theme_color: document.getElementById('editColor').value,
         }),
       });
-
       if (res.ok) {
         selectedBiz = await res.json();
         await loadBusinesses();
         renderBizDetail();
+        document.getElementById('bizViewTitle').innerHTML = `<span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span> ${escapeHtml(selectedBiz.name)}`;
         alert('Saved!');
       } else {
         alert('Error saving. Check console.');
       }
     }
 
+    // --- New Business Modal ---
     function openNewBizModal() { document.getElementById('newBizModal').classList.add('open'); }
     function closeNewBizModal() { document.getElementById('newBizModal').classList.remove('open'); }
 
@@ -362,23 +398,19 @@
         welcome_message: document.getElementById('newBizWelcome').value || 'Hi! How can I help you today?',
         theme_color: document.getElementById('newBizColor').value,
       };
-
       if (!body.name || !body.slug || !body.system_prompt) {
         alert('Name, slug, and system prompt are required.');
         return;
       }
-
       const res = await authFetch(`${API}/businesses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-
       if (res.ok) {
         closeNewBizModal();
         await loadBusinesses();
         await loadStats();
-        // Clear form
         ['newBizName', 'newBizSlug', 'newBizPrompt', 'newBizWelcome'].forEach(id => document.getElementById(id).value = '');
       } else {
         const err = await res.json();
@@ -386,30 +418,25 @@
       }
     }
 
-    function switchTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
-      document.getElementById('conversationsTab').style.display = tab === 'conversations' ? 'block' : 'none';
-      document.getElementById('detailsTab').style.display = tab === 'details' ? 'block' : 'none';
-      document.getElementById('submissionsTab').style.display = tab === 'submissions' ? 'block' : 'none';
-      if (tab === 'submissions') loadSubmissions();
-    }
-
+    // --- Submissions (Inbox) ---
     async function loadSubmissions() {
       const res = await authFetch(`${API}/submissions`);
       const subs = await res.json();
-
       const container = document.getElementById('submissionsList');
       const pending = subs.filter(s => s.status === 'pending');
 
-      // Update badge
-      const badge = document.getElementById('subBadge');
+      // Update inbox badge + summary
+      const badge = document.getElementById('inboxBadge');
+      const summary = document.getElementById('inboxSummary');
+      const approved = subs.filter(s => s.status === 'approved').length;
+      const rejected = subs.filter(s => s.status === 'rejected').length;
       if (pending.length > 0) {
         badge.textContent = pending.length;
         badge.style.display = 'inline';
       } else {
         badge.style.display = 'none';
       }
+      summary.textContent = `${pending.length} pending · ${approved} approved · ${rejected} rejected`;
 
       if (subs.length === 0) {
         container.innerHTML = '<div class="empty-state">No submissions yet. Share the onboarding link with businesses.</div>';
@@ -421,51 +448,90 @@
         const statusColor = s.status === 'pending' ? '#f59e0b' : s.status === 'approved' ? '#10b981' : '#ef4444';
         const statusLabel = s.status.charAt(0).toUpperCase() + s.status.slice(1);
         const isPending = s.status === 'pending';
+        const isRejected = s.status === 'rejected';
+        const cardOpacity = isRejected ? 'opacity: 0.5;' : '';
         return `
-          <div style="border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <div>
-                ${isPending
-                  ? `<input type="text" id="sub-name-${s.id}" value="${escapeAttr(s.business_name)}" style="font-size: 16px; font-weight: 700; border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px; width: 300px;">`
-                  : `<strong style="font-size: 16px;">${escapeHtml(s.business_name)}</strong>`
-                }
-                <span style="background: ${statusColor}; color: white; padding: 2px 10px; border-radius: 10px; font-size: 11px; margin-left: 8px;">${statusLabel}</span>
+          <div style="border: 1px solid #eee; border-radius: 10px; margin-bottom: 12px; ${cardOpacity}">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; cursor: pointer;" onclick="toggleSubmission('${s.id}')">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0;">
+                <span id="sub-arrow-${s.id}" style="font-size: 10px; color: #999; transition: transform 0.2s; flex-shrink: 0;">▶</span>
+                <strong style="font-size: 14px;">${escapeHtml(s.business_name)}</strong>
+                <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; flex-shrink: 0;">${statusLabel}</span>
+                <span style="font-size: 12px; color: #666;">
+                  ${formData.ownerName ? '👤 ' + escapeHtml(formData.ownerName) : ''}${formData.phone ? ' · 📞 ' + escapeHtml(formData.phone) : ''}
+                </span>
               </div>
-              <span style="font-size: 12px; color: #999;">${new Date(s.submitted_at + 'Z').toLocaleString()}</span>
+              <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                <span style="font-size: 11px; color: #999;">${new Date(s.submitted_at + 'Z').toLocaleDateString()}</span>
+                <button class="btn btn-sm" onclick="event.stopPropagation(); deleteSubmission('${s.id}')" title="Delete" style="color: #bbb; padding: 2px 6px; font-size: 11px; background: none; border: none; cursor: pointer;">✕</button>
+              </div>
             </div>
-            <div style="font-size: 13px; color: #666; margin-bottom: 8px;">
-              ${formData.type ? '<strong>Type:</strong> ' + escapeHtml(formData.type) + ' · ' : ''}
-              ${formData.phone ? '<strong>Phone:</strong> ' + escapeHtml(formData.phone) + ' · ' : ''}
-              ${formData.website ? '<strong>Website:</strong> ' + escapeHtml(formData.website) : ''}
-              ${formData.serviceArea ? ' · <strong>Area:</strong> ' + escapeHtml(formData.serviceArea) : ''}
+            <div id="sub-detail-${s.id}" style="display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0;">
+              <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #666; margin: 12px 0 16px; padding: 10px 14px; background: #fafafa; border-radius: 8px;">
+                ${formData.type ? '<span><strong>Type:</strong> ' + escapeHtml(formData.type) + '</span>' : ''}
+                ${formData.phone ? '<span><strong>Phone:</strong> ' + escapeHtml(formData.phone) + '</span>' : ''}
+                ${formData.serviceArea ? '<span><strong>Area:</strong> ' + escapeHtml(formData.serviceArea) + '</span>' : ''}
+                ${formData.website ? '<span><strong>Website:</strong> ' + escapeHtml(formData.website) + '</span>' : ''}
+              </div>
+              ${isPending ? `
+                <div class="field">
+                  <label>Business Name</label>
+                  <input type="text" id="sub-name-${s.id}" value="${escapeAttr(s.business_name)}">
+                </div>
+                <div class="field">
+                  <label>Welcome Message</label>
+                  <input type="text" id="sub-welcome-${s.id}" value="${escapeAttr(s.welcome_message || '')}">
+                </div>
+                <div class="field">
+                  <label>Theme Color</label>
+                  <input type="color" id="sub-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 36px; padding: 2px;">
+                </div>
+                <div class="field">
+                  <label>System Prompt (AI Instructions)</label>
+                  <textarea id="sub-prompt-${s.id}" style="font-family: monospace; font-size: 12px;">${escapeHtml(s.system_prompt)}</textarea>
+                </div>
+                <div class="actions">
+                  <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Approve & Create Business</button>
+                  <button class="btn btn-danger btn-sm" onclick="rejectSubmission('${s.id}')">✗ Reject</button>
+                </div>
+              ` : `
+                <details style="margin-bottom: 8px;">
+                  <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
+                  <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
+                </details>
+                ${s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
+                ${isRejected ? '<div style="font-size: 12px; color: #ef4444;">✗ Rejected</div>' : ''}
+              `}
             </div>
-            ${isPending ? `
-              <div style="margin-bottom: 12px;">
-                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">Welcome Message</label>
-                <input type="text" id="sub-welcome-${s.id}" value="${escapeAttr(s.welcome_message || '')}" style="width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
-              </div>
-              <div style="margin-bottom: 12px;">
-                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">Theme Color</label>
-                <input type="color" id="sub-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 36px; padding: 2px; border: 1px solid #ddd; border-radius: 6px;">
-              </div>
-              <div style="margin-bottom: 12px;">
-                <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #888; margin-bottom: 4px;">System Prompt (AI Instructions)</label>
-                <textarea id="sub-prompt-${s.id}" style="width: 100%; min-height: 200px; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; font-family: monospace; resize: vertical;">${escapeHtml(s.system_prompt)}</textarea>
-              </div>
-            ` : `
-              <details style="margin-bottom: 12px;">
-                <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
-                <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
-              </details>
-            `}
-            ${isPending ? `
-              <div class="actions">
-                <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Review & Create Business</button>
-              </div>
-            ` : s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
           </div>
         `;
       }).join('');
+    }
+
+    function toggleSubmission(id) {
+      const detail = document.getElementById(`sub-detail-${id}`);
+      const arrow = document.getElementById(`sub-arrow-${id}`);
+      if (detail.style.display === 'none') {
+        detail.style.display = 'block';
+        arrow.style.transform = 'rotate(90deg)';
+      } else {
+        detail.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    async function rejectSubmission(id) {
+      if (!confirm('Reject this submission?')) return;
+      const res = await authFetch(`${API}/submissions/${id}/reject`, { method: 'POST' });
+      if (res.ok) await loadSubmissions();
+      else alert((await res.json()).error || 'Error rejecting');
+    }
+
+    async function deleteSubmission(id) {
+      if (!confirm('Permanently delete this submission?')) return;
+      const res = await authFetch(`${API}/submissions/${id}`, { method: 'DELETE' });
+      if (res.ok) await loadSubmissions();
+      else alert((await res.json()).error || 'Error deleting');
     }
 
     async function approveSubmission(id) {
@@ -473,36 +539,24 @@
       const prompt = document.getElementById(`sub-prompt-${id}`).value.trim();
       const welcome = document.getElementById(`sub-welcome-${id}`).value.trim();
       const color = document.getElementById(`sub-color-${id}`).value;
-
-      if (!name || !prompt) {
-        alert('Business name and system prompt are required.');
-        return;
-      }
-
+      if (!name || !prompt) { alert('Business name and system prompt are required.'); return; }
       if (!confirm(`Create "${name}" and make the widget live?`)) return;
 
       const res = await authFetch(`${API}/submissions/${id}/approve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          business_name: name,
-          system_prompt: prompt,
-          welcome_message: welcome,
-          theme_color: color,
-        }),
+        body: JSON.stringify({ business_name: name, system_prompt: prompt, welcome_message: welcome, theme_color: color }),
       });
       if (res.ok) {
         const data = await res.json();
         alert(`${data.business.name} is now live! Slug: ${data.business.slug}`);
-        await loadSubmissions();
-        await loadBusinesses();
-        await loadStats();
+        await Promise.all([loadSubmissions(), loadBusinesses(), loadStats()]);
       } else {
-        const err = await res.json();
-        alert(err.error || 'Error approving submission');
+        alert((await res.json()).error || 'Error approving');
       }
     }
 
+    // --- Helpers ---
     function timeAgo(dateStr) {
       const diff = Date.now() - new Date(dateStr + 'Z').getTime();
       const mins = Math.floor(diff / 60000);
