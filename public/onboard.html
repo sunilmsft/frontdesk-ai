@@ -172,7 +172,7 @@
         </div>
         <div class="field">
           <label data-i18n="lbl_type">Type of Business *</label>
-          <select id="bizType">
+          <select id="bizType" onchange="toggleOtherType()">
             <option value="restaurant" data-i18n="opt_restaurant">Restaurant / Café</option>
             <option value="salon" data-i18n="opt_salon">Salon / Spa</option>
             <option value="home_services" data-i18n="opt_home_services">Home Services (Cleaning, Landscaping, etc.)</option>
@@ -181,6 +181,10 @@
             <option value="professional" data-i18n="opt_professional">Professional Services</option>
             <option value="other" data-i18n="opt_other">Other</option>
           </select>
+        </div>
+        <div class="field" id="otherTypeField" style="display:none;">
+          <label data-i18n="lbl_other_type">What type of business? *</label>
+          <input type="text" id="bizOtherType" data-i18n-ph="ph_other_type" placeholder="e.g. Pet grooming, Tutoring, Photography">
         </div>
         <div class="field">
           <label data-i18n="lbl_website_status">Do you have a website? *</label>
@@ -400,6 +404,8 @@
         opt_home_services: 'Servicios del Hogar (Limpieza, Jardinería, etc.)',
         opt_professional: 'Servicios Profesionales',
         opt_other: 'Otro',
+        lbl_other_type: '¿Qué tipo de negocio? *',
+        ph_other_type: 'ej. Peluquería canina, Tutorías, Fotografía',
         optional: '(opcional)',
         lbl_website_status: '¿Tienes un sitio web? *',
         opt_have_website: 'Sí, tengo un sitio web',
@@ -482,6 +488,8 @@
         opt_home_services: 'Serviços Domésticos (Limpeza, Jardinagem, etc.)',
         opt_professional: 'Serviços Profissionais',
         opt_other: 'Outro',
+        lbl_other_type: 'Que tipo de negócio? *',
+        ph_other_type: 'ex. Pet shop, Aulas particulares, Fotografia',
         optional: '(opcional)',
         lbl_website_status: 'Você tem um site? *',
         opt_have_website: 'Sim, eu tenho um site',
@@ -562,6 +570,8 @@
         opt_home_services: 'Home Services (Cleaning, Landscaping, etc.)',
         opt_professional: 'Professional Services',
         opt_other: 'Other',
+        lbl_other_type: 'What type of business? *',
+        ph_other_type: 'e.g. Pet grooming, Tutoring, Photography',
         lbl_owner: 'Your Name *',
         ph_owner: 'e.g. Kesia Soares',
         optional: '(optional)',
@@ -674,6 +684,10 @@
       document.getElementById('websiteUrlField').style.display = status === 'have_one' ? 'block' : 'none';
     }
 
+    function toggleOtherType() {
+      document.getElementById('otherTypeField').style.display = document.getElementById('bizType').value === 'other' ? 'block' : 'none';
+    }
+
     // Toggle "Other language" text field
     document.getElementById('langCheckboxes').addEventListener('change', function(e) {
       if (e.target.value === 'other') {
@@ -709,7 +723,9 @@
 
     function buildSystemPrompt(data) {
       let prompt = `You are a helpful, ${data.tone} virtual assistant for ${data.name}`;
-      if (data.type !== 'other') {
+      if (data.type === 'other' && data.otherType) {
+        prompt += `, a local ${data.otherType}`;
+      } else if (data.type !== 'other') {
         const typeLabels = { restaurant: 'restaurant', salon: 'salon', home_services: 'home services business', retail: 'shop', fitness: 'fitness studio', professional: 'business' };
         prompt += `, a local ${typeLabels[data.type] || data.type}`;
       }
@@ -784,6 +800,7 @@
         ownerName: document.getElementById('ownerName').value.trim(),
         name: document.getElementById('bizName').value.trim(),
         type: document.getElementById('bizType').value,
+        otherType: document.getElementById('bizOtherType').value.trim(),
         website: document.getElementById('bizWebsite').value.trim(),
         websiteStatus: document.getElementById('bizWebsiteStatus').value,
         phone: document.getElementById('bizPhone').value.trim(),
