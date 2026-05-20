@@ -79,6 +79,41 @@
 
     .actions { display: flex; gap: 8px; margin-top: 16px; }
 
+    /* Pipeline stage badges */
+    .stage-badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stage-lead { background: #e2e8f0; color: #475569; }
+    .stage-contacted { background: #f3e8ff; color: #6b21a8; }
+    .stage-submitted { background: #fef3c7; color: #92400e; }
+    .stage-in-review { background: #dbeafe; color: #1e40af; }
+    .stage-prompt-ready { background: #e0e7ff; color: #3730a3; }
+    .stage-chat-live { background: #d1fae5; color: #065f46; }
+    .stage-site-building { background: #e0e7ff; color: #3730a3; }
+    .stage-reviewing { background: #dbeafe; color: #1e40af; }
+    .stage-building { background: #e0e7ff; color: #3730a3; }
+    .stage-preview-sent { background: #fce7f3; color: #9d174d; }
+    .stage-revising { background: #fef3c7; color: #92400e; }
+    .stage-approved { background: #d1fae5; color: #065f46; }
+    .stage-domain-setup { background: #cffafe; color: #155e75; }
+    .stage-live { background: #10b981; color: white; }
+
+    .pipeline-row { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; }
+    .pipeline-row-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; cursor: pointer; }
+    .pipeline-row-header:hover { background: #fafafa; border-radius: 10px; }
+    .pipeline-detail { display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0; }
+    .pipeline-detail.open { display: block; }
+    .pipeline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pipeline-dates { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; font-size: 12px; margin: 12px 0; }
+    .pipeline-dates .date-item { background: #f8fafc; padding: 8px 12px; border-radius: 6px; }
+    .pipeline-dates .date-item .date-label { font-weight: 600; color: #64748b; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pipeline-dates .date-item .date-value { margin-top: 2px; color: #1a1a1a; }
+    .note-entry { padding: 8px 12px; background: #f8fafc; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+    .note-entry .note-time { color: #999; font-size: 10px; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
     /* Right panel title */
     .panel-title { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
     .panel-title h2 { font-size: 15px; font-weight: 600; }
@@ -109,6 +144,9 @@
             <div class="name">📥 Inbox</div>
             <span class="badge" id="inboxBadge" style="display:none;">0</span>
           </div>
+          <div class="sidebar-item" id="sidebarPipeline" onclick="showPipeline()">
+            <div class="name">📋 Pipeline</div>
+          </div>
           <div class="sidebar-divider"></div>
           <div class="sidebar-section">Businesses</div>
           <div id="bizList"></div>
@@ -134,6 +172,17 @@
 
           <!-- Business view (shown when a business is selected) -->
           <div id="businessView" style="display: none;">
+
+          <!-- Pipeline view -->
+          <div id="pipelineView" style="display: none;">
+            <div class="panel-title">
+              <h2>Customer Pipeline</h2>
+              <button class="btn btn-primary btn-sm" onclick="openNewPipelineModal()">+ Add Lead</button>
+            </div>
+            <div class="biz-detail" id="pipelineList">
+              <div class="empty-state">Loading pipeline...</div>
+            </div>
+          </div>
             <div class="panel-title">
               <h2 id="bizViewTitle" style="display: flex; align-items: center; gap: 10px;">
                 <span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span>
@@ -192,6 +241,39 @@
       <div class="actions">
         <button class="btn btn-primary" onclick="createBusiness()">Create Business</button>
         <button class="btn btn-secondary" onclick="closeNewBizModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Lead Modal -->
+  <div class="modal-overlay" id="newLeadModal">
+    <div class="modal">
+      <h2>Add New Lead</h2>
+      <div class="field">
+        <label>Business Name</label>
+        <input type="text" id="newLeadBizName" placeholder="e.g. Maria's Cleaning Service">
+      </div>
+      <div class="pipeline-grid">
+        <div class="field">
+          <label>Owner Name</label>
+          <input type="text" id="newLeadOwner" placeholder="e.g. Maria">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="text" id="newLeadPhone" placeholder="e.g. (425) 555-1234">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="text" id="newLeadEmail" placeholder="Optional">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <input type="text" id="newLeadNotes" placeholder="e.g. Referred by Kesia, interested in full package">
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="createPipelineLead()">Add Lead</button>
+        <button class="btn btn-secondary" onclick="closeNewLeadModal()">Cancel</button>
       </div>
     </div>
   </div>
@@ -267,8 +349,10 @@
       selectedBiz = null;
       renderSidebar();
       document.getElementById('sidebarInbox').classList.add('active');
+      document.getElementById('sidebarPipeline').classList.remove('active');
       document.getElementById('inboxView').style.display = 'block';
       document.getElementById('businessView').style.display = 'none';
+      document.getElementById('pipelineView').style.display = 'none';
       loadSubmissions();
     }
 
@@ -277,8 +361,10 @@
       selectedBiz = businesses.find(b => b.id === id);
       renderSidebar();
       document.getElementById('sidebarInbox').classList.remove('active');
+      document.getElementById('sidebarPipeline').classList.remove('active');
       document.getElementById('inboxView').style.display = 'none';
       document.getElementById('businessView').style.display = 'block';
+      document.getElementById('pipelineView').style.display = 'none';
       document.getElementById('bizViewTitle').innerHTML = `<span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span> ${escapeHtml(selectedBiz.name)}`;
       // Reset to conversations tab
       currentBizTab = 'conversations';
@@ -481,10 +567,17 @@
         ? `🗑 Trash (${deleted}) · <a href="#" onclick="toggleTrash(); return false;" style="color: #2563eb; text-decoration: none;">← Back to Inbox</a>`
         : `${pending.length} pending · ${approved} approved · ${rejected} rejected${deleted ? ' · <a href=\"#\" onclick=\"toggleTrash(); return false;\" style=\"color: #999; text-decoration: none;\">🗑 Trash (' + deleted + ')</a>' : ''}`;
 
+      // Check for new submissions (alerts)
+      checkNewSubmissions(pending);
+
       if (subs.length === 0) {
         container.innerHTML = '<div class="empty-state">No submissions yet. Share the onboarding link with businesses.</div>';
         return;
       }
+
+      // Store submissions data for later use
+      window._submissions = {};
+      subs.forEach(s => window._submissions[s.id] = s);
 
       container.innerHTML = subs.map(s => {
         const formData = JSON.parse(s.form_data);
@@ -493,6 +586,8 @@
         const isPending = s.status === 'pending';
         const isRejected = s.status === 'rejected';
         const cardOpacity = isRejected ? 'opacity: 0.5;' : '';
+        const typeLabel = formData.type === 'other' ? (formData.otherType || 'Other') : { restaurant: 'Restaurant', salon: 'Salon', home_services: 'Home Services', retail: 'Retail', fitness: 'Fitness', professional: 'Professional' }[formData.type] || formData.type || '—';
+
         return `
           <div style="border: 1px solid #eee; border-radius: 10px; margin-bottom: 12px; ${cardOpacity}">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; cursor: pointer;" onclick="toggleSubmission('${s.id}')">
@@ -513,45 +608,254 @@
               </div>
             </div>
             <div id="sub-detail-${s.id}" style="display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0;">
-              <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #666; margin: 12px 0 16px; padding: 10px 14px; background: #fafafa; border-radius: 8px;">
-                ${formData.type ? '<span><strong>Type:</strong> ' + escapeHtml(formData.type) + '</span>' : ''}
-                ${formData.phone ? '<span><strong>Phone:</strong> ' + escapeHtml(formData.phone) + '</span>' : ''}
-                ${formData.serviceArea ? '<span><strong>Area:</strong> ' + escapeHtml(formData.serviceArea) + '</span>' : ''}
-                ${formData.website ? '<span><strong>Website:</strong> ' + escapeHtml(formData.website) + '</span>' : ''}
-              </div>
-              ${isPending ? `
-                <div class="field">
-                  <label>Business Name</label>
-                  <input type="text" id="sub-name-${s.id}" value="${escapeAttr(s.business_name)}">
-                </div>
-                <div class="field">
-                  <label>Welcome Message</label>
-                  <input type="text" id="sub-welcome-${s.id}" value="${escapeAttr(s.welcome_message || '')}">
-                </div>
-                <div class="field">
-                  <label>Theme Color</label>
-                  <input type="color" id="sub-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 36px; padding: 2px;">
-                </div>
-                <div class="field">
-                  <label>System Prompt (AI Instructions)</label>
-                  <textarea id="sub-prompt-${s.id}" style="font-family: monospace; font-size: 12px;">${escapeHtml(s.system_prompt)}</textarea>
-                </div>
-                <div class="actions">
-                  <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">✓ Approve & Create Business</button>
-                  <button class="btn btn-danger btn-sm" onclick="rejectSubmission('${s.id}')">✗ Reject</button>
-                </div>
-              ` : `
-                <details style="margin-bottom: 8px;">
-                  <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
-                  <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
-                </details>
-                ${s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
-                ${isRejected ? '<div style="font-size: 12px; color: #ef4444;">✗ Rejected</div>' : ''}
-              `}
+              ${isPending ? renderPendingReview(s, formData, typeLabel) : renderCompletedReview(s, formData, typeLabel)}
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    // --- Render full form review for pending submissions ---
+    function renderPendingReview(s, fd, typeLabel) {
+      return `
+        <!-- STEP 1: Review Form Data -->
+        <div id="sub-step1-${s.id}">
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: #1e40af;">
+            📋 <strong>Step 1:</strong> Review & refine the form data. Use ✨ AI Enhance on any section, then click <strong>Generate Prompt</strong>.
+          </div>
+
+          <!-- Business Profile -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">📋 Business Profile</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="field" style="margin:0;"><label>Business Name</label><input type="text" id="sf-name-${s.id}" value="${escapeAttr(fd.name || s.business_name)}"></div>
+              <div class="field" style="margin:0;"><label>Type</label><input type="text" id="sf-type-${s.id}" value="${escapeAttr(typeLabel)}"></div>
+              <div class="field" style="margin:0;"><label>Owner</label><input type="text" id="sf-owner-${s.id}" value="${escapeAttr(fd.ownerName || '')}"></div>
+              <div class="field" style="margin:0;"><label>Phone</label><input type="text" id="sf-phone-${s.id}" value="${escapeAttr(fd.phone || '')}"></div>
+              <div class="field" style="margin:0;"><label>Email</label><input type="text" id="sf-email-${s.id}" value="${escapeAttr(fd.email || '')}"></div>
+              <div class="field" style="margin:0;"><label>Address</label><input type="text" id="sf-address-${s.id}" value="${escapeAttr(fd.address || '')}"></div>
+              <div class="field" style="margin:0;"><label>Website</label><input type="text" id="sf-website-${s.id}" value="${escapeAttr(fd.website || '')}"></div>
+              <div class="field" style="margin:0;"><label>Website Status</label><input type="text" id="sf-webstatus-${s.id}" value="${escapeAttr(fd.websiteStatus || '')}" disabled style="background:#f5f5f5;color:#999;"></div>
+            </div>
+          </div>
+
+          <!-- Service Area -->
+          ${renderEnhanceableSection(s.id, 'serviceArea', '📍 Service Area', fd.serviceArea, 'Where do they serve?')}
+
+          <!-- Hours -->
+          ${renderEnhanceableSection(s.id, 'hours', '🕐 Hours of Operation', fd.hours, 'Business hours...')}
+
+          <!-- Services / Offerings -->
+          ${renderEnhanceableSection(s.id, 'offerings', '🛠 Services & Offerings', fd.offerings, 'What do they offer?')}
+
+          <!-- Reservations / Booking -->
+          ${renderEnhanceableSection(s.id, 'reservations', '📅 Reservations & Booking', fd.reservations, 'How can customers book?')}
+
+          <!-- Policies -->
+          ${renderEnhanceableSection(s.id, 'policies', '📜 Policies', fd.policies, 'Cancellation, pricing, etc.')}
+
+          <!-- About -->
+          ${renderEnhanceableSection(s.id, 'about', '👤 About the Owner', fd.about, 'Their story...')}
+
+          <!-- Tone & Voice -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b;">💬 Tone & Voice</div>
+              <button class="btn btn-secondary btn-sm" onclick="enhanceField('${s.id}', 'tone')" style="font-size: 11px;">✨ AI Enhance</button>
+            </div>
+            <input type="text" id="sf-tone-${s.id}" value="${escapeAttr(fd.tone || 'friendly')}" placeholder="e.g. friendly, professional, warm">
+            <div id="sf-tone-${s.id}-loading" style="display:none; font-size: 11px; color: #2563eb; margin-top: 4px;">✨ Enhancing...</div>
+          </div>
+
+          <!-- Widget Settings -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">🎨 Widget Settings</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="field" style="margin:0;"><label>Welcome Message</label><input type="text" id="sf-welcome-${s.id}" value="${escapeAttr(s.welcome_message || 'Hi! 👋 How can I help you?')}"></div>
+              <div class="field" style="margin:0;"><label>Theme Color</label><input type="color" id="sf-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 40px; padding: 2px;"></div>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-bottom: 12px;">
+            <button class="btn btn-primary" onclick="generatePrompt('${s.id}')">🤖 Generate AI Prompt →</button>
+            <button class="btn btn-secondary" onclick="saveFormEdits('${s.id}')">💾 Save Edits</button>
+            <button class="btn btn-danger btn-sm" onclick="rejectSubmission('${s.id}')" style="margin-left: auto;">✗ Reject</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Review & Approve Prompt -->
+        <div id="sub-step2-${s.id}" style="display: none;">
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: #065f46;">
+            ✅ <strong>Step 2:</strong> Review the generated prompt. Edit if needed, then approve to create the business.
+          </div>
+          <div style="margin-bottom: 8px;">
+            <button class="btn btn-secondary btn-sm" onclick="showStep1('${s.id}')">← Back to Form</button>
+          </div>
+          <div class="field">
+            <label>System Prompt (AI Instructions)</label>
+            <textarea id="sf-prompt-${s.id}" style="font-family: monospace; font-size: 12px; min-height: 300px;">${escapeHtml(s.system_prompt)}</textarea>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="approveSubmission('${s.id}')">✓ Approve & Create Business</button>
+            <button class="btn btn-secondary" onclick="generatePrompt('${s.id}')">🔄 Regenerate Prompt</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderEnhanceableSection(subId, field, label, value, placeholder) {
+      if (!value && field !== 'offerings') return ''; // Skip empty optional sections
+      return `
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b;">${label}</div>
+            <button class="btn btn-secondary btn-sm" onclick="enhanceField('${subId}', '${field}')" style="font-size: 11px;" ${!value ? 'disabled style="opacity:0.5;font-size:11px;"' : ''}>✨ AI Enhance</button>
+          </div>
+          <textarea id="sf-${field}-${subId}" placeholder="${placeholder}" style="min-height: 60px; font-size: 13px;">${escapeHtml(value || '')}</textarea>
+          <div id="sf-${field}-${subId}-loading" style="display:none; font-size: 11px; color: #2563eb; margin-top: 4px;">✨ Enhancing...</div>
+        </div>
+      `;
+    }
+
+    function renderCompletedReview(s, fd, typeLabel) {
+      return `
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #666; margin: 12px 0 16px; padding: 10px 14px; background: #fafafa; border-radius: 8px;">
+          ${typeLabel ? '<span><strong>Type:</strong> ' + escapeHtml(typeLabel) + '</span>' : ''}
+          ${fd.phone ? '<span><strong>Phone:</strong> ' + escapeHtml(fd.phone) + '</span>' : ''}
+          ${fd.serviceArea ? '<span><strong>Area:</strong> ' + escapeHtml(fd.serviceArea) + '</span>' : ''}
+          ${fd.website ? '<span><strong>Website:</strong> ' + escapeHtml(fd.website) + '</span>' : ''}
+          ${fd.ownerName ? '<span><strong>Owner:</strong> ' + escapeHtml(fd.ownerName) + '</span>' : ''}
+        </div>
+        <details style="margin-bottom: 8px;">
+          <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Form Data</summary>
+          <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 200px; overflow-y: auto;">${escapeHtml(JSON.stringify(fd, null, 2))}</pre>
+        </details>
+        <details style="margin-bottom: 8px;">
+          <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
+          <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
+        </details>
+        ${s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
+        ${s.status === 'rejected' ? '<div style="font-size: 12px; color: #ef4444;">✗ Rejected</div>' : ''}
+      `;
+    }
+
+    // --- AI Enhance a field ---
+    async function enhanceField(subId, field) {
+      const isTextarea = ['serviceArea', 'hours', 'offerings', 'reservations', 'policies', 'about'].includes(field);
+      const el = document.getElementById(`sf-${field}-${subId}`);
+      const loadingEl = document.getElementById(`sf-${field}-${subId}-loading`);
+      if (!el || !el.value.trim()) return;
+
+      const bizName = document.getElementById(`sf-name-${subId}`)?.value || '';
+      const bizType = document.getElementById(`sf-type-${subId}`)?.value || '';
+
+      loadingEl.style.display = 'block';
+      el.disabled = true;
+
+      try {
+        const res = await authFetch(`${API}/ai/enhance`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ field, value: el.value, businessName: bizName, businessType: bizType })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          el.value = data.enhanced;
+          el.style.borderColor = '#10b981';
+          setTimeout(() => el.style.borderColor = '', 2000);
+        } else {
+          alert('Enhancement failed. Try again.');
+        }
+      } catch (err) {
+        alert('Enhancement failed: ' + err.message);
+      } finally {
+        loadingEl.style.display = 'none';
+        el.disabled = false;
+      }
+    }
+
+    // --- Collect edited form data from the review UI ---
+    function collectFormData(subId) {
+      const get = (id) => document.getElementById(id)?.value?.trim() || '';
+      return {
+        name: get(`sf-name-${subId}`),
+        ownerName: get(`sf-owner-${subId}`),
+        type: get(`sf-type-${subId}`),
+        phone: get(`sf-phone-${subId}`),
+        email: get(`sf-email-${subId}`),
+        address: get(`sf-address-${subId}`),
+        website: get(`sf-website-${subId}`),
+        websiteStatus: get(`sf-webstatus-${subId}`),
+        serviceArea: get(`sf-serviceArea-${subId}`),
+        hours: get(`sf-hours-${subId}`),
+        offerings: get(`sf-offerings-${subId}`),
+        reservations: get(`sf-reservations-${subId}`),
+        policies: get(`sf-policies-${subId}`),
+        about: get(`sf-about-${subId}`),
+        tone: get(`sf-tone-${subId}`),
+      };
+    }
+
+    // --- Save form edits without generating prompt ---
+    async function saveFormEdits(subId) {
+      const formData = collectFormData(subId);
+      const res = await authFetch(`${API}/submissions/${subId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form_data: formData, business_name: formData.name })
+      });
+      if (res.ok) {
+        // Brief flash to confirm
+        const btn = event.target;
+        const orig = btn.textContent;
+        btn.textContent = '✓ Saved!';
+        btn.style.background = '#10b981'; btn.style.color = 'white';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 1500);
+      } else {
+        alert('Error saving edits');
+      }
+    }
+
+    // --- Generate prompt from edited form data (server-side) ---
+    async function generatePrompt(subId) {
+      const formData = collectFormData(subId);
+
+      // Save edits first
+      await authFetch(`${API}/submissions/${subId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form_data: formData, business_name: formData.name })
+      });
+
+      // Generate prompt server-side
+      const res = await authFetch(`${API}/ai/generate-prompt`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ form_data: formData })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById(`sf-prompt-${subId}`).value = data.system_prompt;
+
+        // Save generated prompt to submission
+        await authFetch(`${API}/submissions/${subId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ system_prompt: data.system_prompt })
+        });
+
+        // Show step 2
+        document.getElementById(`sub-step1-${subId}`).style.display = 'none';
+        document.getElementById(`sub-step2-${subId}`).style.display = 'block';
+      } else {
+        alert('Error generating prompt');
+      }
+    }
+
+    function showStep1(subId) {
+      document.getElementById(`sub-step1-${subId}`).style.display = 'block';
+      document.getElementById(`sub-step2-${subId}`).style.display = 'none';
     }
 
     function toggleSubmission(id) {
@@ -592,12 +896,12 @@
     }
 
     async function approveSubmission(id) {
-      const name = document.getElementById(`sub-name-${id}`).value.trim();
-      const prompt = document.getElementById(`sub-prompt-${id}`).value.trim();
-      const welcome = document.getElementById(`sub-welcome-${id}`).value.trim();
-      const color = document.getElementById(`sub-color-${id}`).value;
+      const name = document.getElementById(`sf-name-${id}`)?.value?.trim() || window._submissions[id]?.business_name;
+      const prompt = document.getElementById(`sf-prompt-${id}`).value.trim();
+      const welcome = document.getElementById(`sf-welcome-${id}`)?.value?.trim() || '';
+      const color = document.getElementById(`sf-color-${id}`)?.value || '#0d9488';
       if (!name || !prompt) { alert('Business name and system prompt are required.'); return; }
-      if (!confirm(`Create "${name}" and make the widget live?`)) return;
+      if (!confirm(`Create "${name}" and make the chat widget live?`)) return;
 
       const res = await authFetch(`${API}/submissions/${id}/approve`, {
         method: 'POST',
@@ -632,6 +936,296 @@
 
     function escapeAttr(str) {
       return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // --- New Submission Alerts ---
+    let lastSeenPendingCount = parseInt(localStorage.getItem('fd_last_pending') || '0');
+    let notificationsEnabled = false;
+
+    function checkNewSubmissions(pending) {
+      const currentCount = pending.length;
+      if (currentCount > lastSeenPendingCount) {
+        const newCount = currentCount - lastSeenPendingCount;
+        showNotification(newCount, pending[0]?.business_name);
+      }
+      lastSeenPendingCount = currentCount;
+      localStorage.setItem('fd_last_pending', currentCount.toString());
+    }
+
+    function showNotification(count, bizName) {
+      // Browser notification
+      if (Notification.permission === 'granted') {
+        new Notification('FrontDesk AI — New Submission', {
+          body: `${count} new submission${count > 1 ? 's' : ''}${bizName ? ': ' + bizName : ''}`,
+          icon: '🏪',
+        });
+      }
+      // In-app flash on the inbox badge
+      const badge = document.getElementById('inboxBadge');
+      if (badge) {
+        badge.style.animation = 'none';
+        badge.offsetHeight; // reflow
+        badge.style.animation = 'pulse 0.6s ease 3';
+      }
+    }
+
+    // Request notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+
+    // Poll for new submissions every 30 seconds
+    setInterval(() => {
+      if (currentView === 'inbox') loadSubmissions();
+    }, 30000);
+
+    // --- Pipeline ---
+    let pipelineData = [];
+    const STAGES = ['lead', 'contacted', 'submitted', 'in-review', 'prompt-ready', 'chat-live', 'site-building', 'preview-sent', 'revising', 'approved', 'domain-setup', 'live'];
+    const STAGE_LABELS = {
+      'lead': '🔵 Lead', 'contacted': '📤 Contacted', 'submitted': '📝 Submitted',
+      'in-review': '🔍 In Review', 'prompt-ready': '🤖 Prompt Ready', 'chat-live': '💬 Chat Live',
+      'site-building': '🏗 Building Site', 'preview-sent': '👁 Preview Sent', 'revising': '✏️ Revising',
+      'approved': '✅ Approved', 'domain-setup': '🌐 Domain Setup', 'live': '🚀 Live'
+    };
+
+    function showPipeline() {
+      currentView = 'pipeline';
+      selectedBiz = null;
+      renderSidebar();
+      document.getElementById('sidebarInbox').classList.remove('active');
+      document.getElementById('sidebarPipeline').classList.add('active');
+      document.getElementById('inboxView').style.display = 'none';
+      document.getElementById('businessView').style.display = 'none';
+      document.getElementById('pipelineView').style.display = 'block';
+      loadPipeline();
+    }
+
+    async function loadPipeline() {
+      const res = await authFetch(`${API}/pipeline`);
+      pipelineData = await res.json();
+      renderPipeline();
+    }
+
+    function renderPipeline() {
+      const container = document.getElementById('pipelineList');
+      if (pipelineData.length === 0) {
+        container.innerHTML = '<div class="empty-state">No customers in the pipeline yet.<br>Add a lead or share the onboarding form.</div>';
+        return;
+      }
+
+      container.innerHTML = pipelineData.map(p => {
+        const notes = JSON.parse(p.notes || '[]');
+        const domains = p.proposed_domains ? JSON.parse(p.proposed_domains) : [];
+        const stageClass = 'stage-' + (p.stage || 'lead');
+
+        return `
+          <div class="pipeline-row">
+            <div class="pipeline-row-header" onclick="togglePipelineRow('${p.id}')">
+              <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                <span id="pipe-arrow-${p.id}" style="font-size: 10px; color: #999; transition: transform 0.2s;">▶</span>
+                <strong style="font-size: 14px;">${escapeHtml(p.business_name)}</strong>
+                <span class="stage-badge ${stageClass}">${STAGE_LABELS[p.stage] || p.stage}</span>
+                ${p.owner_name ? '<span style="font-size: 12px; color: #666;">👤 ' + escapeHtml(p.owner_name) + '</span>' : ''}
+              </div>
+              <div style="font-size: 11px; color: #999;">
+                ${p.slug ? '<a href="/site/' + p.slug + '" target="_blank" style="color: #2563eb; text-decoration: none; margin-right: 10px;">🔗 Site</a>' : ''}
+                ${timeAgo(p.updated_at)}
+              </div>
+            </div>
+            <div class="pipeline-detail" id="pipe-detail-${p.id}">
+              <!-- Stage selector -->
+              <div style="margin: 12px 0;">
+                <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px;">Stage</label>
+                <select id="pipe-stage-${p.id}" onchange="updatePipelineField('${p.id}', 'stage', this.value)" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-top: 4px;">
+                  ${STAGES.map(s => `<option value="${s}" ${p.stage === s ? 'selected' : ''}>${STAGE_LABELS[s]}</option>`).join('')}
+                </select>
+              </div>
+
+              <!-- Contact info -->
+              <div class="pipeline-grid" style="margin-bottom: 12px;">
+                <div class="field" style="margin-bottom: 0;">
+                  <label>Owner</label>
+                  <input type="text" value="${escapeAttr(p.owner_name || '')}" onchange="updatePipelineField('${p.id}', 'owner_name', this.value)">
+                </div>
+                <div class="field" style="margin-bottom: 0;">
+                  <label>Phone</label>
+                  <input type="text" value="${escapeAttr(p.phone || '')}" onchange="updatePipelineField('${p.id}', 'phone', this.value)">
+                </div>
+              </div>
+
+              <!-- Key dates -->
+              <div style="margin-bottom: 12px;">
+                <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px;">Timeline</label>
+                <div class="pipeline-dates">
+                  ${renderDateItem('Onboard Link Sent', p.onboard_link_sent_at)}
+                  ${renderDateItem('Submitted', p.submitted_at)}
+                  ${renderDateItem('Approved', p.approved_at)}
+                  ${renderDateItem('Chat Live', p.chat_live_at)}
+                  ${renderDateItem('Preview Sent', p.preview_sent_at)}
+                  ${renderDateItem('Site Approved', p.site_approved_at)}
+                  ${renderDateItem('Domain Purchased', p.domain_purchased_at)}
+                  ${renderDateItem('Go Live', p.go_live_at)}
+                </div>
+              </div>
+
+              <!-- Preview URL -->
+              <div class="field">
+                <label>Preview URL</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" id="pipe-preview-${p.id}" value="${escapeAttr(p.preview_url || '')}" placeholder="e.g. https://frontdesk-ai-vx1s.onrender.com/site/slug" style="flex: 1;">
+                  <button class="btn btn-secondary btn-sm" onclick="savePipelinePreview('${p.id}')">Save</button>
+                  ${p.preview_url && !p.preview_sent_at ? '<button class="btn btn-primary btn-sm" onclick="markPreviewSent(\'' + p.id + '\')">Mark Sent</button>' : ''}
+                </div>
+              </div>
+
+              <!-- Domains -->
+              <div class="field">
+                <label>Proposed Domains</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" id="pipe-domains-${p.id}" value="${escapeAttr(domains.join(', '))}" placeholder="e.g. camelliacleaning.com, camelliaclean.com" style="flex: 1;">
+                  <button class="btn btn-secondary btn-sm" onclick="savePipelineDomains('${p.id}')">Save</button>
+                </div>
+                ${p.selected_domain ? '<div style="margin-top: 6px; font-size: 12px; color: #10b981;">✓ Selected: <strong>' + escapeHtml(p.selected_domain) + '</strong></div>' : ''}
+                ${!p.selected_domain && domains.length > 0 ? `
+                  <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${domains.map(d => `<button class="btn btn-secondary btn-sm" onclick="selectDomain('${p.id}', '${escapeAttr(d.trim())}')" style="font-size: 11px;">${escapeHtml(d.trim())}</button>`).join('')}
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- Notes / Activity Log -->
+              <div class="field">
+                <label>Notes & Activity</label>
+                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 8px;">
+                  ${notes.length === 0 ? '<div style="font-size: 12px; color: #999; padding: 8px 0;">No notes yet</div>' :
+                    notes.slice().reverse().map(n => `
+                      <div class="note-entry">
+                        <div>${escapeHtml(n.text)}</div>
+                        <div class="note-time">${new Date(n.at).toLocaleString()}</div>
+                      </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" id="pipe-note-${p.id}" placeholder="Add a note..." style="flex: 1;" onkeydown="if(event.key==='Enter')addPipelineNote('${p.id}')">
+                  <button class="btn btn-secondary btn-sm" onclick="addPipelineNote('${p.id}')">Add</button>
+                </div>
+              </div>
+
+              <!-- Danger zone -->
+              <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; text-align: right;">
+                <button class="btn btn-danger btn-sm" onclick="deletePipelineRecord('${p.id}')">Delete Record</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDateItem(label, value) {
+      if (!value) return '';
+      return `<div class="date-item"><div class="date-label">${label}</div><div class="date-value">${new Date(value).toLocaleDateString()}</div></div>`;
+    }
+
+    function togglePipelineRow(id) {
+      const detail = document.getElementById(`pipe-detail-${id}`);
+      const arrow = document.getElementById(`pipe-arrow-${id}`);
+      if (detail.classList.contains('open')) {
+        detail.classList.remove('open');
+        detail.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        detail.classList.add('open');
+        detail.style.display = 'block';
+        arrow.style.transform = 'rotate(90deg)';
+      }
+    }
+
+    async function updatePipelineField(id, field, value) {
+      const body = {};
+      body[field] = value;
+      await authFetch(`${API}/pipeline/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      await loadPipeline();
+    }
+
+    async function savePipelinePreview(id) {
+      const url = document.getElementById(`pipe-preview-${id}`).value.trim();
+      await updatePipelineField(id, 'preview_url', url);
+    }
+
+    async function markPreviewSent(id) {
+      await authFetch(`${API}/pipeline/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preview_sent_at: new Date().toISOString(), stage: 'preview-sent' })
+      });
+      await loadPipeline();
+    }
+
+    async function savePipelineDomains(id) {
+      const raw = document.getElementById(`pipe-domains-${id}`).value.trim();
+      const domains = raw.split(',').map(d => d.trim()).filter(Boolean);
+      await authFetch(`${API}/pipeline/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proposed_domains: JSON.stringify(domains), stage: 'domain-setup' })
+      });
+      await loadPipeline();
+    }
+
+    async function selectDomain(id, domain) {
+      if (!confirm(`Mark "${domain}" as the selected domain?`)) return;
+      await updatePipelineField(id, 'selected_domain', domain);
+    }
+
+    async function addPipelineNote(id) {
+      const input = document.getElementById(`pipe-note-${id}`);
+      const text = input.value.trim();
+      if (!text) return;
+      await authFetch(`${API}/pipeline/${id}/note`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      input.value = '';
+      await loadPipeline();
+    }
+
+    async function deletePipelineRecord(id) {
+      if (!confirm('Delete this pipeline record? This cannot be undone.')) return;
+      await authFetch(`${API}/pipeline/${id}`, { method: 'DELETE' });
+      await loadPipeline();
+    }
+
+    // --- New Lead Modal ---
+    function openNewPipelineModal() { document.getElementById('newLeadModal').classList.add('open'); }
+    function closeNewLeadModal() { document.getElementById('newLeadModal').classList.remove('open'); }
+
+    async function createPipelineLead() {
+      const body = {
+        business_name: document.getElementById('newLeadBizName').value.trim(),
+        owner_name: document.getElementById('newLeadOwner').value.trim(),
+        phone: document.getElementById('newLeadPhone').value.trim(),
+        email: document.getElementById('newLeadEmail').value.trim(),
+        notes: document.getElementById('newLeadNotes').value.trim(),
+      };
+      if (!body.business_name) { alert('Business name is required.'); return; }
+      const res = await authFetch(`${API}/pipeline`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        closeNewLeadModal();
+        ['newLeadBizName', 'newLeadOwner', 'newLeadPhone', 'newLeadEmail', 'newLeadNotes'].forEach(id => document.getElementById(id).value = '');
+        await loadPipeline();
+      } else {
+        alert((await res.json()).error || 'Error adding lead');
+      }
     }
 
     init();

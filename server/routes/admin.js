@@ -1,10 +1,12 @@
 const express = require('express');
+const OpenAI = require('openai');
 const { db } = require('../db/database');
 const { requireAuth, generateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Simple in-memory rate limiter for public endpoints
 const rateLimitMap = new Map();
@@ -61,9 +63,20 @@ router.post('/submissions', rateLimit(3600000, 5), async (req, res) => {
   }
 
   const id = require('crypto').randomUUID();
+  const now = new Date().toISOString();
   await db.execute({
     sql: 'INSERT INTO submissions (id, business_name, form_data, system_prompt, welcome_message, theme_color) VALUES (?, ?, ?, ?, ?, ?)',
     args: [id, business_name, JSON.stringify(form_data), system_prompt, welcome_message || 'Hi! How can I help you today?', theme_color || '#0d9488']
+  });
+
+  // Auto-create pipeline record
+  const pipelineId = require('crypto').randomUUID();
+  const ownerName = form_data.ownerName || null;
+  const phone = form_data.phone || null;
+  await db.execute({
+    sql: `INSERT INTO customer_pipeline (id, business_name, owner_name, phone, submission_id, stage, submitted_at, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, 'submitted', ?, ?, ?)`,
+    args: [pipelineId, business_name, ownerName, phone, id, now, now, now]
   });
 
   res.status(201).json({ id, message: 'Submission received! We\'ll review and set up your assistant shortly.' });
@@ -245,6 +258,16 @@ router.post('/submissions/:id/approve', async (req, res) => {
 
     await db.execute({ sql: "UPDATE submissions SET status = 'approved' WHERE id = ?", args: [req.params.id] });
 
+    // Auto-update pipeline record
+    const pipelineRec = await db.execute({ sql: 'SELECT id FROM customer_pipeline WHERE submission_id = ?', args: [req.params.id] });
+    if (pipelineRec.rows[0]) {
+      const approvedAt = new Date().toISOString();
+      await db.execute({
+        sql: "UPDATE customer_pipeline SET stage = 'chat-live', business_id = ?, approved_at = ?, chat_live_at = ?, business_name = ?, owner_name = ?, phone = ?, updated_at = datetime('now') WHERE id = ?",
+        args: [bizId, approvedAt, approvedAt, bizName, ownerName, phone, pipelineRec.rows[0].id]
+      });
+    }
+
     const bizResult = await db.execute({ sql: 'SELECT * FROM businesses WHERE id = ?', args: [bizId] });
     res.json({ business: bizResult.rows[0], message: 'Business created and live!' });
   } catch (err) {
@@ -288,6 +311,231 @@ router.post('/submissions/:id/restore', async (req, res) => {
 
   await db.execute({ sql: "UPDATE submissions SET status = 'pending' WHERE id = ?", args: [req.params.id] });
   res.json({ message: 'Submission restored' });
+});
+
+/**
+ * PUT /api/admin/submissions/:id — Update form data on a pending submission
+ */
+router.put('/submissions/:id', async (req, res) => {
+  const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
+  const sub = subResult.rows[0];
+  if (!sub) return res.status(404).json({ error: 'Submission not found' });
+
+  const { form_data, system_prompt, welcome_message, theme_color, business_name } = req.body;
+  const updates = [];
+  const args = [];
+
+  if (form_data !== undefined) { updates.push('form_data = ?'); args.push(JSON.stringify(form_data)); }
+  if (system_prompt !== undefined) { updates.push('system_prompt = ?'); args.push(system_prompt); }
+  if (welcome_message !== undefined) { updates.push('welcome_message = ?'); args.push(welcome_message); }
+  if (theme_color !== undefined) { updates.push('theme_color = ?'); args.push(theme_color); }
+  if (business_name !== undefined) { updates.push('business_name = ?'); args.push(business_name); }
+
+  if (updates.length === 0) return res.status(400).json({ error: 'Nothing to update' });
+  args.push(req.params.id);
+
+  await db.execute({ sql: `UPDATE submissions SET ${updates.join(', ')} WHERE id = ?`, args });
+  const updated = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
+  res.json(updated.rows[0]);
+});
+
+// ============================================================
+// AI-Assisted Review
+// ============================================================
+
+/**
+ * POST /api/admin/ai/enhance — Improve a single form field using AI
+ * Body: { field, value, businessName, businessType }
+ */
+router.post('/ai/enhance', async (req, res) => {
+  const { field, value, businessName, businessType } = req.body;
+  if (!field || !value) return res.status(400).json({ error: 'field and value are required' });
+
+  const fieldInstructions = {
+    offerings: 'Rewrite this as a clear, professional list of services/offerings. Keep it factual — don\'t invent services not mentioned. Organize into bullet points if appropriate.',
+    hours: 'Format these operating hours clearly and consistently. Use standard format like "Monday – Friday: 8:00 AM – 5:00 PM". Don\'t invent hours not mentioned.',
+    about: 'Polish this about section to sound warm and professional. Keep the personal voice — this should feel authentic, not corporate. Preserve all facts.',
+    policies: 'Rewrite these policies to be clear and professional. Keep the same rules, just improve clarity.',
+    reservations: 'Improve this booking/reservation info to be clear and professional.',
+    serviceArea: 'Format this service area description clearly. If it\'s a list of cities/neighborhoods, organize them well.',
+    tone: 'Expand this tone description into a 1-2 sentence personality guide for the AI assistant. E.g., "friendly" → "Warm and approachable — like chatting with a trusted neighbor. Uses casual but professional language."',
+  };
+
+  const instruction = fieldInstructions[field] || 'Improve this text to be more clear and professional. Keep all factual content.';
+  const context = businessName ? `This is for "${businessName}"${businessType ? `, a ${businessType}` : ''}.` : '';
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: `You are a business copywriter helping set up a small local business profile. ${context} Only return the improved text — no explanations, no markdown headers, no quotes.` },
+        { role: 'user', content: `${instruction}\n\nOriginal:\n${value}` }
+      ],
+      max_tokens: 500,
+      temperature: 0.7,
+    });
+    res.json({ enhanced: completion.choices[0].message.content.trim() });
+  } catch (err) {
+    res.status(500).json({ error: 'AI enhancement failed: ' + err.message });
+  }
+});
+
+/**
+ * POST /api/admin/ai/generate-prompt — Generate system prompt from form data (server-side)
+ * Body: { form_data }
+ */
+router.post('/ai/generate-prompt', async (req, res) => {
+  const data = req.body.form_data;
+  if (!data || !data.name) return res.status(400).json({ error: 'form_data with at least a name is required' });
+
+  // Build prompt deterministically (same logic as client but server-side + cleaner)
+  let prompt = `You are a helpful, ${data.tone || 'friendly'} virtual assistant for ${data.name}`;
+  if (data.type === 'other' && data.otherType) {
+    prompt += `, a local ${data.otherType}`;
+  } else if (data.type && data.type !== 'other') {
+    const labels = { restaurant: 'restaurant', salon: 'salon', home_services: 'home services business', retail: 'shop', fitness: 'fitness studio', professional: 'business' };
+    prompt += `, a local ${labels[data.type] || data.type}`;
+  }
+  if (data.address) prompt += ` located at ${data.address}`;
+  prompt += '.\n\n';
+
+  prompt += 'Your job is to answer customer questions accurately based on the information below. ';
+  prompt += 'Be concise but helpful. If you don\'t know the answer, suggest the customer call or visit the website.\n\n';
+
+  const contact = [];
+  if (data.phone) contact.push(`Phone: ${data.phone}`);
+  if (data.email) contact.push(`Email: ${data.email}`);
+  if (data.website) contact.push(`Website: ${data.website}`);
+  if (data.address) contact.push(`Address: ${data.address}`);
+  if (contact.length) prompt += '## Contact Information\n' + contact.join('\n') + '\n\n';
+
+  if (data.serviceArea) prompt += `## Areas Serviced\n${data.serviceArea}\n\n`;
+  if (data.hours) prompt += `## Hours of Operation\n${data.hours}\n\n`;
+  if (data.offerings) {
+    const label = data.type === 'restaurant' ? 'Menu' : 'Services & Offerings';
+    prompt += `## ${label}\n${data.offerings}\n\n`;
+  }
+  if (data.reservations) prompt += `## Reservations / Booking\n${data.reservations}\n\n`;
+  if (data.policies) prompt += `## Policies\n${data.policies}\n\n`;
+  if (data.about) prompt += `## About the Owner\n${data.about}\n\n`;
+
+  prompt += '## Important Rules\n';
+  prompt += '- Only answer based on the information provided above.\n';
+  prompt += '- Do not make up information about menu items, prices, or services.\n';
+  prompt += '- Keep responses concise — 2-3 sentences when possible.\n';
+  prompt += '- If asked about something not covered above, say "I\'m not sure about that — please call us or check our website for details."\n';
+  prompt += `- Always be ${data.tone || 'friendly'} in your responses.\n`;
+  prompt += '- IMPORTANT: Always respond in the same language the customer uses.\n';
+
+  res.json({ system_prompt: prompt });
+});
+
+// ============================================================
+// Customer Pipeline
+// ============================================================
+
+/**
+ * GET /api/admin/pipeline — List all pipeline records
+ */
+router.get('/pipeline', async (req, res) => {
+  const result = await db.execute(`
+    SELECT p.*, b.slug, b.active as biz_active
+    FROM customer_pipeline p
+    LEFT JOIN businesses b ON p.business_id = b.id
+    ORDER BY p.updated_at DESC
+  `);
+  res.json(result.rows);
+});
+
+/**
+ * POST /api/admin/pipeline — Create a pipeline record manually (for leads you haven't sent the form to yet)
+ */
+router.post('/pipeline', async (req, res) => {
+  const { business_name, owner_name, phone, email, notes } = req.body;
+  if (!business_name) return res.status(400).json({ error: 'business_name is required' });
+
+  const id = require('crypto').randomUUID();
+  const now = new Date().toISOString();
+  const noteEntry = notes ? JSON.stringify([{ text: notes, at: now }]) : '[]';
+
+  await db.execute({
+    sql: `INSERT INTO customer_pipeline (id, business_name, owner_name, phone, email, stage, notes, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, 'lead', ?, ?, ?)`,
+    args: [id, business_name, owner_name || null, phone || null, email || null, noteEntry, now, now]
+  });
+
+  const result = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [id] });
+  res.status(201).json(result.rows[0]);
+});
+
+/**
+ * PUT /api/admin/pipeline/:id — Update a pipeline record
+ */
+router.put('/pipeline/:id', async (req, res) => {
+  const existing = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  const rec = existing.rows[0];
+  if (!rec) return res.status(404).json({ error: 'Pipeline record not found' });
+
+  const fields = ['business_name', 'owner_name', 'phone', 'email', 'stage',
+    'onboard_link_sent_at', 'submitted_at', 'approved_at', 'chat_live_at',
+    'preview_url', 'preview_sent_at', 'site_approved_at',
+    'proposed_domains', 'selected_domain', 'domain_purchased_at', 'go_live_at',
+    'submission_id', 'business_id'];
+
+  const updates = [];
+  const args = [];
+  for (const f of fields) {
+    if (req.body[f] !== undefined) {
+      updates.push(`${f} = ?`);
+      args.push(req.body[f]);
+    }
+  }
+  if (updates.length === 0) return res.status(400).json({ error: 'No fields to update' });
+
+  updates.push("updated_at = datetime('now')");
+  args.push(req.params.id);
+
+  await db.execute({
+    sql: `UPDATE customer_pipeline SET ${updates.join(', ')} WHERE id = ?`,
+    args
+  });
+
+  const updated = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  res.json(updated.rows[0]);
+});
+
+/**
+ * POST /api/admin/pipeline/:id/note — Add a timestamped note
+ */
+router.post('/pipeline/:id/note', async (req, res) => {
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ error: 'text is required' });
+
+  const existing = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  const rec = existing.rows[0];
+  if (!rec) return res.status(404).json({ error: 'Pipeline record not found' });
+
+  const notes = JSON.parse(rec.notes || '[]');
+  notes.push({ text, at: new Date().toISOString() });
+
+  await db.execute({
+    sql: "UPDATE customer_pipeline SET notes = ?, updated_at = datetime('now') WHERE id = ?",
+    args: [JSON.stringify(notes), req.params.id]
+  });
+
+  const updated = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  res.json(updated.rows[0]);
+});
+
+/**
+ * DELETE /api/admin/pipeline/:id — Remove a pipeline record
+ */
+router.delete('/pipeline/:id', async (req, res) => {
+  const existing = await db.execute({ sql: 'SELECT * FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  if (!existing.rows[0]) return res.status(404).json({ error: 'Pipeline record not found' });
+
+  await db.execute({ sql: 'DELETE FROM customer_pipeline WHERE id = ?', args: [req.params.id] });
+  res.json({ message: 'Pipeline record deleted' });
 });
 
 module.exports = router;
