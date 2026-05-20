@@ -26,6 +26,7 @@ router.get('/:slug', async (req, res) => {
   let html = fs.readFileSync(pagePath, 'utf-8');
 
   // Inject business data into template placeholders
+  const proto = req.get('x-forwarded-proto') || req.protocol;
   const replacements = {
     '{{BUSINESS_NAME}}': biz.name || '',
     '{{BUSINESS_SLUG}}': biz.slug || '',
@@ -36,8 +37,8 @@ router.get('/:slug', async (req, res) => {
     '{{PHONE}}': biz.phone || '',
     '{{BUSINESS_TYPE}}': biz.business_type || '',
     '{{SERVICE_AREA}}': biz.service_area || '',
-    '{{WIDGET_URL}}': `${req.protocol}://${req.get('host')}/widget/frontdesk-widget.js`,
-    '{{SITE_URL}}': `${req.protocol}://${req.get('host')}/site/${biz.slug}`,
+    '{{WIDGET_URL}}': `${proto}://${req.get('host')}/widget/frontdesk-widget.js`,
+    '{{SITE_URL}}': `${proto}://${req.get('host')}/site/${biz.slug}`,
   };
 
   for (const [key, value] of Object.entries(replacements)) {
