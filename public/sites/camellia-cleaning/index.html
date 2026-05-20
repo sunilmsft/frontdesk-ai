@@ -689,6 +689,8 @@
     body.has-preview-banner { padding-top: 42px; }
     body.has-preview-banner .nav { top: 42px; }
 
+    .nav-lang-mobile { display: none; margin-left: 0; }
+
     /* === RESPONSIVE === */
     @media (max-width: 768px) {
       .hero-inner { grid-template-columns: 1fr; gap: 40px; padding-top: 100px; }
@@ -696,9 +698,10 @@
       .nav-links { display: none; flex-direction: column; padding: 16px 0; gap: 0; }
       .nav-links.show { display: flex; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1); }
       .nav-links.show li { padding: 12px 24px; }
-      .nav-links.show .nav-lang { justify-content: center; margin-left: 0; }
-      .nav-lang-menu { right: auto; left: 50%; transform: translateX(-50%) translateY(-4px); }
-      .nav-lang.open .nav-lang-menu { transform: translateX(-50%) translateY(0); }
+      .nav-links.show .nav-lang { display: none; }
+      .nav-lang-mobile { display: block; }
+      .nav-lang-mobile .nav-lang-btn { padding: 6px 10px; }
+      .nav-lang-mobile .nav-lang-menu { right: 0; left: auto; }
       .nav-mobile { display: block; }
       .section { padding: 60px 24px; }
       .hero-trust { flex-wrap: wrap; gap: 12px; }
@@ -750,6 +753,23 @@
         <li><a href="#contact" class="nav-cta" data-i18n="navCta">Get a Free Estimate</a></li>
       </ul>
       <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+      <div class="nav-lang nav-lang-mobile" id="langPickerMobile">
+        <button class="nav-lang-btn" onclick="document.getElementById('langPickerMobile').classList.toggle('open')">
+          <span class="globe">🌐</span>
+          <span class="chevron">▾</span>
+        </button>
+        <div class="nav-lang-menu">
+          <button class="nav-lang-option active" onclick="setLang('en')">
+            <span class="flag">🇺🇸</span> English
+          </button>
+          <button class="nav-lang-option" onclick="setLang('pt')">
+            <span class="flag">🇧🇷</span> Português
+          </button>
+          <button class="nav-lang-option" onclick="setLang('es')">
+            <span class="flag">🇲🇽</span> Español
+          </button>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -1095,13 +1115,15 @@
       const key = el.getAttribute('data-i18n');
       if (T[lang] && T[lang][key]) el.innerHTML = T[lang][key];
     });
-    // Update dropdown
-    const picker = document.getElementById('langPicker');
-    picker.classList.remove('open');
-    picker.querySelector('.lang-label').textContent = langNames[lang];
-    picker.querySelectorAll('.nav-lang-option').forEach(b => b.classList.remove('active'));
-    picker.querySelectorAll('.nav-lang-option').forEach(b => {
-      if (b.getAttribute('onclick') === `setLang('${lang}')`) b.classList.add('active');
+    // Update both dropdowns (desktop + mobile)
+    document.querySelectorAll('.nav-lang').forEach(picker => {
+      picker.classList.remove('open');
+      const label = picker.querySelector('.lang-label');
+      if (label) label.textContent = langNames[lang];
+      picker.querySelectorAll('.nav-lang-option').forEach(b => b.classList.remove('active'));
+      picker.querySelectorAll('.nav-lang-option').forEach(b => {
+        if (b.getAttribute('onclick') === `setLang('${lang}')`) b.classList.add('active');
+      });
     });
     // Update chat widget greeting
     const greetEl = document.getElementById('fd-greeting');
@@ -1121,8 +1143,9 @@
 
   // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
-    const picker = document.getElementById('langPicker');
-    if (!picker.contains(e.target)) picker.classList.remove('open');
+    document.querySelectorAll('.nav-lang').forEach(picker => {
+      if (!picker.contains(e.target)) picker.classList.remove('open');
+    });
   });
   </script>
 
