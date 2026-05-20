@@ -25,10 +25,6 @@
     .field textarea { min-height: 100px; resize: vertical; }
     .field input:focus, .field textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
 
-    .hours-grid { display: grid; grid-template-columns: 100px 1fr; gap: 8px; align-items: center; }
-    .hours-grid label { font-size: 13px; }
-    .hours-grid input { padding: 8px 10px; }
-
     .btn { padding: 12px 24px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .btn-primary { background: #2563eb; color: white; width: 100%; }
     .btn-primary:hover { background: #1d4ed8; }
@@ -189,12 +185,12 @@
         <div class="field">
           <label data-i18n="lbl_website_status">Do you have a website? *</label>
           <select id="bizWebsiteStatus" onchange="toggleWebsiteUrl()">
-            <option value="have_one" data-i18n="opt_have_website">Yes, I have a website</option>
             <option value="need_one" data-i18n="opt_need_website">No, I need help setting one up</option>
+            <option value="have_one" data-i18n="opt_have_website">Yes, I have a website</option>
             <option value="not_sure" data-i18n="opt_not_sure_website">Not sure — I'd like to learn more</option>
           </select>
         </div>
-        <div class="field" id="websiteUrlField">
+        <div class="field" id="websiteUrlField" style="display:none;">
           <label data-i18n="lbl_website">Website URL</label>
           <input type="url" id="bizWebsite" placeholder="https://www.yourbusiness.com">
         </div>
@@ -233,28 +229,23 @@
 
       <!-- Hours -->
       <div class="section">
-        <h2 data-i18n="sec_hours">Hours of Operation <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
-        <div class="subtitle" data-i18n="sec_hours_sub">When are you open? Leave blank for days you're closed.</div>
+        <h2 data-i18n="sec_hours">Your Schedule <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
+        <div class="subtitle" data-i18n="sec_hours_sub">When can customers reach you or book your services?</div>
 
-        <div class="hours-grid">
-          <label data-i18n="day_mon">Monday</label><input type="text" id="hoursMon" data-i18n-ph="ph_hours" placeholder="e.g. 9am - 9pm or Closed">
-          <label data-i18n="day_tue">Tuesday</label><input type="text" id="hoursTue" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
-          <label data-i18n="day_wed">Wednesday</label><input type="text" id="hoursWed" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
-          <label data-i18n="day_thu">Thursday</label><input type="text" id="hoursThu" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 9pm">
-          <label data-i18n="day_fri">Friday</label><input type="text" id="hoursFri" data-i18n-ph="ph_hours2" placeholder="e.g. 9am - 10pm">
-          <label data-i18n="day_sat">Saturday</label><input type="text" id="hoursSat" data-i18n-ph="ph_hours2" placeholder="e.g. 10am - 10pm">
-          <label data-i18n="day_sun">Sunday</label><input type="text" id="hoursSun" data-i18n-ph="ph_hours2" placeholder="e.g. 10am - 8pm">
+        <div class="field">
+          <label data-i18n="lbl_hours">Hours</label>
+          <textarea id="bizHours" rows="2" data-i18n-ph="ph_hours" placeholder="e.g. Monday - Saturday 8am - 6pm, Sunday closed"></textarea>
         </div>
       </div>
 
-      <!-- Services / Menu -->
+      <!-- Services -->
       <div class="section">
         <h2 data-i18n="sec_offerings">What You Offer</h2>
-        <div class="subtitle" data-i18n="sec_offerings_sub">Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.</div>
+        <div class="subtitle" data-i18n="sec_offerings_sub">What services or products do you provide? Include prices if you'd like.</div>
 
         <div class="field">
-          <label data-i18n="lbl_offerings">Services / Menu / Products *</label>
-          <div class="hint" data-i18n="hint_offerings">List your key offerings, prices, popular items, categories, etc.</div>
+          <label data-i18n="lbl_offerings">Your Services & Pricing *</label>
+          <div class="hint" data-i18n="hint_offerings">List what you do, what you charge, and what makes you different.</div>
           <textarea id="bizOfferings" required data-i18n-ph="ph_offerings" placeholder="e.g. Regular Cleaning ($120), Deep Cleaning ($250), Move-in/Move-out ($300)...&#10;&#10;We also offer window cleaning and carpet shampooing.&#10;&#10;All supplies included. Eco-friendly products available."></textarea>
         </div>
       </div>
@@ -298,55 +289,45 @@
         </div>
       </div>
 
-      <!-- Policies -->
+      <!-- Booking & Policies -->
       <div class="section">
-        <h2 data-i18n="sec_policies">Policies & Common Questions <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
-        <div class="subtitle" data-i18n="sec_policies_sub">Help the AI answer the questions you get asked the most</div>
+        <h2 data-i18n="sec_policies">Booking & Policies <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
+        <div class="subtitle" data-i18n="sec_policies_sub">Help us answer the questions your customers ask the most</div>
 
         <div class="field">
-          <label data-i18n="lbl_reservations">Reservations / Booking</label>
-          <textarea id="bizReservations" data-i18n-ph="ph_reservations" placeholder="e.g. Book online or call/text us. We usually respond within 1 hour. Same-week availability."></textarea>
+          <label data-i18n="lbl_reservations">How do customers book you?</label>
+          <textarea id="bizReservations" rows="2" data-i18n-ph="ph_reservations" placeholder="e.g. Call or text me. I usually respond within 1 hour. Same-week availability."></textarea>
         </div>
         <div class="field">
-          <label data-i18n="lbl_parking">Parking / Getting There</label>
-          <textarea id="bizParking" rows="2" data-i18n-ph="ph_parking" placeholder="e.g. We come to you! Service area covers Eastside Seattle."></textarea>
-        </div>
-        <div class="field">
-          <label data-i18n="lbl_policies">Other Policies or FAQs</label>
-          <div class="hint" data-i18n="hint_policies">Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.</div>
-          <textarea id="bizPolicies" data-i18n-ph="ph_policies" placeholder="e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured during service."></textarea>
-        </div>
-        <div class="field">
-          <label data-i18n="lbl_extra">Anything Else Customers Should Know?</label>
-          <textarea id="bizExtra" data-i18n-ph="ph_extra" placeholder="e.g. 10% discount for recurring weekly clients. We're fully insured and bonded. Bilingual team (English & Portuguese)."></textarea>
+          <label data-i18n="lbl_policies">Anything else people should know?</label>
+          <div class="hint" data-i18n="hint_policies">Cancellation policy, pet policy, what you bring, discounts, insurance, etc.</div>
+          <textarea id="bizPolicies" data-i18n-ph="ph_policies" placeholder="e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured during service. 10% off for weekly clients."></textarea>
         </div>
       </div>
 
       <!-- Tone -->
       <div class="section">
-        <h2 data-i18n="sec_tone">Personality & Tone</h2>
-        <div class="subtitle" data-i18n="sec_tone_sub">How should the AI sound when talking to your customers?</div>
+        <h2 data-i18n="sec_tone">How Should We Talk to Your Customers?</h2>
+        <div class="subtitle" data-i18n="sec_tone_sub">Pick the style that feels most like you</div>
 
         <div class="tone-options" id="toneOptions">
-          <div class="tone-option selected" data-i18n="tone_friendly" onclick="selectTone(this, 'friendly and casual')">😊 Friendly & Casual</div>
-          <div class="tone-option" data-i18n="tone_warm" onclick="selectTone(this, 'warm and professional')">🤝 Warm & Professional</div>
-          <div class="tone-option" data-i18n="tone_upscale" onclick="selectTone(this, 'upscale and polished')">✨ Upscale & Polished</div>
+          <div class="tone-option selected" data-i18n="tone_friendly" onclick="selectTone(this, 'friendly and casual')">😊 Friendly</div>
+          <div class="tone-option" data-i18n="tone_warm" onclick="selectTone(this, 'warm and professional')">🤝 Professional</div>
           <div class="tone-option" data-i18n="tone_fun" onclick="selectTone(this, 'fun and energetic')">🎉 Fun & Energetic</div>
         </div>
         <input type="hidden" id="bizTone" value="friendly and casual">
       </div>
 
-      <!-- Theme -->
+      <!-- Brand Color -->
       <div class="section">
-        <h2 data-i18n="sec_widget">Widget Appearance</h2>
-        <div class="subtitle" data-i18n="sec_widget_sub">Pick a style that fits your brand</div>
+        <h2 data-i18n="sec_widget">Your Brand Color</h2>
+        <div class="subtitle" data-i18n="sec_widget_sub">Pick the color that best represents your business</div>
 
         <div class="field">
-          <label data-i18n="lbl_theme">Theme</label>
           <div class="theme-options" id="themeOptions">
             <div class="theme-option selected" onclick="selectTheme(this, '#6366f1')" data-color="#6366f1">
               <div class="theme-swatch" style="background:#6366f1"></div>
-              <span>Indigo</span>
+              <span>Purple</span>
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#3b82f6')" data-color="#3b82f6">
               <div class="theme-swatch" style="background:#3b82f6"></div>
@@ -354,15 +335,15 @@
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#0ea5e9')" data-color="#0ea5e9">
               <div class="theme-swatch" style="background:#0ea5e9"></div>
-              <span>Sky</span>
+              <span>Light Blue</span>
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#14b8a6')" data-color="#14b8a6">
               <div class="theme-swatch" style="background:#14b8a6"></div>
-              <span>Teal</span>
+              <span>Green</span>
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#f43f5e')" data-color="#f43f5e">
               <div class="theme-swatch" style="background:#f43f5e"></div>
-              <span>Rose</span>
+              <span>Red</span>
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#f97316')" data-color="#f97316">
               <div class="theme-swatch" style="background:#f97316"></div>
@@ -370,20 +351,15 @@
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#475569')" data-color="#475569">
               <div class="theme-swatch" style="background:#475569"></div>
-              <span>Slate</span>
+              <span>Gray</span>
             </div>
             <div class="theme-option" onclick="selectTheme(this, '#1a1a1a')" data-color="#1a1a1a">
               <div class="theme-swatch" style="background:#1a1a1a"></div>
-              <span>Dark</span>
+              <span>Black</span>
             </div>
           </div>
           <div id="autoDetectMsg" style="font-size: 12px; color: #10b981; margin-top: 8px; display: none;"></div>
           <input type="hidden" id="bizColor" value="#6366f1">
-        </div>
-        <div class="field">
-          <label data-i18n="lbl_welcome">Welcome Message</label>
-          <div class="hint" data-i18n="hint_welcome">The first thing customers see when they open the chat</div>
-          <input type="text" id="bizWelcome" data-i18n-ph="ph_welcome" placeholder="Hi! 👋 How can I help you today?">
         </div>
       </div>
 
@@ -458,40 +434,29 @@
         lbl_service_area: 'Áreas de Servicio *',
         hint_service_area: '¿Dónde atiendes a tus clientes? Lista ciudades, vecindarios o códigos postales.',
         ph_service_area: 'ej. Sammamish, Issaquah, Bellevue, Redmond',
-        sec_hours: 'Horario de Atención',
-        sec_hours_sub: '¿Cuándo estás abierto? Deja en blanco los días que estés cerrado.',
-        day_mon: 'Lunes', day_tue: 'Martes', day_wed: 'Miércoles', day_thu: 'Jueves',
-        day_fri: 'Viernes', day_sat: 'Sábado', day_sun: 'Domingo',
-        ph_hours: 'ej. 9am - 9pm o Cerrado',
-        ph_hours2: 'ej. 9am - 9pm',
+        sec_hours: 'Tu Horario',
+        sec_hours_sub: '¿Cuándo pueden tus clientes contactarte o reservar tus servicios?',
+        lbl_hours: 'Horario',
+        ph_hours: 'ej. Lunes a Sábado 8am - 6pm, Domingo cerrado',
         sec_offerings: 'Lo Que Ofreces',
-        sec_offerings_sub: 'Describe tus servicios principales, productos o menú. Cuanto más detalle, mejor podrá responder la IA.',
-        lbl_offerings: 'Servicios / Menú / Productos *',
-        hint_offerings: 'Lista tus ofertas principales, precios, artículos populares, categorías, etc.',
+        sec_offerings_sub: '¿Qué servicios o productos ofreces? Incluye precios si quieres.',
+        lbl_offerings: 'Tus Servicios y Precios *',
+        hint_offerings: 'Lista lo que haces, cuánto cobras, y qué te hace diferente.',
         ph_offerings: 'ej. Limpieza regular ($120), Limpieza profunda ($250), Mudanza ($300)...\n\nTambién ofrecemos limpieza de ventanas y alfombras.\n\nTodos los materiales incluidos.',
-        sec_policies: 'Políticas y Preguntas Frecuentes',
-        sec_policies_sub: 'Ayuda a la IA a responder las preguntas que más te hacen',
-        lbl_reservations: 'Reservaciones / Citas',
-        ph_reservations: 'ej. Reserve en línea o llámenos/envíe un mensaje. Respondemos en 1 hora.',
-        lbl_parking: 'Estacionamiento / Cómo Llegar',
-        ph_parking: 'ej. ¡Vamos a tu casa! Área de servicio: Eastside Seattle.',
-        lbl_policies: 'Otras Políticas o Preguntas Frecuentes',
-        hint_policies: 'Política de cancelación, áreas de servicio, requisitos especiales, etc.',
-        ph_policies: 'ej. Política de cancelación de 24 horas. Traemos nuestros propios materiales. Mascotas deben estar aseguradas.',
-        lbl_extra: '¿Algo Más Que Tus Clientes Deban Saber?',
-        ph_extra: 'ej. 10% de descuento para clientes recurrentes semanales. Estamos asegurados. Equipo bilingüe.',
-        sec_tone: 'Personalidad y Tono',
-        sec_tone_sub: '¿Cómo debe sonar la IA al hablar con tus clientes?',
-        tone_friendly: '😊 Amigable y Casual',
-        tone_warm: '🤝 Cálido y Profesional',
-        tone_upscale: '✨ Elegante y Refinado',
+        sec_policies: 'Reservas y Políticas',
+        sec_policies_sub: 'Ayúdanos a responder las preguntas que tus clientes hacen más',
+        lbl_reservations: '¿Cómo te contratan tus clientes?',
+        ph_reservations: 'ej. Llámame o envíame un mensaje. Respondo en 1 hora.',
+        lbl_policies: '¿Algo más que la gente deba saber?',
+        hint_policies: 'Política de cancelación, política de mascotas, qué traes, descuentos, seguro, etc.',
+        ph_policies: 'ej. Política de cancelación de 24 horas. Traemos nuestros propios materiales. Mascotas deben estar aseguradas. 10% de descuento para clientes semanales.',
+        sec_tone: '¿Cómo Debemos Hablar con Tus Clientes?',
+        sec_tone_sub: 'Elige el estilo que más se parezca a ti',
+        tone_friendly: '😊 Amigable',
+        tone_warm: '🤝 Profesional',
         tone_fun: '🎉 Divertido y Enérgico',
-        sec_widget: 'Apariencia del Chat',
-        sec_widget_sub: 'Elige un estilo que combine con tu marca',
-        lbl_theme: 'Tema',
-        lbl_welcome: 'Mensaje de Bienvenida',
-        hint_welcome: 'Lo primero que ven los clientes al abrir el chat',
-        ph_welcome: '¡Hola! 👋 ¿En qué puedo ayudarte hoy?',
+        sec_widget: 'Tu Color de Marca',
+        sec_widget_sub: 'Elige el color que mejor represente tu negocio',
         btn_submit: 'Enviar Información de Mi Negocio',
         success_title: '✅ ¡Recibimos Tu Información!',
         success_msg: '¡Gracias! Revisaremos tus datos y configuraremos tu asistente de IA en 24 horas. Te avisaremos cuando esté listo.',
@@ -550,40 +515,29 @@
         lbl_service_area: 'Áreas Atendidas *',
         hint_service_area: 'Onde você atende seus clientes? Liste cidades, bairros ou CEPs.',
         ph_service_area: 'ex. Sammamish, Issaquah, Bellevue, Redmond',
-        sec_hours: 'Horário de Funcionamento',
-        sec_hours_sub: 'Quando você está aberto? Deixe em branco os dias que estiver fechado.',
-        day_mon: 'Segunda', day_tue: 'Terça', day_wed: 'Quarta', day_thu: 'Quinta',
-        day_fri: 'Sexta', day_sat: 'Sábado', day_sun: 'Domingo',
-        ph_hours: 'ex. 9h - 18h ou Fechado',
-        ph_hours2: 'ex. 9h - 18h',
+        sec_hours: 'Seu Horário',
+        sec_hours_sub: 'Quando seus clientes podem te contatar ou agendar seus serviços?',
+        lbl_hours: 'Horário',
+        ph_hours: 'ex. Segunda a Sábado 8h - 18h, Domingo fechado',
         sec_offerings: 'O Que Você Oferece',
-        sec_offerings_sub: 'Descreva seus principais serviços, produtos ou cardápio. Quanto mais detalhes, melhor a IA poderá responder.',
-        lbl_offerings: 'Serviços / Cardápio / Produtos *',
-        hint_offerings: 'Liste seus principais serviços, preços, itens populares, categorias, etc.',
+        sec_offerings_sub: 'Que serviços ou produtos você oferece? Inclua preços se quiser.',
+        lbl_offerings: 'Seus Serviços e Preços *',
+        hint_offerings: 'Liste o que você faz, quanto cobra, e o que te diferencia.',
         ph_offerings: 'ex. Limpeza regular ($120), Limpeza profunda ($250), Mudança ($300)...\n\nTambém oferecemos limpeza de janelas e carpetes.\n\nTodos os materiais incluídos.',
-        sec_policies: 'Políticas e Perguntas Frequentes',
-        sec_policies_sub: 'Ajude a IA a responder as perguntas que seus clientes mais fazem',
-        lbl_reservations: 'Reservas / Agendamentos',
-        ph_reservations: 'ex. Agende online ou ligue/envie mensagem. Respondemos em 1 hora.',
-        lbl_parking: 'Estacionamento / Como Chegar',
-        ph_parking: 'ex. Vamos até você! Área de atendimento: Eastside Seattle.',
-        lbl_policies: 'Outras Políticas ou Perguntas Frequentes',
-        hint_policies: 'Política de cancelamento, áreas de atendimento, requisitos especiais, etc.',
-        ph_policies: 'ex. Política de cancelamento de 24 horas. Trazemos nossos próprios materiais. Animais devem estar seguros.',
-        lbl_extra: 'Mais Alguma Coisa Que Seus Clientes Devem Saber?',
-        ph_extra: 'ex. 10% de desconto para clientes recorrentes semanais. Somos segurados. Equipe bilíngue (Português e Inglês).',
-        sec_tone: 'Personalidade e Tom',
-        sec_tone_sub: 'Como a IA deve falar com seus clientes?',
-        tone_friendly: '😊 Amigável e Casual',
-        tone_warm: '🤝 Caloroso e Profissional',
-        tone_upscale: '✨ Elegante e Refinado',
+        sec_policies: 'Agendamento e Políticas',
+        sec_policies_sub: 'Nos ajude a responder as perguntas que seus clientes mais fazem',
+        lbl_reservations: 'Como seus clientes te contratam?',
+        ph_reservations: 'ex. Me liga ou manda mensagem. Respondo em 1 hora.',
+        lbl_policies: 'Mais alguma coisa que as pessoas devem saber?',
+        hint_policies: 'Política de cancelamento, política de pets, o que você traz, descontos, seguro, etc.',
+        ph_policies: 'ex. Política de cancelamento de 24 horas. Trazemos nossos próprios materiais. Animais devem estar seguros. 10% de desconto para clientes semanais.',
+        sec_tone: 'Como Devemos Falar com Seus Clientes?',
+        sec_tone_sub: 'Escolha o estilo que mais se parece com você',
+        tone_friendly: '😊 Amigável',
+        tone_warm: '🤝 Profissional',
         tone_fun: '🎉 Divertido e Animado',
-        sec_widget: 'Aparência do Chat',
-        sec_widget_sub: 'Escolha um estilo que combine com sua marca',
-        lbl_theme: 'Tema',
-        lbl_welcome: 'Mensagem de Boas-Vindas',
-        hint_welcome: 'A primeira coisa que os clientes veem ao abrir o chat',
-        ph_welcome: 'Olá! 👋 Como posso te ajudar hoje?',
+        sec_widget: 'Sua Cor de Marca',
+        sec_widget_sub: 'Escolha a cor que melhor representa seu negócio',
         btn_submit: 'Enviar Informações do Meu Negócio',
         success_title: '✅ Recebemos Suas Informações!',
         success_msg: 'Obrigado! Vamos revisar seus dados e configurar seu assistente de IA em 24 horas. Entraremos em contato quando estiver pronto.',
@@ -642,40 +596,29 @@
         lbl_service_area: 'Areas Serviced *',
         hint_service_area: 'Where do you serve customers? List cities, neighborhoods, or zip codes.',
         ph_service_area: 'e.g. Sammamish, Issaquah, Bellevue, Redmond',
-        sec_hours: 'Hours of Operation',
-        sec_hours_sub: "When are you open? Leave blank for days you're closed.",
-        day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday', day_thu: 'Thursday',
-        day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
-        ph_hours: 'e.g. 9am - 9pm or Closed',
-        ph_hours2: 'e.g. 9am - 9pm',
+        sec_hours: 'Your Schedule',
+        sec_hours_sub: 'When can customers reach you or book your services?',
+        lbl_hours: 'Hours',
+        ph_hours: 'e.g. Monday - Saturday 8am - 6pm, Sunday closed',
         sec_offerings: 'What You Offer',
-        sec_offerings_sub: "Describe your main services, menu items, or products. Be as detailed as you'd like — the more info, the better the AI can answer.",
-        lbl_offerings: 'Services / Menu / Products *',
-        hint_offerings: 'List your key offerings, prices, popular items, categories, etc.',
+        sec_offerings_sub: 'What services or products do you provide? Include prices if you\'d like.',
+        lbl_offerings: 'Your Services & Pricing *',
+        hint_offerings: 'List what you do, what you charge, and what makes you different.',
         ph_offerings: "e.g. Regular Cleaning ($120), Deep Cleaning ($250), Move-in/Move-out ($300)...\n\nWe also offer window cleaning and carpet shampooing.\n\nAll supplies included.",
-        sec_policies: 'Policies & Common Questions',
-        sec_policies_sub: 'Help the AI answer the questions you get asked the most',
-        lbl_reservations: 'Reservations / Booking',
-        ph_reservations: 'e.g. Book online or call/text us. We usually respond within 1 hour.',
-        lbl_parking: 'Parking / Getting There',
-        ph_parking: 'e.g. We come to you! Service area covers Eastside Seattle.',
-        lbl_policies: 'Other Policies or FAQs',
-        hint_policies: 'Cancellation policy, dietary accommodations, dress code, pet policy, return policy, etc.',
-        ph_policies: 'e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured.',
-        lbl_extra: 'Anything Else Customers Should Know?',
-        ph_extra: 'e.g. 10% discount for recurring weekly clients. Fully insured and bonded. Bilingual team.',
-        sec_tone: 'Personality & Tone',
-        sec_tone_sub: 'How should the AI sound when talking to your customers?',
-        tone_friendly: '😊 Friendly & Casual',
-        tone_warm: '🤝 Warm & Professional',
-        tone_upscale: '✨ Upscale & Polished',
+        sec_policies: 'Booking & Policies',
+        sec_policies_sub: 'Help us answer the questions your customers ask the most',
+        lbl_reservations: 'How do customers book you?',
+        ph_reservations: 'e.g. Call or text me. I usually respond within 1 hour.',
+        lbl_policies: 'Anything else people should know?',
+        hint_policies: 'Cancellation policy, pet policy, what you bring, discounts, insurance, etc.',
+        ph_policies: 'e.g. 24-hour cancellation policy. We bring all our own supplies. Pets should be secured. 10% off for weekly clients.',
+        sec_tone: 'How Should We Talk to Your Customers?',
+        sec_tone_sub: 'Pick the style that feels most like you',
+        tone_friendly: '😊 Friendly',
+        tone_warm: '🤝 Professional',
         tone_fun: '🎉 Fun & Energetic',
-        sec_widget: 'Widget Appearance',
-        sec_widget_sub: 'Pick a style that fits your brand',
-        lbl_theme: 'Theme',
-        lbl_welcome: 'Welcome Message',
-        hint_welcome: 'The first thing customers see when they open the chat',
-        ph_welcome: 'Hi! 👋 How can I help you today?',
+        sec_widget: 'Your Brand Color',
+        sec_widget_sub: 'Pick the color that best represents your business',
         btn_submit: 'Submit My Business Info',
         success_title: "✅ We've Got Your Info!",
         success_msg: "Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.",
@@ -788,14 +731,8 @@
       }
 
       // Hours
-      const hours = [];
-      const days = [
-        ['Monday', data.hoursMon], ['Tuesday', data.hoursTue], ['Wednesday', data.hoursWed],
-        ['Thursday', data.hoursThu], ['Friday', data.hoursFri], ['Saturday', data.hoursSat], ['Sunday', data.hoursSun]
-      ];
-      days.forEach(([day, h]) => { if (h) hours.push(`${day}: ${h}`); });
-      if (hours.length) {
-        prompt += '## Hours of Operation\n' + hours.join('\n') + '\n\n';
+      if (data.hours) {
+        prompt += `## Hours of Operation\n${data.hours}\n\n`;
       }
 
       // Offerings
@@ -809,19 +746,9 @@
         prompt += `## Reservations / Booking\n${data.reservations}\n\n`;
       }
 
-      // Parking
-      if (data.parking) {
-        prompt += `## Parking / Getting Here\n${data.parking}\n\n`;
-      }
-
       // Policies
       if (data.policies) {
         prompt += `## Policies\n${data.policies}\n\n`;
-      }
-
-      // Extra
-      if (data.extra) {
-        prompt += `## Additional Information\n${data.extra}\n\n`;
       }
 
       // About the owner
@@ -852,18 +779,10 @@
         phone: document.getElementById('bizPhone').value.trim(),
         address: document.getElementById('bizAddress').value.trim(),
         serviceArea: document.getElementById('bizServiceArea').value.trim(),
-        hoursMon: document.getElementById('hoursMon').value.trim(),
-        hoursTue: document.getElementById('hoursTue').value.trim(),
-        hoursWed: document.getElementById('hoursWed').value.trim(),
-        hoursThu: document.getElementById('hoursThu').value.trim(),
-        hoursFri: document.getElementById('hoursFri').value.trim(),
-        hoursSat: document.getElementById('hoursSat').value.trim(),
-        hoursSun: document.getElementById('hoursSun').value.trim(),
+        hours: document.getElementById('bizHours').value.trim(),
         offerings: document.getElementById('bizOfferings').value.trim(),
         reservations: document.getElementById('bizReservations').value.trim(),
-        parking: document.getElementById('bizParking').value.trim(),
         policies: document.getElementById('bizPolicies').value.trim(),
-        extra: document.getElementById('bizExtra').value.trim(),
         tone: selectedTone,
         languages: Array.from(document.querySelectorAll('#langCheckboxes input:checked')).map(cb => cb.value).filter(v => v !== 'other'),
         otherLanguages: document.getElementById('bizOtherLang').value.trim(),
@@ -874,7 +793,7 @@
 
       const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
       const systemPrompt = buildSystemPrompt(data);
-      const welcomeMsg = document.getElementById('bizWelcome').value.trim() || `Hi! 👋 Welcome to ${data.name}. How can I help you?`;
+      const welcomeMsg = `Hi! 👋 Welcome to ${data.name}. How can I help you?`;
       const color = document.getElementById('bizColor').value;
 
       const res = await fetch(`${API}/submissions`, {
