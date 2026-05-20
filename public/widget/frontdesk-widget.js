@@ -225,6 +225,31 @@
         sendMessage();
       }
     });
+
+    // Listen for language changes from the host page
+    window.addEventListener('frontdesk-lang-change', (e) => {
+      const lang = e.detail && e.detail.lang;
+      const welcomeText = e.detail && e.detail.welcomeMessage;
+      // Reset conversation so next message uses new language context
+      conversationId = null;
+      // Clear chat messages and show welcome in new language
+      const messages = document.getElementById('fd-messages');
+      messages.innerHTML = '';
+      if (welcomeText) {
+        addMessage('assistant', welcomeText);
+      } else if (businessData.welcome_message) {
+        addMessage('assistant', businessData.welcome_message);
+      }
+      // Update greeting tooltip if visible
+      const greetEl = document.getElementById('fd-greeting');
+      if (greetEl && welcomeText) {
+        greetEl.innerHTML = `${escapeHtml(welcomeText)} <button class="fd-g-close" aria-label="Close">&times;</button>`;
+        greetEl.querySelector('.fd-g-close').addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          greetEl.classList.remove('show');
+        });
+      }
+    });
   }
 
   function toggleChat() {

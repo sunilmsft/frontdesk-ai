@@ -1112,6 +1112,10 @@
         greetEl.classList.remove('show');
       });
     }
+    // Notify chat widget to switch language and reset conversation
+    window.dispatchEvent(new CustomEvent('frontdesk-lang-change', {
+      detail: { lang: lang, welcomeMessage: T[lang] && T[lang].widgetGreeting }
+    }));
     document.documentElement.lang = lang;
   }
 
