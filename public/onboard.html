@@ -816,6 +816,7 @@
         photosLink: document.getElementById('bizPhotosLink').value.trim(),
         about: document.getElementById('bizAbout').value.trim(),
         email: document.getElementById('bizEmail').value.trim(),
+        submittedLanguage: currentLang,
       };
 
       const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');

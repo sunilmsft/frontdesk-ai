@@ -170,9 +170,6 @@
             </div>
           </div>
 
-          <!-- Business view (shown when a business is selected) -->
-          <div id="businessView" style="display: none;">
-
           <!-- Pipeline view -->
           <div id="pipelineView" style="display: none;">
             <div class="panel-title">
@@ -183,6 +180,9 @@
               <div class="empty-state">Loading pipeline...</div>
             </div>
           </div>
+
+          <!-- Business view (shown when a business is selected) -->
+          <div id="businessView" style="display: none;">
             <div class="panel-title">
               <h2 id="bizViewTitle" style="display: flex; align-items: center; gap: 10px;">
                 <span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span>
@@ -543,47 +543,91 @@
 
     // --- Submissions (Inbox) ---
     let showingTrash = false;
+    let inboxFilter = 'all'; // 'all', 'pending', 'in-review', 'need-info', 'follow-up', 'approved', 'rejected'
+
+    const STATUS_CONFIG = {
+      'pending':   { label: 'New',           color: '#2563eb', bg: '#dbeafe' },
+      'in-review': { label: 'In Review',     color: '#7c3aed', bg: '#ede9fe' },
+      'need-info': { label: 'Need Info',     color: '#d97706', bg: '#fef3c7' },
+      'follow-up': { label: 'Follow Up',     color: '#ea580c', bg: '#fff7ed' },
+      'approved':  { label: 'Approved',      color: '#059669', bg: '#d1fae5' },
+      'rejected':  { label: 'Rejected',      color: '#dc2626', bg: '#fee2e2' },
+    };
+
+    function setInboxFilter(filter) {
+      inboxFilter = filter;
+      loadSubmissions();
+    }
+
+    async function updateSubmissionStatus(id, newStatus) {
+      event.stopPropagation();
+      await authFetch(`${API}/submissions/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      await loadSubmissions();
+    }
 
     async function loadSubmissions() {
       const res = await authFetch(`${API}/submissions`);
       const allSubs = await res.json();
-      const subs = allSubs.filter(s => showingTrash ? s.status === 'deleted' : s.status !== 'deleted');
+      const nonDeleted = allSubs.filter(s => s.status !== 'deleted');
       const deleted = allSubs.filter(s => s.status === 'deleted').length;
+      const subs = showingTrash
+        ? allSubs.filter(s => s.status === 'deleted')
+        : (inboxFilter === 'all' ? nonDeleted : nonDeleted.filter(s => s.status === inboxFilter));
       const container = document.getElementById('submissionsList');
       const pending = allSubs.filter(s => s.status === 'pending');
 
-      // Update inbox badge + summary
+      // Count by status
+      const counts = {};
+      Object.keys(STATUS_CONFIG).forEach(k => counts[k] = nonDeleted.filter(s => s.status === k).length);
+
+      // Update inbox badge (new submissions only)
       const badge = document.getElementById('inboxBadge');
-      const summary = document.getElementById('inboxSummary');
-      const approved = allSubs.filter(s => s.status === 'approved').length;
-      const rejected = allSubs.filter(s => s.status === 'rejected').length;
-      if (pending.length > 0) {
-        badge.textContent = pending.length;
+      const newCount = counts['pending'] || 0;
+      if (newCount > 0) {
+        badge.textContent = newCount;
         badge.style.display = 'inline';
       } else {
         badge.style.display = 'none';
       }
+
+      // Summary line
+      const summary = document.getElementById('inboxSummary');
       summary.innerHTML = showingTrash
-        ? `🗑 Trash (${deleted}) · <a href="#" onclick="toggleTrash(); return false;" style="color: #2563eb; text-decoration: none;">← Back to Inbox</a>`
-        : `${pending.length} pending · ${approved} approved · ${rejected} rejected${deleted ? ' · <a href=\"#\" onclick=\"toggleTrash(); return false;\" style=\"color: #999; text-decoration: none;\">🗑 Trash (' + deleted + ')</a>' : ''}`;
+        ? `🗑 Trash (${deleted}) · <a href="#" onclick="toggleTrash(); return false;" style="color: #2563eb; text-decoration: none;">← Back</a>`
+        : `${nonDeleted.length} total${deleted ? ' · <a href=\"#\" onclick=\"toggleTrash(); return false;\" style=\"color: #999; text-decoration: none;\">🗑 ' + deleted + '</a>' : ''}`;
 
       // Check for new submissions (alerts)
       checkNewSubmissions(pending);
 
-      if (subs.length === 0) {
+      if (nonDeleted.length === 0 && !showingTrash) {
         container.innerHTML = '<div class="empty-state">No submissions yet. Share the onboarding link with businesses.</div>';
         return;
       }
 
+      // Filter bar
+      const filterBar = showingTrash ? '' : `
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee;">
+          <button onclick="setInboxFilter('all')" style="padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid ${inboxFilter === 'all' ? '#1a1a1a' : '#ddd'}; background: ${inboxFilter === 'all' ? '#1a1a1a' : 'white'}; color: ${inboxFilter === 'all' ? 'white' : '#666'};">All (${nonDeleted.length})</button>
+          ${Object.entries(STATUS_CONFIG).map(([key, cfg]) => counts[key] > 0 ? `
+            <button onclick="setInboxFilter('${key}')" style="padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid ${inboxFilter === key ? cfg.color : '#ddd'}; background: ${inboxFilter === key ? cfg.color : 'white'}; color: ${inboxFilter === key ? 'white' : cfg.color};">${cfg.label} (${counts[key]})</button>
+          ` : '').join('')}
+        </div>
+      `;
+
       // Store submissions data for later use
       window._submissions = {};
-      subs.forEach(s => window._submissions[s.id] = s);
+      allSubs.forEach(s => window._submissions[s.id] = s);
 
-      container.innerHTML = subs.map(s => {
+      container.innerHTML = filterBar + (subs.length === 0
+        ? '<div class="empty-state">No submissions match this filter.</div>'
+        : subs.map(s => {
         const formData = JSON.parse(s.form_data);
-        const statusColor = s.status === 'pending' ? '#f59e0b' : s.status === 'approved' ? '#10b981' : '#ef4444';
-        const statusLabel = s.status.charAt(0).toUpperCase() + s.status.slice(1);
-        const isPending = s.status === 'pending';
+        const cfg = STATUS_CONFIG[s.status] || STATUS_CONFIG['pending'];
+        const isActive = ['pending', 'in-review', 'need-info', 'follow-up'].includes(s.status);
         const isRejected = s.status === 'rejected';
         const cardOpacity = isRejected ? 'opacity: 0.5;' : '';
         const typeLabel = formData.type === 'other' ? (formData.otherType || 'Other') : { restaurant: 'Restaurant', salon: 'Salon', home_services: 'Home Services', retail: 'Retail', fitness: 'Fitness', professional: 'Professional' }[formData.type] || formData.type || '—';
@@ -594,7 +638,7 @@
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0;">
                 <span id="sub-arrow-${s.id}" style="font-size: 10px; color: #999; transition: transform 0.2s; flex-shrink: 0;">▶</span>
                 <strong style="font-size: 14px;">${escapeHtml(s.business_name)}</strong>
-                <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; flex-shrink: 0;">${statusLabel}</span>
+                <span style="background: ${cfg.color}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; flex-shrink: 0;">${cfg.label}</span>
                 <span style="font-size: 12px; color: #666;">
                   ${formData.ownerName ? '👤 ' + escapeHtml(formData.ownerName) : ''}${formData.phone ? ' · 📞 ' + escapeHtml(formData.phone) : ''}
                 </span>
@@ -608,11 +652,11 @@
               </div>
             </div>
             <div id="sub-detail-${s.id}" style="display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0;">
-              ${isPending ? renderPendingReview(s, formData, typeLabel) : renderCompletedReview(s, formData, typeLabel)}
+              ${isActive ? renderPendingReview(s, formData, typeLabel) : renderCompletedReview(s, formData, typeLabel)}
             </div>
           </div>
         `;
-      }).join('');
+      }).join(''));
     }
 
     // --- Render full form review for pending submissions ---
@@ -625,8 +669,11 @@
           </div>
 
           <!-- Business Profile -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
-            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">📋 Business Profile</div>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid #1e40af; border-radius: 10px; padding: 20px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div style="font-size: 13px; font-weight: 700; color: #334155;">📋 Business Profile</div>
+              ${fd.submittedLanguage ? '<span style="background: #f0f0f0; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; color: #555;">🌐 Submitted in ' + {en:'English',pt:'Portuguese',es:'Spanish'}[fd.submittedLanguage] + '</span>' : ''}
+            </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div class="field" style="margin:0;"><label>Business Name</label><input type="text" id="sf-name-${s.id}" value="${escapeAttr(fd.name || s.business_name)}"></div>
               <div class="field" style="margin:0;"><label>Type</label><input type="text" id="sf-type-${s.id}" value="${escapeAttr(typeLabel)}"></div>
@@ -643,7 +690,7 @@
           ${renderEnhanceableSection(s.id, 'serviceArea', '📍 Service Area', fd.serviceArea, 'Where do they serve?')}
 
           <!-- Hours -->
-          ${renderEnhanceableSection(s.id, 'hours', '🕐 Hours of Operation', fd.hours, 'Business hours...')}
+          ${renderHoursSection(s.id, fd)}
 
           <!-- Services / Offerings -->
           ${renderEnhanceableSection(s.id, 'offerings', '🛠 Services & Offerings', fd.offerings, 'What do they offer?')}
@@ -658,27 +705,30 @@
           ${renderEnhanceableSection(s.id, 'about', '👤 About the Owner', fd.about, 'Their story...')}
 
           <!-- Tone & Voice -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b;">💬 Tone & Voice</div>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 12px; border-left: 3px solid #8b5cf6;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-size: 13px; font-weight: 700; color: #334155;">💬 Tone & Voice</div>
               <button class="btn btn-secondary btn-sm" onclick="enhanceField('${s.id}', 'tone')" style="font-size: 11px;">✨ AI Enhance</button>
             </div>
-            <input type="text" id="sf-tone-${s.id}" value="${escapeAttr(fd.tone || 'friendly')}" placeholder="e.g. friendly, professional, warm">
+            <input type="text" id="sf-tone-${s.id}" value="${escapeAttr(fd.tone || 'friendly')}" placeholder="e.g. friendly, professional, warm" style="width: 100%; padding: 12px; font-size: 14px;">
             <div id="sf-tone-${s.id}-loading" style="display:none; font-size: 11px; color: #2563eb; margin-top: 4px;">✨ Enhancing...</div>
           </div>
 
           <!-- Widget Settings -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 16px;">
-            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">🎨 Widget Settings</div>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid #e11d48; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 12px;">🎨 Widget Settings</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div class="field" style="margin:0;"><label>Welcome Message</label><input type="text" id="sf-welcome-${s.id}" value="${escapeAttr(s.welcome_message || 'Hi! 👋 How can I help you?')}"></div>
               <div class="field" style="margin:0;"><label>Theme Color</label><input type="color" id="sf-color-${s.id}" value="${s.theme_color || '#0d9488'}" style="height: 40px; padding: 2px;"></div>
             </div>
           </div>
 
-          <div class="actions" style="margin-bottom: 12px;">
+          <div class="actions" style="margin-bottom: 12px; align-items: center;">
             <button class="btn btn-primary" onclick="generatePrompt('${s.id}')">🤖 Generate AI Prompt →</button>
-            <button class="btn btn-secondary" onclick="saveFormEdits('${s.id}')">💾 Save Edits</button>
+            <button class="btn btn-secondary save-edits-btn" onclick="saveFormEdits('${s.id}', this)">💾 Save Edits</button>
+            <select onchange="updateSubmissionStatus('${s.id}', this.value)" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; color: #333; cursor: pointer; background: white; font-family: inherit;">
+              ${Object.entries(STATUS_CONFIG).map(([key, c]) => '<option value=\"' + key + '\"' + (s.status === key ? ' selected' : '') + '>' + c.label + '</option>').join('')}
+            </select>
             <button class="btn btn-danger btn-sm" onclick="rejectSubmission('${s.id}')" style="margin-left: auto;">✗ Reject</button>
           </div>
         </div>
@@ -703,40 +753,95 @@
       `;
     }
 
+    const SECTION_COLORS = {
+      serviceArea: '#2563eb', hours: '#0891b2', offerings: '#059669',
+      reservations: '#7c3aed', policies: '#dc2626', about: '#d97706', tone: '#8b5cf6'
+    };
+
     function renderEnhanceableSection(subId, field, label, value, placeholder) {
       if (!value && field !== 'offerings') return ''; // Skip empty optional sections
+      const accent = SECTION_COLORS[field] || '#64748b';
       return `
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b;">${label}</div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid ${accent}; border-radius: 10px; padding: 20px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="font-size: 13px; font-weight: 700; color: #334155;">${label}</div>
             <button class="btn btn-secondary btn-sm" onclick="enhanceField('${subId}', '${field}')" style="font-size: 11px;" ${!value ? 'disabled style="opacity:0.5;font-size:11px;"' : ''}>✨ AI Enhance</button>
           </div>
-          <textarea id="sf-${field}-${subId}" placeholder="${placeholder}" style="min-height: 60px; font-size: 13px;">${escapeHtml(value || '')}</textarea>
+          <textarea id="sf-${field}-${subId}" placeholder="${placeholder}" style="width: 100%; min-height: 100px; font-size: 14px; line-height: 1.6; padding: 12px;">${escapeHtml(value || '')}</textarea>
           <div id="sf-${field}-${subId}-loading" style="display:none; font-size: 11px; color: #2563eb; margin-top: 4px;">✨ Enhancing...</div>
         </div>
       `;
     }
 
-    function renderCompletedReview(s, fd, typeLabel) {
+    function renderHoursSection(subId, fd) {
+      const hoursText = formatHoursForDisplay(fd);
+      if (!hoursText && !fd.hours) return '';
+      const value = fd.hours || hoursText;
       return `
-        <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #666; margin: 12px 0 16px; padding: 10px 14px; background: #fafafa; border-radius: 8px;">
-          ${typeLabel ? '<span><strong>Type:</strong> ' + escapeHtml(typeLabel) + '</span>' : ''}
-          ${fd.phone ? '<span><strong>Phone:</strong> ' + escapeHtml(fd.phone) + '</span>' : ''}
-          ${fd.serviceArea ? '<span><strong>Area:</strong> ' + escapeHtml(fd.serviceArea) + '</span>' : ''}
-          ${fd.website ? '<span><strong>Website:</strong> ' + escapeHtml(fd.website) + '</span>' : ''}
-          ${fd.ownerName ? '<span><strong>Owner:</strong> ' + escapeHtml(fd.ownerName) + '</span>' : ''}
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 3px solid #0891b2; border-radius: 10px; padding: 20px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="font-size: 13px; font-weight: 700; color: #334155;">🕐 Hours of Operation</div>
+            <button class="btn btn-secondary btn-sm" onclick="enhanceField('${subId}', 'hours')" style="font-size: 11px;">✨ AI Enhance</button>
+          </div>
+          <textarea id="sf-hours-${subId}" placeholder="Business hours..." style="width: 100%; min-height: 120px; font-size: 14px; line-height: 1.6; padding: 12px;">${escapeHtml(value)}</textarea>
+          <div id="sf-hours-${subId}-loading" style="display:none; font-size: 11px; color: #2563eb; margin-top: 4px;">✨ Enhancing...</div>
         </div>
-        <details style="margin-bottom: 8px;">
-          <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Form Data</summary>
-          <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 200px; overflow-y: auto;">${escapeHtml(JSON.stringify(fd, null, 2))}</pre>
-        </details>
-        <details style="margin-bottom: 8px;">
-          <summary style="cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb;">View Generated Prompt</summary>
+      `;
+    }
+
+    function renderCompletedReview(s, fd, typeLabel) {
+      const hoursText = formatHoursForDisplay(fd);
+      return `
+        ${s.status === 'approved' ? '<div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #065f46;">✓ Approved & live</div>' : ''}
+        ${s.status === 'rejected' ? '<div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #991b1b;">✗ Rejected</div>' : ''}
+
+        <!-- Business Profile -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 12px 0;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">📋 Business Profile</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+            ${readonlyField('Business Name', fd.name || s.business_name)}
+            ${readonlyField('Type', typeLabel)}
+            ${readonlyField('Owner', fd.ownerName)}
+            ${readonlyField('Phone', fd.phone)}
+            ${readonlyField('Email', fd.email)}
+            ${readonlyField('Address', fd.address)}
+            ${readonlyField('Website', fd.website)}
+          </div>
+        </div>
+
+        ${fd.serviceArea ? readonlySection('📍 Service Area', fd.serviceArea) : ''}
+        ${hoursText ? readonlySection('🕐 Hours', hoursText) : ''}
+        ${fd.offerings ? readonlySection('🛠 Services & Offerings', fd.offerings) : ''}
+        ${fd.reservations ? readonlySection('📅 Reservations & Booking', fd.reservations) : ''}
+        ${fd.policies ? readonlySection('📜 Policies', fd.policies) : ''}
+        ${fd.about ? readonlySection('👤 About', fd.about) : ''}
+        ${fd.tone ? readonlySection('💬 Tone', fd.tone) : ''}
+
+        <details style="margin-top: 12px;">
+          <summary style="cursor: pointer; font-size: 12px; color: #999;">View Generated Prompt</summary>
           <pre style="background: #f5f5f5; padding: 12px; border-radius: 6px; font-size: 12px; margin-top: 8px; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(s.system_prompt)}</pre>
         </details>
-        ${s.status === 'approved' ? '<div style="font-size: 12px; color: #10b981;">✓ Business created</div>' : ''}
-        ${s.status === 'rejected' ? '<div style="font-size: 12px; color: #ef4444;">✗ Rejected</div>' : ''}
       `;
+    }
+
+    function readonlyField(label, value) {
+      if (!value) return '';
+      return `<div><span style="font-weight: 600; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;">${label}</span><div style="margin-top: 2px;">${escapeHtml(value)}</div></div>`;
+    }
+
+    function readonlySection(label, value) {
+      return `
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 10px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">${label}</div>
+          <div style="font-size: 13px; line-height: 1.6; white-space: pre-line;">${escapeHtml(value)}</div>
+        </div>
+      `;
+    }
+
+    function formatHoursForDisplay(fd) {
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const parts = days.map(d => { const v = fd['hours' + d]; return v ? d + ': ' + v : ''; }).filter(Boolean);
+      return parts.length > 0 ? parts.join('\n') : (fd.hours || '');
     }
 
     // --- AI Enhance a field ---
@@ -797,22 +902,29 @@
     }
 
     // --- Save form edits without generating prompt ---
-    async function saveFormEdits(subId) {
+    async function saveFormEdits(subId, btnEl) {
+      const btn = btnEl || document.querySelector(`#sub-step1-${subId} .save-edits-btn`);
       const formData = collectFormData(subId);
-      const res = await authFetch(`${API}/submissions/${subId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ form_data: formData, business_name: formData.name })
-      });
-      if (res.ok) {
-        // Brief flash to confirm
-        const btn = event.target;
-        const orig = btn.textContent;
-        btn.textContent = '✓ Saved!';
-        btn.style.background = '#10b981'; btn.style.color = 'white';
-        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 1500);
-      } else {
-        alert('Error saving edits');
+      if (btn) { btn.disabled = true; btn.textContent = '💾 Saving...'; }
+      try {
+        const res = await authFetch(`${API}/submissions/${subId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ form_data: formData, business_name: formData.name })
+        });
+        if (res.ok) {
+          if (btn) {
+            btn.textContent = '✓ Saved!';
+            btn.style.background = '#10b981'; btn.style.color = 'white';
+            setTimeout(() => { btn.textContent = '💾 Save Edits'; btn.style.background = ''; btn.style.color = ''; btn.disabled = false; }, 1500);
+          }
+        } else {
+          alert('Error saving edits');
+          if (btn) { btn.textContent = '💾 Save Edits'; btn.disabled = false; }
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+        if (btn) { btn.textContent = '💾 Save Edits'; btn.disabled = false; }
       }
     }
 
@@ -974,9 +1086,23 @@
       Notification.requestPermission();
     }
 
-    // Poll for new submissions every 30 seconds
-    setInterval(() => {
-      if (currentView === 'inbox') loadSubmissions();
+    // Poll for new submissions every 30 seconds (count only — don't re-render and destroy open forms)
+    setInterval(async () => {
+      if (currentView === 'inbox') {
+        try {
+          const res = await authFetch(`${API}/submissions`);
+          const allSubs = await res.json();
+          const pending = allSubs.filter(s => s.status === 'pending');
+          const badge = document.getElementById('inboxBadge');
+          if (pending.length > 0) {
+            badge.textContent = pending.length;
+            badge.style.display = 'inline';
+          } else {
+            badge.style.display = 'none';
+          }
+          checkNewSubmissions(pending);
+        } catch (e) { /* ignore polling errors */ }
+      }
     }, 30000);
 
     // --- Pipeline ---

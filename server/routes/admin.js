@@ -321,7 +321,7 @@ router.put('/submissions/:id', async (req, res) => {
   const sub = subResult.rows[0];
   if (!sub) return res.status(404).json({ error: 'Submission not found' });
 
-  const { form_data, system_prompt, welcome_message, theme_color, business_name } = req.body;
+  const { form_data, system_prompt, welcome_message, theme_color, business_name, status } = req.body;
   const updates = [];
   const args = [];
 
@@ -330,6 +330,11 @@ router.put('/submissions/:id', async (req, res) => {
   if (welcome_message !== undefined) { updates.push('welcome_message = ?'); args.push(welcome_message); }
   if (theme_color !== undefined) { updates.push('theme_color = ?'); args.push(theme_color); }
   if (business_name !== undefined) { updates.push('business_name = ?'); args.push(business_name); }
+  if (status !== undefined) {
+    const validStatuses = ['pending', 'in-review', 'need-info', 'follow-up', 'approved', 'rejected'];
+    if (!validStatuses.includes(status)) return res.status(400).json({ error: 'Invalid status' });
+    updates.push('status = ?'); args.push(status);
+  }
 
   if (updates.length === 0) return res.status(400).json({ error: 'Nothing to update' });
   args.push(req.params.id);
