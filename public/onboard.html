@@ -281,6 +281,23 @@
         </div>
       </div>
 
+      <!-- About Me -->
+      <div class="section">
+        <h2 data-i18n="sec_about">About You <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
+        <div class="subtitle" data-i18n="sec_about_sub">Tell your story! This will appear on your website's "About" section and helps customers connect with you personally.</div>
+
+        <div class="field">
+          <label data-i18n="lbl_about">Your Story</label>
+          <div class="hint" data-i18n="hint_about">What makes your business special? How did you get started? What do you love about what you do?</div>
+          <textarea id="bizAbout" rows="5" data-i18n-ph="ph_about" placeholder="e.g. I started my cleaning business 5 years ago after moving to Seattle from Brazil. I love making homes feel warm and welcoming. Every home I clean gets the same care and attention I'd give my own. I'm a pet lover and my team is fully bilingual!"></textarea>
+        </div>
+        <div class="field">
+          <label data-i18n="lbl_email">Email Address <span style="font-weight:400;color:#999;font-size:11px" data-i18n="optional">(optional)</span></label>
+          <div class="hint" data-i18n="hint_email">For your website contact section and so the AI can share it with customers</div>
+          <input type="email" id="bizEmail" data-i18n-ph="ph_email" placeholder="e.g. hello@yourbusiness.com">
+        </div>
+      </div>
+
       <!-- Policies -->
       <div class="section">
         <h2 data-i18n="sec_policies">Policies & Common Questions <span style="font-weight:400;color:#999;font-size:13px" data-i18n="optional">(optional)</span></h2>
@@ -427,6 +444,14 @@
         lbl_photos_link: 'Enlace a Fotos',
         hint_photos_link: 'Comparte un enlace de Google Drive, Dropbox o iCloud con tus fotos. O simplemente envíalas por texto/WhatsApp — ¡las agregaremos por ti!',
         ph_photos_link: 'ej. https://drive.google.com/... o escribe "Las enviaré por texto"',
+        sec_about: 'Sobre Ti',
+        sec_about_sub: '¡Cuenta tu historia! Esto aparecerá en la sección "Sobre" de tu sitio web y ayuda a los clientes a conectar contigo personalmente.',
+        lbl_about: 'Tu Historia',
+        hint_about: '¿Qué hace especial a tu negocio? ¿Cómo empezaste? ¿Qué es lo que más te gusta de lo que haces?',
+        ph_about: 'ej. Empecé mi negocio de limpieza hace 5 años después de mudarme a Seattle. Me encanta hacer que los hogares se sientan cálidos y acogedores.',
+        lbl_email: 'Correo Electrónico',
+        hint_email: 'Para la sección de contacto de tu sitio web y para que la IA pueda compartirlo con los clientes',
+        ph_email: 'ej. hola@tunegocio.com',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Dirección',
         ph_address: '123 Main St, Sammamish, WA 98074',
@@ -511,6 +536,14 @@
         lbl_photos_link: 'Link para Fotos',
         hint_photos_link: 'Compartilhe um link do Google Drive, Dropbox ou iCloud com suas fotos. Ou simplesmente envie por texto/WhatsApp — nós adicionamos para você!',
         ph_photos_link: 'ex. https://drive.google.com/... ou escreva "Vou enviar por mensagem"',
+        sec_about: 'Sobre Você',
+        sec_about_sub: 'Conte sua história! Isso vai aparecer na seção "Sobre" do seu site e ajuda os clientes a se conectarem com você pessoalmente.',
+        lbl_about: 'Sua História',
+        hint_about: 'O que torna seu negócio especial? Como você começou? O que você ama no que faz?',
+        ph_about: 'ex. Comecei meu negócio de limpeza há 5 anos depois de me mudar para Seattle do Brasil. Amo fazer as casas parecerem acolhedoras e limpas.',
+        lbl_email: 'Email',
+        hint_email: 'Para a seção de contato do seu site e para que a IA possa compartilhar com os clientes',
+        ph_email: 'ex. contato@seunegocio.com',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Endereço',
         ph_address: '123 Main St, Sammamish, WA 98074',
@@ -595,6 +628,14 @@
         lbl_photos_link: 'Link to Photos',
         hint_photos_link: "Share a Google Drive, Dropbox, or iCloud link with your photos. Or just text/WhatsApp them to us — we'll add them for you!",
         ph_photos_link: 'e.g. https://drive.google.com/... or just type \'I\'ll text them\'',
+        sec_about: 'About You',
+        sec_about_sub: 'Tell your story! This will appear on your website\'s "About" section and helps customers connect with you personally.',
+        lbl_about: 'Your Story',
+        hint_about: 'What makes your business special? How did you get started? What do you love about what you do?',
+        ph_about: 'e.g. I started my cleaning business 5 years ago after moving to Seattle. I love making homes feel warm and welcoming.',
+        lbl_email: 'Email Address',
+        hint_email: 'For your website contact section and so the AI can share it with customers',
+        ph_email: 'e.g. hello@yourbusiness.com',
         ph_phone: '(425) 555-1234',
         lbl_address: 'Address',
         ph_address: '123 Main St, Sammamish, WA 98074',
@@ -734,6 +775,7 @@
       // Contact info
       const contact = [];
       if (data.phone) contact.push(`Phone: ${data.phone}`);
+      if (data.email) contact.push(`Email: ${data.email}`);
       if (data.website) contact.push(`Website: ${data.website}`);
       if (data.address) contact.push(`Address: ${data.address}`);
       if (contact.length) {
@@ -782,6 +824,11 @@
         prompt += `## Additional Information\n${data.extra}\n\n`;
       }
 
+      // About the owner
+      if (data.about) {
+        prompt += `## About the Owner\n${data.about}\n\n`;
+      }
+
       prompt += '## Important Rules\n';
       prompt += '- Only answer based on the information provided above.\n';
       prompt += '- Do not make up information about menu items, prices, or services.\n';
@@ -821,6 +868,8 @@
         languages: Array.from(document.querySelectorAll('#langCheckboxes input:checked')).map(cb => cb.value).filter(v => v !== 'other'),
         otherLanguages: document.getElementById('bizOtherLang').value.trim(),
         photosLink: document.getElementById('bizPhotosLink').value.trim(),
+        about: document.getElementById('bizAbout').value.trim(),
+        email: document.getElementById('bizEmail').value.trim(),
       };
 
       const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
@@ -846,9 +895,9 @@
 
         // Build submission summary
         const summaryLabels = {
-          en: { owner: 'Your Name', name: 'Business Name', type: 'Type', phone: 'Phone', area: 'Areas Serviced', website: 'Website', offerings: 'Services', tone: 'Tone' },
-          es: { owner: 'Tu Nombre', name: 'Nombre', type: 'Tipo', phone: 'Teléfono', area: 'Áreas', website: 'Sitio Web', offerings: 'Servicios', tone: 'Tono' },
-          pt: { owner: 'Seu Nome', name: 'Nome', type: 'Tipo', phone: 'Telefone', area: 'Áreas Atendidas', website: 'Site', offerings: 'Serviços', tone: 'Tom' },
+          en: { owner: 'Your Name', name: 'Business Name', type: 'Type', phone: 'Phone', email: 'Email', area: 'Areas Serviced', website: 'Website', offerings: 'Services', about: 'About You', tone: 'Tone' },
+          es: { owner: 'Tu Nombre', name: 'Nombre', type: 'Tipo', phone: 'Teléfono', email: 'Correo', area: 'Áreas', website: 'Sitio Web', offerings: 'Servicios', about: 'Sobre Ti', tone: 'Tono' },
+          pt: { owner: 'Seu Nome', name: 'Nome', type: 'Tipo', phone: 'Telefone', email: 'Email', area: 'Áreas Atendidas', website: 'Site', offerings: 'Serviços', about: 'Sobre Você', tone: 'Tom' },
         };
         const labels = summaryLabels[currentLang] || summaryLabels.en;
         const summaryItems = [
@@ -856,9 +905,11 @@
           { label: labels.name, value: data.name },
           { label: labels.type, value: data.type },
           { label: labels.phone, value: data.phone },
+          { label: labels.email, value: data.email },
           { label: labels.area, value: data.serviceArea },
           { label: labels.website, value: data.website },
           { label: labels.offerings, value: data.offerings },
+          { label: labels.about, value: data.about },
           { label: labels.tone, value: data.tone },
         ].filter(item => item.value);
 
