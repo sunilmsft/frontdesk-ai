@@ -456,24 +456,30 @@
     }
 
     // --- Submissions (Inbox) ---
+    let showingTrash = false;
+
     async function loadSubmissions() {
       const res = await authFetch(`${API}/submissions`);
-      const subs = await res.json();
+      const allSubs = await res.json();
+      const subs = allSubs.filter(s => showingTrash ? s.status === 'deleted' : s.status !== 'deleted');
+      const deleted = allSubs.filter(s => s.status === 'deleted').length;
       const container = document.getElementById('submissionsList');
-      const pending = subs.filter(s => s.status === 'pending');
+      const pending = allSubs.filter(s => s.status === 'pending');
 
       // Update inbox badge + summary
       const badge = document.getElementById('inboxBadge');
       const summary = document.getElementById('inboxSummary');
-      const approved = subs.filter(s => s.status === 'approved').length;
-      const rejected = subs.filter(s => s.status === 'rejected').length;
+      const approved = allSubs.filter(s => s.status === 'approved').length;
+      const rejected = allSubs.filter(s => s.status === 'rejected').length;
       if (pending.length > 0) {
         badge.textContent = pending.length;
         badge.style.display = 'inline';
       } else {
         badge.style.display = 'none';
       }
-      summary.textContent = `${pending.length} pending · ${approved} approved · ${rejected} rejected`;
+      summary.innerHTML = showingTrash
+        ? `🗑 Trash (${deleted}) · <a href="#" onclick="toggleTrash(); return false;" style="color: #2563eb; text-decoration: none;">← Back to Inbox</a>`
+        : `${pending.length} pending · ${approved} approved · ${rejected} rejected${deleted ? ' · <a href=\"#\" onclick=\"toggleTrash(); return false;\" style=\"color: #999; text-decoration: none;\">🗑 Trash (' + deleted + ')</a>' : ''}`;
 
       if (subs.length === 0) {
         container.innerHTML = '<div class="empty-state">No submissions yet. Share the onboarding link with businesses.</div>';
@@ -500,7 +506,10 @@
               </div>
               <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                 <span style="font-size: 11px; color: #999;">${new Date(s.submitted_at + 'Z').toLocaleDateString()}</span>
-                <button class="btn btn-sm" onclick="event.stopPropagation(); deleteSubmission('${s.id}')" title="Delete" style="color: #bbb; padding: 2px 6px; font-size: 11px; background: none; border: none; cursor: pointer;">✕</button>
+                ${s.status === 'deleted'
+                  ? `<button onclick="event.stopPropagation(); restoreSubmission('${s.id}')" title="Restore" style="color: #10b981; padding: 2px 8px; font-size: 11px; background: none; border: 1px solid #10b981; border-radius: 4px; cursor: pointer;">↩ Restore</button>`
+                  : `<button class="btn btn-sm" onclick="event.stopPropagation(); deleteSubmission('${s.id}')" title="Delete" style="color: #bbb; padding: 2px 6px; font-size: 11px; background: none; border: none; cursor: pointer;">✕</button>`
+                }
               </div>
             </div>
             <div id="sub-detail-${s.id}" style="display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0;">
@@ -565,10 +574,21 @@
     }
 
     async function deleteSubmission(id) {
-      if (!confirm('Permanently delete this submission?')) return;
+      if (!confirm('Move this submission to trash?')) return;
       const res = await authFetch(`${API}/submissions/${id}`, { method: 'DELETE' });
       if (res.ok) await loadSubmissions();
       else alert((await res.json()).error || 'Error deleting');
+    }
+
+    async function restoreSubmission(id) {
+      const res = await authFetch(`${API}/submissions/${id}/restore`, { method: 'POST' });
+      if (res.ok) await loadSubmissions();
+      else alert((await res.json()).error || 'Error restoring');
+    }
+
+    function toggleTrash() {
+      showingTrash = !showingTrash;
+      loadSubmissions();
     }
 
     async function approveSubmission(id) {

@@ -243,14 +243,25 @@ router.post('/submissions/:id/reject', async (req, res) => {
 });
 
 /**
- * DELETE /api/admin/submissions/:id — Permanently delete a submission
+ * DELETE /api/admin/submissions/:id — Soft-delete a submission (moves to trash)
  */
 router.delete('/submissions/:id', async (req, res) => {
   const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
   if (!subResult.rows[0]) return res.status(404).json({ error: 'Submission not found' });
 
-  await db.execute({ sql: 'DELETE FROM submissions WHERE id = ?', args: [req.params.id] });
-  res.json({ message: 'Submission deleted' });
+  await db.execute({ sql: "UPDATE submissions SET status = 'deleted' WHERE id = ?", args: [req.params.id] });
+  res.json({ message: 'Submission moved to trash' });
+});
+
+/**
+ * POST /api/admin/submissions/:id/restore — Restore a deleted submission back to pending
+ */
+router.post('/submissions/:id/restore', async (req, res) => {
+  const subResult = await db.execute({ sql: 'SELECT * FROM submissions WHERE id = ?', args: [req.params.id] });
+  if (!subResult.rows[0]) return res.status(404).json({ error: 'Submission not found' });
+
+  await db.execute({ sql: "UPDATE submissions SET status = 'pending' WHERE id = ?", args: [req.params.id] });
+  res.json({ message: 'Submission restored' });
 });
 
 module.exports = router;

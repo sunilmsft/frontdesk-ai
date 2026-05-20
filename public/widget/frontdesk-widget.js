@@ -137,6 +137,33 @@
       }
       #fd-powered a { color: #94a3b8; text-decoration: none; }
       #fd-powered a:hover { color: #64748b; }
+
+      #fd-greeting {
+        position: fixed; bottom: 92px; right: 24px; z-index: 99997;
+        background: white; color: #1e293b;
+        padding: 12px 18px; border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
+        font-size: 14px; font-weight: 500; line-height: 1.4;
+        max-width: 260px;
+        opacity: 0; visibility: hidden;
+        transform: translateY(8px) scale(0.95);
+        transition: opacity 0.4s, transform 0.4s, visibility 0.4s;
+        cursor: pointer;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      #fd-greeting.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+      #fd-greeting::after {
+        content: ''; position: absolute; bottom: -6px; right: 28px;
+        width: 12px; height: 12px; background: white;
+        transform: rotate(45deg);
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.06);
+      }
+      #fd-greeting .fd-g-close {
+        position: absolute; top: 4px; right: 8px;
+        background: none; border: none; font-size: 14px;
+        color: #94a3b8; cursor: pointer; padding: 2px;
+      }
+      #fd-greeting .fd-g-close:hover { color: #64748b; }
     `;
     document.head.appendChild(style);
 
@@ -170,6 +197,25 @@
     `;
     document.body.appendChild(bubble);
 
+    // Greeting tooltip
+    const greeting = document.createElement('div');
+    greeting.id = 'fd-greeting';
+    greeting.innerHTML = `${escapeHtml(biz.welcome_message)} <button class="fd-g-close" aria-label="Close">&times;</button>`;
+    document.body.appendChild(greeting);
+
+    // Show greeting after 3s if chat not opened
+    setTimeout(() => {
+      if (!isOpen) greeting.classList.add('show');
+    }, 3000);
+    greeting.querySelector('.fd-g-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      greeting.classList.remove('show');
+    });
+    greeting.addEventListener('click', () => {
+      greeting.classList.remove('show');
+      if (!isOpen) toggleChat();
+    });
+
     // Events
     bubble.addEventListener('click', toggleChat);
     document.getElementById('fd-send').addEventListener('click', sendMessage);
@@ -187,6 +233,8 @@
     document.getElementById('fd-bubble').classList.toggle('open', isOpen);
 
     if (isOpen) {
+      const greeting = document.getElementById('fd-greeting');
+      if (greeting) greeting.classList.remove('show');
       const messages = document.getElementById('fd-messages');
       if (messages.children.length === 0) {
         addMessage('assistant', businessData.welcome_message);

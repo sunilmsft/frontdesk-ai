@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // Routes
 app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/site', require('./routes/site'));
 
 // Clean URLs for static pages
 app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));

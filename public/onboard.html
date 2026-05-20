@@ -68,9 +68,82 @@
     .photo-hint-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 16px; margin-top: 8px; }
     .photo-hint-box p { font-size: 12px; color: #64748b; margin-bottom: 6px; }
     .photo-hint-box ul { font-size: 12px; color: #64748b; margin-left: 16px; }
+
+    /* Language Gate */
+    .lang-gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    .lang-gate-inner {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .lang-gate-inner h1 {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .lang-gate-inner p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+    .lang-gate-options {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .lang-gate-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 28px;
+      background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-gate-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    .lang-gate-btn .flag { font-size: 1.5rem; }
+    .app-content { display: none; }
   </style>
 </head>
 <body>
+
+  <!-- Language Gate -->
+  <div class="lang-gate" id="langGate">
+    <div class="lang-gate-inner">
+      <h1>🌐 Choose your language</h1>
+      <p>Select a language to continue · Seleccione su idioma · Escolha seu idioma</p>
+      <div class="lang-gate-options">
+        <button class="lang-gate-btn" onclick="chooseLang('en')">
+          <span class="flag">🇺🇸</span> English
+        </button>
+        <button class="lang-gate-btn" onclick="chooseLang('es')">
+          <span class="flag">🇪🇸</span> Español
+        </button>
+        <button class="lang-gate-btn" onclick="chooseLang('pt')">
+          <span class="flag">🇧🇷</span> Português
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actual Form (hidden until language chosen) -->
+  <div class="app-content" id="appContent">
   <div class="header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div>
@@ -570,6 +643,13 @@
       }
     };
 
+    function chooseLang(lang) {
+      document.getElementById('langGate').style.display = 'none';
+      document.getElementById('appContent').style.display = 'block';
+      document.querySelector('.lang-toggle').style.display = 'none';
+      setLang(lang);
+    }
+
     function setLang(lang) {
       currentLang = lang;
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
@@ -802,5 +882,6 @@
       return div.innerHTML;
     }
   </script>
+  </div><!-- /app-content -->
 </body>
 </html>
