@@ -13,7 +13,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
  * Returns: { conversationId, reply }
  */
 router.post('/chat', async (req, res) => {
-  const { businessId, conversationId, message } = req.body;
+  const { businessId, conversationId, message, lang } = req.body;
 
   if (!businessId || !message) {
     return res.status(400).json({ error: 'businessId and message are required' });
@@ -52,8 +52,13 @@ router.post('/chat', async (req, res) => {
   const now = new Date();
   const dateContext = `\n\nCurrent date and time: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}, ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}.`;
 
-  const openaiMessages = [
-    { role: 'system', content: business.system_prompt + dateContext },
+    const langMap = { pt: 'Portuguese', es: 'Spanish', en: 'English' };
+    const langInstruction = lang && lang !== 'en'
+      ? `\n\nIMPORTANT: The customer has selected ${langMap[lang] || lang}. You MUST respond in ${langMap[lang] || lang}.`
+      : '';
+
+    const openaiMessages = [
+    { role: 'system', content: business.system_prompt + dateContext + langInstruction },
     ...historyResult.rows.map(m => ({ role: m.role, content: m.content })),
   ];
 

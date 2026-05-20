@@ -19,6 +19,7 @@
   let businessData = null;
   let conversationId = null;
   let isOpen = false;
+  let currentLang = 'en';
 
   // Fetch business info
   fetch(`${SERVER}/api/business/${BUSINESS_SLUG}`)
@@ -230,6 +231,7 @@
     window.addEventListener('frontdesk-lang-change', (e) => {
       const lang = e.detail && e.detail.lang;
       const welcomeText = e.detail && e.detail.welcomeMessage;
+      if (lang) currentLang = lang;
       // Reset conversation so next message uses new language context
       conversationId = null;
       // Clear chat messages and show welcome in new language
@@ -290,6 +292,7 @@
           businessId: businessData.id,
           conversationId,
           message: text,
+          lang: currentLang,
         }),
       });
 
