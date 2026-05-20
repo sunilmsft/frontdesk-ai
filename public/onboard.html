@@ -363,7 +363,8 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" data-i18n="btn_submit">Submit My Business Info</button>
+      <p style="font-size: 12px; color: #888; margin-bottom: 16px; text-align: center;" data-i18n="privacy_notice">By submitting, you agree that we'll use this info to set up your business website and AI chat assistant. We'll never share your data with third parties.</p>
+      <button type="submit" class="btn btn-primary" id="submitBtn" data-i18n="btn_submit">Submit My Business Info</button>
     </form>
 
     <!-- Success state -->
@@ -458,6 +459,7 @@
         sec_widget: 'Tu Color de Marca',
         sec_widget_sub: 'Elige el color que mejor represente tu negocio',
         btn_submit: 'Enviar Información de Mi Negocio',
+        privacy_notice: 'Al enviar, aceptas que usaremos esta información para crear tu sitio web y asistente de chat con IA. Nunca compartiremos tus datos con terceros.',
         success_title: '✅ ¡Recibimos Tu Información!',
         success_msg: '¡Gracias! Revisaremos tus datos y configuraremos tu asistente de IA en 24 horas. Te avisaremos cuando esté listo.',
         success_changes: '¿Necesitas hacer cambios? Envíanos un mensaje de texto o WhatsApp y actualizaremos tu información.',
@@ -539,6 +541,7 @@
         sec_widget: 'Sua Cor de Marca',
         sec_widget_sub: 'Escolha a cor que melhor representa seu negócio',
         btn_submit: 'Enviar Informações do Meu Negócio',
+        privacy_notice: 'Ao enviar, você concorda que usaremos estas informações para criar seu site e assistente de chat com IA. Nunca compartilharemos seus dados com terceiros.',
         success_title: '✅ Recebemos Suas Informações!',
         success_msg: 'Obrigado! Vamos revisar seus dados e configurar seu assistente de IA em 24 horas. Entraremos em contato quando estiver pronto.',
         success_changes: 'Precisa fazer alterações? Envie uma mensagem de texto ou WhatsApp e atualizaremos suas informações.',
@@ -620,6 +623,7 @@
         sec_widget: 'Your Brand Color',
         sec_widget_sub: 'Pick the color that best represents your business',
         btn_submit: 'Submit My Business Info',
+        privacy_notice: "By submitting, you agree that we'll use this info to set up your business website and AI chat assistant. We'll never share your data with third parties.",
         success_title: "✅ We've Got Your Info!",
         success_msg: "Thanks! We'll review your details and set up your custom AI assistant within 24 hours. We'll reach out when it's ready to go live on your website.",
         success_changes: 'Need to make changes? Text or WhatsApp us and we\'ll update your info.',
@@ -770,6 +774,12 @@
     document.getElementById('onboardForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      submitBtn.textContent = currentLang === 'pt' ? 'Enviando...' : currentLang === 'es' ? 'Enviando...' : 'Submitting...';
+
       const data = {
         ownerName: document.getElementById('ownerName').value.trim(),
         name: document.getElementById('bizName').value.trim(),
@@ -844,6 +854,9 @@
       } else {
         const err = await res.json();
         alert(err.error || 'Something went wrong. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.textContent = originalText;
       }
     });
     function escapeHtml(str) {

@@ -18,7 +18,7 @@
       --accent: #c4b5a0;
       --accent-light: #f7f4ef;
       --text: #1b1b1b;
-      --text-muted: #6b6b6b;
+      --text-muted: #555555;
       --bg: #fafaf8;
       --white: #ffffff;
       --border: #e8e8e4;
@@ -111,6 +111,7 @@
     }
     .nav-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
     .nav-mobile { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+    .nav-mobile[aria-label] { }
 
     /* === HERO === */
     .hero {
@@ -131,7 +132,7 @@
     .hero-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 120px 24px 80px;
+      padding: 80px 24px 40px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
@@ -733,10 +734,10 @@
         <li><a href="#hours" data-i18n="navHours">Hours</a></li>
         <li>
           <div class="nav-lang" id="langPicker">
-            <button class="nav-lang-btn" onclick="document.getElementById('langPicker').classList.toggle('open')">
-              <span class="globe">🌐</span>
+            <button class="nav-lang-btn" onclick="document.getElementById('langPicker').classList.toggle('open')" aria-expanded="false" aria-haspopup="true">
+              <span class="globe" aria-hidden="true">🌐</span>
               <span class="lang-label">English</span>
-              <span class="chevron">▾</span>
+              <span class="chevron" aria-hidden="true">▾</span>
             </button>
             <div class="nav-lang-menu">
               <button class="nav-lang-option active" onclick="setLang('en')">
@@ -753,7 +754,7 @@
         </li>
         <li><a href="#contact" class="nav-cta" data-i18n="navCta">Get a Free Estimate</a></li>
       </ul>
-      <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+      <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu" aria-expanded="false">☰</button>
       <div class="nav-lang nav-lang-mobile" id="langPickerMobile">
         <button class="nav-lang-btn" onclick="document.getElementById('langPickerMobile').classList.toggle('open')">
           <span class="globe">🌐</span>
@@ -907,12 +908,12 @@
       <h2 class="section-title" data-i18n="galleryTitle">See the Camellia difference</h2>
       <p class="section-text" data-i18n="galleryText">Real photos from real homes we clean — no stock images, just our actual work.</p>
       <div class="gallery-grid">
-        <div class="gallery-item" id="gallery1"><img src="/sites/camellia-cleaning/photos/bathroom-vanity.jpeg" alt="Clean bathroom vanity"></div>
-        <div class="gallery-item" id="gallery2"><img src="/sites/camellia-cleaning/photos/kitchen-stove.jpeg" alt="Clean kitchen stove area"></div>
-        <div class="gallery-item" id="gallery3"><img src="/sites/camellia-cleaning/photos/oven-after.jpeg" alt="Oven after deep clean"></div>
-        <div class="gallery-item" id="gallery4"><img src="/sites/camellia-cleaning/photos/tub-after.jpeg" alt="Bathtub after cleaning"></div>
-        <div class="gallery-item" id="gallery5"><img src="/sites/camellia-cleaning/photos/shower-glass.jpeg" alt="Glass shower detail"></div>
-        <div class="gallery-item" id="gallery6"><img src="/sites/camellia-cleaning/photos/bedroom-airbnb.jpeg" alt="Airbnb ready bedroom"></div>
+        <div class="gallery-item" id="gallery1"><img src="/sites/camellia-cleaning/photos/bathroom-vanity.jpeg" alt="Clean bathroom vanity" loading="lazy"></div>
+        <div class="gallery-item" id="gallery2"><img src="/sites/camellia-cleaning/photos/kitchen-stove.jpeg" alt="Clean kitchen stove area" loading="lazy"></div>
+        <div class="gallery-item" id="gallery3"><img src="/sites/camellia-cleaning/photos/oven-after.jpeg" alt="Oven after deep clean" loading="lazy"></div>
+        <div class="gallery-item" id="gallery4"><img src="/sites/camellia-cleaning/photos/tub-after.jpeg" alt="Bathtub after cleaning" loading="lazy"></div>
+        <div class="gallery-item" id="gallery5"><img src="/sites/camellia-cleaning/photos/shower-glass.jpeg" alt="Glass shower detail" loading="lazy"></div>
+        <div class="gallery-item" id="gallery6"><img src="/sites/camellia-cleaning/photos/bedroom-airbnb.jpeg" alt="Airbnb ready bedroom" loading="lazy"></div>
       </div>
     </div>
   </section>

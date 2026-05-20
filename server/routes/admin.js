@@ -6,6 +6,32 @@ const router = express.Router();
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+// Simple in-memory rate limiter for public endpoints
+const rateLimitMap = new Map();
+function rateLimit(windowMs, maxRequests) {
+  return (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+    const entry = rateLimitMap.get(ip);
+    if (entry && now - entry.start < windowMs) {
+      if (entry.count >= maxRequests) {
+        return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+      }
+      entry.count++;
+    } else {
+      rateLimitMap.set(ip, { start: now, count: 1 });
+    }
+    next();
+  };
+}
+// Clean up stale entries every 10 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now - entry.start > 3600000) rateLimitMap.delete(ip);
+  }
+}, 600000);
+
 /**
  * POST /api/admin/login — Authenticate admin
  */
@@ -25,9 +51,9 @@ router.post('/login', (req, res) => {
 });
 
 /**
- * POST /api/admin/submissions — Save a new onboarding submission (PUBLIC — no auth)
+ * POST /api/admin/submissions — Save a new onboarding submission (PUBLIC — no auth, rate limited)
  */
-router.post('/submissions', async (req, res) => {
+router.post('/submissions', rateLimit(3600000, 5), async (req, res) => {
   const { business_name, form_data, system_prompt, welcome_message, theme_color } = req.body;
 
   if (!business_name || !form_data || !system_prompt) {
