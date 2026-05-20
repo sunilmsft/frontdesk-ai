@@ -20,15 +20,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Root → pitch page (must be before static middleware so index.html doesn't win)
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Routes
 app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/site', require('./routes/site'));
-
-// Root → pitch page
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
 
 // Clean URLs for static pages
 app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));
