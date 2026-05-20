@@ -27,6 +27,9 @@ app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/site', require('./routes/site'));
 
+// Root → pitch page
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+
 // Clean URLs for static pages
 app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));
 app.get('/pitch', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
