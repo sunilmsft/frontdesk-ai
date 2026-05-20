@@ -35,856 +35,390 @@
     /* Reveal animations */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
 
     /* Layout */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 100px 0; }
+    section { padding: 72px 0; }
+
+    /* ---- SVG Logo ---- */
+    .wm-logo { display: inline-block; flex-shrink: 0; }
+    .wm-logo svg { display: block; }
 
     /* Nav */
     .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      padding: 16px 0;
-      transition: all 0.3s;
-      background: transparent;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 14px 0; transition: all 0.3s; background: transparent;
     }
     .nav.scrolled {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      padding: 12px 0;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px 0;
     }
     .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, var(--accent), #2dd4bf);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
-    }
-    .logo-text {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.5px;
-    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
     .logo-text span { color: var(--accent); }
     .nav.scrolled .logo-text { color: var(--text); }
     .nav:not(.scrolled) .logo-text { color: white; }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .nav:not(.scrolled) .wm-logo .logo-bg { fill: rgba(255,255,255,0.12); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
     .lang-switcher {
-      display: flex;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.1);
+      display: flex; border-radius: 8px; overflow: hidden;
+      background: rgba(255,255,255,0.08);
     }
-    .nav.scrolled .lang-switcher {
-      border-color: var(--border);
-      background: #f8fafc;
-    }
+    .nav.scrolled .lang-switcher { background: #f1f5f9; }
     .lang-btn {
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.6);
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
+      padding: 6px 12px; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.5); background: none; border: none;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
     }
     .nav.scrolled .lang-btn { color: var(--muted); }
-    .lang-btn.active {
-      background: var(--accent);
-      color: white !important;
-    }
+    .lang-btn.active { background: var(--accent); color: white !important; }
     .nav-cta {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-      transition: all 0.2s;
-      border: none;
-      cursor: pointer;
+      display: inline-block; background: var(--accent); color: white;
+      padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 14px;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
     }
     .nav-cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
 
     /* Hero */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      background: #0f172a;
+      min-height: 92vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden; background: #0f172a;
+      padding-bottom: 40px;
     }
     .hero-bg {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(13, 148, 136, 0.3), transparent),
-        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(245, 158, 11, 0.15), transparent),
-        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(37, 99, 235, 0.15), transparent);
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(13,148,136,0.3), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(245,158,11,0.15), transparent),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(37,99,235,0.12), transparent);
       animation: heroGlow 8s ease-in-out infinite alternate;
     }
-    @keyframes heroGlow {
-      0% { opacity: 0.7; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1.05); }
-    }
+    @keyframes heroGlow { 0% { opacity: 0.7; } 100% { opacity: 1; } }
     .hero-grid {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 800px;
-      padding: 0 24px;
+    .hero-content { position: relative; z-index: 2; max-width: 780px; padding: 0 24px; }
+    .hero-logo {
+      margin-bottom: 28px;
+      animation: fadeInDown 0.8s ease-out 0.1s both;
     }
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(13, 148, 136, 0.15);
-      border: 1px solid rgba(13, 148, 136, 0.3);
-      color: #5eead4;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 18px;
-      border-radius: 100px;
-      margin-bottom: 32px;
-      animation: fadeInDown 0.8s ease-out 0.2s both;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(13,148,136,0.12); color: #5eead4;
+      font-size: 13px; font-weight: 600; padding: 8px 20px;
+      border-radius: 100px; margin-bottom: 28px;
+      animation: fadeInDown 0.8s ease-out 0.25s both;
     }
-    .hero-badge::before { content: '🏠'; }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     .hero h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 6vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.15;
-      margin-bottom: 24px;
-      color: white;
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem); font-weight: 900;
+      line-height: 1.15; margin-bottom: 20px; color: white;
       animation: fadeInUp 0.8s ease-out 0.4s both;
     }
     .hero h1 em {
       font-style: normal;
       background: linear-gradient(135deg, #5eead4, #2dd4bf, #f59e0b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     .hero p {
-      font-size: 1.2rem;
-      color: #94a3b8;
-      max-width: 600px;
-      margin: 0 auto 40px;
-      line-height: 1.8;
+      font-size: 1.1rem; color: #94a3b8; max-width: 560px;
+      margin: 0 auto 32px; line-height: 1.7;
       animation: fadeInUp 0.8s ease-out 0.6s both;
     }
     .hero-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
       animation: fadeInUp 0.8s ease-out 0.8s both;
     }
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: white;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      box-shadow: 0 4px 20px rgba(13, 148, 136, 0.4);
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: white; padding: 14px 28px;
+      border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(13,148,136,0.35);
+      border: none; cursor: pointer; font-family: inherit;
     }
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(13, 148, 136, 0.5);
-    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(13,148,136,0.45); }
     .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.08);
-      color: #e2e8f0;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      border: 1px solid rgba(255,255,255,0.12);
-      cursor: pointer;
-      font-family: inherit;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.07); color: #cbd5e1;
+      padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.3s;
+      border: none; cursor: pointer; font-family: inherit;
     }
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.15);
-      transform: translateY(-2px);
-    }
-    .hero-scroll {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: bounce 2s ease-in-out infinite;
-    }
-    .hero-scroll svg { width: 24px; height: 24px; stroke: rgba(255,255,255,0.3); fill: none; stroke-width: 2; }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
-    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.13); transform: translateY(-2px); }
 
     /* Section headers */
     .section-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
     }
-    .section-eyebrow::before {
-      content: '';
-      width: 24px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
+    .section-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
     .section-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
+      font-size: clamp(1.7rem, 3.2vw, 2.5rem); font-weight: 800;
+      line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.5px;
     }
-    .section-text {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 650px;
-      line-height: 1.8;
-    }
+    .section-text { font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.7; }
 
     /* Stats */
-    .stats { background: white; border-bottom: 1px solid var(--border); padding: 60px 0; }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-    }
-    .stat-item {
-      text-align: center;
-      padding: 20px;
-      position: relative;
-    }
+    .stats { background: white; border-bottom: 1px solid var(--border); padding: 48px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .stat-item { text-align: center; padding: 16px; position: relative; }
     .stat-item:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 20%;
-      height: 60%;
-      width: 1px;
-      background: var(--border);
+      content: ''; position: absolute; right: 0; top: 20%; height: 60%;
+      width: 1px; background: var(--border);
     }
     .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 900;
+      font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900;
       background: linear-gradient(135deg, var(--accent), var(--warm));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.2;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1.2;
     }
-    .stat-label {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 4px;
-      font-weight: 500;
-    }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; font-weight: 500; }
 
     /* Problem */
     .problem { background: #f8fafc; }
-    .problem-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 48px;
-    }
+    .problem-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 36px; }
     .problem-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s;
+      background: white; border-radius: 14px; padding: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+      transition: all 0.3s; position: relative; overflow: hidden;
     }
-    .problem-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    }
+    .problem-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
     .problem-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--warm));
-      opacity: 0;
-      transition: opacity 0.3s;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--warm)); opacity: 0; transition: opacity 0.3s;
     }
     .problem-card:hover::before { opacity: 1; }
     .problem-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--accent-light);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: 16px;
+      width: 44px; height: 44px; background: var(--accent-light); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;
     }
-    .problem-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .problem-card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    .problem-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .problem-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 
     /* Solution */
     .solution { background: white; }
-    .solution-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 48px;
-    }
+    .solution-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 36px; }
     .solution-card {
       background: linear-gradient(135deg, #f0fdfa 0%, #f0f9ff 100%);
-      border: 1px solid rgba(13, 148, 136, 0.1);
-      border-radius: 20px;
-      padding: 36px;
+      border-radius: 16px; padding: 30px;
+      box-shadow: 0 1px 3px rgba(13,148,136,0.06);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
     }
-    .solution-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(13, 148, 136, 0.12);
-      border-color: rgba(13, 148, 136, 0.2);
-    }
-    .solution-emoji {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      display: block;
-    }
-    .solution-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .solution-card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    .solution-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(13,148,136,0.1); }
+    .solution-emoji { font-size: 2.2rem; margin-bottom: 16px; display: block; }
+    .solution-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .solution-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 
     /* How it works */
     .how { background: #f8fafc; }
     .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      margin-top: 56px;
-      position: relative;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 40px; position: relative;
     }
     .steps-grid::before {
-      content: '';
-      position: absolute;
-      top: 32px;
-      left: 15%;
-      right: 15%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--warm), var(--accent));
-      opacity: 0.3;
+      content: ''; position: absolute; top: 28px; left: 15%; right: 15%;
+      height: 2px; background: linear-gradient(90deg, var(--accent), var(--warm), var(--accent)); opacity: 0.25;
     }
-    .step {
-      text-align: center;
-      position: relative;
-    }
+    .step { text-align: center; position: relative; }
     .step-num {
-      width: 64px;
-      height: 64px;
-      background: white;
-      border: 3px solid var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--accent);
-      margin: 0 auto 20px;
-      position: relative;
-      z-index: 2;
+      width: 56px; height: 56px; background: white;
+      border: 2px solid var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900;
+      color: var(--accent); margin: 0 auto 16px; position: relative; z-index: 2;
       transition: all 0.3s;
     }
-    .step:hover .step-num {
-      background: var(--accent);
-      color: white;
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
-    }
-    .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; max-width: 280px; margin: 0 auto; }
+    .step:hover .step-num { background: var(--accent); color: white; box-shadow: 0 6px 20px rgba(13,148,136,0.25); }
+    .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .step p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; max-width: 260px; margin: 0 auto; }
 
-    /* Showcase / Before-After */
+    /* Showcase */
     .showcase {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: white;
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(135deg, #0f172a, #1e293b); color: white;
+      position: relative; overflow: hidden;
     }
     .showcase::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(13, 148, 136, 0.2), transparent);
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(13,148,136,0.15), transparent);
     }
     .showcase .container { position: relative; z-index: 2; }
     .showcase .section-eyebrow { color: #5eead4; }
     .showcase .section-eyebrow::before { background: #5eead4; }
     .showcase .section-title { color: white; }
     .showcase .section-text { color: #94a3b8; }
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 48px;
-      align-items: center;
-    }
-    .showcase-before, .showcase-after {
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-    }
+    .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 36px; align-items: center; }
     .showcase-before {
-      background: #1e293b;
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 32px;
+      background: rgba(255,255,255,0.04); border-radius: 14px; padding: 28px;
     }
     .showcase-before-label, .showcase-after-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
     }
     .showcase-before-label { color: #f87171; }
-    .showcase-before-label::before { content: '✕'; background: rgba(248,113,113,0.15); padding: 4px 8px; border-radius: 6px; }
-    .showcase-after-label { color: #34d399; position: absolute; top: 16px; left: 16px; z-index: 2; }
-    .showcase-after-label::before { content: '✓'; background: rgba(52,211,153,0.15); padding: 4px 8px; border-radius: 6px; }
+    .showcase-before-label::before { content: '✕'; background: rgba(248,113,113,0.15); padding: 3px 7px; border-radius: 5px; font-size: 10px; }
+    .showcase-after-label { color: #34d399; position: absolute; top: 14px; left: 14px; z-index: 2; }
+    .showcase-after-label::before { content: '✓'; background: rgba(52,211,153,0.15); padding: 3px 7px; border-radius: 5px; font-size: 10px; }
     .before-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: #94a3b8;
-      font-size: 0.9rem;
+      display: flex; align-items: center; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04); color: #94a3b8; font-size: 0.85rem;
     }
-    .before-item span { font-size: 1rem; opacity: 0.5; }
+    .before-item span:first-child { font-size: 0.9rem; opacity: 0.5; }
     .showcase-after {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-      overflow: hidden;
-      transform: perspective(1000px) rotateY(-3deg);
-      transition: transform 0.5s;
+      background: white; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35); overflow: hidden;
+      transform: perspective(1000px) rotateY(-2deg); transition: transform 0.5s;
+      position: relative;
     }
-    .showcase-after:hover {
-      transform: perspective(1000px) rotateY(0deg);
-    }
-    .browser-bar {
-      background: #f1f5f9;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .browser-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .browser-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
+    .showcase-after:hover { transform: perspective(1000px) rotateY(0deg); }
+    .browser-bar { background: #f1f5f9; padding: 8px 14px; display: flex; align-items: center; gap: 8px; }
+    .browser-dots { display: flex; gap: 5px; }
+    .browser-dots span { width: 9px; height: 9px; border-radius: 50%; }
     .browser-dots span:nth-child(1) { background: #f87171; }
     .browser-dots span:nth-child(2) { background: #fbbf24; }
     .browser-dots span:nth-child(3) { background: #34d399; }
-    .browser-url {
-      flex: 1;
-      background: white;
-      border-radius: 6px;
-      padding: 5px 12px;
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-    }
+    .browser-url { flex: 1; background: white; border-radius: 5px; padding: 4px 10px; font-size: 10px; color: var(--muted); text-align: center; }
     .browser-content {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      color: white;
-      padding: 28px;
-      min-height: 280px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e); color: white;
+      padding: 24px; min-height: 250px;
     }
-    .mock-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .mock-tagline { font-size: 0.75rem; color: #94a3b8; margin-bottom: 20px; }
-    .mock-hero-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 12px;
-    }
-    .mock-desc { font-size: 0.75rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
-    .mock-btn {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    .mock-services {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
+    .mock-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+    .mock-tagline { font-size: 0.7rem; color: #94a3b8; margin-bottom: 16px; }
+    .mock-hero-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+    .mock-desc { font-size: 0.7rem; color: #94a3b8; line-height: 1.5; margin-bottom: 14px; }
+    .mock-btn { display: inline-block; background: var(--accent); color: white; padding: 7px 16px; border-radius: 7px; font-size: 0.7rem; font-weight: 600; }
+    .mock-services { display: flex; gap: 6px; margin-top: 14px; }
     .mock-service {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.65rem;
-      color: #94a3b8;
-      text-align: center;
-      flex: 1;
+      background: rgba(255,255,255,0.06); border-radius: 7px;
+      padding: 7px 10px; font-size: 0.6rem; color: #94a3b8; text-align: center; flex: 1;
     }
-    .mock-service strong { display: block; color: white; font-size: 0.7rem; margin-bottom: 2px; }
+    .mock-service strong { display: block; color: white; font-size: 0.65rem; margin-bottom: 1px; }
 
     /* Audience */
     .audience { background: white; }
     .audience-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-top: 40px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px; margin-top: 32px;
     }
     .audience-chip {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 20px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+      background: #f8fafc; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
       transition: all 0.3s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
-    .audience-chip:hover {
-      background: var(--accent-light);
-      border-color: rgba(13, 148, 136, 0.2);
-      transform: translateY(-2px);
-    }
-    .audience-chip span:first-child { font-size: 1.4rem; }
+    .audience-chip:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13,148,136,0.08); }
+    .audience-chip span:first-child { font-size: 1.3rem; }
 
     /* Testimonial */
-    .testimonial {
-      background: linear-gradient(135deg, var(--accent-light), #ecfdf5);
-      position: relative;
-    }
-    .testimonial-card {
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
-    }
+    .testimonial { background: linear-gradient(135deg, var(--accent-light), #ecfdf5); padding: 64px 0; }
+    .testimonial-card { max-width: 650px; margin: 0 auto; text-align: center; }
     .testimonial-quote-mark {
-      font-family: 'Playfair Display', serif;
-      font-size: 5rem;
-      color: var(--accent);
-      opacity: 0.3;
-      line-height: 1;
-      margin-bottom: -20px;
+      font-family: 'Playfair Display', serif; font-size: 4rem;
+      color: var(--accent); opacity: 0.25; line-height: 1; margin-bottom: -16px;
     }
     .testimonial-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      line-height: 1.5;
-      color: var(--text);
-      margin-bottom: 24px;
+      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+      line-height: 1.5; color: var(--text); margin-bottom: 20px;
     }
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
+    .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
     .testimonial-avatar {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--accent), #2dd4bf);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+      width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent), #2dd4bf);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;
     }
     .testimonial-info { text-align: left; }
-    .testimonial-name { font-weight: 700; font-size: 0.95rem; }
-    .testimonial-role { font-size: 0.85rem; color: var(--muted); }
+    .testimonial-name { font-weight: 700; font-size: 0.9rem; }
+    .testimonial-role { font-size: 0.8rem; color: var(--muted); }
 
     /* Pricing */
     .pricing { background: white; }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 48px;
-    }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px; margin-top: 40px; }
     .price-card {
-      background: #f8fafc;
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 36px;
-      position: relative;
-      transition: all 0.3s;
+      background: #f8fafc; border-radius: 16px; padding: 32px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;
     }
-    .price-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.08);
-    }
+    .price-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.07); }
     .price-card.featured {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      border-color: var(--accent);
-      color: white;
+      background: linear-gradient(135deg, #0f172a, #1e293b); color: white;
+      box-shadow: 0 8px 32px rgba(13,148,136,0.2);
     }
     .price-card.featured .price-desc { color: #94a3b8; }
-    .price-card.featured .price-features li { color: #cbd5e1; border-color: rgba(255,255,255,0.08); }
+    .price-card.featured .price-features li { color: #cbd5e1; border-color: rgba(255,255,255,0.06); }
     .price-card.featured .price-features li::before { color: #5eead4; }
     .price-popular {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--accent), #2dd4bf);
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 20px;
-      border-radius: 100px;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), #2dd4bf); color: white;
+      font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 100px; box-shadow: 0 3px 10px rgba(13,148,136,0.25);
     }
-    .price-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .price-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .price-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 900;
-      line-height: 1.2;
-    }
-    .price-amount span {
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 400;
-      opacity: 0.6;
-    }
-    .price-features {
-      list-style: none;
-      margin-top: 24px;
-    }
+    .price-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 3px; }
+    .price-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
+    .price-amount { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.2; }
+    .price-amount span { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 400; opacity: 0.6; }
+    .price-features { list-style: none; margin-top: 20px; }
     .price-features li {
-      font-size: 0.9rem;
-      color: var(--muted);
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: start;
-      gap: 8px;
+      font-size: 0.85rem; color: var(--muted); padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      display: flex; align-items: start; gap: 8px;
     }
-    .price-features li::before {
-      content: '✓';
-      color: var(--accent);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
+    .price-features li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
 
     /* CTA */
     .cta {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: white;
-      text-align: center;
-      padding: 100px 0;
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(135deg, #0f172a, #1e293b); color: white;
+      text-align: center; padding: 72px 0; position: relative; overflow: hidden;
     }
     .cta::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 50% 50% at 30% 70%, rgba(13, 148, 136, 0.2), transparent),
-        radial-gradient(ellipse 40% 40% at 70% 30%, rgba(245, 158, 11, 0.1), transparent);
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 50% at 30% 70%, rgba(13,148,136,0.15), transparent),
+        radial-gradient(ellipse 40% 40% at 70% 30%, rgba(245,158,11,0.08), transparent);
     }
     .cta .container { position: relative; z-index: 2; }
     .cta h2 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 800;
-      margin-bottom: 16px;
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 800; margin-bottom: 12px;
     }
-    .cta p { color: #94a3b8; font-size: 1.1rem; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta p { color: #94a3b8; font-size: 1rem; margin-bottom: 28px; max-width: 460px; margin-left: auto; margin-right: auto; }
 
     /* Footer */
     .footer {
-      background: #0f172a;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 40px 0;
-      text-align: center;
+      background: #0f172a; border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 32px 0; text-align: center;
     }
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .footer-logo {
-      width: 28px;
-      height: 28px;
-      background: linear-gradient(135deg, var(--accent), #2dd4bf);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
-    .footer-name {
-      font-weight: 700;
-      color: white;
-      font-size: 15px;
-    }
-    .footer p {
-      font-size: 13px;
-      color: #64748b;
-      line-height: 1.8;
-    }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+    .footer-name { font-weight: 700; color: white; font-size: 14px; }
+    .footer p { font-size: 12px; color: #64748b; line-height: 1.7; }
     .footer a { color: var(--accent); text-decoration: none; }
 
     /* Responsive */
     @media (max-width: 768px) {
-      section { padding: 70px 0; }
-      .hero { min-height: auto; padding: 120px 0 80px; }
-      .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+      section { padding: 52px 0; }
+      .hero { min-height: auto; padding: 100px 0 60px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 12px; }
       .stat-item::after { display: none; }
-      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
       .steps-grid::before { display: none; }
       .showcase-grid { grid-template-columns: 1fr; }
       .showcase-after { transform: none; }
-      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; }
       .nav-cta { display: none; }
       .hero-actions { flex-direction: column; align-items: center; }
     }
@@ -896,7 +430,15 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#" class="logo">
-        <div class="logo-icon">🏠</div>
+        <div class="wm-logo">
+          <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect class="logo-bg" x="2" y="2" width="44" height="44" rx="12" fill="url(#nav-grad)"/>
+            <path d="M14 32V20L24 13L34 20V32" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 32V25H28V32" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="10" y="34" width="28" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
+            <defs><linearGradient id="nav-grad" x1="2" y1="2" x2="46" y2="46"><stop stop-color="#0d9488"/><stop offset="1" stop-color="#2dd4bf"/></linearGradient></defs>
+          </svg>
+        </div>
         <div class="logo-text">Welcome<span>Mat</span></div>
       </a>
       <div class="nav-right">
@@ -915,16 +457,22 @@
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="hero-content">
+      <div class="hero-logo">
+        <svg width="72" height="72" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#hero-grad)" opacity="0.9"/>
+          <path d="M14 32V20L24 13L34 20V32" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 32V25H28V32" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="10" y="34" width="28" height="4" rx="2" fill="rgba(255,255,255,0.35)"/>
+          <defs><linearGradient id="hero-grad" x1="2" y1="2" x2="46" y2="46"><stop stop-color="#0d9488"/><stop offset="1" stop-color="#2dd4bf"/></linearGradient></defs>
+        </svg>
+      </div>
       <div class="hero-badge" data-i18n="heroBadge">For Local Service Businesses</div>
       <h1 data-i18n="heroTitle">Your skills deserve<br>to be <em>discovered</em></h1>
-      <p data-i18n="heroText">You're great at what you do. We make sure customers can find you, trust you, and hire you — with a beautiful website and smart assistant that works while you work.</p>
+      <p data-i18n="heroText">We build beautiful websites and smart assistants for local businesses — so customers can find you, trust you, and hire you.</p>
       <div class="hero-actions">
         <a href="/onboard.html" class="btn-primary" data-i18n="heroCta">Get Your Website →</a>
         <a href="#showcase" class="btn-secondary" data-i18n="heroDemo">See a Live Example ↓</a>
       </div>
-    </div>
-    <div class="hero-scroll">
-      <svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
     </div>
   </section>
 
@@ -954,23 +502,23 @@
       <div class="reveal">
         <div class="section-eyebrow" data-i18n="problemLabel">The Problem</div>
         <h2 class="section-title" data-i18n="problemTitle">Great businesses are invisible<br>because they don't exist online</h2>
-        <p class="section-text" data-i18n="problemText">The best house cleaner in Sammamish. A talented stylist in Bellevue. A landscaper who does incredible work. They're all losing customers they'll never know about — because they can't be found online.</p>
+        <p class="section-text" data-i18n="problemText">The best house cleaner in Sammamish. A talented stylist in Bellevue. They're losing customers they'll never know about.</p>
       </div>
       <div class="problem-cards">
         <div class="problem-card reveal reveal-delay-1">
           <div class="problem-icon">🔍</div>
           <h3 data-i18n="prob1Title">Invisible on Google</h3>
-          <p data-i18n="prob1Text">When someone searches "cleaner near me" or "best salon in Bellevue," these amazing businesses don't show up. No website = no visibility.</p>
+          <p data-i18n="prob1Text">Someone searches "cleaner near me" — your business doesn't show up. No website means no visibility.</p>
         </div>
         <div class="problem-card reveal reveal-delay-2">
           <div class="problem-icon">📱</div>
           <h3 data-i18n="prob2Title">Word-of-Mouth Only</h3>
-          <p data-i18n="prob2Text">Relying solely on referrals caps your growth. You only get the clients your friends know — not the hundreds searching online right now.</p>
+          <p data-i18n="prob2Text">Relying only on referrals caps your growth. Hundreds of people are searching online right now.</p>
         </div>
         <div class="problem-card reveal reveal-delay-3">
           <div class="problem-icon">🚫</div>
           <h3 data-i18n="prob3Title">No Time for Tech</h3>
-          <p data-i18n="prob3Text">You're too busy doing great work to figure out Wix, WordPress, or SEO. And generic templates don't reflect the quality of what you actually do.</p>
+          <p data-i18n="prob3Text">You're busy doing great work. Wix, WordPress, SEO — who has time? Generic templates don't cut it either.</p>
         </div>
       </div>
     </div>
@@ -982,23 +530,23 @@
       <div class="reveal">
         <div class="section-eyebrow" data-i18n="solutionLabel">What We Build For You</div>
         <h2 class="section-title" data-i18n="solutionTitle">A professional online presence<br>built for you in one day</h2>
-        <p class="section-text" data-i18n="solutionText">Everything you need to look professional, get found, and turn visitors into paying customers — without any tech knowledge.</p>
+        <p class="section-text" data-i18n="solutionText">Everything you need to look professional, get found, and turn visitors into paying customers.</p>
       </div>
       <div class="solution-grid">
         <div class="solution-card reveal reveal-delay-1">
           <span class="solution-emoji">🌐</span>
           <h3 data-i18n="sol1Title">A Stunning Website</h3>
-          <p data-i18n="sol1Text">A beautiful, custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours — not a template everyone else has.</p>
+          <p data-i18n="sol1Text">Custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours.</p>
         </div>
         <div class="solution-card reveal reveal-delay-2">
           <span class="solution-emoji">💬</span>
           <h3 data-i18n="sol2Title">Smart Assistant</h3>
-          <p data-i18n="sol2Text">A friendly assistant on your site that handles "how much?", "do you serve my area?", and "are you free Saturday?" — so you don't stop working to respond.</p>
+          <p data-i18n="sol2Text">Answers "how much?", "do you serve my area?", and "are you free Saturday?" — so you don't stop working.</p>
         </div>
         <div class="solution-card reveal reveal-delay-3">
           <span class="solution-emoji">🌎</span>
           <h3 data-i18n="sol3Title">Multilingual</h3>
-          <p data-i18n="sol3Text">Your site and assistant work in English, Spanish, and Portuguese. Reach every customer in your community — in their language.</p>
+          <p data-i18n="sol3Text">Works in English, Spanish, and Portuguese. Reach every customer in your community — in their language.</p>
         </div>
       </div>
     </div>
@@ -1009,23 +557,23 @@
     <div class="container">
       <div class="reveal" style="text-align:center;">
         <div class="section-eyebrow" style="justify-content:center;" data-i18n="howLabel">How It Works</div>
-        <h2 class="section-title" data-i18n="howTitle">From zero to fully live — in 3 steps</h2>
+        <h2 class="section-title" data-i18n="howTitle">From zero to live — in 3 steps</h2>
       </div>
       <div class="steps-grid">
         <div class="step reveal reveal-delay-1">
           <div class="step-num">1</div>
           <h3 data-i18n="step1Title">Tell us about your business</h3>
-          <p data-i18n="step1Text">Fill a simple form — services, hours, photos. Takes 10 minutes. Available in English, Spanish, and Portuguese.</p>
+          <p data-i18n="step1Text">Fill a simple form — services, hours, photos. Takes 10 minutes.</p>
         </div>
         <div class="step reveal reveal-delay-2">
           <div class="step-num">2</div>
           <h3 data-i18n="step2Title">We design everything</h3>
-          <p data-i18n="step2Text">Custom website, smart assistant trained on your business. Each one designed to reflect your unique brand.</p>
+          <p data-i18n="step2Text">Custom website + smart assistant, trained on your business.</p>
         </div>
         <div class="step reveal reveal-delay-3">
           <div class="step-num">3</div>
           <h3 data-i18n="step3Title">Start getting customers</h3>
-          <p data-i18n="step3Text">Share your link on WhatsApp, Instagram, Facebook. Customers find you, get answers, and book — even when you're busy.</p>
+          <p data-i18n="step3Text">Share your link anywhere. Customers find you and book — even when you're busy.</p>
         </div>
       </div>
     </div>
@@ -1045,7 +593,7 @@
           <div class="before-item"><span>😶</span> <span data-i18n="before1">No website — doesn't exist on Google</span></div>
           <div class="before-item"><span>📞</span> <span data-i18n="before2">Misses calls while working</span></div>
           <div class="before-item"><span>🗣️</span> <span data-i18n="before3">Only gets referrals from friends</span></div>
-          <div class="before-item"><span>❓</span> <span data-i18n="before4">Repeats pricing info 20 times a week</span></div>
+          <div class="before-item"><span>❓</span> <span data-i18n="before4">Repeats pricing info 20x a week</span></div>
           <div class="before-item"><span>🌐</span> <span data-i18n="before5">Non-English speakers feel excluded</span></div>
         </div>
         <div class="showcase-after reveal reveal-delay-2">
@@ -1058,7 +606,7 @@
             <div class="mock-logo">🌸 Camellia Cleaning</div>
             <div class="mock-tagline">Professional House Cleaning · Eastside WA</div>
             <div class="mock-hero-text" data-i18n="mockHero">A clean home.<br>A fresh start.</div>
-            <div class="mock-desc" data-i18n="mockDesc">Professional residential cleaning serving Sammamish, Issaquah, and Bellevue. Trusted by families across the Eastside.</div>
+            <div class="mock-desc" data-i18n="mockDesc">Residential cleaning serving Sammamish, Issaquah, and Bellevue. Trusted by families across the Eastside.</div>
             <div class="mock-btn" data-i18n="mockBtn">Get a Free Quote</div>
             <div class="mock-services">
               <div class="mock-service"><strong>Deep Clean</strong>$180+</div>
@@ -1076,7 +624,7 @@
     <div class="container">
       <div class="reveal">
         <div class="section-eyebrow" data-i18n="whoLabel">Who It's For</div>
-        <h2 class="section-title" data-i18n="whoTitle">Built for skilled people who are<br>too busy doing great work to build a website</h2>
+        <h2 class="section-title" data-i18n="whoTitle">Built for skilled people who are<br>too busy to build a website</h2>
         <p class="section-text" data-i18n="whoText">Solo operators, family businesses, and service providers — especially immigrant entrepreneurs who deserve the same online presence as everyone else.</p>
       </div>
       <div class="audience-grid reveal">
@@ -1159,9 +707,9 @@
   <!-- CTA -->
   <section class="cta">
     <div class="container reveal">
-      <h2 data-i18n="ctaTitle">Ready to welcome more customers?</h2>
+      <h2 data-i18n="ctaTitle">Let's put your business on the map</h2>
       <p data-i18n="ctaText">Fill out a quick form and we'll build your online presence. No tech skills needed.</p>
-      <a href="/onboard.html" class="btn-primary" style="font-size:1.1rem;padding:18px 40px;" data-i18n="ctaBtn">Get Started — It's Free to Apply →</a>
+      <a href="/onboard.html" class="btn-primary" style="font-size:1rem;padding:16px 36px;" data-i18n="ctaBtn">Get Started — Free to Apply →</a>
     </div>
   </section>
 
@@ -1169,23 +717,31 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-brand">
-        <div class="footer-logo">🏠</div>
+        <div class="wm-logo">
+          <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#ft-grad)"/>
+            <path d="M14 32V20L24 13L34 20V32" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 32V25H28V32" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="10" y="34" width="28" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
+            <defs><linearGradient id="ft-grad" x1="2" y1="2" x2="46" y2="46"><stop stop-color="#0d9488"/><stop offset="1" stop-color="#2dd4bf"/></linearGradient></defs>
+          </svg>
+        </div>
         <div class="footer-name">WelcomeMat Digital</div>
       </div>
-      <p>Built with care in Sammamish, WA<br>For the businesses that make our neighborhoods great.</p>
-      <p style="margin-top:12px;">© 2026 Welcome Mat Digital LLC · <a href="mailto:hello@welcomematdigital.com">hello@welcomematdigital.com</a></p>
+      <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
+      <p style="margin-top:8px;">© 2026 Welcome Mat Digital LLC</p>
     </div>
   </footer>
 
   <script>  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // Nav scroll
   window.addEventListener('scroll', () => {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
   });
 
   // i18n
@@ -1194,7 +750,7 @@
       navCta: 'Get Started',
       heroBadge: 'For Local Service Businesses',
       heroTitle: 'Your skills deserve<br>to be <em>discovered</em>',
-      heroText: "You're great at what you do. We make sure customers can find you, trust you, and hire you — with a beautiful website and smart assistant that works while you work.",
+      heroText: "We build beautiful websites and smart assistants for local businesses — so customers can find you, trust you, and hire you.",
       heroCta: 'Get Your Website →',
       heroDemo: 'See a Live Example ↓',
       stat1: 'of local businesses have no website',
@@ -1202,30 +758,30 @@
       stat3: "won't hire someone they can't find online",
       problemLabel: 'The Problem',
       problemTitle: 'Great businesses are invisible<br>because they don\'t exist online',
-      problemText: 'The best house cleaner in Sammamish. A talented stylist in Bellevue. A landscaper who does incredible work. They\'re all losing customers they\'ll never know about — because they can\'t be found online.',
+      problemText: 'The best house cleaner in Sammamish. A talented stylist in Bellevue. They\'re losing customers they\'ll never know about.',
       prob1Title: 'Invisible on Google',
-      prob1Text: 'When someone searches "cleaner near me" or "best salon in Bellevue," these amazing businesses don\'t show up. No website = no visibility.',
+      prob1Text: 'Someone searches "cleaner near me" — your business doesn\'t show up. No website means no visibility.',
       prob2Title: 'Word-of-Mouth Only',
-      prob2Text: 'Relying solely on referrals caps your growth. You only get the clients your friends know — not the hundreds searching online right now.',
+      prob2Text: 'Relying only on referrals caps your growth. Hundreds of people are searching online right now.',
       prob3Title: 'No Time for Tech',
-      prob3Text: "You're too busy doing great work to figure out Wix, WordPress, or SEO. And generic templates don't reflect the quality of what you actually do.",
+      prob3Text: "You're busy doing great work. Wix, WordPress, SEO — who has time? Generic templates don't cut it either.",
       solutionLabel: 'What We Build For You',
       solutionTitle: 'A professional online presence<br>built for you in one day',
-      solutionText: 'Everything you need to look professional, get found, and turn visitors into paying customers — without any tech knowledge.',
+      solutionText: 'Everything you need to look professional, get found, and turn visitors into paying customers.',
       sol1Title: 'A Stunning Website',
-      sol1Text: "A beautiful, custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours — not a template everyone else has.",
+      sol1Text: 'Custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours.',
       sol2Title: 'Smart Assistant',
-      sol2Text: 'A friendly assistant on your site that handles "how much?", "do you serve my area?", and "are you free Saturday?" — so you don\'t stop working to respond.',
+      sol2Text: 'Answers "how much?", "do you serve my area?", and "are you free Saturday?" — so you don\'t stop working.',
       sol3Title: 'Multilingual',
-      sol3Text: 'Your site and assistant work in English, Spanish, and Portuguese. Reach every customer in your community — in their language.',
+      sol3Text: 'Works in English, Spanish, and Portuguese. Reach every customer in your community — in their language.',
       howLabel: 'How It Works',
-      howTitle: 'From zero to fully live — in 3 steps',
+      howTitle: 'From zero to live — in 3 steps',
       step1Title: 'Tell us about your business',
-      step1Text: 'Fill a simple form — services, hours, photos. Takes 10 minutes. Available in English, Spanish, and Portuguese.',
+      step1Text: 'Fill a simple form — services, hours, photos. Takes 10 minutes.',
       step2Title: 'We design everything',
-      step2Text: 'Custom website, smart assistant trained on your business. Each one designed to reflect your unique brand.',
+      step2Text: 'Custom website + smart assistant, trained on your business.',
       step3Title: 'Start getting customers',
-      step3Text: "Share your link on WhatsApp, Instagram, Facebook. Customers find you, get answers, and book — even when you're busy.",
+      step3Text: "Share your link anywhere. Customers find you and book — even when you're busy.",
       showcaseLabel: 'See The Difference',
       showcaseTitle: 'From invisible to irresistible',
       showcaseText: "Here's what happens when a great business gets the online presence it deserves.",
@@ -1233,14 +789,14 @@
       before1: "No website — doesn't exist on Google",
       before2: 'Misses calls while working',
       before3: 'Only gets referrals from friends',
-      before4: 'Repeats pricing info 20 times a week',
+      before4: 'Repeats pricing info 20x a week',
       before5: 'Non-English speakers feel excluded',
       afterLabel: 'With WelcomeMat',
       mockHero: 'A clean home.<br>A fresh start.',
-      mockDesc: 'Professional residential cleaning serving Sammamish, Issaquah, and Bellevue. Trusted by families across the Eastside.',
+      mockDesc: 'Residential cleaning serving Sammamish, Issaquah, and Bellevue. Trusted by families across the Eastside.',
       mockBtn: 'Get a Free Quote',
       whoLabel: "Who It's For",
-      whoTitle: 'Built for skilled people who are<br>too busy doing great work to build a website',
+      whoTitle: 'Built for skilled people who are<br>too busy to build a website',
       whoText: 'Solo operators, family businesses, and service providers — especially immigrant entrepreneurs who deserve the same online presence as everyone else.',
       aud1: 'House Cleaners', aud2: 'Restaurants & Cafés', aud3: 'Salons & Spas', aud4: 'Landscapers',
       aud5: 'Handymen & Contractors', aud6: 'Pet Services', aud7: 'Personal Trainers', aud8: 'Photographers',
@@ -1265,15 +821,15 @@
       tier3F2: 'Your own domain (yourname.com)',
       tier3F3: 'Google Business profile setup',
       tier3F4: 'Monthly updates & maintenance',
-      ctaTitle: 'Ready to welcome more customers?',
+      ctaTitle: "Let's put your business on the map",
       ctaText: "Fill out a quick form and we'll build your online presence. No tech skills needed.",
-      ctaBtn: "Get Started — It's Free to Apply →"
+      ctaBtn: 'Get Started — Free to Apply →'
     },
     es: {
       navCta: 'Comenzar',
       heroBadge: 'Para Negocios Locales de Servicios',
       heroTitle: 'Tu talento merece<br>ser <em>descubierto</em>',
-      heroText: 'Eres excelente en lo que haces. Nosotros nos aseguramos de que los clientes te encuentren, confíen en ti y te contraten — con un sitio web hermoso y un asistente inteligente que trabaja mientras tú trabajas.',
+      heroText: 'Creamos sitios web hermosos y asistentes inteligentes para negocios locales — para que los clientes te encuentren, confíen en ti y te contraten.',
       heroCta: 'Obtén Tu Sitio Web →',
       heroDemo: 'Ver Ejemplo en Vivo ↓',
       stat1: 'de negocios locales no tienen sitio web',
@@ -1281,30 +837,30 @@
       stat3: 'no contrata a alguien que no encuentra en línea',
       problemLabel: 'El Problema',
       problemTitle: 'Grandes negocios son invisibles<br>porque no existen en internet',
-      problemText: 'La mejor limpiadora de casas en Sammamish. Una estilista talentosa en Bellevue. Un jardinero que hace un trabajo increíble. Están perdiendo clientes que nunca van a conocer — porque no se les puede encontrar en internet.',
+      problemText: 'La mejor limpiadora en Sammamish. Una estilista talentosa en Bellevue. Están perdiendo clientes que nunca van a conocer.',
       prob1Title: 'Invisibles en Google',
-      prob1Text: 'Cuando alguien busca "limpiadora cerca de mí" o "mejor salón en Bellevue," estos negocios increíbles no aparecen. Sin sitio web = sin visibilidad.',
+      prob1Text: 'Alguien busca "limpiadora cerca de mí" — tu negocio no aparece. Sin sitio web = sin visibilidad.',
       prob2Title: 'Solo Boca a Boca',
-      prob2Text: 'Depender solo de recomendaciones limita tu crecimiento. Solo llegas a los clientes que tus amigos conocen — no a los cientos que buscan en internet ahora mismo.',
+      prob2Text: 'Depender solo de recomendaciones limita tu crecimiento. Cientos de personas buscan en internet ahora.',
       prob3Title: 'Sin Tiempo para Tecnología',
-      prob3Text: 'Estás demasiado ocupado haciendo gran trabajo para aprender Wix, WordPress o SEO. Y las plantillas genéricas no reflejan la calidad de lo que haces.',
+      prob3Text: 'Estás ocupado haciendo gran trabajo. Wix, WordPress, SEO — ¿quién tiene tiempo? Las plantillas genéricas tampoco sirven.',
       solutionLabel: 'Lo Que Creamos Para Ti',
       solutionTitle: 'Una presencia profesional en internet<br>creada para ti en un día',
-      solutionText: 'Todo lo que necesitas para verte profesional, ser encontrado y convertir visitantes en clientes — sin necesidad de saber de tecnología.',
+      solutionText: 'Todo lo que necesitas para verte profesional, ser encontrado y convertir visitantes en clientes.',
       sol1Title: 'Un Sitio Web Impresionante',
-      sol1Text: 'Una página hermosa y personalizada mostrando tus servicios, precios, fotos y reseñas. Única — no una plantilla que todos usan.',
+      sol1Text: 'Página personalizada mostrando tus servicios, precios, fotos y reseñas. Única.',
       sol2Title: 'Asistente Inteligente',
-      sol2Text: 'Un asistente amigable en tu sitio que responde "¿cuánto cobras?", "¿cubres mi zona?", y "¿tienes disponible el sábado?" — para que no dejes de trabajar.',
+      sol2Text: 'Responde "¿cuánto cobras?", "¿cubres mi zona?", y "¿tienes disponible el sábado?" — para que no dejes de trabajar.',
       sol3Title: 'Multilingüe',
-      sol3Text: 'Tu sitio y asistente funcionan en inglés, español y portugués. Llega a todos los clientes de tu comunidad — en su idioma.',
+      sol3Text: 'Funciona en inglés, español y portugués. Llega a todos los clientes de tu comunidad — en su idioma.',
       howLabel: 'Cómo Funciona',
-      howTitle: 'De cero a totalmente activo — en 3 pasos',
+      howTitle: 'De cero a activo — en 3 pasos',
       step1Title: 'Cuéntanos sobre tu negocio',
-      step1Text: 'Llena un formulario simple — servicios, horarios, fotos. Toma 10 minutos. Disponible en inglés, español y portugués.',
+      step1Text: 'Llena un formulario simple — servicios, horarios, fotos. Toma 10 minutos.',
       step2Title: 'Nosotros diseñamos todo',
-      step2Text: 'Sitio web personalizado, asistente entrenado en tu negocio. Cada uno diseñado para reflejar tu marca.',
+      step2Text: 'Sitio web + asistente inteligente, entrenado en tu negocio.',
       step3Title: 'Empieza a recibir clientes',
-      step3Text: 'Comparte tu enlace en WhatsApp, Instagram, Facebook. Los clientes te encuentran, obtienen respuestas y te contactan — incluso cuando estás ocupado.',
+      step3Text: 'Comparte tu enlace. Los clientes te encuentran y te contactan — incluso cuando estás ocupado.',
       showcaseLabel: 'Ve La Diferencia',
       showcaseTitle: 'De invisible a irresistible',
       showcaseText: 'Esto es lo que pasa cuando un gran negocio obtiene la presencia en línea que merece.',
@@ -1316,11 +872,11 @@
       before5: 'Los que no hablan inglés se sienten excluidos',
       afterLabel: 'Con WelcomeMat',
       mockHero: 'Un hogar limpio.<br>Un nuevo comienzo.',
-      mockDesc: 'Limpieza residencial profesional en Sammamish, Issaquah y Bellevue. Confianza de familias en todo el Eastside.',
+      mockDesc: 'Limpieza residencial en Sammamish, Issaquah y Bellevue. Confianza de familias en todo el Eastside.',
       mockBtn: 'Cotización Gratis',
       whoLabel: 'Para Quién Es',
       whoTitle: 'Hecho para personas talentosas que están<br>muy ocupadas para hacer un sitio web',
-      whoText: 'Trabajadores independientes, negocios familiares y proveedores de servicios — especialmente emprendedores inmigrantes que merecen la misma presencia en línea que todos los demás.',
+      whoText: 'Trabajadores independientes, negocios familiares y proveedores de servicios — especialmente emprendedores inmigrantes que merecen la misma presencia en línea.',
       aud1: 'Limpieza de Casas', aud2: 'Restaurantes y Cafés', aud3: 'Salones y Spas', aud4: 'Jardineros',
       aud5: 'Plomeros y Contratistas', aud6: 'Servicios de Mascotas', aud7: 'Entrenadores Personales', aud8: 'Fotógrafos',
       testimonialText: 'Mejor de lo que imaginé.',
@@ -1344,15 +900,15 @@
       tier3F2: 'Tu propio dominio (tunombre.com)',
       tier3F3: 'Configuración de Google Business',
       tier3F4: 'Actualizaciones y mantenimiento mensual',
-      ctaTitle: '¿Listo para recibir más clientes?',
+      ctaTitle: 'Pongamos tu negocio en el mapa',
       ctaText: 'Llena un formulario rápido y creamos tu presencia en línea. Sin conocimientos técnicos.',
-      ctaBtn: 'Comenzar — Es Gratis Aplicar →'
+      ctaBtn: 'Comenzar — Gratis Aplicar →'
     },
     pt: {
       navCta: 'Começar',
       heroBadge: 'Para Negócios Locais de Serviços',
       heroTitle: 'Seu talento merece<br>ser <em>descoberto</em>',
-      heroText: 'Você é ótimo no que faz. Nós garantimos que os clientes te encontrem, confiem em você e te contratem — com um site bonito e um assistente inteligente que trabalha enquanto você trabalha.',
+      heroText: 'Criamos sites bonitos e assistentes inteligentes para negócios locais — para que os clientes te encontrem, confiem em você e te contratem.',
       heroCta: 'Crie Seu Site →',
       heroDemo: 'Veja Um Exemplo ↓',
       stat1: 'dos negócios locais não têm site',
@@ -1360,30 +916,30 @@
       stat3: 'não contrata alguém que não encontra online',
       problemLabel: 'O Problema',
       problemTitle: 'Ótimos negócios são invisíveis<br>porque não existem na internet',
-      problemText: 'A melhor faxineira em Sammamish. Uma cabeleireira talentosa em Bellevue. Um jardineiro que faz um trabalho incrível. Estão perdendo clientes que nunca vão conhecer — porque não podem ser encontrados online.',
+      problemText: 'A melhor faxineira em Sammamish. Uma cabeleireira talentosa em Bellevue. Estão perdendo clientes que nunca vão conhecer.',
       prob1Title: 'Invisíveis no Google',
-      prob1Text: 'Quando alguém pesquisa "faxineira perto de mim" ou "melhor salão em Bellevue", esses negócios incríveis não aparecem. Sem site = sem visibilidade.',
+      prob1Text: 'Alguém pesquisa "faxineira perto de mim" — seu negócio não aparece. Sem site = sem visibilidade.',
       prob2Title: 'Só Boca a Boca',
-      prob2Text: 'Depender só de indicações limita seu crescimento. Você só chega nos clientes que seus amigos conhecem — não nos centenas buscando online agora.',
+      prob2Text: 'Depender só de indicações limita seu crescimento. Centenas de pessoas buscam online agora.',
       prob3Title: 'Sem Tempo pra Tecnologia',
-      prob3Text: 'Você está ocupado demais fazendo ótimo trabalho pra aprender Wix, WordPress ou SEO. E templates genéricos não refletem a qualidade do que você faz.',
+      prob3Text: 'Você está ocupado fazendo ótimo trabalho. Wix, WordPress, SEO — quem tem tempo? Templates genéricos também não servem.',
       solutionLabel: 'O Que Criamos Pra Você',
       solutionTitle: 'Uma presença profissional online<br>criada pra você em um dia',
-      solutionText: 'Tudo que você precisa pra parecer profissional, ser encontrado e transformar visitantes em clientes — sem precisar entender de tecnologia.',
+      solutionText: 'Tudo que você precisa pra parecer profissional, ser encontrado e transformar visitantes em clientes.',
       sol1Title: 'Um Site Incrível',
-      sol1Text: 'Uma página bonita e personalizada mostrando seus serviços, preços, fotos e avaliações. Única — não um template que todo mundo usa.',
+      sol1Text: 'Página personalizada mostrando seus serviços, preços, fotos e avaliações. Única.',
       sol2Title: 'Assistente Inteligente',
-      sol2Text: 'Um assistente simpático no seu site que responde "quanto cobra?", "atende minha região?", e "tem horário no sábado?" — pra você não parar de trabalhar.',
+      sol2Text: 'Responde "quanto cobra?", "atende minha região?", e "tem horário no sábado?" — pra você não parar de trabalhar.',
       sol3Title: 'Multilíngue',
-      sol3Text: 'Seu site e assistente funcionam em inglês, espanhol e português. Alcance todos os clientes da sua comunidade — no idioma deles.',
+      sol3Text: 'Funciona em inglês, espanhol e português. Alcance todos os clientes da sua comunidade — no idioma deles.',
       howLabel: 'Como Funciona',
-      howTitle: 'De zero a totalmente ativo — em 3 passos',
+      howTitle: 'De zero a ativo — em 3 passos',
       step1Title: 'Conte sobre seu negócio',
-      step1Text: 'Preencha um formulário simples — serviços, horários, fotos. Leva 10 minutos. Disponível em inglês, espanhol e português.',
+      step1Text: 'Preencha um formulário simples — serviços, horários, fotos. Leva 10 minutos.',
       step2Title: 'Nós desenhamos tudo',
-      step2Text: 'Site personalizado, assistente treinado no seu negócio. Cada um feito pra refletir sua marca única.',
+      step2Text: 'Site personalizado + assistente inteligente, treinado no seu negócio.',
       step3Title: 'Comece a receber clientes',
-      step3Text: 'Compartilhe seu link no WhatsApp, Instagram, Facebook. Clientes te encontram, recebem respostas e entram em contato — mesmo quando você está ocupado.',
+      step3Text: 'Compartilhe seu link. Clientes te encontram e entram em contato — mesmo quando você está ocupado.',
       showcaseLabel: 'Veja A Diferença',
       showcaseTitle: 'De invisível a irresistível',
       showcaseText: 'Veja o que acontece quando um ótimo negócio ganha a presença online que merece.',
@@ -1395,11 +951,11 @@
       before5: 'Quem não fala inglês se sente excluído',
       afterLabel: 'Com WelcomeMat',
       mockHero: 'Uma casa limpa.<br>Um novo começo.',
-      mockDesc: 'Limpeza residencial profissional em Sammamish, Issaquah e Bellevue. Confiança de famílias em todo o Eastside.',
+      mockDesc: 'Limpeza residencial em Sammamish, Issaquah e Bellevue. Confiança de famílias em todo o Eastside.',
       mockBtn: 'Orçamento Grátis',
       whoLabel: 'Pra Quem É',
       whoTitle: 'Feito pra pessoas talentosas que estão<br>ocupadas demais pra criar um site',
-      whoText: 'Trabalhadores autônomos, negócios familiares e prestadores de serviço — especialmente empreendedores imigrantes que merecem a mesma presença online que todo mundo.',
+      whoText: 'Trabalhadores autônomos, negócios familiares e prestadores de serviço — especialmente empreendedores imigrantes que merecem a mesma presença online.',
       aud1: 'Limpeza de Casas', aud2: 'Restaurantes e Cafés', aud3: 'Salões e Spas', aud4: 'Jardineiros',
       aud5: 'Eletricistas e Encanadores', aud6: 'Serviços de Pets', aud7: 'Personal Trainers', aud8: 'Fotógrafos',
       testimonialText: 'Melhor do que eu imaginei.',
@@ -1423,9 +979,9 @@
       tier3F2: 'Seu próprio domínio (seunome.com)',
       tier3F3: 'Configuração do Google Business',
       tier3F4: 'Atualizações e manutenção mensal',
-      ctaTitle: 'Pronto pra receber mais clientes?',
+      ctaTitle: 'Vamos colocar seu negócio no mapa',
       ctaText: 'Preencha um formulário rápido e criamos sua presença online. Sem conhecimento técnico.',
-      ctaBtn: 'Começar — É Grátis pra Aplicar →'
+      ctaBtn: 'Começar — Grátis pra Aplicar →'
     }
   };
 
