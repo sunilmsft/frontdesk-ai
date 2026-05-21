@@ -198,10 +198,13 @@
     `;
     document.body.appendChild(bubble);
 
-    // Greeting tooltip
+    // Greeting tooltip — short teaser, full message shows inside chat
     const greeting = document.createElement('div');
     greeting.id = 'fd-greeting';
-    greeting.innerHTML = `${escapeHtml(biz.welcome_message)} <button class="fd-g-close" aria-label="Close">&times;</button>`;
+    const tooltipText = biz.welcome_message.length > 60
+      ? biz.welcome_message.substring(0, biz.welcome_message.indexOf(' ', 50)) + '…'
+      : biz.welcome_message;
+    greeting.innerHTML = `${escapeHtml(tooltipText)} <button class="fd-g-close" aria-label="Close">&times;</button>`;
     document.body.appendChild(greeting);
 
     // Show greeting after 3s if chat not opened
