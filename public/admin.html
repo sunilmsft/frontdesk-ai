@@ -492,7 +492,7 @@
             <div style="font-size: 13px; color: #666; margin-bottom: 12px;">Search for this business on Google to connect their reviews.</div>
           `}
           <div style="display: flex; gap: 8px; margin-top: 12px;">
-            <input type="text" id="placeSearchQuery" placeholder="Search Google for this business..." value="${escapeAttr((b.name || '') + ' ' + (b.service_area || ''))}" style="flex: 1;">
+            <input type="text" id="placeSearchQuery" placeholder="Search Google for this business..." value="${escapeAttr((b.name || '') + ' ' + (b.service_area || b.phone || ''))}" style="flex: 1;">
             <button class="btn btn-primary btn-sm" onclick="searchGooglePlaces()" id="placeSearchBtn">🔍 Search</button>
           </div>
           <div id="placeSearchResults" style="margin-top: 12px;"></div>

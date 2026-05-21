@@ -257,7 +257,9 @@ router.post('/submissions/:id/approve', async (req, res) => {
     const googleBizName = formData.googleBusinessName;
     if (googleBizName && process.env.GOOGLE_PLACES_API_KEY) {
       try {
-        const searchQuery = serviceArea ? `${googleBizName} ${serviceArea}` : googleBizName;
+        // Prefer address (most specific), then phone, then service area
+        const address = formData.address || '';
+        const searchQuery = address ? `${googleBizName} ${address}` : (phone ? `${googleBizName} ${phone}` : (serviceArea ? `${googleBizName} ${serviceArea}` : googleBizName));
         const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
           headers: {
