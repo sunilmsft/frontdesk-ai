@@ -55,16 +55,18 @@
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-text { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white; }
     .logo-text span { color: #5eead4; }
-    .nav-right { display: flex; align-items: center; gap: 16px; }
-    .lang-switcher { display: flex; gap: 2px; }
-    .lang-btn {
-      padding: 4px 8px; font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.35); background: none; border: none;
-      cursor: pointer; transition: all 0.2s; font-family: inherit;
-      border-radius: 4px;
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .lang-select {
+      appearance: none; -webkit-appearance: none;
+      background: rgba(255,255,255,0.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.5)'/%3E%3C/svg%3E") no-repeat right 10px center;
+      color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 28px 6px 12px; border-radius: 8px; font-size: 12px;
+      font-family: inherit; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; outline: none;
     }
-    .lang-btn:hover { color: rgba(255,255,255,0.7); }
-    .lang-btn.active { color: white; background: rgba(255,255,255,0.12); }
+    .lang-select:hover { background-color: rgba(255,255,255,0.12); color: white; }
+    .lang-select:focus { border-color: var(--accent); }
+    .lang-select option { background: #1e293b; color: white; }
     .nav-cta {
       display: inline-block; background: var(--accent); color: white;
       padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px;
@@ -339,35 +341,22 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#" class="logo">
-        <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Door frame -->
-          <rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/>
-          <!-- Landscape through doorway -->
-          <rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/>
-          <!-- Hills -->
-          <ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/>
-          <ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/>
-          <!-- Path -->
-          <path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <!-- Sun -->
-          <circle cx="42" cy="28" r="7" fill="#e8a628"/>
-          <circle cx="42" cy="28" r="5" fill="#f0c040"/>
-          <!-- Open door (angled right) -->
-          <path d="M62 10L78 18V66L62 72Z" fill="#152847"/>
-          <circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/>
-          <!-- Doormat -->
-          <path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/>
-          <path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/>
-          <text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text>
+        <svg width="34" height="34" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="58" height="58" rx="14" fill="url(#ng)"/>
+          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.85"/>
+          <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.9">W</text>
+          <defs><linearGradient id="ng" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>
         </svg>
         <div class="logo-text">Welcome<span>Mat</span></div>
       </a>
       <div class="nav-right">
-        <div class="lang-switcher">
-          <button class="lang-btn active" onclick="setLang('en')">EN</button>
-          <button class="lang-btn" onclick="setLang('es')">ES</button>
-          <button class="lang-btn" onclick="setLang('pt')">PT</button>
-        </div>
+        <select class="lang-select" onchange="setLang(this.value)">
+          <option value="en" selected>English</option>
+          <option value="es">Español</option>
+          <option value="pt">Português</option>
+        </select>
         <a href="/onboard.html" class="nav-cta" data-i18n="navCta">Get Started</a>
       </div>
     </div>
@@ -378,26 +367,13 @@
     <div class="hero-grid"></div>
     <div class="hero-content">
       <div class="hero-mark">
-        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Door frame -->
-          <rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/>
-          <!-- Landscape through doorway -->
-          <rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/>
-          <!-- Hills -->
-          <ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/>
-          <ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/>
-          <!-- Path -->
-          <path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <!-- Sun -->
-          <circle cx="42" cy="28" r="7" fill="#e8a628"/>
-          <circle cx="42" cy="28" r="5" fill="#f0c040"/>
-          <!-- Open door (angled right) -->
-          <path d="M62 10L78 18V66L62 72Z" fill="#152847"/>
-          <circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/>
-          <!-- Doormat -->
-          <path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/>
-          <path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/>
-          <text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text>
+        <svg width="56" height="56" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="58" height="58" rx="14" fill="url(#hg)" opacity="0.85"/>
+          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/>
+          <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.85">W</text>
+          <defs><linearGradient id="hg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs>
         </svg>
       </div>
       <div class="hero-badge" data-i18n="heroBadge">For Local Service Businesses</div>
@@ -566,7 +542,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-brand">
-        <svg width="22" height="22" viewBox="0 0 100 100" fill="none"><rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/><rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/><ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/><ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/><path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/><circle cx="42" cy="28" r="7" fill="#e8a628"/><circle cx="42" cy="28" r="5" fill="#f0c040"/><path d="M62 10L78 18V66L62 72Z" fill="#152847"/><circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/><path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/><path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/><text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text></svg>
+        <svg width="20" height="20" viewBox="0 0 60 60" fill="none"><rect x="1" y="1" width="58" height="58" rx="14" fill="url(#fg)"/><path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><path d="M25 40V32H35V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/><defs><linearGradient id="fg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs></svg>
         <div class="footer-name">WelcomeMat Digital</div>
       </div>
       <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
@@ -722,7 +698,8 @@
       const key = el.getAttribute('data-i18n');
       if (T[lang] && T[lang][key]) el.innerHTML = T[lang][key];
     });
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang));
+    const sel = document.querySelector('.lang-select');
+    if (sel) sel.value = lang;
     document.documentElement.lang = lang;
   }
   </script>
