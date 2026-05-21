@@ -77,8 +77,12 @@
         display: flex; align-items: center; gap: 0.75rem;
       }
       #fd-header-dot { width: 10px; height: 10px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
+      #fd-header-info { flex: 1; }
       #fd-header-info h3 { font-size: 0.95rem; font-weight: 600; margin: 0; }
       #fd-header-info p { font-size: 0.75rem; opacity: 0.85; margin: 0.15rem 0 0 0; }
+      #fd-header-close { background: none; border: none; color: white; cursor: pointer; padding: 4px; opacity: 0.7; transition: opacity 0.2s; line-height: 1; }
+      #fd-header-close:hover { opacity: 1; }
+      #fd-header-close svg { width: 18px; height: 18px; }
 
       #fd-messages {
         flex: 1; overflow-y: auto; padding: 1rem;
@@ -178,6 +182,7 @@
           <h3>${escapeHtml(biz.name)}</h3>
           <p>Typically replies instantly</p>
         </div>
+        <button id="fd-header-close" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
       </div>
       <div id="fd-messages"></div>
       <div id="fd-input-area">
@@ -222,6 +227,7 @@
 
     // Events
     bubble.addEventListener('click', toggleChat);
+    document.getElementById('fd-header-close').addEventListener('click', () => { if (isOpen) toggleChat(); });
     document.getElementById('fd-send').addEventListener('click', sendMessage);
     document.getElementById('fd-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
