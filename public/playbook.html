@@ -327,7 +327,7 @@
 <!-- Top Bar -->
 <div class="topbar">
   <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-  <h1 style="cursor:pointer" onclick="window.scrollTo({top:0,behavior:'smooth'})">WelcomeMat Playbook</h1>
+  <h1 style="cursor:pointer" onclick="window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,null,location.pathname)">WelcomeMat Playbook</h1>
   <span class="updated">May 21, 2026</span>
 </div>
 
@@ -1138,6 +1138,7 @@
   // Close sidebar + expand target section on nav click
   document.querySelectorAll('.sidebar a').forEach(a => {
     a.addEventListener('click', (e) => {
+      e.preventDefault();
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('overlay').classList.remove('show');
       const targetId = a.getAttribute('href').replace('#', '');
@@ -1146,6 +1147,7 @@
         target.classList.remove('collapsed');
         setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
+      history.replaceState(null, null, location.pathname);
     });
   });
 
