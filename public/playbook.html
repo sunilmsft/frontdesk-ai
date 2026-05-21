@@ -69,7 +69,7 @@
       position: relative;
     }
     .search-wrap input {
-      width: 100%; padding: 10px 16px 10px 40px;
+      width: 100%; padding: 10px 120px 10px 40px;
       border: 2px solid var(--border); border-radius: 10px;
       font-size: 0.9rem; font-family: inherit;
       background: var(--bg); color: var(--text);
@@ -83,12 +83,22 @@
       position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
       color: var(--muted); font-size: 1rem; pointer-events: none;
     }
-    .search-wrap .clear-btn {
+    .search-controls {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: var(--muted); font-size: 1.1rem;
-      cursor: pointer; padding: 4px 8px; display: none;
+      display: flex; align-items: center; gap: 2px;
     }
-    .search-wrap .clear-btn.show { display: block; }
+    .search-controls .match-pos {
+      font-size: 0.72rem; color: var(--muted); white-space: nowrap;
+      padding: 0 6px; display: none;
+    }
+    .search-controls .match-pos.show { display: inline; }
+    .search-controls button {
+      background: none; border: none; color: var(--muted); font-size: 1rem;
+      cursor: pointer; padding: 4px 6px; border-radius: 4px;
+      display: none; line-height: 1;
+    }
+    .search-controls button:hover { background: var(--border); color: var(--text); }
+    .search-controls button.show { display: inline-flex; }
     .search-info {
       font-size: 0.75rem; color: var(--muted);
       margin-top: 6px; display: none;
@@ -97,6 +107,11 @@
     mark {
       background: #fef08a; color: var(--text);
       padding: 1px 2px; border-radius: 2px;
+      scroll-margin-top: 120px;
+    }
+    mark.current {
+      background: #f97316; color: #fff;
+      outline: 2px solid #f97316; outline-offset: 1px;
     }
     .section.search-hidden { display: none; }
 
@@ -321,7 +336,12 @@
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="Search playbook... (e.g. Kesia, pricing, Turso, referral)" autocomplete="off">
-    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+    <div class="search-controls">
+      <span class="match-pos" id="matchPos"></span>
+      <button id="prevBtn" onclick="navigateMatch(-1)" title="Previous match (Shift+Enter)">▲</button>
+      <button id="nextBtn" onclick="navigateMatch(1)" title="Next match (Enter)">▼</button>
+      <button id="clearBtn" onclick="clearSearch()" title="Clear search (Esc)">✕</button>
+    </div>
     <div class="search-info" id="searchInfo"></div>
   </div>
 </div>
@@ -1146,8 +1166,13 @@
   // ── Search ──
   const searchInput = document.getElementById('searchInput');
   const clearBtn = document.getElementById('clearBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const matchPos = document.getElementById('matchPos');
   const searchInfo = document.getElementById('searchInfo');
   let searchTimeout;
+  let currentMatchIdx = -1;
+  let allMarks = [];
 
   // Store original HTML for each section body (for restoring after highlight)
   const originalHTML = new Map();
@@ -1158,25 +1183,35 @@
   searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(doSearch, 200);
-    clearBtn.classList.toggle('show', searchInput.value.length > 0);
+    const hasVal = searchInput.value.length > 0;
+    clearBtn.classList.toggle('show', hasVal);
   });
 
-  // Keyboard shortcut: / to focus search, Escape to clear
+  // Keyboard: / to focus, Escape to clear, Enter/Shift+Enter to navigate
   document.addEventListener('keydown', (e) => {
     if (e.key === '/' && document.activeElement !== searchInput) {
       e.preventDefault();
       searchInput.focus();
     }
-    if (e.key === 'Escape' && document.activeElement === searchInput) {
-      clearSearch();
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { clearSearch(); return; }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (allMarks.length > 0) navigateMatch(e.shiftKey ? -1 : 1);
     }
   });
 
   function clearSearch() {
     searchInput.value = '';
     clearBtn.classList.remove('show');
+    prevBtn.classList.remove('show');
+    nextBtn.classList.remove('show');
+    matchPos.classList.remove('show');
     searchInfo.classList.remove('show');
-    // Restore original content and collapse all
+    currentMatchIdx = -1;
+    allMarks = [];
     document.querySelectorAll('.section').forEach(s => {
       s.classList.remove('search-hidden');
       s.classList.add('collapsed');
@@ -1186,10 +1221,41 @@
     searchInput.blur();
   }
 
+  function navigateMatch(dir) {
+    if (allMarks.length === 0) return;
+    // Remove current highlight
+    if (currentMatchIdx >= 0 && currentMatchIdx < allMarks.length) {
+      allMarks[currentMatchIdx].classList.remove('current');
+    }
+    currentMatchIdx += dir;
+    if (currentMatchIdx >= allMarks.length) currentMatchIdx = 0;
+    if (currentMatchIdx < 0) currentMatchIdx = allMarks.length - 1;
+
+    const mark = allMarks[currentMatchIdx];
+    mark.classList.add('current');
+    mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    updateMatchPos();
+  }
+
+  function updateMatchPos() {
+    if (allMarks.length > 0) {
+      matchPos.textContent = `${currentMatchIdx + 1}/${allMarks.length}`;
+      matchPos.classList.add('show');
+      prevBtn.classList.add('show');
+      nextBtn.classList.add('show');
+    } else {
+      matchPos.classList.remove('show');
+      prevBtn.classList.remove('show');
+      nextBtn.classList.remove('show');
+    }
+  }
+
   function doSearch() {
     const query = searchInput.value.trim().toLowerCase();
+    currentMatchIdx = -1;
+    allMarks = [];
+
     if (!query || query.length < 2) {
-      // Reset
       document.querySelectorAll('.section').forEach(s => {
         s.classList.remove('search-hidden');
         s.classList.add('collapsed');
@@ -1197,51 +1263,55 @@
         if (body && originalHTML.has(body)) body.innerHTML = originalHTML.get(body);
       });
       searchInfo.classList.remove('show');
+      updateMatchPos();
       return;
     }
 
-    let matchCount = 0;
     let sectionCount = 0;
 
     document.querySelectorAll('.section').forEach(section => {
       const body = section.querySelector('.section-body');
       if (!body || !originalHTML.has(body)) return;
 
-      // Restore original first
       body.innerHTML = originalHTML.get(body);
 
       const text = body.textContent.toLowerCase();
       if (text.includes(query)) {
         section.classList.remove('search-hidden', 'collapsed');
         sectionCount++;
-
-        // Highlight matches in text nodes
-        const matches = highlightText(body, query);
-        matchCount += matches;
+        highlightText(body, query);
       } else {
         section.classList.add('search-hidden');
         section.classList.add('collapsed');
       }
     });
 
-    searchInfo.textContent = matchCount > 0
-      ? `${matchCount} match${matchCount !== 1 ? 'es' : ''} in ${sectionCount} section${sectionCount !== 1 ? 's' : ''}`
+    // Collect all marks in document order
+    allMarks = Array.from(document.querySelectorAll('mark'));
+
+    searchInfo.textContent = allMarks.length > 0
+      ? `${allMarks.length} match${allMarks.length !== 1 ? 'es' : ''} in ${sectionCount} section${sectionCount !== 1 ? 's' : ''}`
       : 'No matches found';
     searchInfo.classList.add('show');
+
+    // Auto-jump to first match
+    if (allMarks.length > 0) {
+      currentMatchIdx = -1;
+      navigateMatch(1);
+    } else {
+      updateMatchPos();
+    }
   }
 
   function highlightText(root, query) {
-    let count = 0;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
     const nodesToReplace = [];
 
     while (walker.nextNode()) {
       const node = walker.currentNode;
       const parent = node.parentNode;
-      // Skip script, style, code, and already-highlighted nodes
       if (['SCRIPT','STYLE','CODE','PRE','MARK'].includes(parent.tagName)) continue;
-      const idx = node.textContent.toLowerCase().indexOf(query);
-      if (idx === -1) continue;
+      if (node.textContent.toLowerCase().indexOf(query) === -1) continue;
       nodesToReplace.push(node);
     }
 
@@ -1253,26 +1323,20 @@
       let searchIdx = lowerText.indexOf(query, lastIdx);
 
       while (searchIdx !== -1) {
-        count++;
-        // Text before match
         if (searchIdx > lastIdx) {
           frag.appendChild(document.createTextNode(text.slice(lastIdx, searchIdx)));
         }
-        // Highlighted match
         const mark = document.createElement('mark');
         mark.textContent = text.slice(searchIdx, searchIdx + query.length);
         frag.appendChild(mark);
         lastIdx = searchIdx + query.length;
         searchIdx = lowerText.indexOf(query, lastIdx);
       }
-      // Remaining text
       if (lastIdx < text.length) {
         frag.appendChild(document.createTextNode(text.slice(lastIdx)));
       }
       node.parentNode.replaceChild(frag, node);
     });
-
-    return count;
   }
 </script>
 
