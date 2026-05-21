@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WelcomeMat — Beautiful Websites for Local Businesses</title>
-  <meta name="description" content="We help businesses put out a better welcome. Custom websites and smart assistants for local service businesses.">
+  <title>WelcomeMat — Build Your Online Presence</title>
+  <meta name="description" content="We help local businesses build a professional online presence. Custom websites and smart assistants so customers can find you, trust you, and hire you.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -41,35 +41,33 @@
     /* Nav */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 12px 0; transition: all 0.3s; background: transparent;
+      padding: 14px 0; transition: all 0.3s;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(16px);
     }
     .nav.scrolled {
-      background: rgba(255,255,255,0.96); backdrop-filter: blur(20px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 8px 0;
+      background: rgba(15,23,42,0.97); backdrop-filter: blur(20px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25); padding: 10px 0;
     }
     .nav-inner {
       max-width: 1100px; margin: 0 auto; padding: 0 24px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-text { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; }
-    .nav:not(.scrolled) .logo-text { color: white; }
-    .nav:not(.scrolled) .logo-text span { color: #5eead4; }
-    .nav.scrolled .logo-text { color: var(--navy); }
-    .nav.scrolled .logo-text span { color: var(--accent); }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .lang-switcher { display: flex; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,0.08); }
-    .nav.scrolled .lang-switcher { background: #f1f5f9; }
+    .logo-text { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white; }
+    .logo-text span { color: #5eead4; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .lang-switcher { display: flex; gap: 2px; }
     .lang-btn {
-      padding: 5px 11px; font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.45); background: none; border: none;
+      padding: 4px 8px; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.35); background: none; border: none;
       cursor: pointer; transition: all 0.2s; font-family: inherit;
+      border-radius: 4px;
     }
-    .nav.scrolled .lang-btn { color: var(--muted); }
-    .lang-btn.active { background: var(--accent); color: white !important; }
+    .lang-btn:hover { color: rgba(255,255,255,0.7); }
+    .lang-btn.active { color: white; background: rgba(255,255,255,0.12); }
     .nav-cta {
       display: inline-block; background: var(--accent); color: white;
-      padding: 7px 18px; border-radius: 8px; font-weight: 600; font-size: 13px;
+      padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px;
       text-decoration: none; transition: all 0.2s;
     }
     .nav-cta:hover { background: var(--accent-hover); }
@@ -341,13 +339,26 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#" class="logo">
-        <svg width="34" height="34" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="58" height="58" rx="14" fill="url(#ng)"/>
-          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.85"/>
-          <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.9">W</text>
-          <defs><linearGradient id="ng" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Door frame -->
+          <rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/>
+          <!-- Landscape through doorway -->
+          <rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/>
+          <!-- Hills -->
+          <ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/>
+          <ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/>
+          <!-- Path -->
+          <path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <!-- Sun -->
+          <circle cx="42" cy="28" r="7" fill="#e8a628"/>
+          <circle cx="42" cy="28" r="5" fill="#f0c040"/>
+          <!-- Open door (angled right) -->
+          <path d="M62 10L78 18V66L62 72Z" fill="#152847"/>
+          <circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/>
+          <!-- Doormat -->
+          <path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/>
+          <path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/>
+          <text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text>
         </svg>
         <div class="logo-text">Welcome<span>Mat</span></div>
       </a>
@@ -367,13 +378,26 @@
     <div class="hero-grid"></div>
     <div class="hero-content">
       <div class="hero-mark">
-        <svg width="56" height="56" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="58" height="58" rx="14" fill="url(#hg)" opacity="0.85"/>
-          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/>
-          <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.85">W</text>
-          <defs><linearGradient id="hg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs>
+        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Door frame -->
+          <rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/>
+          <!-- Landscape through doorway -->
+          <rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/>
+          <!-- Hills -->
+          <ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/>
+          <ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/>
+          <!-- Path -->
+          <path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <!-- Sun -->
+          <circle cx="42" cy="28" r="7" fill="#e8a628"/>
+          <circle cx="42" cy="28" r="5" fill="#f0c040"/>
+          <!-- Open door (angled right) -->
+          <path d="M62 10L78 18V66L62 72Z" fill="#152847"/>
+          <circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/>
+          <!-- Doormat -->
+          <path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/>
+          <path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/>
+          <text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text>
         </svg>
       </div>
       <div class="hero-badge" data-i18n="heroBadge">For Local Service Businesses</div>
@@ -542,7 +566,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-brand">
-        <svg width="20" height="20" viewBox="0 0 60 60" fill="none"><rect x="1" y="1" width="58" height="58" rx="14" fill="url(#fg)"/><path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><path d="M25 40V32H35V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/><defs><linearGradient id="fg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs></svg>
+        <svg width="22" height="22" viewBox="0 0 100 100" fill="none"><rect x="22" y="10" width="40" height="62" rx="2" fill="#1a2e4a"/><rect x="24" y="12" width="36" height="58" rx="1" fill="#f5f0dc"/><ellipse cx="42" cy="62" rx="28" ry="14" fill="#6b9e5e"/><ellipse cx="32" cy="58" rx="18" ry="10" fill="#7db86a"/><path d="M42 70C42 70 40 60 38 52C36 44 42 38 42 38" stroke="#f5f0dc" stroke-width="3.5" stroke-linecap="round" fill="none"/><circle cx="42" cy="28" r="7" fill="#e8a628"/><circle cx="42" cy="28" r="5" fill="#f0c040"/><path d="M62 10L78 18V66L62 72Z" fill="#152847"/><circle cx="66" cy="40" r="1.5" fill="rgba(255,255,255,0.6)"/><path d="M16 74L84 74L80 86L20 86Z" fill="#c8993e"/><path d="M18 75L82 75L79 85L21 85Z" fill="#d4a84b"/><text x="50" y="83" text-anchor="middle" fill="#1a2e4a" font-size="11" font-weight="700" font-family="sans-serif" opacity="0.7">W</text></svg>
         <div class="footer-name">WelcomeMat Digital</div>
       </div>
       <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
