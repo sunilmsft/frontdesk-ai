@@ -170,6 +170,11 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--accent-light); }
 
+    /* ── Links ── */
+    a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+    td a, .section-body a { text-decoration: underline; text-underline-offset: 2px; }
+
     /* ── Callouts ── */
     .callout {
       padding: 14px 18px; border-radius: 10px;
@@ -424,10 +429,10 @@
           <table>
             <tr><th>URL</th><th>What</th></tr>
             <tr><td><a href="https://welcomematdigital.com" target="_blank">welcomematdigital.com</a></td><td>WelcomeMat pitch page</td></tr>
-            <tr><td>/onboard.html</td><td>Business onboarding form (EN/PT/ES)</td></tr>
-            <tr><td>/admin.html</td><td>Admin Command Center</td></tr>
-            <tr><td>/pick-color.html</td><td>Internal color picker</td></tr>
-            <tr><td>/site/camellia-cleaning</td><td>Kesia's site (reference implementation)</td></tr>
+            <tr><td><a href="/onboard.html" target="_blank">/onboard.html</a></td><td>Business onboarding form (EN/PT/ES)</td></tr>
+            <tr><td><a href="/admin.html" target="_blank">/admin.html</a></td><td>Admin Command Center</td></tr>
+            <tr><td><a href="/pick-color.html" target="_blank">/pick-color.html</a></td><td>Internal color picker</td></tr>
+            <tr><td><a href="/site/camellia-cleaning" target="_blank">/site/camellia-cleaning</a></td><td>Kesia's site (reference implementation)</td></tr>
           </table>
         </div>
 
@@ -725,7 +730,7 @@
             <span class="pill amber">PT-BR</span>
           </div>
           <p><strong>Stage:</strong> <span class="pill amber">preview-sent</span> — waiting for domain pick</p>
-          <p><strong>Site:</strong> /site/camellia-cleaning (EN/PT/ES, Cormorant Garamond + DM Sans, preview banner)</p>
+          <p><strong>Site:</strong> <a href="/site/camellia-cleaning" target="_blank">/site/camellia-cleaning</a> (EN/PT/ES, Cormorant Garamond + DM Sans, preview banner)</p>
           <p><strong>Strategic value:</strong> 400+ Brazilian service workers in WhatsApp groups = referral goldmine</p>
           <p style="margin-top:10px;font-weight:600">Remaining:</p>
           <div class="check"><div class="box"></div><span>Kesia picks domain → purchase + configure DNS</span></div>
@@ -777,7 +782,7 @@
         <span class="chevron">▾</span>
       </div>
       <div class="section-body">
-        <h3>Admin Console (/admin.html)</h3>
+        <h3>Admin Console (<a href="/admin.html" target="_blank">/admin.html</a>)</h3>
         <ul>
           <li><strong>Auth:</strong> JWT login/password (required for all admin routes)</li>
           <li><strong>Stats dashboard:</strong> Conversation counts, business count, message volume</li>
@@ -787,7 +792,7 @@
           <li><strong>Pipeline tracker:</strong> Full customer lifecycle, stage management, notes</li>
         </ul>
 
-        <h3>Onboarding Form (/onboard.html)</h3>
+        <h3>Onboarding Form (<a href="/onboard.html" target="_blank">/onboard.html</a>)</h3>
         <ul>
           <li>Multilingual: EN/PT/ES with language gate at start</li>
           <li>Simplified for service professionals: single hours textarea, 2 policy fields</li>
@@ -810,9 +815,9 @@
         <div class="tbl-wrap">
           <table>
             <tr><th>Tool</th><th>URL</th><th>Purpose</th></tr>
-            <tr><td>Color Picker</td><td>/pick-color.html</td><td>Visual theme color picker for new businesses</td></tr>
-            <tr><td>Demo Site</td><td>/index.html</td><td>The Plateau Kitchen — demo restaurant</td></tr>
-            <tr><td>Playbook</td><td>/playbook.html</td><td>This page</td></tr>
+            <tr><td>Color Picker</td><td><a href="/pick-color.html" target="_blank">/pick-color.html</a></td><td>Visual theme color picker for new businesses</td></tr>
+            <tr><td>Demo Site</td><td><a href="/index.html" target="_blank">/index.html</a></td><td>The Plateau Kitchen — demo restaurant</td></tr>
+            <tr><td>Playbook</td><td><a href="/playbook.html">/playbook.html</a></td><td>This page</td></tr>
           </table>
         </div>
 
