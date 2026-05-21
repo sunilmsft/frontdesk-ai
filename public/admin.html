@@ -491,8 +491,11 @@
           ` : `
             <div style="font-size: 13px; color: #666; margin-bottom: 12px;">Search for this business on Google to connect their reviews.</div>
           `}
-          <div style="display: flex; gap: 8px; margin-top: 12px;">
-            <input type="text" id="placeSearchQuery" placeholder="Search Google for this business..." value="${escapeAttr((b.name || '') + ' ' + (b.service_area || b.phone || ''))}" style="flex: 1;">
+          <div style="display: flex; gap: 8px; margin-top: 12px; position: relative;">
+            <div style="flex: 1; position: relative;">
+              <input type="text" id="placeSearchQuery" placeholder="Search Google for this business..." value="${escapeAttr((b.name || '') + ' ' + (b.service_area || b.phone || ''))}" style="width: 100%; padding-right: 30px;">
+              <span onclick="document.getElementById('placeSearchQuery').value=''; document.getElementById('placeSearchResults').innerHTML=''" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 16px; line-height: 1;" title="Clear search">✕</span>
+            </div>
             <button class="btn btn-primary btn-sm" onclick="searchGooglePlaces()" id="placeSearchBtn">🔍 Search</button>
           </div>
           <div id="placeSearchResults" style="margin-top: 12px;"></div>
