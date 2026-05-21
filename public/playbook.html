@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WelcomeMat — Master Playbook</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafb;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --muted: #64748b;
+      --accent: #0d9488;
+      --accent-light: #f0fdfa;
+      --accent-hover: #0f766e;
+      --border: #e2e8f0;
+      --section-alt: #f1f5f9;
+      --warn: #f59e0b;
+      --warn-bg: #fffbeb;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --navy: #1e293b;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; font-size: 15px;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .topbar h1 {
+      font-family: 'DM Serif Display', serif;
+      color: #fff; font-size: 1.2rem; font-weight: 400;
+    }
+    .topbar .updated {
+      color: rgba(255,255,255,0.5); font-size: 0.75rem;
+    }
+    .menu-btn {
+      display: none; background: none; border: none;
+      color: #fff; font-size: 1.5rem; cursor: pointer; padding: 4px 8px;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex; max-width: 1200px; margin: 0 auto;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 260px; min-width: 260px;
+      position: sticky; top: 56px; height: calc(100vh - 56px);
+      overflow-y: auto; padding: 20px 16px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; margin: 2px 0;
+      border-radius: 8px; text-decoration: none;
+      color: var(--muted); font-size: 0.85rem; font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background: var(--accent-light); color: var(--accent);
+    }
+    .sidebar .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--section-alt); color: var(--muted);
+      font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
+    }
+    .sidebar a.active .num, .sidebar a:hover .num {
+      background: var(--accent); color: #fff;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1; min-width: 0;
+      padding: 24px 32px 80px;
+    }
+
+    /* ── Sections ── */
+    .section {
+      margin-bottom: 32px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 24px;
+      cursor: pointer; user-select: none;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .section-header:hover { background: var(--accent-light); }
+    .section-header .icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--accent-light); color: var(--accent);
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.05rem; font-weight: 700; flex: 1;
+    }
+    .section-header .chevron {
+      color: var(--muted); transition: transform 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .section.collapsed .section-header .chevron { transform: rotate(-90deg); }
+    .section.collapsed .section-body { display: none; }
+    .section-body { padding: 20px 24px 24px; }
+
+    /* ── Content Typography ── */
+    .section-body h3 {
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: 1.5px; margin: 28px 0 12px;
+    }
+    .section-body h3:first-child { margin-top: 4px; }
+    .section-body p { margin: 8px 0; color: var(--text); }
+    .section-body ul, .section-body ol {
+      margin: 8px 0 8px 20px;
+    }
+    .section-body li { margin: 4px 0; }
+    .section-body strong { color: var(--text); }
+    .section-body code {
+      background: var(--section-alt); padding: 2px 6px;
+      border-radius: 4px; font-size: 0.85em; color: var(--accent-hover);
+    }
+    .section-body pre {
+      background: var(--navy); color: #e2e8f0;
+      padding: 14px 18px; border-radius: 8px;
+      overflow-x: auto; font-size: 0.8rem; margin: 10px 0;
+    }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow-x: auto; margin: 12px 0; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th {
+      background: var(--section-alt); text-align: left;
+      padding: 10px 14px; font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--accent-light); }
+
+    /* ── Callouts ── */
+    .callout {
+      padding: 14px 18px; border-radius: 10px;
+      margin: 14px 0; font-size: 0.9rem;
+      border-left: 4px solid;
+    }
+    .callout.info { background: var(--accent-light); border-color: var(--accent); }
+    .callout.warn { background: var(--warn-bg); border-color: var(--warn); }
+    .callout.danger { background: var(--danger-bg); border-color: var(--danger); }
+    .callout.success { background: var(--success-bg); border-color: var(--success); }
+
+    /* ── Checklist ── */
+    .check { display: flex; align-items: flex-start; gap: 8px; margin: 6px 0; }
+    .check .box {
+      width: 18px; height: 18px; border-radius: 4px;
+      border: 2px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 3px; font-size: 0.7rem;
+    }
+    .check.done .box { background: var(--success); border-color: var(--success); color: #fff; }
+    .check.done span { color: var(--muted); text-decoration: line-through; }
+
+    /* ── Pills ── */
+    .pill {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+    }
+    .pill.teal { background: var(--accent-light); color: var(--accent); }
+    .pill.amber { background: var(--warn-bg); color: #92400e; }
+    .pill.red { background: var(--danger-bg); color: #991b1b; }
+    .pill.green { background: var(--success-bg); color: #065f46; }
+
+    /* ── Quote block ── */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 10px 16px; margin: 12px 0;
+      background: var(--accent-light);
+      border-radius: 0 8px 8px 0;
+      font-style: italic; color: var(--muted);
+    }
+
+    /* ── Pipeline visual ── */
+    .pipeline {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      margin: 12px 0;
+    }
+    .pipeline span {
+      padding: 4px 10px; background: var(--section-alt);
+      border-radius: 6px; font-size: 0.75rem; font-weight: 500;
+      color: var(--muted);
+    }
+    .pipeline .arrow { background: none; color: var(--border); }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .menu-btn { display: block; }
+      .sidebar {
+        position: fixed; left: -300px;
+        top: 0; height: 100vh; z-index: 200;
+        width: 280px; min-width: 280px;
+        transition: left 0.3s ease;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+        padding-top: 70px;
+      }
+      .sidebar.open { left: 0; }
+      .overlay {
+        position: fixed; inset: 0; z-index: 150;
+        background: rgba(0,0,0,0.4); display: none;
+      }
+      .overlay.show { display: block; }
+      .main { padding: 16px 16px 60px; }
+      .section-body { padding: 16px; }
+      .section-header { padding: 14px 16px; }
+      .section-header h2 { font-size: 0.95rem; }
+      table { font-size: 0.8rem; }
+      th, td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  <h1>WelcomeMat Playbook</h1>
+  <span class="updated">May 21, 2026</span>
+</div>
+
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <a href="#identity" data-section="1"><span class="num">1</span> Identity & Positioning</a>
+    <a href="#dna" data-section="2"><span class="num">2</span> Brand DNA</a>
+    <a href="#tech" data-section="3"><span class="num">3</span> Tech & Infrastructure</a>
+    <a href="#sitebuild" data-section="4"><span class="num">4</span> Site Building</a>
+    <a href="#gtm" data-section="5"><span class="num">5</span> GTM & Outreach</a>
+    <a href="#pricing" data-section="6"><span class="num">6</span> Pricing & Economics</a>
+    <a href="#clients" data-section="7"><span class="num">7</span> Client Corner</a>
+    <a href="#admin" data-section="8"><span class="num">8</span> Admin Corner</a>
+    <a href="#setup" data-section="9"><span class="num">9</span> Business Setup</a>
+    <a href="#roadmap" data-section="10"><span class="num">10</span> Roadmap & Backlog</a>
+    <a href="#drift" data-section="11"><span class="num">11</span> Drift Protection</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- ═══════════════════ 1. IDENTITY ═══════════════════ -->
+    <div class="section" id="identity">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🏠</div>
+        <h2>1. Identity & Positioning</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="tbl-wrap">
+          <table>
+            <tr><td style="width:140px;font-weight:600">Brand</td><td>WelcomeMat</td></tr>
+            <tr><td style="font-weight:600">Legal</td><td>Welcome Mat Digital LLC (WA state — confirmed available, not yet registered)</td></tr>
+            <tr><td style="font-weight:600">Domain</td><td><a href="https://welcomematdigital.com" target="_blank">welcomematdigital.com</a> (Cloudflare, $10.46/yr)</td></tr>
+            <tr><td style="font-weight:600">Repo</td><td><a href="https://github.com/sunilmsft/frontdesk-ai" target="_blank">github.com/sunilmsft/frontdesk-ai</a></td></tr>
+          </table>
+        </div>
+
+        <h3>What WelcomeMat Is</h3>
+        <p>A modern SMB digital presence platform that gives skilled local service providers the same online credibility as larger competitors — in one day, in their language, with an AI assistant that never sleeps.</p>
+
+        <h3>What WelcomeMat Is NOT</h3>
+        <ul>
+          <li>A custom web design agency</li>
+          <li>A generic website builder (Wix/Squarespace competitor)</li>
+          <li>An enterprise SaaS platform</li>
+          <li>A chatbot company</li>
+        </ul>
+
+        <div class="callout info">
+          <strong>One-line test:</strong> If a decision makes us feel more like an agency → wrong direction. If it makes us feel more like a platform with a soul → on track.
+        </div>
+
+        <p><strong>Positioning:</strong> "Modern SMB digital presence platform" — NOT "custom web design agency." The landing page/site IS the core product, not an add-on to the widget.</p>
+
+        <div class="callout warn">
+          <strong>⚠️ Name overlap:</strong> welcomemat.com is a 20-year car wash marketing company (Atlanta, GA). Different vertical but conceptually similar. Low risk at current scale. Do a proper trademark search before investing further past 10 customers.
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 2. BRAND DNA ═══════════════════ -->
+    <div class="section" id="dna">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🧬</div>
+        <h2>2. Brand DNA</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Philosophy</h3>
+        <p><strong>The SMB Owner Is the Hero.</strong> We are invisible infrastructure. Every site makes <em>them</em> look good. Their name is the headline, their photo builds trust, their words tell the story. "Powered by WelcomeMat" stays in the footer — subtle, never competing.</p>
+
+        <p><strong>Confidence Over Complexity.</strong> SMB owners are busy, often non-technical, sometimes in a second language. Fewer options, better defaults. Show the result, not the process. One clear next step, not a decision tree.</p>
+
+        <p><strong>Human-First AI.</strong> The AI assistant is a helpful front desk employee, not a chatbot. Never announces itself as AI. Responds in customer's language automatically. Knows the business deeply. Escalates gracefully. Never fabricates.</p>
+
+        <p><strong>Perceived Uniqueness > Architectural Uniqueness.</strong> Every site feels custom. Under the hood, 90%+ is shared.</p>
+
+        <h3>Voice & Tone</h3>
+        <p>Warm but not cutesy. Professional but not corporate. Bilingual-friendly.</p>
+        <ul>
+          <li>First person for the business owner: "I offer...", "We care about..."</li>
+          <li>Never say "custom-designed" — say "built around your business"</li>
+          <li>Never say "AI-powered" to end customers — let it just work</li>
+          <li>Trust language uses proof: "5+ years experience" — not "best in class"</li>
+          <li>CTAs are invitations: "Get a Free Estimate" not "BUY NOW"</li>
+        </ul>
+
+        <h3>Language Principles</h3>
+        <ul>
+          <li>English is the authoring language; translations generated from EN</li>
+          <li>Portuguese and Spanish are first-class — not afterthoughts</li>
+          <li>All visible text gets <code>data-i18n</code> attributes from the start</li>
+          <li>Widget greetings translate with page language</li>
+        </ul>
+
+        <h3>Emotional Architecture</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Section</th><th>Emotional Purpose</th><th>What Varies</th><th>What's Constant</th></tr>
+            <tr><td>Hero</td><td>Aspiration + proof</td><td>Photos, headline, badges</td><td>Dark gradient, split layout, CTAs</td></tr>
+            <tr><td>Services</td><td>"We do what you need"</td><td>Icons, titles, descriptions</td><td>Card styling, hover effects</td></tr>
+            <tr><td>Why Us</td><td>Social proof</td><td>Differentiators</td><td>4-card grid, centered icons</td></tr>
+            <tr><td>About</td><td>Human connection</td><td>Photo, bio, signature</td><td>Grid layout, serif heading</td></tr>
+            <tr><td>Gallery</td><td>Visual proof</td><td>Photos</td><td>Grid, hover zoom, lazy load</td></tr>
+            <tr><td>Areas</td><td>"We come to you"</td><td>Area names</td><td>Pill tags</td></tr>
+            <tr><td>Hours</td><td>Reliability</td><td>Schedule</td><td>Table, today highlight</td></tr>
+            <tr><td>CTA Banner</td><td>Conversion</td><td>Phone, channels</td><td>Dark gradient, 3-button</td></tr>
+            <tr><td>Footer</td><td>Attribution</td><td>Business name</td><td>"Powered by WelcomeMat"</td></tr>
+          </table>
+        </div>
+
+        <h3>Trust Architecture (Layered)</h3>
+        <ol>
+          <li><strong>Immediate</strong> (hero): badges, professional photos, clear headline</li>
+          <li><strong>Substantive</strong> (services): detailed descriptions = expertise</li>
+          <li><strong>Personal</strong> (about): owner photo + story = human connection</li>
+          <li><strong>Visual</strong> (gallery): real work photos = proof</li>
+          <li><strong>Accessible</strong> (CTA): multiple contact channels = easy to reach</li>
+          <li><strong>Persistent</strong> (widget): instant answers = always responsive</li>
+        </ol>
+
+        <h3>Visual Identity — Configurable Knobs</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Knob</th><th>Options</th></tr>
+            <tr><td>Theme preset</td><td>warm-neutral, teal-navy, earth-green, rose-blush</td></tr>
+            <tr><td>Font pairing</td><td>serif-warm (Cormorant+DM Sans), serif-modern (Playfair+Inter), sans-clean (Inter)</td></tr>
+            <tr><td>Accent color</td><td>Any hex → derive full palette</td></tr>
+            <tr><td>Hero photos</td><td>3 business-specific</td></tr>
+            <tr><td>Services</td><td>Array of {icon, title, text}</td></tr>
+            <tr><td>CTA channels</td><td>phone / text / whatsapp / email toggles</td></tr>
+            <tr><td>Languages</td><td>EN + any subset of ES, PT</td></tr>
+          </table>
+        </div>
+        <div class="callout info">
+          <strong>Never customize:</strong> Dark hero gradient, section rhythm, card shadows, border radius (20/12/8px), Lucide icons, 768px breakpoint, sticky nav, "Powered by WelcomeMat" footer.
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 3. TECH ═══════════════════ -->
+    <div class="section" id="tech">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">⚙️</div>
+        <h2>3. Tech & Infrastructure</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Stack</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><td style="width:120px;font-weight:600">Backend</td><td>Node.js + Express (port 3001)</td></tr>
+            <tr><td style="font-weight:600">LLM</td><td>OpenAI GPT-4o-mini (free tier via data sharing)</td></tr>
+            <tr><td style="font-weight:600">Database</td><td>Turso (libSQL cloud) — businesses, conversations, messages, submissions, customer_pipeline</td></tr>
+            <tr><td style="font-weight:600">Frontend</td><td>Vanilla HTML/JS widget, embeddable via single script tag</td></tr>
+            <tr><td style="font-weight:600">Hosting</td><td>Render Starter ($7/mo, always-on) — auto-deploys from GitHub master</td></tr>
+          </table>
+        </div>
+
+        <h3>Key URLs</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>URL</th><th>What</th></tr>
+            <tr><td><a href="https://welcomematdigital.com" target="_blank">welcomematdigital.com</a></td><td>WelcomeMat pitch page</td></tr>
+            <tr><td>/onboard.html</td><td>Business onboarding form (EN/PT/ES)</td></tr>
+            <tr><td>/admin.html</td><td>Admin Command Center</td></tr>
+            <tr><td>/pick-color.html</td><td>Internal color picker</td></tr>
+            <tr><td>/site/camellia-cleaning</td><td>Kesia's site (reference implementation)</td></tr>
+          </table>
+        </div>
+
+        <h3>Important Files</h3>
+        <ul>
+          <li><code>public/pitch.html</code> — WelcomeMat landing page</li>
+          <li><code>public/sites/camellia-cleaning/index.html</code> — Kesia's site (THE showcase reference)</li>
+          <li><code>public/widget/frontdesk-widget.js</code> — Embeddable chat widget</li>
+          <li><code>server/routes/site.js</code> — Serves landing pages with template variable replacement</li>
+          <li><code>server/routes/chat.js</code> — Chat API with OpenAI, accepts lang param</li>
+          <li><code>server/routes/admin.js</code> — Admin API routes (auth-protected)</li>
+          <li><code>server/db/database.js</code> — Turso database layer</li>
+        </ul>
+
+        <h3>Onboarding & Pipeline Flow</h3>
+        <ol>
+          <li>Add lead to Pipeline (or they discover the form)</li>
+          <li>Send onboarding link → mark "Contacted"</li>
+          <li>Owner fills form → auto-creates pipeline record at "Submitted"</li>
+          <li>Admin gets browser notification → opens Inbox</li>
+          <li><strong>Step 1 — Review Form:</strong> Editable sections + ✨ AI Enhance per field</li>
+          <li><strong>Step 2 — Generate Prompt:</strong> Server-side generation → admin reviews/edits</li>
+          <li>"Approve & Create Business" → business created, chat live</li>
+          <li>Build preview site → add URL → mark "Preview Sent"</li>
+          <li>Customer reviews → revisions in pipeline notes</li>
+          <li>Approves → domain setup → go live</li>
+        </ol>
+
+        <h3>Pipeline Stages</h3>
+        <div class="pipeline">
+          <span>lead</span><span class="arrow">→</span>
+          <span>contacted</span><span class="arrow">→</span>
+          <span>submitted</span><span class="arrow">→</span>
+          <span>in-review</span><span class="arrow">→</span>
+          <span>prompt-ready</span><span class="arrow">→</span>
+          <span>chat-live</span><span class="arrow">→</span>
+          <span>site-building</span><span class="arrow">→</span>
+          <span>preview-sent</span><span class="arrow">→</span>
+          <span>revising</span><span class="arrow">→</span>
+          <span>approved</span><span class="arrow">→</span>
+          <span>domain-setup</span><span class="arrow">→</span>
+          <span style="background:var(--success-bg);color:#065f46">live</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 4. SITE BUILDING ═══════════════════ -->
+    <div class="section" id="sitebuild">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🔨</div>
+        <h2>4. Site Building Playbook</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Pre-Build Checklist</h3>
+        <div class="check"><div class="box"></div><span><strong>Assets:</strong> Logo (high-res PNG/SVG), owner photo, 6-10 work photos (renamed descriptively), business card/brand guide</span></div>
+        <div class="check"><div class="box"></div><span><strong>Info (one pass):</strong> Business name, owner name, phone, email, services + descriptions, areas, hours, languages, color preference, tagline</span></div>
+        <div class="check"><div class="box"></div><span>Create DB record FIRST (slug, system_prompt, welcome_message, theme_color)</span></div>
+        <div class="check"><div class="box"></div><span>Set up folders: <code>public/sites/{slug}/photos/</code> and <code>logo/</code></span></div>
+
+        <h3>Design Decisions That Work</h3>
+        <ul>
+          <li><strong>Fonts:</strong> Cormorant Garamond + DM Sans (premium). Alt: Playfair Display + Inter</li>
+          <li><strong>Colors:</strong> Dark primary + warm accent (champagne/gold universal) + off-white bg (#fafaf8)</li>
+          <li><strong>Shadows:</strong> <code>0 2px 8px rgba(0,0,0,0.07), 0 8px 24px rgba(0,0,0,0.05)</code> minimum</li>
+          <li><strong>Section labels:</strong> Accent-colored, uppercase, letter-spacing: 3px</li>
+          <li><strong>Icons:</strong> Lucide ONLY via CDN. Never emojis for structural elements.</li>
+          <li><strong>Dark hero with gradient:</strong> Works across all verticals</li>
+        </ul>
+
+        <h3>Mistakes to Avoid (Repeat Offenders)</h3>
+        <div class="callout danger"><strong>Nav:</strong> MUST stay dark if hero is dark. Never transition to white bg on scroll. Use dark frosted glass.</div>
+        <div class="callout danger"><strong>Cards (CRITICAL):</strong> NEVER same-color card bg on same-color section bg. Alternating pattern: tinted section + white cards → white section + tinted cards. This bug happened on BOTH Camellia and pitch page.</div>
+        <div class="callout warn"><strong>Logo:</strong> Never thin-line logos at small sizes. Always <code>display: block</code>. Use circular frame for non-square logos.</div>
+        <div class="callout warn"><strong>Language picker:</strong> Dropdown with full names + flags, not abbreviation toggles. Place in nav bar.</div>
+        <div class="callout warn"><strong>About section:</strong> Use owner's actual words. Don't over-polish into corporate speak.</div>
+
+        <h3>Build Process (Phase 0 — Current)</h3>
+        <ol>
+          <li>Copy <code>public/sites/camellia-cleaning/</code> as starting point</li>
+          <li>Find-replace: business name, slug, phone, email, areas, hours</li>
+          <li>Update photos, logo, colors, services, translations</li>
+          <li>Create DB record with system_prompt + welcome_message</li>
+          <li>Test: page load, nav links, language switching, chatbot, mobile</li>
+          <li>Share preview URL → get approval → set up custom domain</li>
+        </ol>
+
+        <h3>Deployment Flow</h3>
+        <ol>
+          <li>Local → test at <code>localhost:3001/site/{slug}</code></li>
+          <li>Commit + push to GitHub → Render auto-deploys from master</li>
+          <li>Share preview link</li>
+          <li>Approved → buy domain → point DNS to Render → add custom domain in Render</li>
+        </ol>
+
+        <h3>Templatization Phases</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Phase</th><th>Trigger</th><th>Approach</th></tr>
+            <tr><td><span class="pill green">Phase 0</span></td><td>1-3 customers</td><td>Manual copy-from-reference. Learning > efficiency.</td></tr>
+            <tr><td><span class="pill teal">Phase 1</span></td><td>3-10 customers</td><td>Config-driven template + JSON config per business. Required.</td></tr>
+            <tr><td><span class="pill amber">Phase 2</span></td><td>10-25 customers</td><td>Admin-editable content. Nice-to-have.</td></tr>
+            <tr><td><span class="pill red">Phase 3</span></td><td>25+ customers</td><td>Self-serve onboarding with AI-generated sites. Aspirational.</td></tr>
+          </table>
+        </div>
+        <div class="callout info"><strong>Don't skip phases.</strong> Each triggered by real pain, not anticipated need.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 5. GTM ═══════════════════ -->
+    <div class="section" id="gtm">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🚀</div>
+        <h2>5. GTM & Outreach Strategy</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="callout info">Established May 21, 2026. Strategy grounded in current state: 1 customer in preview, 1 warm lead, zero paying customers.</div>
+
+        <h3>Core Principle</h3>
+        <p><strong>Close the first loop before building systems.</strong> Convert Kesia from free preview → paying customer. That's the real validation. No outreach system, demo library, or vertical strategy matters until someone has paid and stayed.</p>
+
+        <h3>The WelcomeMat Sales Motion</h3>
+        <p>"Show, don't pitch." Most web agencies send a PDF proposal. We send a <em>live preview</em>. That's the real differentiator.</p>
+        <blockquote>"I saw your Google reviews — your customers love you. I help businesses like yours look as good online as they do in person."</blockquote>
+        <p>No mention of AI, websites, widgets, or technology.</p>
+
+        <h3>Outreach Priority (Next 2 Weeks)</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>#</th><th>Action</th><th>Why</th></tr>
+            <tr><td>1</td><td>Close Kesia's domain → go live</td><td>Turns demo into real reference customer</td></tr>
+            <tr><td>2</td><td>Ask Kesia to share in WhatsApp groups</td><td>400+ Brazilian service workers = warm referrals</td></tr>
+            <tr><td>3</td><td>Follow up with Raaga's Cuisine</td><td>Existing relationship, different vertical</td></tr>
+            <tr><td>4</td><td>Find 5 cleaning businesses on Google Maps</td><td>Backup if referrals don't convert</td></tr>
+            <tr><td>5</td><td>Send 5 personalized messages with Camellia as proof</td><td>Hand-sell, learn what resonates</td></tr>
+          </table>
+        </div>
+
+        <h3>The Kesia Flywheel</h3>
+        <ol>
+          <li>Kesia picks domain → go live → she's thrilled</li>
+          <li>Ask: "Would any friends in the cleaning groups want something like this?"</li>
+          <li>She shares her site in WhatsApp group with personal endorsement</li>
+          <li>2-3 respond → build their sites → they share in <em>their</em> networks</li>
+          <li>5-6 customers in cleaning, all warm referrals</li>
+        </ol>
+        <div class="callout success"><strong>This is how SMB services actually grow.</strong> Not through systems. Through one happy customer telling three friends.</div>
+
+        <h3>Vertical Prioritization</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Rank</th><th>Vertical</th><th>Why</th></tr>
+            <tr><td><strong>1</strong></td><td>Cleaning services</td><td>Have a customer, a showcase, and a referral network (Kesia)</td></tr>
+            <tr><td><strong>2</strong></td><td>Salons/barbers</td><td>High review culture, care about appearance, often immigrant-owned</td></tr>
+            <tr><td><strong>3</strong></td><td>Landscaping</td><td>Seasonal, always need leads, no websites, very visual</td></tr>
+            <tr><td><strong>4</strong></td><td>Handyman/contractors</td><td>Service area, no storefront, need credibility</td></tr>
+            <tr><td>5+</td><td>Everything else</td><td>Don't think about it until 5+ paying customers</td></tr>
+          </table>
+        </div>
+        <p><strong>Pick verticals by warmest path to first sale, not market size.</strong></p>
+
+        <h3>Demo Showcase Strategy</h3>
+        <ul>
+          <li><strong>Cap at 2 demos</strong> until you have paying customers in those verticals</li>
+          <li>One real customer site > ten demo sites</li>
+          <li>Don't build demos before having a customer in that vertical — spec work with no signal</li>
+        </ul>
+
+        <h3>Lead Discovery (Google Maps)</h3>
+        <ol>
+          <li>Search Google Maps for [service type] in [area]</li>
+          <li>Filter: 4+ stars, 20+ reviews, no website or outdated</li>
+          <li>Screenshot their listing — that's your prospect card</li>
+          <li>Note name, phone, review count, what customers praise</li>
+        </ol>
+        <div class="callout info"><strong>Lead discovery is NOT the bottleneck.</strong> The bottleneck is: getting them to respond → converting → delivering → retaining.</div>
+
+        <h3>What NOT to Automate Yet</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Activity</th><th>Automate?</th><th>Why</th></tr>
+            <tr><td>Finding prospects</td><td>No — 5 at a time</td><td>Need pattern recognition</td></tr>
+            <tr><td>Initial outreach</td><td>No — personalize each</td><td>5 thoughtful > 500 templated</td></tr>
+            <tr><td>Site building</td><td>Not yet</td><td>Config-driven at 3-5 customers</td></tr>
+            <tr><td>Pipeline tracking</td><td>No</td><td>Admin tool handles current volume</td></tr>
+            <tr><td>Onboarding form</td><td>Already built ✓</td><td>Highest-leverage automation done</td></tr>
+          </table>
+        </div>
+
+        <h3>Success Metrics (Early)</h3>
+        <ul>
+          <li>Did Kesia pick a domain? → validation of commitment</li>
+          <li>Did anyone from her network respond? → validation of referral model</li>
+          <li>Did Raaga's convert? → validation across verticals</li>
+          <li>Did any cold prospect respond? → validation of outreach model</li>
+        </ul>
+        <div class="callout success"><strong>Keep going:</strong> 3 paying customers within 30 days of Kesia going live.</div>
+        <div class="callout danger"><strong>Rethink:</strong> Zero paying customers 30 days after Kesia going live despite active outreach.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 6. PRICING ═══════════════════ -->
+    <div class="section" id="pricing">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">💰</div>
+        <h2>6. Pricing & Unit Economics</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Tiers (Draft — Validate After Pilot)</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Tier</th><th>Price</th><th>Includes</th></tr>
+            <tr><td><strong>Widget Only</strong></td><td>$29/mo</td><td>Chat widget on existing site, AI trained on biz, multilingual, 200 convos/mo</td></tr>
+            <tr><td><strong>Landing Page + Widget</strong></td><td>$59/mo</td><td>Custom hosted page (EN/PT/ES), services/pricing/hours, reviews, chat, 200 convos/mo</td></tr>
+            <tr><td><strong>Full Package</strong></td><td>$99/mo</td><td>Everything above + Google Business Profile setup, review templates, monthly prompt tuning, 500 convos/mo</td></tr>
+          </table>
+        </div>
+
+        <h3>Add-Ons</h3>
+        <ul>
+          <li>Custom domain: +$10/mo (~$105-110/yr profit per domain)</li>
+          <li>Extra conversations: $0.15 each</li>
+          <li>Logo generation (DALL-E): $25 one-time for $29 tier, free on $59+</li>
+          <li>Business card design: included in $99 tier</li>
+        </ul>
+
+        <h3>Unit Economics</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><td style="font-weight:600">Cost per customer</td><td>~$0.53/mo (OpenAI ~$0.50, Google API ~$0.03)</td></tr>
+            <tr><td style="font-weight:600">Margin</td><td>~98% on $29, ~99% on $59/$99</td></tr>
+            <tr><td style="font-weight:600">At scale</td><td>~$2-3/customer (paid Render, higher OpenAI usage)</td></tr>
+          </table>
+        </div>
+
+        <h3>Referral Program</h3>
+        <ul>
+          <li>Referrer: 1 month free per sign-up they bring</li>
+          <li>Referred: first month free</li>
+          <li>Cost to us: ~$0.53 per free month</li>
+        </ul>
+
+        <h3>Monthly Fixed Costs (Current)</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><td>Render Starter</td><td>$7/mo</td></tr>
+            <tr><td>Cloudflare domain</td><td>$0.87/mo</td></tr>
+            <tr><td>OpenAI API</td><td>Free (data sharing tier)</td></tr>
+            <tr><td style="font-weight:700">Total</td><td style="font-weight:700">~$8/mo</td></tr>
+          </table>
+        </div>
+
+        <div class="callout warn"><strong>DO NOT lock in pricing yet.</strong> Run pilots free, validate, then price when referral #3-4 asks.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 7. CLIENT CORNER ═══════════════════ -->
+    <div class="section" id="clients">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">👥</div>
+        <h2>7. Client Corner</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Live Sites & Demos</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Site</th><th>Type</th><th>Status</th></tr>
+            <tr>
+              <td><strong>The Plateau Kitchen</strong></td>
+              <td>Demo (restaurant)</td>
+              <td><span class="pill green">Live — internal demo</span></td>
+            </tr>
+            <tr>
+              <td><strong>Camellia Cleaning</strong></td>
+              <td>Customer site (Kesia)</td>
+              <td><span class="pill amber">Preview — waiting on domain</span></td>
+            </tr>
+            <tr>
+              <td><strong>WelcomeMat Pitch</strong></td>
+              <td>Landing page</td>
+              <td><span class="pill green">Live</span></td>
+            </tr>
+          </table>
+        </div>
+
+        <h3>Customer Directory</h3>
+
+        <div style="background:var(--section-alt);padding:16px 20px;border-radius:10px;margin:12px 0">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <strong style="font-size:1rem">Kesia Soares — Camellia Cleaning Service</strong>
+            <span class="pill teal">cleaning</span>
+            <span class="pill amber">PT-BR</span>
+          </div>
+          <p><strong>Stage:</strong> <span class="pill amber">preview-sent</span> — waiting for domain pick</p>
+          <p><strong>Site:</strong> /site/camellia-cleaning (EN/PT/ES, Cormorant Garamond + DM Sans, preview banner)</p>
+          <p><strong>Strategic value:</strong> 400+ Brazilian service workers in WhatsApp groups = referral goldmine</p>
+          <p style="margin-top:10px;font-weight:600">Remaining:</p>
+          <div class="check"><div class="box"></div><span>Kesia picks domain → purchase + configure DNS</span></div>
+          <div class="check"><div class="box"></div><span>Google Business Profile setup</span></div>
+          <div class="check"><div class="box"></div><span>Google Places API → live reviews on site</span></div>
+          <div class="check"><div class="box"></div><span>"What Our Clients Say" section with review cards</span></div>
+          <div class="check"><div class="box"></div><span>Review request link/template for her to text clients</span></div>
+          <div class="check"><div class="box"></div><span>Fix: "TRUSTED BY EASTSIDE FAMILIES" badge not translating</span></div>
+        </div>
+
+        <div style="background:var(--section-alt);padding:16px 20px;border-radius:10px;margin:12px 0">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <strong style="font-size:1rem">Raaga's Cuisine (Gayathri Sankaran)</strong>
+            <span class="pill teal">restaurant</span>
+            <span class="pill green">EN</span>
+          </div>
+          <p><strong>Stage:</strong> <span class="pill amber">contacted</span> — shared onboard link</p>
+          <p><strong>Notes:</strong> South Indian restaurant, has WordPress site managed by dev in India. Interested, checking with husband.</p>
+          <div class="check"><div class="box"></div><span>Follow up on decision</span></div>
+          <div class="check"><div class="box"></div><span>If yes → onboard → build site</span></div>
+        </div>
+
+        <h3>Prospect Pipeline</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Name</th><th>Vertical</th><th>Source</th><th>Stage</th><th>Notes</th></tr>
+            <tr><td colspan="5" style="color:var(--muted);text-align:center;font-style:italic">Fill as we prospect</td></tr>
+          </table>
+        </div>
+
+        <h3>Per-Client: Google Business Profile + Reviews</h3>
+        <ol>
+          <li>Client creates Google Business Profile (business.google.com)</li>
+          <li>Category: "House cleaning service", "Restaurant", "Hair salon", etc.</li>
+          <li>Service-area businesses: "I deliver goods and services to my customers" + areas</li>
+          <li>Verification: Google mails postcard with PIN (5-7 days)</li>
+          <li>Once verified: appears on Search + Maps, customers can review</li>
+          <li>Pull live reviews via Google Places API onto their site</li>
+          <li>Generate direct review link for client to text customers</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 8. ADMIN CORNER ═══════════════════ -->
+    <div class="section" id="admin">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🛠️</div>
+        <h2>8. Admin Corner</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Admin Console (/admin.html)</h3>
+        <ul>
+          <li><strong>Auth:</strong> JWT login/password (required for all admin routes)</li>
+          <li><strong>Stats dashboard:</strong> Conversation counts, business count, message volume</li>
+          <li><strong>Business management:</strong> View/edit businesses, system prompts, theme colors</li>
+          <li><strong>Conversations viewer:</strong> Browse chat history per business</li>
+          <li><strong>Submissions inbox:</strong> Red badge on new submissions, full review flow</li>
+          <li><strong>Pipeline tracker:</strong> Full customer lifecycle, stage management, notes</li>
+        </ul>
+
+        <h3>Onboarding Form (/onboard.html)</h3>
+        <ul>
+          <li>Multilingual: EN/PT/ES with language gate at start</li>
+          <li>Simplified for service professionals: single hours textarea, 2 policy fields</li>
+          <li>3 tone options, brand color picker, privacy notice</li>
+          <li>Rate-limited submissions, loading state on submit</li>
+          <li>Auto-creates pipeline record at "Submitted" stage</li>
+          <li>Browser notification to admin on new submission</li>
+        </ul>
+
+        <h3>AI-Assisted Review (Admin-Only)</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Endpoint</th><th>Purpose</th></tr>
+            <tr><td><code>POST /api/admin/ai/enhance</code></td><td>Improve a single form field (hours, services, about, tone, etc.)</td></tr>
+            <tr><td><code>POST /api/admin/ai/generate-prompt</code></td><td>Generate system prompt from edited form data</td></tr>
+          </table>
+        </div>
+
+        <h3>Internal Tools</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Tool</th><th>URL</th><th>Purpose</th></tr>
+            <tr><td>Color Picker</td><td>/pick-color.html</td><td>Visual theme color picker for new businesses</td></tr>
+            <tr><td>Demo Site</td><td>/index.html</td><td>The Plateau Kitchen — demo restaurant</td></tr>
+            <tr><td>Playbook</td><td>/playbook.html</td><td>This page</td></tr>
+          </table>
+        </div>
+
+        <h3>Pipeline Stages (Admin CRM)</h3>
+        <div class="pipeline">
+          <span>lead</span><span class="arrow">→</span>
+          <span>contacted</span><span class="arrow">→</span>
+          <span>submitted</span><span class="arrow">→</span>
+          <span>in-review</span><span class="arrow">→</span>
+          <span>prompt-ready</span><span class="arrow">→</span>
+          <span>chat-live</span><span class="arrow">→</span>
+          <span>site-building</span><span class="arrow">→</span>
+          <span>preview-sent</span><span class="arrow">→</span>
+          <span>revising</span><span class="arrow">→</span>
+          <span>approved</span><span class="arrow">→</span>
+          <span>domain-setup</span><span class="arrow">→</span>
+          <span style="background:var(--success-bg);color:#065f46">live</span>
+        </div>
+
+        <h3>Key Admin Files</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>File</th><th>What It Does</th></tr>
+            <tr><td><code>server/routes/admin.js</code></td><td>All admin API routes</td></tr>
+            <tr><td><code>server/middleware/auth.js</code></td><td>JWT auth middleware</td></tr>
+            <tr><td><code>server/db/database.js</code></td><td>Turso database layer</td></tr>
+            <tr><td><code>public/admin.html</code></td><td>Admin console UI</td></tr>
+            <tr><td><code>public/onboard.html</code></td><td>Business onboarding form</td></tr>
+            <tr><td><code>public/pick-color.html</code></td><td>Color picker tool</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 9. BUSINESS SETUP ═══════════════════ -->
+    <div class="section" id="setup">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">📋</div>
+        <h2>9. Business Setup Checklist</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="callout warn"><strong>DO BEFORE FIRST PAID CUSTOMER</strong> (in priority order)</div>
+
+        <div class="check"><div class="box"></div><span><strong>1. Register LLC</strong> — "Welcome Mat Digital LLC" in WA State (same day online)</span></div>
+        <div class="check"><div class="box"></div><span><strong>2. Get EIN</strong> — Free from IRS (irs.gov), needed for bank + taxes</span></div>
+        <div class="check"><div class="box"></div><span><strong>3. Business bank account</strong> — Chase/Mercury/Novo. NEVER mix personal + business</span></div>
+        <div class="check"><div class="box"></div><span><strong>4. Business email</strong> — hello@welcomematdigital.com (Google Workspace or M365 Basic)</span></div>
+        <div class="check"><div class="box"></div><span><strong>5. Customer agreement</strong> — Scope, pricing, cancellation, assets, support, liability</span></div>
+        <div class="check"><div class="box"></div><span><strong>6. Stripe</strong> — Invoices, recurring subscriptions</span></div>
+        <div class="check"><div class="box"></div><span><strong>7. Bookkeeping</strong> — Wave free → QuickBooks later</span></div>
+
+        <h3>Infra Hardening (Before Kesia Goes Live)</h3>
+        <div class="check done"><div class="box">✓</div><span>Admin auth (JWT)</span></div>
+        <div class="check done"><div class="box">✓</div><span>Migrate SQLite → Turso</span></div>
+        <div class="check done"><div class="box">✓</div><span>Google Search Console (domain verified + sitemap, May 20)</span></div>
+        <div class="check"><div class="box"></div><span>Cloud file storage for business photos/assets</span></div>
+        <div class="check"><div class="box"></div><span>Regenerate OpenAI API key (exposed in chat)</span></div>
+
+        <h3>Personal PC Migration</h3>
+        <ol>
+          <li>GitHub Copilot Pro+ ($39/mo) with personal GitHub (sunilmsft)</li>
+          <li>Install VS Code + Copilot extension on personal laptop</li>
+          <li>Clone repo, install Node.js 18+</li>
+          <li>Create <code>.env</code> (OPENAI_API_KEY, NODE_ENV=production)</li>
+          <li><code>npm install</code> → <code>npm run dev</code> → verify locally</li>
+          <li>Copilot memory carries over with same GitHub account</li>
+          <li>Test full flow: submit onboard → approve → chat</li>
+          <li>Regenerate OpenAI API key</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 10. ROADMAP ═══════════════════ -->
+    <div class="section" id="roadmap">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🗺️</div>
+        <h2>10. Roadmap & Backlog</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>8 Pillars (Strategic)</h3>
+        <ol>
+          <li><strong>Site Builder Framework</strong> — Config-driven sites with structured uniqueness — THE CORE PRODUCT</li>
+          <li><strong>Multi-language Sites</strong> — Language switcher per site + onboarding language question</li>
+          <li><strong>Integrations</strong> — Google Reviews, Google Calendar</li>
+          <li><strong>Business Owner Console</strong> — Dashboard per owner (bookings, reviews, chat history)</li>
+          <li><strong>Admin CRM Pipeline</strong> — Full lifecycle: lead → live → bill</li>
+          <li><strong>Payments & Billing</strong> — Stripe, trial periods, tier tracking</li>
+          <li><strong>Branding</strong> — WelcomeMat public, Welcome Mat Digital LLC legal</li>
+          <li><strong>Photo/Media Upload</strong> — Collect photos during onboarding</li>
+        </ol>
+
+        <h3>Tech Backlog</h3>
+        <div class="check"><div class="box"></div><span>Admin "Send Preview" button (generate URL, compose message, send via SMS/WhatsApp)</span></div>
+        <div class="check"><div class="box"></div><span>Google Places API integration (reviews on landing pages)</span></div>
+        <div class="check"><div class="box"></div><span>Rate limiting for production</span></div>
+        <div class="check"><div class="box"></div><span>Restrict ALLOWED_ORIGINS per business</span></div>
+        <div class="check"><div class="box"></div><span>Analytics/billing tracking</span></div>
+        <div class="check"><div class="box"></div><span>Landing page builder (standalone pages)</span></div>
+        <div class="check"><div class="box"></div><span>Admin dashboard in PT/ES</span></div>
+        <div class="check"><div class="box"></div><span>Logo generation add-on (DALL-E)</span></div>
+        <div class="check"><div class="box"></div><span>Business card design ($99 tier)</span></div>
+        <div class="check"><div class="box"></div><span>Custom domain registration workflow (Cloudflare)</span></div>
+        <div class="check"><div class="box"></div><span>Editable submissions (owner edits after submitting)</span></div>
+        <div class="check"><div class="box"></div><span>AI business name generator on onboarding form</span></div>
+        <div class="check"><div class="box"></div><span>Service tier picker on onboarding form</span></div>
+
+        <h3>Git State (as of May 20)</h3>
+        <ul>
+          <li><code>master</code> at <code>bbf64b7</code> (pushed, live) — pitch copy refinement</li>
+          <li><code>camellia-review-v1</code> at <code>4077e54</code> (local only) — Camellia defensive fixes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ 11. DRIFT PROTECTION ═══════════════════ -->
+    <div class="section" id="drift">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">🛡️</div>
+        <h2>11. Drift Protection</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>Warning Signals</h3>
+
+        <div style="background:var(--danger-bg);padding:14px 18px;border-radius:10px;margin:10px 0">
+          <p><strong>Custom Agency Drift</strong></p>
+          <p><strong>Signal:</strong> Spending more than 2 hours building a new customer's site.</p>
+          <p><strong>Fix:</strong> Content collection → fix onboarding. Design → make it a knob. Truly custom → charge or decline.</p>
+        </div>
+
+        <div style="background:var(--warn-bg);padding:14px 18px;border-radius:10px;margin:10px 0">
+          <p><strong>Feature Bloat</strong></p>
+          <p><strong>Signal:</strong> Adding features no current customer asked for.</p>
+          <p><strong>Fix:</strong> Every feature traces to a real request or measurable conversion improvement.</p>
+        </div>
+
+        <div style="background:var(--warn-bg);padding:14px 18px;border-radius:10px;margin:10px 0">
+          <p><strong>Operational Overload</strong></p>
+          <p><strong>Signal:</strong> Spending more time maintaining than building.</p>
+          <p><strong>Fix:</strong> Template system too fragile → invest in shared infra before adding customers.</p>
+        </div>
+
+        <div style="background:var(--section-alt);padding:14px 18px;border-radius:10px;margin:10px 0">
+          <p><strong>Generic Template Flattening</strong></p>
+          <p><strong>Signal:</strong> Two customers side-by-side look obviously identical.</p>
+          <p><strong>Fix:</strong> Different photos, color, fonts, owner story.</p>
+        </div>
+
+        <div style="background:var(--section-alt);padding:14px 18px;border-radius:10px;margin:10px 0">
+          <p><strong>Over-Corporate Enterprise UX</strong></p>
+          <p><strong>Signal:</strong> Site feels designed for a SaaS company, not a house cleaner.</p>
+          <p><strong>Fix:</strong> Serif fonts, warm colors, personal photos, first-person copy, "call me" CTAs.</p>
+        </div>
+
+        <h3>Anti-Patterns</h3>
+        <ul>
+          <li><strong>"Just this once" customization</strong> — make it a knob or don't do it</li>
+          <li><strong>Scope creep on updates</strong> — max 2 content changes/mo. Not redesigns.</li>
+          <li><strong>Treating sites as projects</strong> — it's a configuration. Project feel → agency drift.</li>
+          <li><strong>Building admin tools before 10 customers</strong> — spreadsheets are fine until they're not</li>
+          <li><strong>Optimizing for edge cases</strong> — build for the 80% (service biz, 1 location, 3-6 services)</li>
+        </ul>
+
+        <h3>Maintenance Burden Watchlist</h3>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Pattern</th><th>Risk</th><th>Mitigation</th></tr>
+            <tr><td>Per-customer HTML files</td><td>Every improvement × N</td><td>Shared template</td></tr>
+            <tr><td>Hand-written translations</td><td>O(N×L) effort</td><td>AI-generate from EN</td></tr>
+            <tr><td>Custom CSS per customer</td><td>Breaks on updates</td><td>CSS variables only</td></tr>
+            <tr><td>Hardcoded photo paths</td><td>Fragile, no CDN</td><td>Cloud storage + slug conventions</td></tr>
+            <tr><td>Per-customer JS logic</td><td>Testing grows linearly</td><td>Keep all JS shared</td></tr>
+          </table>
+        </div>
+
+        <h3>After Each Site Build — Answer These</h3>
+        <ul>
+          <li>What new reusable patterns emerged?</li>
+          <li>What was unexpectedly manual?</li>
+          <li>Did any "never customize" items get customized? Why?</li>
+          <li>What new knobs would have saved time?</li>
+          <li>Did the customer notice template similarity?</li>
+          <li>What trust patterns worked best for this vertical?</li>
+          <li>What onboarding friction could be eliminated?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ QUICK REFERENCE ═══════════════════ -->
+    <div class="section" id="quickref">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="icon">⚡</div>
+        <h2>Quick Reference</h2>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <h3>After Pilot — Ask These</h3>
+        <ul>
+          <li>"If this was a paid service, what would you expect to pay monthly?"</li>
+          <li>"What was most useful? What was missing?"</li>
+          <li>"Would you keep using this?"</li>
+        </ul>
+
+        <h3>Future Ideas (Parking Lot)</h3>
+        <ul>
+          <li>Swoop bundle (missed-call + web chat = "never miss a customer")</li>
+          <li>Provider-agnostic LLM (swap models via config)</li>
+          <li>Business owner dashboard (after 10+ businesses)</li>
+          <li>Annual plans (2 months free)</li>
+          <li>Free tier (20 convos/mo) as lead gen</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Toggle section collapse
+  function toggleSection(header) {
+    header.closest('.section').classList.toggle('collapsed');
+  }
+
+  // Mobile sidebar
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+
+  // Close sidebar on nav click (mobile)
+  document.querySelectorAll('.sidebar a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    });
+  });
+
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
