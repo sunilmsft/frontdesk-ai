@@ -97,7 +97,11 @@
 - Business owner dashboard (build when scaling past 10 businesses)
 
 ## Tech Backlog
-- [ ] Google Places API integration (fetch + display reviews on business landing pages)
+- [x] Google Places API integration (fetch + display reviews on business landing pages)
+- [x] Google Place ID picker in admin — search, preview, connect/disconnect reviews
+- [x] Client dashboard tab — domain, plan, billing, add-ons tracking per business
+- [x] Custom domain routing — business domains serve their site directly
+- [ ] **Google Search Console** — verify welcomematdigital.com, track search terms, monitor indexing
 - [ ] **Client Communication Pipeline** — automated + templated messaging through the customer lifecycle:
   - [ ] Add "preferred contact method" to onboarding form (Email / WhatsApp / Both)
   - [ ] **Auto-acknowledgement** — when onboarding form is submitted, auto-send a "we got it, here's what happens next" message
