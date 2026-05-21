@@ -55,6 +55,16 @@
       display: none; background: none; border: none;
       color: #fff; font-size: 1.5rem; cursor: pointer; padding: 4px 8px;
     }
+    .topbar-actions {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toggle-all-btn {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      color: #fff; font-size: 0.7rem; cursor: pointer; padding: 4px 10px;
+      border-radius: 6px; white-space: nowrap; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .toggle-all-btn:hover { background: rgba(255,255,255,0.22); }
 
     /* ── Search Bar ── */
     .search-bar {
@@ -328,7 +338,10 @@
 <div class="topbar">
   <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
   <h1 style="cursor:pointer" onclick="window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,null,location.pathname)">WelcomeMat Playbook</h1>
-  <span class="updated">May 21, 2026</span>
+  <div class="topbar-actions">
+    <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">Expand All</button>
+    <span class="updated">May 21, 2026</span>
+  </div>
 </div>
 
 <!-- Search Bar -->
@@ -1128,6 +1141,14 @@
 
   // Start all sections collapsed
   document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+
+  // ── Expand / Collapse All ──
+  function toggleAll() {
+    const secs = document.querySelectorAll('.section:not(.search-hidden)');
+    const allExpanded = [...secs].every(s => !s.classList.contains('collapsed'));
+    secs.forEach(s => allExpanded ? s.classList.add('collapsed') : s.classList.remove('collapsed'));
+    document.getElementById('toggleAllBtn').textContent = allExpanded ? 'Expand All' : 'Collapse All';
+  }
 
   // ── Mobile sidebar ──
   function toggleSidebar() {
