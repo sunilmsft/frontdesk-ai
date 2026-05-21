@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>My Tech Stack 101</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f9fa; --surface: #fff; --text: #1a1a2e; --muted: #6b7280;
+      --border: #e5e7eb; --accent: #0d9488; --navy: #1a1a2e;
+      --cat-hosting: #3b82f6; --cat-data: #8b5cf6; --cat-ai: #f59e0b;
+      --cat-comms: #ef4444; --cat-domain: #10b981; --cat-dev: #6366f1;
+    }
+    body {
+      font-family: 'Inter', sans-serif; background: var(--bg);
+      color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy); padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .topbar h1 {
+      font-family: 'DM Serif Display', serif;
+      color: #fff; font-size: 1.15rem; font-weight: 400; cursor: pointer;
+    }
+    .topbar .subtitle { color: rgba(255,255,255,0.5); font-size: 0.7rem; }
+
+    /* ── Container ── */
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* ── Intro ── */
+    .intro {
+      background: var(--surface); border-radius: 12px; padding: 24px;
+      border: 1px solid var(--border); margin-bottom: 28px;
+    }
+    .intro h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; margin-bottom: 8px;
+    }
+    .intro p { color: var(--muted); font-size: 0.9rem; }
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* ── How It Flows ── */
+    .flow-section {
+      background: var(--surface); border-radius: 12px; padding: 24px;
+      border: 1px solid var(--border); margin-bottom: 28px;
+    }
+    .flow-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem; margin-bottom: 16px;
+    }
+    .flow {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 8px; font-size: 0.82rem; padding: 12px 0;
+    }
+    .flow-box {
+      background: var(--bg); border: 2px solid var(--border);
+      border-radius: 10px; padding: 10px 16px; text-align: center;
+      font-weight: 600; min-width: 100px;
+    }
+    .flow-box small { display: block; font-weight: 400; color: var(--muted); font-size: 0.72rem; }
+    .flow-arrow { color: var(--muted); font-size: 1.2rem; }
+
+    /* ── Category ── */
+    .category {
+      margin-bottom: 32px;
+    }
+    .category-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .category-header .cat-dot {
+      width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+    }
+    .category-header h2 {
+      font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--muted);
+    }
+
+    /* ── Cards ── */
+    .cards { display: grid; grid-template-columns: 1fr; gap: 14px; }
+
+    .card {
+      background: var(--surface); border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 20px; display: flex; gap: 16px;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .card-icon {
+      font-size: 2rem; flex-shrink: 0; width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-body { flex: 1; min-width: 0; }
+    .card-name {
+      font-weight: 700; font-size: 1rem; margin-bottom: 2px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-name .cost-badge {
+      font-size: 0.65rem; font-weight: 600; padding: 2px 8px;
+      border-radius: 20px; background: #ecfdf5; color: #059669;
+      white-space: nowrap;
+    }
+    .card-name .cost-badge.paid { background: #fef3c7; color: #d97706; }
+    .card-tagline {
+      color: var(--accent); font-size: 0.8rem; font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 0.88rem; color: var(--text); margin-bottom: 10px;
+    }
+    .card-analogy {
+      font-size: 0.82rem; color: var(--muted); font-style: italic;
+      margin-bottom: 10px;
+    }
+    .card-projects {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .project-tag {
+      font-size: 0.7rem; font-weight: 600; padding: 3px 10px;
+      border-radius: 20px; background: var(--bg); color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Responsive ── */
+    @media (min-width: 640px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 14px 12px 60px; }
+      .card { padding: 14px; gap: 12px; flex-direction: column; }
+      .card-icon { width: 36px; height: 36px; font-size: 1.5rem; }
+      .intro { padding: 16px; }
+      .flow-section { padding: 16px; }
+      .flow-box { min-width: 80px; padding: 8px 10px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1 onclick="window.scrollTo({top:0,behavior:'smooth'})">My Tech Stack 101</h1>
+  <span class="subtitle">Last updated: May 2026</span>
+</div>
+
+<div class="container">
+
+  <!-- Intro -->
+  <div class="intro">
+    <h2>What is all this stuff?</h2>
+    <p>A plain-English guide to every service and tool used across your projects. No jargon, no fluff — just what each thing does, why you're paying for it (or not), and which project uses it.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-hosting)"></div> Hosting</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-data)"></div> Databases</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-ai)"></div> AI</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-comms)"></div> Communication</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-domain)"></div> Domains</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cat-dev)"></div> Dev Tools</div>
+    </div>
+  </div>
+
+  <!-- How It Flows -->
+  <div class="flow-section">
+    <h2>How it all connects (simplified)</h2>
+    <div class="flow">
+      <div class="flow-box">You write code<small>VS Code + Copilot</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Push to GitHub<small>Version control</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Auto-deploys<small>Render / Vercel</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">User visits site<small>yourdomain.com</small></div>
+    </div>
+    <div class="flow" style="margin-top: 4px;">
+      <div class="flow-box">Site talks to<small>APIs & databases</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">OpenAI / Twilio<small>AI chat, SMS</small></div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box">Turso / Supabase<small>Store data</small></div>
+    </div>
+  </div>
+
+  <!-- ═══════ HOSTING & DEPLOYMENT ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-hosting)"></div>
+      <h2>Hosting & Deployment — Where your apps live</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">🚀</div>
+        <div class="card-body">
+          <div class="card-name">Render <span class="cost-badge paid">$7/mo Starter</span></div>
+          <div class="card-tagline">Full-stack app hosting</div>
+          <div class="card-desc">Hosts your entire app — both the website visitors see AND the server code that powers it (API routes, chat logic, database calls). You push code to GitHub, Render automatically rebuilds and publishes it.</div>
+          <div class="card-analogy">💡 Think of it as: renting a small shop space where your app lives and runs 24/7</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+            <span class="project-tag">Swoop</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">▲</div>
+        <div class="card-body">
+          <div class="card-name">Vercel <span class="cost-badge">Free tier</span></div>
+          <div class="card-tagline">Static site hosting</div>
+          <div class="card-desc">Hosts websites that don't need a backend server — just HTML, CSS, and JavaScript files. Lightning fast, globally distributed. Great for personal sites and simple web apps. Also auto-deploys from GitHub.</div>
+          <div class="card-analogy">💡 Think of it as: a billboard company that puts your poster up worldwide in seconds</div>
+          <div class="card-projects">
+            <span class="project-tag">Personal Site</span>
+            <span class="project-tag">Tuck</span>
+            <span class="project-tag">Kolo</span>
+            <span class="project-tag">HomeOps Hub</span>
+            <span class="project-tag">Project Cushion</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ DOMAINS & DNS ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-domain)"></div>
+      <h2>Domains & DNS — Your addresses on the internet</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">☁️</div>
+        <div class="card-body">
+          <div class="card-name">Cloudflare <span class="cost-badge paid">~$10/yr per domain</span></div>
+          <div class="card-tagline">Domain registrar + DNS + security</div>
+          <div class="card-desc">Where you buy and manage domain names (like welcomematdigital.com). Also handles DNS — the system that translates "welcomematdigital.com" into the actual server address. Adds speed and security for free on top.</div>
+          <div class="card-analogy">💡 Think of it as: buying your store's street address AND getting a free security guard at the door</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+            <span class="project-tag">Personal Site</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ DATABASES ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-data)"></div>
+      <h2>Databases — Where your data lives</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">🗄️</div>
+        <div class="card-body">
+          <div class="card-name">Turso <span class="cost-badge">Free tier</span></div>
+          <div class="card-tagline">Lightweight cloud database</div>
+          <div class="card-desc">A SQLite database that lives in the cloud. Stores WelcomeMat's business info, chat conversations, admin accounts, and site settings. Super fast, super cheap — free tier covers thousands of businesses.</div>
+          <div class="card-analogy">💡 Think of it as: a spreadsheet in the cloud that your app reads and writes to, but way faster</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-body">
+          <div class="card-name">Supabase <span class="cost-badge">Free tier</span></div>
+          <div class="card-tagline">Database + auth + storage (all-in-one)</div>
+          <div class="card-desc">A more full-featured database (PostgreSQL) that also handles user login/signup and file storage. You get a database, authentication, and file uploads without building any of that yourself.</div>
+          <div class="card-analogy">💡 Think of it as: Turso's bigger sibling that also handles passwords and file uploads</div>
+          <div class="card-projects">
+            <span class="project-tag">Kolo</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ AI & INTELLIGENCE ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-ai)"></div>
+      <h2>AI & Intelligence — The brains</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-body">
+          <div class="card-name">OpenAI API <span class="cost-badge paid">Pay per use</span></div>
+          <div class="card-tagline">AI that reads, writes, and thinks</div>
+          <div class="card-desc">The engine behind your AI chat widgets. Your app sends a question + context to OpenAI, it sends back a smart answer. Uses GPT-4o-mini (~$0.50/mo per business). Also powers DALL-E for generating logos.</div>
+          <div class="card-analogy">💡 Think of it as: hiring a genius receptionist who never sleeps, and you pay per conversation</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+            <span class="project-tag">Swoop</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <div class="card-body">
+          <div class="card-name">DALL-E <span class="cost-badge paid">~$0.04/image</span></div>
+          <div class="card-tagline">AI image generation</div>
+          <div class="card-desc">Part of OpenAI. Generates logos and images from text descriptions. You describe what you want ("a cleaning company logo with a camellia flower") and it creates it. Used during WelcomeMat site builds.</div>
+          <div class="card-analogy">💡 Think of it as: a graphic designer who works in 10 seconds for 4 cents</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-body">
+          <div class="card-name">GitHub Copilot <span class="cost-badge paid">Free (MSFT benefit)</span></div>
+          <div class="card-tagline">AI coding assistant</div>
+          <div class="card-desc">Lives inside VS Code and helps you write code. Autocompletes lines, writes functions, explains errors, and builds entire features from descriptions. This is what you're talking to right now.</div>
+          <div class="card-analogy">💡 Think of it as: a pair programmer sitting next to you who's read every coding tutorial ever</div>
+          <div class="card-projects">
+            <span class="project-tag">All projects</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ COMMUNICATION ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-comms)"></div>
+      <h2>Communication — Texts & calls</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <div class="card-body">
+          <div class="card-name">Twilio <span class="cost-badge paid">Pay per use</span></div>
+          <div class="card-tagline">Send/receive SMS and calls from code</div>
+          <div class="card-desc">Lets your app send text messages and make phone calls programmatically. When someone misses a call (Swoop), Twilio detects it and sends an AI-crafted text back automatically. ~$1/mo per phone number + pennies per text.</div>
+          <div class="card-analogy">💡 Think of it as: your app's own phone line — it can text and call people on your behalf</div>
+          <div class="card-projects">
+            <span class="project-tag">Swoop</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ DEV TOOLS ═══════ -->
+  <div class="category">
+    <div class="category-header">
+      <div class="cat-dot" style="background:var(--cat-dev)"></div>
+      <h2>Dev Tools — Your workshop</h2>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon">🐙</div>
+        <div class="card-body">
+          <div class="card-name">GitHub <span class="cost-badge">Free</span></div>
+          <div class="card-tagline">Code storage + version control</div>
+          <div class="card-desc">Where all your code lives online. Every project is a "repository" (repo). Tracks every change you've ever made so you can undo anything. Also triggers auto-deploys to Render/Vercel when you push code.</div>
+          <div class="card-analogy">💡 Think of it as: Google Drive for code, but with infinite undo history and auto-publishing</div>
+          <div class="card-projects">
+            <span class="project-tag">All projects</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <div class="card-body">
+          <div class="card-name">VS Code <span class="cost-badge">Free</span></div>
+          <div class="card-tagline">Code editor</div>
+          <div class="card-desc">The app on your computer where you actually write and edit code. Comes with a built-in terminal (command line), file explorer, and tons of extensions. Made by Microsoft — same place Copilot lives.</div>
+          <div class="card-analogy">💡 Think of it as: Microsoft Word, but for writing code instead of documents</div>
+          <div class="card-projects">
+            <span class="project-tag">All projects</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-body">
+          <div class="card-name">npm <span class="cost-badge">Free</span></div>
+          <div class="card-tagline">JavaScript package manager</div>
+          <div class="card-desc">An app store for code libraries. Instead of writing everything from scratch, you "install" pre-built packages. For example: <code>npm install openai</code> gives you all the code needed to talk to OpenAI in one command.</div>
+          <div class="card-analogy">💡 Think of it as: an app store where every app is a pre-built Lego block you can snap into your project</div>
+          <div class="card-projects">
+            <span class="project-tag">All projects</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🟢</div>
+        <div class="card-body">
+          <div class="card-name">Node.js <span class="cost-badge">Free</span></div>
+          <div class="card-tagline">Run JavaScript on servers</div>
+          <div class="card-desc">JavaScript was originally only for browsers. Node.js lets you run JavaScript on a server — which is how WelcomeMat's backend works. Your chat API, database calls, and admin routes all run on Node.js.</div>
+          <div class="card-analogy">💡 Think of it as: the engine under the hood that lets your server code actually run</div>
+          <div class="card-projects">
+            <span class="project-tag">WelcomeMat</span>
+            <span class="project-tag">Swoop</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ CHEAT SHEET ═══════ -->
+  <div class="flow-section">
+    <h2>Monthly cost cheat sheet</h2>
+    <table style="width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border); text-align:left;">
+          <th style="padding:10px 12px;">Service</th>
+          <th style="padding:10px 12px;">Cost</th>
+          <th style="padding:10px 12px;">What you get</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Render</td>
+          <td style="padding:10px 12px;">$7/mo</td>
+          <td style="padding:10px 12px;">Always-on server for WelcomeMat</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Cloudflare</td>
+          <td style="padding:10px 12px;">~$10/yr</td>
+          <td style="padding:10px 12px;">welcomematdigital.com domain</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">OpenAI</td>
+          <td style="padding:10px 12px;">~$0.50/biz/mo</td>
+          <td style="padding:10px 12px;">AI chat + logo generation</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Twilio</td>
+          <td style="padding:10px 12px;">~$1/number + ¢/text</td>
+          <td style="padding:10px 12px;">SMS for Swoop missed-call</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Vercel</td>
+          <td style="padding:10px 12px;">Free</td>
+          <td style="padding:10px 12px;">Static site hosting</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Turso</td>
+          <td style="padding:10px 12px;">Free</td>
+          <td style="padding:10px 12px;">Database (WelcomeMat)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Supabase</td>
+          <td style="padding:10px 12px;">Free</td>
+          <td style="padding:10px 12px;">Database + auth (Kolo)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">GitHub</td>
+          <td style="padding:10px 12px;">Free</td>
+          <td style="padding:10px 12px;">Code hosting + version control</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px; font-weight:700; color:var(--accent);" colspan="1">TOTAL</td>
+          <td style="padding:10px 12px; font-weight:700; color:var(--accent);">~$8-9/mo</td>
+          <td style="padding:10px 12px; color:var(--muted); font-size:0.8rem;">Before any paying customers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════ RENDER VS VERCEL ═══════ -->
+  <div class="flow-section">
+    <h2>Wait, when do I use Render vs Vercel?</h2>
+    <table style="width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border); text-align:left;">
+          <th style="padding:10px 12px;"></th>
+          <th style="padding:10px 12px;">Render</th>
+          <th style="padding:10px 12px;">Vercel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Best for</td>
+          <td style="padding:10px 12px;">Apps with a backend server</td>
+          <td style="padding:10px 12px;">Static sites / frontend only</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Example</td>
+          <td style="padding:10px 12px;">WelcomeMat (has API + DB)</td>
+          <td style="padding:10px 12px;">Personal site, Kolo, Tuck</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Think of it as</td>
+          <td style="padding:10px 12px;">Rent a small server</td>
+          <td style="padding:10px 12px;">Free billboard space</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px; font-weight:600;">Rule of thumb</td>
+          <td colspan="2" style="padding:10px 12px;">Does it need a server running 24/7? → Render. Is it just HTML/CSS/JS files? → Vercel.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════ TURSO VS SUPABASE ═══════ -->
+  <div class="flow-section">
+    <h2>Turso vs Supabase — which database when?</h2>
+    <table style="width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border); text-align:left;">
+          <th style="padding:10px 12px;"></th>
+          <th style="padding:10px 12px;">Turso</th>
+          <th style="padding:10px 12px;">Supabase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Type</td>
+          <td style="padding:10px 12px;">SQLite (simple, lightweight)</td>
+          <td style="padding:10px 12px;">PostgreSQL (full-featured)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Extras</td>
+          <td style="padding:10px 12px;">Just the database</td>
+          <td style="padding:10px 12px;">Auth + file storage + realtime</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px; font-weight:600;">Best for</td>
+          <td style="padding:10px 12px;">Simple apps, tight budget</td>
+          <td style="padding:10px 12px;">Apps with user login / file uploads</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 12px; font-weight:600;">Rule of thumb</td>
+          <td colspan="2" style="padding:10px 12px;">Need just data storage? → Turso. Need login + permissions + storage? → Supabase.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
