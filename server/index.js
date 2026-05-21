@@ -21,8 +21,29 @@ app.use(cors({
 
 app.use(express.json());
 
-// Root → pitch page (must be before static middleware so index.html doesn't win)
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+// Custom domain routing — if the hostname matches a business's domain, serve their site
+const PLATFORM_HOSTS = ['localhost', 'frontdesk-ai-vx1s.onrender.com', 'welcomematdigital.com', 'www.welcomematdigital.com'];
+function isPlatformHost(req) {
+  const host = (req.hostname || '').toLowerCase();
+  return PLATFORM_HOSTS.some(h => host === h || host.endsWith('.localhost'));
+}
+
+// Root route — serve pitch page for platform, business site for custom domains
+app.get('/', async (req, res, next) => {
+  if (isPlatformHost(req)) {
+    return res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html'));
+  }
+  // Custom domain — look up business
+  const host = (req.hostname || '').toLowerCase().replace(/^www\./, '');
+  try {
+    const result = await db.execute({ sql: 'SELECT slug FROM businesses WHERE domain = ? OR domain = ?', args: [host, 'www.' + host] });
+    if (result.rows.length > 0) {
+      req.url = '/site/' + result.rows[0].slug;
+      return next();
+    }
+  } catch (_) {}
+  res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html'));
+});
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
