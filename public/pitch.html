@@ -7,6 +7,7 @@
   <meta name="description" content="We help local businesses build a professional online presence. Custom websites and smart assistants so customers can find you, trust you, and hire you.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
       --bg: #fafafa;
@@ -176,9 +177,11 @@
     }
     .problem-card:hover::before { opacity: 1; }
     .problem-icon {
-      width: 40px; height: 40px; background: var(--accent-light); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;
+      width: 42px; height: 42px; background: var(--accent-light); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+      color: var(--accent);
     }
+    .problem-icon i-lucide, .problem-icon svg { width: 20px; height: 20px; }
     .problem-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
     .problem-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
 
@@ -191,7 +194,12 @@
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     .solution-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
-    .solution-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .solution-icon {
+      width: 46px; height: 46px; background: linear-gradient(135deg, #f0fdfa, #e0f2fe); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+      color: var(--accent);
+    }
+    .solution-icon svg { width: 22px; height: 22px; }
     .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
     .solution-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
 
@@ -265,7 +273,12 @@
       transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.03);
     }
     .audience-chip:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,148,136,0.1); }
-    .audience-chip span:first-child { font-size: 1.2rem; }
+    .audience-chip span.aud-icon {
+      width: 32px; height: 32px; background: var(--accent-light); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--accent);
+    }
+    .audience-chip span.aud-icon svg { width: 16px; height: 16px; }
 
     /* Testimonial */
     .testimonial { background: linear-gradient(135deg, var(--accent-light), #ecfdf5); padding: 52px 0; }
@@ -406,9 +419,9 @@
         <p class="section-text" data-i18n="problemText">The best house cleaner in Sammamish. A talented stylist in Bellevue. They're losing customers they'll never know about.</p>
       </div>
       <div class="problem-cards">
-        <div class="problem-card reveal reveal-delay-1"><div class="problem-icon">🔍</div><h3 data-i18n="prob1Title">Invisible on Google</h3><p data-i18n="prob1Text">Someone searches "cleaner near me" — your business doesn't show up. No website means no visibility.</p></div>
-        <div class="problem-card reveal reveal-delay-2"><div class="problem-icon">📱</div><h3 data-i18n="prob2Title">Word-of-Mouth Only</h3><p data-i18n="prob2Text">Relying only on referrals caps your growth. Hundreds of people are searching online right now.</p></div>
-        <div class="problem-card reveal reveal-delay-3"><div class="problem-icon">🚫</div><h3 data-i18n="prob3Title">No Time for Tech</h3><p data-i18n="prob3Text">You're busy doing great work. Wix, WordPress, SEO — who has time? Generic templates don't cut it either.</p></div>
+        <div class="problem-card reveal reveal-delay-1"><div class="problem-icon"><i data-lucide="search-x"></i></div><h3 data-i18n="prob1Title">Invisible on Google</h3><p data-i18n="prob1Text">Someone searches "cleaner near me" — your business doesn't show up. No website means no visibility.</p></div>
+        <div class="problem-card reveal reveal-delay-2"><div class="problem-icon"><i data-lucide="megaphone-off"></i></div><h3 data-i18n="prob2Title">Word-of-Mouth Only</h3><p data-i18n="prob2Text">Relying only on referrals caps your growth. Hundreds of people are searching online right now.</p></div>
+        <div class="problem-card reveal reveal-delay-3"><div class="problem-icon"><i data-lucide="clock-alert"></i></div><h3 data-i18n="prob3Title">No Time for Tech</h3><p data-i18n="prob3Text">You're busy doing great work. Wix, WordPress, SEO — who has time? Generic templates don't cut it either.</p></div>
       </div>
     </div>
   </section>
@@ -421,9 +434,9 @@
         <p class="section-text" data-i18n="solutionText">Everything you need to look professional, get found, and turn visitors into paying customers.</p>
       </div>
       <div class="solution-grid">
-        <div class="solution-card reveal reveal-delay-1"><span class="solution-emoji">🌐</span><h3 data-i18n="sol1Title">A Stunning Website</h3><p data-i18n="sol1Text">Custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours.</p></div>
-        <div class="solution-card reveal reveal-delay-2"><span class="solution-emoji">💬</span><h3 data-i18n="sol2Title">Smart Assistant</h3><p data-i18n="sol2Text">Answers "how much?" and "are you free Saturday?" — so you don't stop working to respond.</p></div>
-        <div class="solution-card reveal reveal-delay-3"><span class="solution-emoji">🌎</span><h3 data-i18n="sol3Title">Multilingual</h3><p data-i18n="sol3Text">Works in English, Spanish, and Portuguese. Reach every customer — in their language.</p></div>
+        <div class="solution-card reveal reveal-delay-1"><div class="solution-icon"><i data-lucide="layout-template"></i></div><h3 data-i18n="sol1Title">A Stunning Website</h3><p data-i18n="sol1Text">Custom-designed page showcasing your services, prices, photos, and reviews. Uniquely yours.</p></div>
+        <div class="solution-card reveal reveal-delay-2"><div class="solution-icon"><i data-lucide="bot"></i></div><h3 data-i18n="sol2Title">Smart Assistant</h3><p data-i18n="sol2Text">Answers "how much?" and "are you free Saturday?" — so you don't stop working to respond.</p></div>
+        <div class="solution-card reveal reveal-delay-3"><div class="solution-icon"><i data-lucide="languages"></i></div><h3 data-i18n="sol3Title">Multilingual</h3><p data-i18n="sol3Text">Works in English, Spanish, and Portuguese. Reach every customer — in their language.</p></div>
       </div>
     </div>
   </section>
@@ -482,14 +495,14 @@
         <p class="section-text" data-i18n="whoText">Solo operators, family businesses, and service providers — especially immigrant entrepreneurs who deserve the same online presence as everyone else.</p>
       </div>
       <div class="audience-grid reveal">
-        <div class="audience-chip"><span>🧹</span> <span data-i18n="aud1">House Cleaners</span></div>
-        <div class="audience-chip"><span>🍽️</span> <span data-i18n="aud2">Restaurants & Cafés</span></div>
-        <div class="audience-chip"><span>💇</span> <span data-i18n="aud3">Salons & Spas</span></div>
-        <div class="audience-chip"><span>🌿</span> <span data-i18n="aud4">Landscapers</span></div>
-        <div class="audience-chip"><span>🔧</span> <span data-i18n="aud5">Handymen & Contractors</span></div>
-        <div class="audience-chip"><span>🐾</span> <span data-i18n="aud6">Pet Services</span></div>
-        <div class="audience-chip"><span>🏋️</span> <span data-i18n="aud7">Personal Trainers</span></div>
-        <div class="audience-chip"><span>📸</span> <span data-i18n="aud8">Photographers</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="sparkles"></i></span> <span data-i18n="aud1">House Cleaners</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="utensils"></i></span> <span data-i18n="aud2">Restaurants & Cafés</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="scissors"></i></span> <span data-i18n="aud3">Salons & Spas</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="tree-pine"></i></span> <span data-i18n="aud4">Landscapers</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="wrench"></i></span> <span data-i18n="aud5">Handymen & Contractors</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="paw-print"></i></span> <span data-i18n="aud6">Pet Services</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="dumbbell"></i></span> <span data-i18n="aud7">Personal Trainers</span></div>
+        <div class="audience-chip"><span class="aud-icon"><i data-lucide="camera"></i></span> <span data-i18n="aud8">Photographers</span></div>
       </div>
     </div>
   </section>
@@ -551,7 +564,9 @@
     </div>
   </footer>
 
-  <script>  const observer = new IntersectionObserver((entries) => {
+  <script>  lucide.createIcons();
+
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
