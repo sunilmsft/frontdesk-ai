@@ -42,6 +42,39 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* === SCROLL ANIMATIONS === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Hero entrance */
+    .hero-content { opacity: 0; transform: translateY(24px); animation: heroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; }
+    .hero-photos { opacity: 0; transform: translateY(20px) scale(0.97); animation: heroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards; }
+    @keyframes heroIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+
     /* === NAVIGATION === */
     .nav {
       position: fixed;
@@ -812,9 +845,9 @@
   <!-- Services -->
   <section class="section services" id="services">
     <div class="section-inner">
-      <div class="section-label" data-i18n="servicesLabel">What We Do</div>
-      <h2 class="section-title" data-i18n="servicesTitle">Cleaning services for every need</h2>
-      <p class="section-text" data-i18n="servicesText">From weekly maintenance to deep cleans, we keep your space fresh and inviting.</p>
+      <div class="section-label reveal" data-i18n="servicesLabel">What We Do</div>
+      <h2 class="section-title reveal" data-i18n="servicesTitle">Cleaning services for every need</h2>
+      <p class="section-text reveal" data-i18n="servicesText">From weekly maintenance to deep cleans, we keep your space fresh and inviting.</p>
       <div class="services-grid">
         <div class="service-card">
           <div class="service-icon"><i data-lucide="home"></i></div>
@@ -853,8 +886,8 @@
   <!-- Why Us -->
   <section class="section why-section">
     <div class="section-inner">
-      <div class="section-label" data-i18n="whyLabel">Why Camellia</div>
-      <h2 class="section-title" data-i18n="whyTitle">We care about your home as much as you do</h2>
+      <div class="section-label reveal" data-i18n="whyLabel">Why Camellia</div>
+      <h2 class="section-title reveal" data-i18n="whyTitle">We care about your home as much as you do</h2>
       <div class="why-grid">
         <div class="why-card">
           <div class="why-icon"><i data-lucide="scan-eye"></i></div>
@@ -883,8 +916,8 @@
   <!-- About Us -->
   <section class="section about" id="about">
     <div class="section-inner">
-      <div class="section-label" data-i18n="aboutLabel">About Us</div>
-      <h2 class="section-title" data-i18n="aboutTitle">The heart behind Camellia</h2>
+      <div class="section-label reveal" data-i18n="aboutLabel">About Us</div>
+      <h2 class="section-title reveal" data-i18n="aboutTitle">The heart behind Camellia</h2>
       <div class="about-inner">
         <div class="about-photo">
           <img src="/sites/camellia-cleaning/photos/Kesia.jpg" alt="Kesia Fonseca, owner of Camellia Cleaning Service">
@@ -904,9 +937,9 @@
   <!-- Gallery -->
   <section class="section gallery" id="gallery">
     <div class="section-inner">
-      <div class="section-label" data-i18n="galleryLabel">Our Work</div>
-      <h2 class="section-title" data-i18n="galleryTitle">See the Camellia difference</h2>
-      <p class="section-text" data-i18n="galleryText">Real photos from real homes we clean — no stock images, just our actual work.</p>
+      <div class="section-label reveal" data-i18n="galleryLabel">Our Work</div>
+      <h2 class="section-title reveal" data-i18n="galleryTitle">See the Camellia difference</h2>
+      <p class="section-text reveal" data-i18n="galleryText">Real photos from real homes we clean — no stock images, just our actual work.</p>
       <div class="gallery-grid">
         <div class="gallery-item" id="gallery1"><img src="/sites/camellia-cleaning/photos/bathroom-vanity.jpeg" alt="Clean bathroom vanity" loading="lazy"></div>
         <div class="gallery-item" id="gallery2"><img src="/sites/camellia-cleaning/photos/kitchen-stove.jpeg" alt="Clean kitchen stove area" loading="lazy"></div>
@@ -921,9 +954,9 @@
   <!-- Service Areas -->
   <section class="section" id="areas">
     <div class="section-inner">
-      <div class="section-label" data-i18n="areasLabel">Service Areas</div>
-      <h2 class="section-title" data-i18n="areasTitle">Proudly serving the Greater Seattle & Eastside</h2>
-      <p class="section-text" data-i18n="areasText">We come to you. If you're in one of these areas, we've got you covered.</p>
+      <div class="section-label reveal" data-i18n="areasLabel">Service Areas</div>
+      <h2 class="section-title reveal" data-i18n="areasTitle">Proudly serving the Greater Seattle & Eastside</h2>
+      <p class="section-text reveal" data-i18n="areasText">We come to you. If you're in one of these areas, we've got you covered.</p>
       <div class="areas-list">
         <span class="area-tag"><svg viewBox="0 0 20 20"><path d="M10 0C6.13 0 3 3.13 3 7c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 10 4.5a2.5 2.5 0 0 1 0 5z"/></svg> Renton</span>
         <span class="area-tag"><svg viewBox="0 0 20 20"><path d="M10 0C6.13 0 3 3.13 3 7c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 10 4.5a2.5 2.5 0 0 1 0 5z"/></svg> Bellevue</span>
@@ -938,8 +971,8 @@
   <!-- Hours -->
   <section class="section" id="hours" style="background: var(--white);">
     <div class="section-inner">
-      <div class="section-label" data-i18n="hoursLabel">Hours</div>
-      <h2 class="section-title" data-i18n="hoursTitle">When we're available</h2>
+      <div class="section-label reveal" data-i18n="hoursLabel">Hours</div>
+      <h2 class="section-title reveal" data-i18n="hoursTitle">When we're available</h2>
       <div class="hours-table">
         <div class="hours-row"><span class="day" data-i18n="mon">Monday</span><span class="time">8:00 AM – 8:00 PM</span></div>
         <div class="hours-row"><span class="day" data-i18n="tue">Tuesday</span><span class="time">8:00 AM – 8:00 PM</span></div>
@@ -1154,6 +1187,78 @@
   
   // Initialize Lucide icons
   lucide.createIcons();
+
+  // --- Scroll Reveal Animations ---
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  // Observe all reveal elements
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // Stagger service cards
+  document.querySelectorAll('.service-card').forEach((card, i) => {
+    card.classList.add('reveal');
+    card.style.transitionDelay = `${i * 0.1}s`;
+    revealObserver.observe(card);
+  });
+
+  // Stagger gallery items
+  document.querySelectorAll('.gallery-item').forEach((item, i) => {
+    item.classList.add('reveal-scale');
+    item.style.transitionDelay = `${i * 0.08}s`;
+    revealObserver.observe(item);
+  });
+
+  // Stagger why cards
+  document.querySelectorAll('.why-card').forEach((card, i) => {
+    card.classList.add('reveal');
+    card.style.transitionDelay = `${i * 0.12}s`;
+    revealObserver.observe(card);
+  });
+
+  // Stagger area tags
+  document.querySelectorAll('.area-tag').forEach((tag, i) => {
+    tag.classList.add('reveal-scale');
+    tag.style.transitionDelay = `${i * 0.06}s`;
+    revealObserver.observe(tag);
+  });
+
+  // About photo slides in from left
+  const aboutPhoto = document.querySelector('.about-photo');
+  if (aboutPhoto) {
+    aboutPhoto.classList.add('reveal-left');
+    revealObserver.observe(aboutPhoto);
+  }
+
+  // About text fades up
+  const aboutText = document.querySelector('.about-text');
+  if (aboutText) {
+    aboutText.classList.add('reveal');
+    aboutText.style.transitionDelay = '0.2s';
+    revealObserver.observe(aboutText);
+  }
+
+  // Hours rows stagger
+  document.querySelectorAll('.hours-row').forEach((row, i) => {
+    row.classList.add('reveal');
+    row.style.transitionDelay = `${i * 0.05}s`;
+    revealObserver.observe(row);
+  });
+
+  // CTA banner
+  const ctaBanner = document.querySelector('.cta-banner');
+  if (ctaBanner) {
+    ctaBanner.classList.add('reveal');
+    revealObserver.observe(ctaBanner);
+  }
   </script>
 
 </body>
