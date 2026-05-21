@@ -39,13 +39,37 @@
       line-height: 1.7; font-size: 16px; overflow-x: hidden;
     }
     .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-left {
+      opacity: 0; transform: translateX(-40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0; transform: scale(0.9);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+    /* Hero entrance */
+    .hero-badge { opacity: 0; transform: translateY(16px); animation: heroFade 0.7s cubic-bezier(0.22,1,0.36,1) 0.15s forwards; }
+    .hero h1 { opacity: 0; transform: translateY(20px); animation: heroFade 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s forwards; }
+    .hero-sub { opacity: 0; transform: translateY(18px); animation: heroFade 0.8s cubic-bezier(0.22,1,0.36,1) 0.45s forwards; }
+    .hero-tagline { opacity: 0; transform: translateY(16px); animation: heroFade 0.7s cubic-bezier(0.22,1,0.36,1) 0.55s forwards; }
+    .hero-actions { opacity: 0; transform: translateY(16px); animation: heroFade 0.7s cubic-bezier(0.22,1,0.36,1) 0.65s forwards; }
+    .stats-grid { opacity: 0; transform: translateY(16px); animation: heroFade 0.7s cubic-bezier(0.22,1,0.36,1) 0.85s forwards; }
+    @keyframes heroFade { to { opacity: 1; transform: translateY(0); } }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     section { padding: 64px 0; }
 
@@ -135,7 +159,7 @@
       background: linear-gradient(135deg, #5eead4, #2dd4bf, var(--warm));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .hero-sub { font-size: 1.05rem; color: #94a3b8; max-width: 520px; margin: 0 auto 10px; line-height: 1.65; }
+    .hero-sub { font-size: 1.05rem; color: #94a3b8; max-width: 720px; margin: 0 auto 10px; line-height: 1.65; }
     .hero-tagline {
       font-size: 0.8rem; color: rgba(94,234,212,0.6); font-weight: 500;
       letter-spacing: 0.5px; margin-bottom: 24px;
@@ -257,7 +281,7 @@
     .showcase .section-title { color: white; }
     .showcase .section-text { color: #94a3b8; }
     .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; align-items: center; }
-    .showcase-before { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 24px; }
+    .showcase-before { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); backdrop-filter: blur(8px); }
     .showcase-before-label, .showcase-after-label {
       font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
       margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
@@ -269,7 +293,7 @@
     .before-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03); color: #94a3b8; font-size: 0.82rem; }
     .before-item span:first-child { font-size: 0.85rem; opacity: 0.45; }
     .showcase-after {
-      background: white; border-radius: 12px; box-shadow: 0 16px 50px rgba(0,0,0,0.3);
+      background: white; border-radius: 12px; box-shadow: 0 16px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.15), 0 0 40px rgba(52,211,153,0.12);
       overflow: hidden; transform: perspective(1000px) rotateY(-2deg); transition: transform 0.5s; position: relative;
     }
     .showcase-after:hover { transform: perspective(1000px) rotateY(0deg); }
@@ -421,7 +445,7 @@
       </div>
       <div class="hero-badge" data-i18n="heroBadge">For Local Service Businesses</div>
       <h1 data-i18n="heroTitle">Your skills deserve<br>to be <em>discovered</em></h1>
-      <p class="hero-sub" data-i18n="heroText">We help local businesses look professional, respond faster, and never miss a customer — in English, Spanish, and Portuguese.</p>
+      <p class="hero-sub" data-i18n="heroText">We help local businesses look professional, respond faster, and never miss a customer — in English, Spanish, Portuguese, Chinese, Korean, and more.</p>
       <p class="hero-tagline">We help businesses put out a better welcome.</p>
       <div class="hero-actions">
         <a href="/onboard.html" class="btn-primary" data-i18n="heroCta">Start Welcoming Customers →</a>
@@ -465,7 +489,7 @@
       <div class="solution-grid">
         <div class="solution-card reveal reveal-delay-1"><div class="solution-icon"><i data-lucide="layout-template"></i></div><h3 data-i18n="sol1Title">Your Professional Website</h3><p data-i18n="sol1Text">A polished page with your services, prices, photos, and reviews — ready to share anywhere.</p></div>
         <div class="solution-card reveal reveal-delay-2"><div class="solution-icon"><i data-lucide="bot"></i></div><h3 data-i18n="sol2Title">Smart Assistant</h3><p data-i18n="sol2Text">Answers "how much?" and "are you free Saturday?" — so you don't stop working to respond.</p></div>
-        <div class="solution-card reveal reveal-delay-3"><div class="solution-icon"><i data-lucide="languages"></i></div><h3 data-i18n="sol3Title">Multilingual</h3><p data-i18n="sol3Text">Works in English, Spanish, and Portuguese. Reach every customer — in their language.</p></div>
+        <div class="solution-card reveal reveal-delay-3"><div class="solution-icon"><i data-lucide="languages"></i></div><h3 data-i18n="sol3Title">Multilingual</h3><p data-i18n="sol3Text">Works in English, Spanish, Portuguese, Chinese, Korean, and more. Reach every customer — in their language.</p></div>
       </div>
     </div>
   </section>
@@ -492,7 +516,7 @@
         <p class="section-text" data-i18n="showcaseText">Here's what happens when a great business gets the online presence it deserves.</p>
       </div>
       <div class="showcase-grid">
-        <div class="showcase-before reveal">
+        <div class="showcase-before reveal-left">
           <div class="showcase-before-label" data-i18n="beforeLabel">Without WelcomeMat</div>
           <div class="before-item"><span>😶</span> <span data-i18n="before1">No website — doesn't exist on Google</span></div>
           <div class="before-item"><span>📞</span> <span data-i18n="before2">Misses calls while working</span></div>
@@ -500,7 +524,7 @@
           <div class="before-item"><span>❓</span> <span data-i18n="before4">Repeats pricing info 20x a week</span></div>
           <div class="before-item"><span>🌐</span> <span data-i18n="before5">Non-English speakers feel excluded</span></div>
         </div>
-        <div class="showcase-after reveal reveal-delay-2">
+        <div class="showcase-after reveal-right">
           <div class="showcase-after-label" data-i18n="afterLabel">With WelcomeMat</div>
           <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">camelliacleaning.com</div></div>
           <div class="browser-content">
@@ -558,7 +582,7 @@
         <div class="price-card reveal reveal-delay-1">
           <div class="price-name" data-i18n="tier1Name">Starter</div><div class="price-desc" data-i18n="tier1Desc">Smart assistant for your existing site</div>
           <div class="price-amount">$29<span>/mo</span></div>
-          <ul class="price-features"><li data-i18n="tier1F1">AI assistant answers questions 24/7</li><li data-i18n="tier1F2">Works in English, Spanish & Portuguese</li><li data-i18n="tier1F3">Get notified when someone wants to hire you</li><li data-i18n="tier1F4">Add to a website you already have</li></ul>
+          <ul class="price-features"><li data-i18n="tier1F1">AI assistant answers questions 24/7</li><li data-i18n="tier1F2">Works in English, Spanish, Portuguese, Chinese, Korean & more</li><li data-i18n="tier1F3">Get notified when someone wants to hire you</li><li data-i18n="tier1F4">Add to a website you already have</li></ul>
         </div>
         <div class="price-card featured reveal reveal-delay-2">
           <div class="price-popular" data-i18n="popular">MOST POPULAR</div>
@@ -605,9 +629,20 @@
   <script>  try { lucide.createIcons(); } catch(e) {}
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
+
+  // Stagger audience chips
+  document.querySelectorAll('.audience-chip').forEach((chip, i) => {
+    chip.classList.add('reveal-scale');
+    chip.style.transitionDelay = `${i * 0.07}s`;
+    observer.observe(chip);
+  });
+
+  // Referral section
+  const referral = document.querySelector('.referral');
+  if (referral) { referral.classList.add('reveal'); observer.observe(referral); }
 
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
@@ -617,7 +652,7 @@
     en: {
       navCta:'Get Started', heroBadge:'For Local Service Businesses',
       heroTitle:'Your skills deserve<br>to be <em>discovered</em>',
-      heroText:"We help local businesses look professional, respond faster, and never miss a customer — in English, Spanish, and Portuguese.",
+      heroText:"We help local businesses look professional, respond faster, and never miss a customer — in English, Spanish, Portuguese, Chinese, Korean, and more.",
       heroCta:'Start Welcoming Customers →', heroDemo:'See a Live Example ↓',
       stat1:'of local businesses have no website', stat2:'of people search online before hiring', stat3:"won't hire someone they can't find online",
       problemLabel:'The Problem', problemTitle:'Great businesses are invisible<br>because they don\'t exist online',
@@ -629,7 +664,7 @@
       solutionText:'A website that works for you, an assistant that never sleeps, and support in three languages.',
       sol1Title:'Your Professional Website', sol1Text:'A polished page with your services, prices, photos, and reviews \u2014 ready to share anywhere.',
       sol2Title:'Smart Assistant', sol2Text:'Answers "how much?" and "are you free Saturday?" — so you don\'t stop working to respond.',
-      sol3Title:'Multilingual', sol3Text:'Works in English, Spanish, and Portuguese. Reach every customer — in their language.',
+      sol3Title:'Multilingual', sol3Text:'Works in English, Spanish, Portuguese, Chinese, Korean, and more. Reach every customer — in their language.',
       howLabel:'How It Works', howTitle:'From zero to live — in 3 steps',
       step1Title:'Tell us about your business', step1Text:'Fill a simple form — services, hours, photos. Takes 10 minutes.',
       step2Title:'We set everything up', step2Text:'Your website and smart assistant, ready to go \u2014 trained on your business.',
@@ -649,7 +684,7 @@
       tier1Name:'Starter', tier1Desc:'Smart assistant for your existing site',
       tier2Name:'Professional', tier2Desc:'Complete online presence',
       tier3Name:'All-In', tier3Desc:'We handle everything',
-      tier1F1:'AI assistant answers questions 24/7', tier1F2:'Works in English, Spanish & Portuguese',
+      tier1F1:'AI assistant answers questions 24/7', tier1F2:'Works in English, Spanish, Portuguese, Chinese, Korean & more',
       tier1F3:'Get notified when someone wants to hire you', tier1F4:'Add to a website you already have',
       tier2F1:'Everything in Starter', tier2F2:'Professional website built around your business',
       tier2F3:'Your services, prices, photos & reviews', tier2F4:'One link you can share anywhere', tier2F5:'Show up when people search on Google',
@@ -662,7 +697,7 @@
     es: {
       navCta:'Comenzar', heroBadge:'Para Negocios Locales de Servicios',
       heroTitle:'Tu talento merece<br>ser <em>descubierto</em>',
-      heroText:'Ayudamos a negocios locales a verse profesionales, responder más rápido y nunca perder un cliente — en inglés, español y portugués.',
+      heroText:'Ayudamos a negocios locales a verse profesionales, responder más rápido y nunca perder un cliente — en inglés, español, portugués, chino, coreano y más.',
       heroCta:'Empieza a Recibir Clientes →', heroDemo:'Ver Ejemplo en Vivo ↓',
       stat1:'de negocios locales no tienen sitio web', stat2:'buscan en internet antes de contratar', stat3:'no contrata a alguien que no encuentra en línea',
       problemLabel:'El Problema', problemTitle:'Grandes negocios son invisibles<br>porque no existen en internet',
@@ -674,7 +709,7 @@
       solutionText:'Un sitio web que trabaja para ti, un asistente que nunca duerme, y soporte en tres idiomas.',
       sol1Title:'Tu Sitio Web Profesional', sol1Text:'Una página pulida con tus servicios, precios, fotos y reseñas — lista para compartir.',
       sol2Title:'Asistente Inteligente', sol2Text:'Responde "¿cuánto cobras?" y "¿tienes disponible el sábado?" — para que no dejes de trabajar.',
-      sol3Title:'Multilingüe', sol3Text:'Funciona en inglés, español y portugués. Llega a todos los clientes — en su idioma.',
+      sol3Title:'Multilingüe', sol3Text:'Funciona en inglés, español, portugués, chino, coreano y más. Llega a todos los clientes — en su idioma.',
       howLabel:'Cómo Funciona', howTitle:'De cero a activo — en 3 pasos',
       step1Title:'Cuéntanos sobre tu negocio', step1Text:'Llena un formulario simple — servicios, horarios, fotos. Toma 10 minutos.',
       step2Title:'Nosotros configuramos todo', step2Text:'Tu sitio web y asistente inteligente, listos para funcionar — entrenados en tu negocio.',
@@ -694,7 +729,7 @@
       tier1Name:'Básico', tier1Desc:'Asistente inteligente para tu sitio actual',
       tier2Name:'Profesional', tier2Desc:'Presencia en línea completa',
       tier3Name:'Completo', tier3Desc:'Nos encargamos de todo',
-      tier1F1:'Asistente IA responde preguntas 24/7', tier1F2:'Funciona en inglés, español y portugués',
+      tier1F1:'Asistente IA responde preguntas 24/7', tier1F2:'Funciona en inglés, español, portugués, chino, coreano y más',
       tier1F3:'Te avisamos cuando alguien quiere contratarte', tier1F4:'Agrégalo a un sitio que ya tengas',
       tier2F1:'Todo lo del Básico', tier2F2:'Sitio web profesional hecho para tu negocio',
       tier2F3:'Tus servicios, precios, fotos y reseñas', tier2F4:'Un enlace que puedes compartir en cualquier lugar', tier2F5:'Aparece cuando la gente busca en Google',
@@ -705,7 +740,7 @@
     pt: {
       navCta:'Começar', heroBadge:'Para Negócios Locais de Serviços',
       heroTitle:'Seu talento merece<br>ser <em>descoberto</em>',
-      heroText:'Ajudamos negócios locais a parecer profissionais, responder mais rápido e nunca perder um cliente — em inglês, espanhol e português.',
+      heroText:'Ajudamos negócios locais a parecer profissionais, responder mais rápido e nunca perder um cliente — em inglês, espanhol, português, chinês, coreano e mais.',
       heroCta:'Comece a Receber Clientes →', heroDemo:'Veja Um Exemplo ↓',
       stat1:'dos negócios locais não têm site', stat2:'pesquisam online antes de contratar', stat3:'não contrata alguém que não encontra online',
       problemLabel:'O Problema', problemTitle:'Ótimos negócios são invisíveis<br>porque não existem na internet',
@@ -717,7 +752,7 @@
       solutionText:'Um site que trabalha pra você, um assistente que nunca dorme, e suporte em três idiomas.',
       sol1Title:'Seu Site Profissional', sol1Text:'Uma página polida com seus serviços, preços, fotos e avaliações — pronta pra compartilhar.',
       sol2Title:'Assistente Inteligente', sol2Text:'Responde "quanto cobra?" e "tem horário no sábado?" — pra você não parar de trabalhar.',
-      sol3Title:'Multilíngue', sol3Text:'Funciona em inglês, espanhol e português. Alcance todos os clientes — no idioma deles.',
+      sol3Title:'Multilíngue', sol3Text:'Funciona em inglês, espanhol, português, chinês, coreano e mais. Alcance todos os clientes — no idioma deles.',
       howLabel:'Como Funciona', howTitle:'De zero a ativo — em 3 passos',
       step1Title:'Conte sobre seu negócio', step1Text:'Preencha um formulário simples — serviços, horários, fotos. Leva 10 minutos.',
       step2Title:'Nós configuramos tudo', step2Text:'Seu site e assistente inteligente, prontos pra funcionar — treinados no seu negócio.',
@@ -737,7 +772,7 @@
       tier1Name:'Básico', tier1Desc:'Assistente inteligente pro seu site atual',
       tier2Name:'Profissional', tier2Desc:'Presença online completa',
       tier3Name:'Completo', tier3Desc:'Cuidamos de tudo',
-      tier1F1:'Assistente IA responde perguntas 24/7', tier1F2:'Funciona em inglês, espanhol e português',
+      tier1F1:'Assistente IA responde perguntas 24/7', tier1F2:'Funciona em inglês, espanhol, português, chinês, coreano e mais',
       tier1F3:'Você é avisado quando alguém quer te contratar', tier1F4:'Adicione a um site que você já tenha',
       tier2F1:'Tudo do Básico', tier2F2:'Site profissional feito pro seu negócio',
       tier2F3:'Seus serviços, preços, fotos e avaliações', tier2F4:'Um link que você pode compartilhar em qualquer lugar', tier2F5:'Aparece quando as pessoas pesquisam no Google',
