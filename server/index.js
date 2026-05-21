@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // Routes
 app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/upload', require('./routes/upload'));
 app.use('/site', require('./routes/site'));
 
 // Clean URLs for static pages
