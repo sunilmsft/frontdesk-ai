@@ -156,7 +156,8 @@ router.post('/businesses', async (req, res) => {
  * PUT /api/admin/businesses/:id — Update a business
  */
 router.put('/businesses/:id', async (req, res) => {
-  const { name, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, plan, google_place_id } = req.body;
+  const { name, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, plan, google_place_id,
+          domain, domain_registrar, domain_cost, domain_purchased_at, domain_renews_at, domain_auto_renew, monthly_rate, addons, client_since, billing_notes } = req.body;
   const bizResult = await db.execute({ sql: 'SELECT * FROM businesses WHERE id = ?', args: [req.params.id] });
   const business = bizResult.rows[0];
 
@@ -166,7 +167,9 @@ router.put('/businesses/:id', async (req, res) => {
 
   await db.execute({
     sql: `UPDATE businesses SET name = ?, system_prompt = ?, welcome_message = ?, theme_color = ?,
-          owner_name = ?, phone = ?, business_type = ?, service_area = ?, plan = ?, google_place_id = ? WHERE id = ?`,
+          owner_name = ?, phone = ?, business_type = ?, service_area = ?, plan = ?, google_place_id = ?,
+          domain = ?, domain_registrar = ?, domain_cost = ?, domain_purchased_at = ?, domain_renews_at = ?,
+          domain_auto_renew = ?, monthly_rate = ?, addons = ?, client_since = ?, billing_notes = ? WHERE id = ?`,
     args: [
       name || business.name,
       system_prompt || business.system_prompt,
@@ -178,6 +181,16 @@ router.put('/businesses/:id', async (req, res) => {
       service_area !== undefined ? service_area : business.service_area,
       plan !== undefined ? plan : business.plan,
       google_place_id !== undefined ? google_place_id : business.google_place_id,
+      domain !== undefined ? domain : business.domain,
+      domain_registrar !== undefined ? domain_registrar : business.domain_registrar,
+      domain_cost !== undefined ? domain_cost : business.domain_cost,
+      domain_purchased_at !== undefined ? domain_purchased_at : business.domain_purchased_at,
+      domain_renews_at !== undefined ? domain_renews_at : business.domain_renews_at,
+      domain_auto_renew !== undefined ? (domain_auto_renew ? 1 : 0) : business.domain_auto_renew,
+      monthly_rate !== undefined ? monthly_rate : business.monthly_rate,
+      addons !== undefined ? (typeof addons === 'string' ? addons : JSON.stringify(addons)) : business.addons,
+      client_since !== undefined ? client_since : business.client_since,
+      billing_notes !== undefined ? billing_notes : business.billing_notes,
       req.params.id
     ]
   });

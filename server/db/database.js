@@ -48,6 +48,16 @@ async function initDb() {
     ['businesses', 'service_area', 'TEXT'],
     ['businesses', 'plan', "TEXT DEFAULT 'chat-only'"],
     ['businesses', 'google_place_id', 'TEXT'],
+    ['businesses', 'domain', 'TEXT'],
+    ['businesses', 'domain_registrar', 'TEXT'],
+    ['businesses', 'domain_cost', 'TEXT'],
+    ['businesses', 'domain_purchased_at', 'TEXT'],
+    ['businesses', 'domain_renews_at', 'TEXT'],
+    ['businesses', 'domain_auto_renew', 'INTEGER DEFAULT 0'],
+    ['businesses', 'monthly_rate', 'TEXT'],
+    ['businesses', 'addons', "TEXT DEFAULT '[]'"],
+    ['businesses', 'client_since', 'TEXT'],
+    ['businesses', 'billing_notes', 'TEXT'],
   ];
   for (const [table, col, type] of migrationCols) {
     try { await db.execute(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`); } catch (_) {}

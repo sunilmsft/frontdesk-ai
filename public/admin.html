@@ -191,6 +191,7 @@
             </div>
             <div class="tabs" id="bizTabs">
               <div class="tab active" data-tab="conversations" onclick="switchBizTab('conversations')">Conversations</div>
+              <div class="tab" data-tab="client" onclick="switchBizTab('client')">Client</div>
               <div class="tab" data-tab="settings" onclick="switchBizTab('settings')">Settings</div>
             </div>
             <div id="conversationsTab">
@@ -204,6 +205,9 @@
                   <div class="empty-state">Select a conversation to view messages</div>
                 </div>
               </div>
+            </div>
+            <div id="clientTab" style="display: none;">
+              <div class="biz-detail" id="clientDetail"></div>
             </div>
             <div id="settingsTab" style="display: none;">
               <div class="biz-detail" id="bizDetail"></div>
@@ -378,7 +382,9 @@
       document.querySelectorAll('#bizTabs .tab').forEach(t => t.classList.remove('active'));
       document.querySelector(`#bizTabs .tab[data-tab="${tab}"]`).classList.add('active');
       document.getElementById('conversationsTab').style.display = tab === 'conversations' ? 'block' : 'none';
+      document.getElementById('clientTab').style.display = tab === 'client' ? 'block' : 'none';
       document.getElementById('settingsTab').style.display = tab === 'settings' ? 'block' : 'none';
+      if (tab === 'client') renderClientDetail();
     }
 
     // --- Conversations ---
@@ -1394,6 +1400,180 @@
         await loadPipeline();
       } else {
         alert((await res.json()).error || 'Error adding lead');
+      }
+    }
+
+    // --- Client Dashboard ---
+    function renderClientDetail() {
+      if (!selectedBiz) return;
+      const b = selectedBiz;
+      const addons = (() => { try { return JSON.parse(b.addons || '[]'); } catch { return []; } })();
+      const ADDON_OPTIONS = [
+        { key: 'google-reviews', label: '⭐ Google Reviews', desc: 'Display Google reviews on site' },
+        { key: 'before-after', label: '📸 Before/After Gallery', desc: 'Swipeable photo comparisons' },
+        { key: 'quoting-agent', label: '🤖 Quoting Agent', desc: 'AI-powered intake form' },
+        { key: 'booking', label: '📅 Booking/Scheduling', desc: 'Online appointment booking' },
+        { key: 'review-nudge', label: '💬 Review Nudge', desc: 'Text customers a review link' },
+        { key: 'whatsapp-cta', label: '📱 WhatsApp CTA', desc: 'Floating WhatsApp button' },
+        { key: 'custom-domain', label: '🌐 Custom Domain', desc: 'Branded domain setup' },
+      ];
+
+      const planLabels = {
+        'chat-only': '💬 Chat Only',
+        'chat-site': '💬🌐 Chat + Website',
+        'full-package': '💬🌐🔗 Full Package'
+      };
+
+      const domainStatus = b.domain
+        ? (b.domain_renews_at && new Date(b.domain_renews_at) < new Date()
+          ? '<span style="color: #dc2626; font-weight: 600;">⚠ Expired</span>'
+          : '<span style="color: #059669; font-weight: 600;">✓ Active</span>')
+        : '<span style="color: #999;">No domain</span>';
+
+      document.getElementById('clientDetail').innerHTML = `
+        <!-- Client Summary Header -->
+        <div style="background: linear-gradient(135deg, #f0f7ff, #eff6ff); border: 1px solid #bfdbfe; border-radius: 12px; padding: 24px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-size: 18px; font-weight: 700; color: #1a1a1a;">${escapeHtml(b.name)}</div>
+              <div style="font-size: 13px; color: #666; margin-top: 4px;">
+                ${b.owner_name ? '👤 ' + escapeHtml(b.owner_name) : ''}
+                ${b.phone ? ' · 📞 ' + escapeHtml(b.phone) : ''}
+              </div>
+              ${b.client_since ? '<div style="font-size: 12px; color: #888; margin-top: 4px;">Client since ' + new Date(b.client_since).toLocaleDateString('en-US', {month:'long', year:'numeric'}) + '</div>' : ''}
+            </div>
+            <div style="text-align: right;">
+              <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; color: #334155;">
+                ${planLabels[b.plan] || b.plan || 'No plan'}
+              </div>
+              ${b.monthly_rate ? '<div style="font-size: 20px; font-weight: 700; color: #059669; margin-top: 8px;">$' + escapeHtml(b.monthly_rate) + '<span style="font-size: 12px; font-weight: 400; color: #888;">/mo</span></div>' : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain Info -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="font-size: 13px; font-weight: 700; color: #334155;">🌐 Domain</div>
+            ${domainStatus}
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="field" style="margin: 0;">
+              <label>Domain Name</label>
+              <input type="text" id="clientDomain" value="${escapeAttr(b.domain || '')}" placeholder="e.g. camelliacleaning.com">
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Registrar</label>
+              <select id="clientRegistrar" style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit;">
+                <option value="" ${!b.domain_registrar ? 'selected' : ''}>—</option>
+                <option value="Cloudflare" ${b.domain_registrar === 'Cloudflare' ? 'selected' : ''}>Cloudflare</option>
+                <option value="Namecheap" ${b.domain_registrar === 'Namecheap' ? 'selected' : ''}>Namecheap</option>
+                <option value="GoDaddy" ${b.domain_registrar === 'GoDaddy' ? 'selected' : ''}>GoDaddy</option>
+                <option value="Google Domains" ${b.domain_registrar === 'Google Domains' ? 'selected' : ''}>Google Domains</option>
+                <option value="Other" ${b.domain_registrar === 'Other' ? 'selected' : ''}>Other</option>
+              </select>
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Annual Cost</label>
+              <input type="text" id="clientDomainCost" value="${escapeAttr(b.domain_cost || '')}" placeholder="e.g. $10.46">
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Purchased On</label>
+              <input type="date" id="clientDomainPurchased" value="${b.domain_purchased_at ? b.domain_purchased_at.split('T')[0] : ''}">
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Renews On</label>
+              <input type="date" id="clientDomainRenews" value="${b.domain_renews_at ? b.domain_renews_at.split('T')[0] : ''}">
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Auto-Renew</label>
+              <select id="clientAutoRenew" style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit;">
+                <option value="0" ${!b.domain_auto_renew ? 'selected' : ''}>❌ Off</option>
+                <option value="1" ${b.domain_auto_renew ? 'selected' : ''}>✅ On</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan & Billing -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+          <div style="font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 14px;">💰 Plan & Billing</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div class="field" style="margin: 0;">
+              <label>Plan</label>
+              <select id="clientPlan" style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit;">
+                <option value="chat-only" ${b.plan === 'chat-only' ? 'selected' : ''}>💬 Chat Only</option>
+                <option value="chat-site" ${b.plan === 'chat-site' ? 'selected' : ''}>💬🌐 Chat + Website</option>
+                <option value="full-package" ${b.plan === 'full-package' ? 'selected' : ''}>💬🌐🔗 Full Package</option>
+              </select>
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Monthly Rate ($)</label>
+              <input type="text" id="clientMonthlyRate" value="${escapeAttr(b.monthly_rate || '')}" placeholder="e.g. 49">
+            </div>
+            <div class="field" style="margin: 0;">
+              <label>Client Since</label>
+              <input type="date" id="clientSince" value="${b.client_since ? b.client_since.split('T')[0] : ''}">
+            </div>
+          </div>
+          <div class="field" style="margin-top: 12px; margin-bottom: 0;">
+            <label>Billing Notes</label>
+            <input type="text" id="clientBillingNotes" value="${escapeAttr(b.billing_notes || '')}" placeholder="e.g. First 3 months free, then $49/mo starting Sept 2026">
+          </div>
+        </div>
+
+        <!-- Add-ons -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+          <div style="font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 14px;">🧩 Add-ons</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            ${ADDON_OPTIONS.map(a => {
+              const checked = addons.includes(a.key) ? 'checked' : '';
+              return `
+                <label style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: white; border: 1px solid ${checked ? '#10b981' : '#e2e8f0'}; border-radius: 8px; cursor: pointer; transition: border-color 0.15s; ${checked ? 'box-shadow: 0 0 0 1px rgba(16,185,129,0.2);' : ''}">
+                  <input type="checkbox" class="client-addon-check" value="${a.key}" ${checked} style="accent-color: #10b981;">
+                  <div>
+                    <div style="font-size: 13px; font-weight: 500;">${a.label}</div>
+                    <div style="font-size: 11px; color: #888;">${a.desc}</div>
+                  </div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="saveClientDetails()">Save Client Details</button>
+        </div>
+      `;
+    }
+
+    async function saveClientDetails() {
+      const checkedAddons = Array.from(document.querySelectorAll('.client-addon-check:checked')).map(cb => cb.value);
+      const body = {
+        domain: document.getElementById('clientDomain').value.trim() || null,
+        domain_registrar: document.getElementById('clientRegistrar').value || null,
+        domain_cost: document.getElementById('clientDomainCost').value.trim() || null,
+        domain_purchased_at: document.getElementById('clientDomainPurchased').value || null,
+        domain_renews_at: document.getElementById('clientDomainRenews').value || null,
+        domain_auto_renew: document.getElementById('clientAutoRenew').value === '1',
+        plan: document.getElementById('clientPlan').value,
+        monthly_rate: document.getElementById('clientMonthlyRate').value.trim() || null,
+        client_since: document.getElementById('clientSince').value || null,
+        billing_notes: document.getElementById('clientBillingNotes').value.trim() || null,
+        addons: checkedAddons,
+      };
+      const res = await authFetch(`${API}/businesses/${selectedBiz.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        selectedBiz = await res.json();
+        await loadBusinesses();
+        renderClientDetail();
+        alert('Client details saved!');
+      } else {
+        alert('Error saving client details');
       }
     }
 
