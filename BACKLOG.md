@@ -98,6 +98,16 @@
 
 ## Tech Backlog
 - [ ] Google Places API integration (fetch + display reviews on business landing pages)
+- [ ] **Client Communication Pipeline** — automated + templated messaging through the customer lifecycle:
+  - [ ] Add "preferred contact method" to onboarding form (Email / WhatsApp / Both)
+  - [ ] **Auto-acknowledgement** — when onboarding form is submitted, auto-send a "we got it, here's what happens next" message
+  - [ ] **Email templates for admin** — pre-built templates that auto-fill with client info:
+    - `Need More Info / Follow-Up` — request missing details from submission
+    - `Site Preview Ready` — share preview link, what to check, how to give feedback, domain options
+    - `Go-Live` — domain is set, Google Business Profile setup steps, what to share with customers, how reviews work
+  - [ ] **WhatsApp integration** — many SMB owners (especially immigrant communities) prefer WhatsApp over email
+  - [ ] Set up email sending from welcomematdigital.com domain (e.g. hello@welcomematdigital.com)
+  - [ ] Admin UI: pick a template → auto-fills client details → preview → send via their preferred channel
 - [ ] Add rate limiting for production
 - [ ] Restrict ALLOWED_ORIGINS per business
 - [ ] Add auth on admin routes (currently open — anyone with URL can access)

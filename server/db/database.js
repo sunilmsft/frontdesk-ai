@@ -47,10 +47,21 @@ async function initDb() {
     ['businesses', 'business_type', 'TEXT'],
     ['businesses', 'service_area', 'TEXT'],
     ['businesses', 'plan', "TEXT DEFAULT 'chat-only'"],
+    ['businesses', 'google_place_id', 'TEXT'],
   ];
   for (const [table, col, type] of migrationCols) {
     try { await db.execute(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`); } catch (_) {}
   }
+
+  // Reviews cache table
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS reviews_cache (
+      business_id TEXT PRIMARY KEY,
+      data TEXT NOT NULL,
+      fetched_at TEXT NOT NULL,
+      FOREIGN KEY (business_id) REFERENCES businesses(id)
+    )
+  `);
 
   await db.executeMultiple(`
 

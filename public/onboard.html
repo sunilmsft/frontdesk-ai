@@ -224,6 +224,11 @@
           <div class="hint" data-i18n="hint_service_area">Where do you serve customers? List cities, neighborhoods, or zip codes.</div>
           <input type="text" id="bizServiceArea" required data-i18n-ph="ph_service_area" placeholder="e.g. Sammamish, Issaquah, Bellevue, Redmond">
         </div>
+        <div class="field">
+          <label data-i18n="lbl_google_business">Google Business Name <span style="font-weight:400;color:#999;font-size:11px" data-i18n="optional">(optional)</span></label>
+          <div class="hint" data-i18n="hint_google_business">If you have a Google Business Profile, enter the name exactly as it appears on Google. We'll show your real Google reviews on your site.</div>
+          <input type="text" id="bizGoogleName" data-i18n-ph="ph_google_business" placeholder="e.g. Camellia Cleaning LLC">
+        </div>
       </div>
 
       <!-- Website Languages -->
@@ -467,6 +472,9 @@
         lbl_service_area: 'Áreas de Servicio *',
         hint_service_area: '¿Dónde atiendes a tus clientes? Lista ciudades, vecindarios o códigos postales.',
         ph_service_area: 'ej. Sammamish, Issaquah, Bellevue, Redmond',
+        lbl_google_business: 'Nombre en Google Business',
+        hint_google_business: 'Si tienes un perfil de Google Business, escribe el nombre exacto como aparece en Google. Mostraremos tus reseñas reales en tu sitio.',
+        ph_google_business: 'ej. Camellia Cleaning LLC',
         sec_hours: 'Tu Horario',
         sec_hours_sub: '¿Cuándo pueden tus clientes contactarte o reservar tus servicios?',
         lbl_hours: 'Horario',
@@ -551,6 +559,9 @@
         lbl_service_area: 'Áreas Atendidas *',
         hint_service_area: 'Onde você atende seus clientes? Liste cidades, bairros ou CEPs.',
         ph_service_area: 'ex. Sammamish, Issaquah, Bellevue, Redmond',
+        lbl_google_business: 'Nome no Google Business',
+        hint_google_business: 'Se você tem um perfil no Google Business, digite o nome exatamente como aparece no Google. Mostraremos suas avaliações reais no seu site.',
+        ph_google_business: 'ex. Camellia Cleaning LLC',
         sec_hours: 'Seu Horário',
         sec_hours_sub: 'Quando seus clientes podem te contatar ou agendar seus serviços?',
         lbl_hours: 'Horário',
@@ -635,6 +646,9 @@
         lbl_service_area: 'Areas Serviced *',
         hint_service_area: 'Where do you serve customers? List cities, neighborhoods, or zip codes.',
         ph_service_area: 'e.g. Sammamish, Issaquah, Bellevue, Redmond',
+        lbl_google_business: 'Google Business Name',
+        hint_google_business: 'If you have a Google Business Profile, enter the name exactly as it appears on Google. We\'ll show your real Google reviews on your site.',
+        ph_google_business: 'e.g. Camellia Cleaning LLC',
         sec_hours: 'Your Schedule',
         sec_hours_sub: 'When can customers reach you or book your services?',
         lbl_hours: 'Hours',
@@ -907,6 +921,7 @@
         photosLink: document.getElementById('bizPhotosLink').value.trim(),
         about: document.getElementById('bizAbout').value.trim(),
         email: document.getElementById('bizEmail').value.trim(),
+        googleBusinessName: document.getElementById('bizGoogleName').value.trim(),
         submittedLanguage: currentLang,
       };
 

@@ -156,7 +156,7 @@ router.post('/businesses', async (req, res) => {
  * PUT /api/admin/businesses/:id — Update a business
  */
 router.put('/businesses/:id', async (req, res) => {
-  const { name, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, plan } = req.body;
+  const { name, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, plan, google_place_id } = req.body;
   const bizResult = await db.execute({ sql: 'SELECT * FROM businesses WHERE id = ?', args: [req.params.id] });
   const business = bizResult.rows[0];
 
@@ -166,7 +166,7 @@ router.put('/businesses/:id', async (req, res) => {
 
   await db.execute({
     sql: `UPDATE businesses SET name = ?, system_prompt = ?, welcome_message = ?, theme_color = ?,
-          owner_name = ?, phone = ?, business_type = ?, service_area = ?, plan = ? WHERE id = ?`,
+          owner_name = ?, phone = ?, business_type = ?, service_area = ?, plan = ?, google_place_id = ? WHERE id = ?`,
     args: [
       name || business.name,
       system_prompt || business.system_prompt,
@@ -177,6 +177,7 @@ router.put('/businesses/:id', async (req, res) => {
       business_type !== undefined ? business_type : business.business_type,
       service_area !== undefined ? service_area : business.service_area,
       plan !== undefined ? plan : business.plan,
+      google_place_id !== undefined ? google_place_id : business.google_place_id,
       req.params.id
     ]
   });
@@ -251,9 +252,35 @@ router.post('/submissions/:id/approve', async (req, res) => {
   const bizId = require('crypto').randomUUID();
 
   try {
+    // Look up Google Place ID if business provided a Google Business name
+    let googlePlaceId = null;
+    const googleBizName = formData.googleBusinessName;
+    if (googleBizName && process.env.GOOGLE_PLACES_API_KEY) {
+      try {
+        const searchQuery = serviceArea ? `${googleBizName} ${serviceArea}` : googleBizName;
+        const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY,
+            'X-Goog-FieldMask': 'places.id,places.displayName'
+          },
+          body: JSON.stringify({ textQuery: searchQuery })
+        });
+        if (searchResp.ok) {
+          const searchData = await searchResp.json();
+          if (searchData.places && searchData.places.length > 0) {
+            googlePlaceId = searchData.places[0].id;
+          }
+        }
+      } catch (e) {
+        console.error('Google Place ID lookup failed:', e.message);
+      }
+    }
+
     await db.execute({
-      sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      args: [bizId, bizName, slug, sysPrompt, welcomeMsg, color, ownerName, phone, businessType, serviceArea]
+      sql: 'INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color, owner_name, phone, business_type, service_area, google_place_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      args: [bizId, bizName, slug, sysPrompt, welcomeMsg, color, ownerName, phone, businessType, serviceArea, googlePlaceId]
     });
 
     await db.execute({ sql: "UPDATE submissions SET status = 'approved' WHERE id = ?", args: [req.params.id] });
