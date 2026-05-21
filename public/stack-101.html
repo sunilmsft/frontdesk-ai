@@ -443,14 +443,65 @@
           <div class="card-dash">🔗 <a href="https://console.twilio.com" target="_blank">console.twilio.com</a></div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <div class="card-body">
+          <div class="card-name">Vonage (Nexmo) <span class="cost-badge paid">Pay per use</span></div>
+          <div class="card-tagline">Twilio alternative — SMS, voice, verify</div>
+          <div class="card-desc">Very similar to Twilio — send/receive SMS and calls programmatically. Generally easier number verification process, slightly cheaper SMS rates. Good Node.js SDK. Worth trying if Twilio's verification is blocking you.</div>
+          <div class="card-analogy">💡 Think of it as: the other phone company — same service, less red tape to get started</div>
+          <div class="card-projects"><span class="project-tag">Plan B for Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://dashboard.vonage.com" target="_blank">dashboard.vonage.com</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📞</div>
+        <div class="card-body">
+          <div class="card-name">Plivo <span class="cost-badge paid">Pay per use</span></div>
+          <div class="card-tagline">Budget-friendly SMS & voice API</div>
+          <div class="card-desc">Another Twilio competitor. ~30-40% cheaper on SMS, simpler pricing, less strict number verification. Smaller ecosystem than Twilio but solid for SMS + voice. Good if cost is a concern at scale.</div>
+          <div class="card-analogy">💡 Think of it as: the budget airline of telecom APIs — gets you there for less, fewer frills</div>
+          <div class="card-projects"><span class="project-tag">Plan B for Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://console.plivo.com" target="_blank">console.plivo.com</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✉️</div>
+        <div class="card-body">
+          <div class="card-name">Telnyx <span class="cost-badge paid">Pay per use</span></div>
+          <div class="card-tagline">Developer-first telecom with own network</div>
+          <div class="card-desc">Runs its own carrier network (not reselling like most). Very competitive pricing, fast number provisioning, mission-control style dashboard. Gaining popularity as the "modern Twilio alternative."</div>
+          <div class="card-analogy">💡 Think of it as: the indie carrier that built its own cell towers — cheaper and faster because there's no middleman</div>
+          <div class="card-projects"><span class="project-tag">Plan B for Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://portal.telnyx.com" target="_blank">portal.telnyx.com</a></div>
+        </div>
+      </div>
     </div>
     <div class="reco">
       <h3>🎯 When to use what</h3>
       <ul>
-        <li><strong>Need to send/receive SMS or calls from your app?</strong> → <strong>Twilio</strong> (the industry standard)</li>
-        <li><strong>Just need email notifications?</strong> → Skip Twilio, use a free service like Resend or SendGrid</li>
-        <li><strong>Building a missed-call product?</strong> → Twilio + OpenAI combo (Swoop pattern)</li>
+        <li><strong>Already working and verified?</strong> → Stay on <strong>Twilio</strong> (largest ecosystem, most tutorials/support)</li>
+        <li><strong>Stuck on Twilio number verification?</strong> → Try <strong>Vonage</strong> first (easiest migration, similar API)</li>
+        <li><strong>Want cheapest SMS at scale?</strong> → <strong>Plivo</strong> (30-40% cheaper per text than Twilio)</li>
+        <li><strong>Want a modern, developer-friendly option?</strong> → <strong>Telnyx</strong> (own network, fast setup, growing fast)</li>
+        <li><strong>Just need email notifications?</strong> → Skip all of these, use Resend or SendGrid (free tier)</li>
+        <li><strong>Building a missed-call product?</strong> → Any of these + OpenAI combo (Swoop pattern)</li>
       </ul>
+    </div>
+
+    <div class="info-box" style="margin-top: 18px; border-left: 4px solid var(--cat-comms);">
+      <h2>Comparison at a glance</h2>
+      <table class="compare-table">
+        <thead><tr><th></th><th>Twilio</th><th>Vonage</th><th>Plivo</th><th>Telnyx</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600">SMS cost</td><td>~$0.0079/msg</td><td>~$0.0068/msg</td><td>~$0.005/msg</td><td>~$0.004/msg</td></tr>
+          <tr><td style="font-weight:600">Number verification</td><td>Strict (your pain point)</td><td>Moderate</td><td>Easier</td><td>Easiest</td></tr>
+          <tr><td style="font-weight:600">Node.js SDK</td><td>Excellent</td><td>Good</td><td>Good</td><td>Good</td></tr>
+          <tr><td style="font-weight:600">Ecosystem/docs</td><td>Largest</td><td>Large</td><td>Smaller</td><td>Growing</td></tr>
+          <tr><td style="font-weight:600">Free trial</td><td>$15 credit</td><td>$2 credit</td><td>$0.50 credit</td><td>$2 credit</td></tr>
+          <tr><td style="font-weight:600">Migration effort</td><td>—</td><td>Low (similar API)</td><td>Medium</td><td>Medium</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
