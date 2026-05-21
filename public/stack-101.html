@@ -131,6 +131,13 @@
       border-radius: 20px; background: var(--bg); color: var(--muted);
       border: 1px solid var(--border);
     }
+    .card-dash {
+      margin-top: 8px; font-size: 0.78rem;
+    }
+    .card-dash a {
+      color: var(--accent); text-decoration: none; font-weight: 500;
+    }
+    .card-dash a:hover { text-decoration: underline; }
 
     /* ── Tables ── */
     .compare-table {
@@ -265,6 +272,7 @@
           <div class="card-desc">Hosts your entire app — both the website visitors see AND the server code that powers it (API routes, chat logic, database calls). You push code to GitHub, Render automatically rebuilds and publishes it.</div>
           <div class="card-analogy">💡 Think of it as: renting a small shop space where your app lives and runs 24/7</div>
           <div class="card-projects"><span class="project-tag">WelcomeMat</span><span class="project-tag">Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://dashboard.render.com" target="_blank">dashboard.render.com</a></div>
         </div>
       </div>
       <div class="card">
@@ -275,6 +283,7 @@
           <div class="card-desc">Hosts websites that don't need a backend server — just HTML, CSS, and JavaScript files. Lightning fast, globally distributed. Great for personal sites and simple web apps. Also auto-deploys from GitHub.</div>
           <div class="card-analogy">💡 Think of it as: a billboard company that puts your poster up worldwide in seconds</div>
           <div class="card-projects"><span class="project-tag">Personal Site</span><span class="project-tag">Tuck</span><span class="project-tag">Kolo</span><span class="project-tag">HomeOps Hub</span><span class="project-tag">Project Cushion</span></div>
+          <div class="card-dash">🔗 <a href="https://vercel.com/dashboard" target="_blank">vercel.com/dashboard</a></div>
         </div>
       </div>
       <div class="card">
@@ -285,6 +294,7 @@
           <div class="card-desc">Where you buy and manage domain names (like welcomematdigital.com). Also handles DNS — the system that translates "welcomematdigital.com" into the actual server address. Adds speed and security for free on top.</div>
           <div class="card-analogy">💡 Think of it as: buying your store's street address AND getting a free security guard at the door</div>
           <div class="card-projects"><span class="project-tag">WelcomeMat</span><span class="project-tag">Personal Site</span></div>
+          <div class="card-dash">🔗 <a href="https://dash.cloudflare.com" target="_blank">dash.cloudflare.com</a></div>
         </div>
       </div>
       <div class="card">
@@ -295,6 +305,7 @@
           <div class="card-desc">Another popular place to buy domain names. Simple interface, competitive pricing, includes free WhoisGuard privacy protection. Some of your older domains may be registered here.</div>
           <div class="card-analogy">💡 Think of it as: a different real estate office for buying web addresses — same result, different storefront</div>
           <div class="card-projects"><span class="project-tag">Personal Site</span></div>
+          <div class="card-dash">🔗 <a href="https://www.namecheap.com/myaccount/" target="_blank">namecheap.com/myaccount</a></div>
         </div>
       </div>
     </div>
@@ -324,6 +335,7 @@
           <div class="card-desc">A SQLite database that lives in the cloud. Stores WelcomeMat's business info, chat conversations, admin accounts, and site settings. Super fast, super cheap — free tier covers thousands of businesses.</div>
           <div class="card-analogy">💡 Think of it as: a spreadsheet in the cloud that your app reads and writes to, but way faster</div>
           <div class="card-projects"><span class="project-tag">WelcomeMat</span></div>
+          <div class="card-dash">🔗 <a href="https://app.turso.tech" target="_blank">app.turso.tech</a></div>
         </div>
       </div>
       <div class="card">
@@ -334,6 +346,7 @@
           <div class="card-desc">A more full-featured database (PostgreSQL) that also handles user login/signup and file storage. You get a database, authentication, and file uploads without building any of that yourself.</div>
           <div class="card-analogy">💡 Think of it as: Turso's bigger sibling that also handles passwords and file uploads</div>
           <div class="card-projects"><span class="project-tag">Kolo</span></div>
+          <div class="card-dash">🔗 <a href="https://supabase.com/dashboard" target="_blank">supabase.com/dashboard</a></div>
         </div>
       </div>
     </div>
@@ -375,6 +388,7 @@
           <div class="card-desc">The engine behind your AI chat widgets. Your app sends a question + context to OpenAI, it sends back a smart answer. Uses GPT-4o-mini (~$0.50/mo per business). Also powers DALL-E for generating logos.</div>
           <div class="card-analogy">💡 Think of it as: hiring a genius receptionist who never sleeps, and you pay per conversation</div>
           <div class="card-projects"><span class="project-tag">WelcomeMat</span><span class="project-tag">Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://platform.openai.com" target="_blank">platform.openai.com</a> · <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> · <a href="https://platform.openai.com/usage" target="_blank">Usage</a></div>
         </div>
       </div>
       <div class="card">
@@ -385,6 +399,7 @@
           <div class="card-desc">Part of OpenAI. Generates logos and images from text descriptions. You describe what you want ("a cleaning company logo with a camellia flower") and it creates it. Used during WelcomeMat site builds.</div>
           <div class="card-analogy">💡 Think of it as: a graphic designer who works in 10 seconds for 4 cents</div>
           <div class="card-projects"><span class="project-tag">WelcomeMat</span></div>
+          <div class="card-dash">🔗 Same dashboard as OpenAI above</div>
         </div>
       </div>
       <div class="card">
@@ -395,6 +410,7 @@
           <div class="card-desc">Lives inside VS Code and helps you write code. Autocompletes lines, writes functions, explains errors, and builds entire features from descriptions. This is what you're talking to right now.</div>
           <div class="card-analogy">💡 Think of it as: a pair programmer sitting next to you who's read every coding tutorial ever</div>
           <div class="card-projects"><span class="project-tag">All projects</span></div>
+          <div class="card-dash">🔗 Built into VS Code — no separate dashboard</div>
         </div>
       </div>
     </div>
@@ -424,6 +440,7 @@
           <div class="card-desc">Lets your app send text messages and make phone calls programmatically. When someone misses a call (Swoop), Twilio detects it and sends an AI-crafted text back automatically. ~$1/mo per phone number + pennies per text.</div>
           <div class="card-analogy">💡 Think of it as: your app's own phone line — it can text and call people on your behalf</div>
           <div class="card-projects"><span class="project-tag">Swoop</span></div>
+          <div class="card-dash">🔗 <a href="https://console.twilio.com" target="_blank">console.twilio.com</a></div>
         </div>
       </div>
     </div>
@@ -452,6 +469,7 @@
           <div class="card-desc">Where all your code lives online. Every project is a "repository" (repo). Tracks every change you've ever made so you can undo anything. Also triggers auto-deploys to Render/Vercel when you push code.</div>
           <div class="card-analogy">💡 Think of it as: Google Drive for code, but with infinite undo history and auto-publishing</div>
           <div class="card-projects"><span class="project-tag">All projects</span></div>
+          <div class="card-dash">🔗 <a href="https://github.com/sunilmsft" target="_blank">github.com/sunilmsft</a></div>
         </div>
       </div>
       <div class="card">
