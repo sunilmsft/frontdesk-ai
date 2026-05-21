@@ -6,7 +6,7 @@
   <title>WelcomeMat — Build Your Online Presence</title>
   <meta name="description" content="We help local businesses build a professional online presence. Custom websites and smart assistants so customers can find you, trust you, and hire you.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
@@ -54,8 +54,20 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-text { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white; }
+    .logo-group { display: flex; flex-direction: column; }
+    .logo-text {
+      font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white;
+      display: flex; align-items: baseline; position: relative;
+    }
     .logo-text span { color: #5eead4; }
+    .logo-cursor {
+      display: inline-block; width: 14px; height: 14px; margin-left: 1px; position: relative; top: -2px;
+    }
+    .logo-tagline {
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 10.5px; color: rgba(255,255,255,0.4); letter-spacing: 0.3px;
+      margin-top: -1px; white-space: nowrap;
+    }
     .nav-right { display: flex; align-items: center; gap: 14px; }
     .lang-select {
       appearance: none; -webkit-appearance: none;
@@ -346,6 +358,7 @@
       .showcase-grid { grid-template-columns: 1fr; }
       .showcase-after { transform: none; }
       .nav-cta { display: none; }
+      .logo-tagline { display: none; }
       .hero-actions { flex-direction: column; align-items: center; }
     }
   </style>
@@ -363,7 +376,10 @@
           <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b"/>
           <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.9">W</text>
         </svg>
-        <div class="logo-text">Welcome<span>Mat</span></div>
+        <div class="logo-group">
+          <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
+          <div class="logo-tagline">Websites · Assistants · Online Presence</div>
+        </div>
       </a>
       <div class="nav-right">
         <select class="lang-select" onchange="setLang(this.value)">
