@@ -16,10 +16,12 @@
 
     .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
 
-    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    .stat-card .label { font-size: 12px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
-    .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+    .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: 10px; padding: 16px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: all 0.15s; border: 2px solid transparent; }
+    .stat-card:hover { border-color: #2563eb; box-shadow: 0 2px 8px rgba(37,99,235,0.12); transform: translateY(-1px); }
+    .stat-card .label { font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
+    .stat-card .value { font-size: 24px; font-weight: 700; margin-top: 2px; }
+    .stat-card .sub { font-size: 11px; color: #999; margin-top: 2px; }
 
     .layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; }
 
@@ -350,14 +352,44 @@
     }
 
     // --- Stats ---
+    let latestStats = null;
     async function loadStats() {
       const res = await authFetch(`${API}/stats`);
-      const stats = await res.json();
+      latestStats = await res.json();
+      renderStatsBar();
+    }
+
+    function renderStatsBar() {
+      const stats = latestStats;
+      if (!stats) return;
+      const mrr = businesses.reduce((s, b) => s + (parseFloat(b.monthly_rate) || 0), 0);
+      const withDomain = businesses.filter(b => b.domain).length;
       document.getElementById('statsBar').innerHTML = `
-        <div class="stat-card"><div class="label">Businesses</div><div class="value">${stats.totalBusinesses}</div></div>
-        <div class="stat-card"><div class="label">Conversations</div><div class="value">${stats.totalConversations}</div></div>
-        <div class="stat-card"><div class="label">Messages</div><div class="value">${stats.totalMessages}</div></div>
-        <div class="stat-card"><div class="label">Today</div><div class="value">${stats.todayConversations}</div></div>
+        <div class="stat-card" onclick="showClients()" title="View all clients">
+          <div class="label">👥 Clients</div>
+          <div class="value">${stats.totalBusinesses}</div>
+          <div class="sub">${withDomain} with domain</div>
+        </div>
+        <div class="stat-card" onclick="showClients()" title="Monthly recurring revenue" style="border-left: 3px solid #10b981;">
+          <div class="label">💰 MRR</div>
+          <div class="value" style="color: #059669;">$${mrr.toFixed(0)}</div>
+          <div class="sub">${mrr > 0 ? '$' + (mrr * 12).toFixed(0) + '/yr' : 'No revenue yet'}</div>
+        </div>
+        <div class="stat-card" onclick="showPipeline()" title="View pipeline">
+          <div class="label">📋 Pipeline</div>
+          <div class="value">${stats.totalConversations}</div>
+          <div class="sub">${stats.todayConversations} today</div>
+        </div>
+        <div class="stat-card" onclick="showInbox()" title="View inbox">
+          <div class="label">📨 Messages</div>
+          <div class="value">${stats.totalMessages}</div>
+          <div class="sub">${stats.todayConversations} new today</div>
+        </div>
+        <div class="stat-card" onclick="showInbox()" title="View inbox">
+          <div class="label">📥 Inbox</div>
+          <div class="value" id="inboxStatCount">—</div>
+          <div class="sub">pending review</div>
+        </div>
       `;
     }
 
@@ -366,6 +398,7 @@
       const res = await authFetch(`${API}/businesses`);
       businesses = await res.json();
       renderSidebar();
+      renderStatsBar();
     }
 
     function renderSidebar() {
@@ -668,6 +701,10 @@
       } else {
         badge.style.display = 'none';
       }
+
+      // Update top stats bar inbox count
+      const inboxStat = document.getElementById('inboxStatCount');
+      if (inboxStat) inboxStat.textContent = newCount;
 
       // Summary line
       const summary = document.getElementById('inboxSummary');
