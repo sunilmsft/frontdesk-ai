@@ -54,19 +54,22 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-group { display: flex; flex-direction: column; }
     .logo-text {
       font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white;
       display: flex; align-items: baseline; position: relative;
     }
     .logo-text span { color: #5eead4; }
     .logo-cursor {
-      display: inline-block; width: 14px; height: 14px; margin-left: 1px; position: relative; top: -2px;
+      display: inline-block; width: 11px; height: 11px; margin-left: 0px;
+      position: relative; top: -8px;
+    }
+    .logo-divider {
+      width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 12px; flex-shrink: 0;
     }
     .logo-tagline {
       font-family: 'DM Serif Display', serif; font-style: italic;
-      font-size: 10.5px; color: rgba(255,255,255,0.4); letter-spacing: 0.3px;
-      margin-top: -1px; white-space: nowrap;
+      font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 0.2px;
+      white-space: nowrap;
     }
     .nav-right { display: flex; align-items: center; gap: 14px; }
     .lang-select {
@@ -358,7 +361,7 @@
       .showcase-grid { grid-template-columns: 1fr; }
       .showcase-after { transform: none; }
       .nav-cta { display: none; }
-      .logo-tagline { display: none; }
+      .logo-tagline, .logo-divider { display: none; }
       .hero-actions { flex-direction: column; align-items: center; }
     }
   </style>
@@ -376,10 +379,9 @@
           <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b"/>
           <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.9">W</text>
         </svg>
-        <div class="logo-group">
-          <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
-          <div class="logo-tagline">Websites · Assistants · Online Presence</div>
-        </div>
+        <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
+        <div class="logo-divider"></div>
+        <div class="logo-tagline">We help businesses put out a better welcome.</div>
       </a>
       <div class="nav-right">
         <select class="lang-select" onchange="setLang(this.value)">
