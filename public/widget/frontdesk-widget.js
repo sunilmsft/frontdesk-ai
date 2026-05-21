@@ -49,7 +49,7 @@
       @keyframes fd-pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 0 ${color}40; } 50% { box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 8px ${color}00; } }
       #fd-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,0,0,0.25); animation: none; }
       #fd-bubble.open { transform: rotate(0deg) scale(1); animation: none; }
-      #fd-bubble svg { width: 28px; height: 28px; fill: white; transition: transform 0.3s, opacity 0.3s; }
+      #fd-bubble svg { width: 28px; height: 28px; transition: transform 0.3s, opacity 0.3s; }
       #fd-bubble .fd-icon-close { display: none; }
       #fd-bubble.open .fd-icon-chat { display: none; }
       #fd-bubble.open .fd-icon-close { display: block; }
@@ -193,8 +193,8 @@
     bubble.id = 'fd-bubble';
     bubble.setAttribute('aria-label', 'Chat with us');
     bubble.innerHTML = `
-      <svg class="fd-icon-chat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z" fill="none"/><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-      <svg class="fd-icon-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      <svg class="fd-icon-chat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="12" cy="11.5" r="0.5" fill="white" stroke="none"/><circle cx="8.5" cy="11.5" r="0.5" fill="white" stroke="none"/><circle cx="15.5" cy="11.5" r="0.5" fill="white" stroke="none"/></svg>
+      <svg class="fd-icon-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/></svg>
     `;
     document.body.appendChild(bubble);
 
