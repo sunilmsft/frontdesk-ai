@@ -147,6 +147,22 @@
     .legend-item:hover { color: var(--text); }
     .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
+    /* ── Recommendation callout ── */
+    .reco {
+      background: #f0fdfa; border: 1px solid #99f6e4; border-left: 4px solid var(--accent);
+      border-radius: 10px; padding: 16px 20px; margin-top: 18px;
+    }
+    .reco h3 {
+      font-size: 0.8rem; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .reco ul { list-style: none; padding: 0; }
+    .reco li {
+      font-size: 0.85rem; padding: 4px 0; color: var(--text);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .reco li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
     /* ── Responsive ── */
     @media (min-width: 640px) {
       .cards { grid-template-columns: repeat(2, 1fr); }
@@ -271,6 +287,25 @@
           <div class="card-projects"><span class="project-tag">WelcomeMat</span><span class="project-tag">Personal Site</span></div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <div class="card-body">
+          <div class="card-name">Namecheap <span class="cost-badge paid">~$9-13/yr per domain</span></div>
+          <div class="card-tagline">Domain registrar</div>
+          <div class="card-desc">Another popular place to buy domain names. Simple interface, competitive pricing, includes free WhoisGuard privacy protection. Some of your older domains may be registered here.</div>
+          <div class="card-analogy">💡 Think of it as: a different real estate office for buying web addresses — same result, different storefront</div>
+          <div class="card-projects"><span class="project-tag">Personal Site</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reco">
+      <h3>🎯 When to use what</h3>
+      <ul>
+        <li><strong>Need a backend server</strong> (API, database, chat logic)? → <strong>Render</strong></li>
+        <li><strong>Just HTML/CSS/JS files</strong> (no server needed)? → <strong>Vercel</strong></li>
+        <li><strong>Buying a new domain?</strong> → <strong>Cloudflare</strong> (cheapest at-cost pricing, built-in DNS + CDN)</li>
+        <li><strong>Already have a Namecheap domain?</strong> → Keep it there, just point DNS to Cloudflare for free speed/security</li>
+      </ul>
     </div>
   </div>
 
@@ -314,6 +349,15 @@
         </tbody>
       </table>
     </div>
+    <div class="reco">
+      <h3>🎯 When to use what</h3>
+      <ul>
+        <li><strong>Simple app, just storing data</strong> (business info, chat logs)? → <strong>Turso</strong></li>
+        <li><strong>Need user accounts + login</strong> (family members, team access)? → <strong>Supabase</strong></li>
+        <li><strong>Need file uploads</strong> (photos, documents)? → <strong>Supabase</strong> (has built-in storage)</li>
+        <li><strong>Budget is tight?</strong> → Both have generous free tiers, but Turso's is simpler to stay within</li>
+      </ul>
+    </div>
   </div>
 
   <!-- ═══════ AI ═══════ -->
@@ -354,6 +398,15 @@
         </div>
       </div>
     </div>
+    <div class="reco">
+      <h3>🎯 When to use what</h3>
+      <ul>
+        <li><strong>Building a chat widget or auto-responder?</strong> → <strong>OpenAI API</strong> (GPT-4o-mini is cheapest + smartest for the price)</li>
+        <li><strong>Need a logo or image?</strong> → <strong>DALL-E</strong> (via OpenAI — same API key)</li>
+        <li><strong>Writing or debugging code?</strong> → <strong>GitHub Copilot</strong> (already in your VS Code)</li>
+        <li><strong>Starting a new AI feature?</strong> → Start with GPT-4o-mini, upgrade to GPT-4o only if quality isn't enough</li>
+      </ul>
+    </div>
   </div>
 
   <!-- ═══════ COMMS ═══════ -->
@@ -373,6 +426,14 @@
           <div class="card-projects"><span class="project-tag">Swoop</span></div>
         </div>
       </div>
+    </div>
+    <div class="reco">
+      <h3>🎯 When to use what</h3>
+      <ul>
+        <li><strong>Need to send/receive SMS or calls from your app?</strong> → <strong>Twilio</strong> (the industry standard)</li>
+        <li><strong>Just need email notifications?</strong> → Skip Twilio, use a free service like Resend or SendGrid</li>
+        <li><strong>Building a missed-call product?</strong> → Twilio + OpenAI combo (Swoop pattern)</li>
+      </ul>
     </div>
   </div>
 
@@ -423,6 +484,16 @@
           <div class="card-projects"><span class="project-tag">WelcomeMat</span><span class="project-tag">Swoop</span></div>
         </div>
       </div>
+    </div>
+    <div class="reco">
+      <h3>🎯 When to use what</h3>
+      <ul>
+        <li><strong>Writing any code?</strong> → <strong>VS Code</strong> (always)</li>
+        <li><strong>Need to save/share code or trigger deploys?</strong> → <strong>GitHub</strong> (always)</li>
+        <li><strong>Adding a library or SDK?</strong> → <code>npm install [package]</code> in terminal</li>
+        <li><strong>App needs a backend server?</strong> → You're writing <strong>Node.js</strong> code</li>
+        <li><strong>App is frontend-only?</strong> → You don't need Node.js at all — just HTML/CSS/JS</li>
+      </ul>
     </div>
   </div>
 
