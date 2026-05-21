@@ -28,8 +28,8 @@
       --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
       --shadow-3d: 0 10px 30px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.04);
       --shadow-3d-hover: 0 20px 40px -8px rgba(0,0,0,0.18), 0 8px 16px -4px rgba(0,0,0,0.08);
-      --radius: 16px;
-      --radius-sm: 10px;
+      --radius: 20px;
+      --radius-sm: 12px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -294,7 +294,7 @@
     }
     .service-card {
       background: var(--white);
-      border: 1px solid rgba(0,0,0,0.06);
+      border: none;
       border-radius: var(--radius);
       padding: 36px 30px;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -326,7 +326,6 @@
     .service-card:hover {
       transform: translateY(-8px);
       box-shadow: var(--shadow-3d-hover);
-      border-color: rgba(28,28,28,0.12);
     }
     .service-card:hover::before { transform: scaleX(1); }
     .service-card:hover::after { opacity: 1; }
@@ -361,14 +360,13 @@
       padding: 40px 28px;
       border-radius: var(--radius);
       background: var(--white);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: none;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .why-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.1);
-      border-color: rgba(0,0,0,0.12);
     }
     .why-icon {
       width: 64px;
@@ -510,14 +508,14 @@
       gap: 6px;
       padding: 12px 22px;
       background: var(--white);
-      border: 1px solid rgba(0,0,0,0.1);
+      border: none;
       border-radius: 30px;
       font-size: 14px;
       font-weight: 500;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
       transition: all 0.25s;
     }
-    .area-tag:hover { background: var(--primary-pale); border-color: rgba(0,0,0,0.18); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .area-tag:hover { background: var(--primary-pale); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .area-tag svg { width: 14px; height: 14px; fill: var(--primary); }
 
     /* === HOURS === */
@@ -525,7 +523,7 @@
       margin-top: 32px;
       background: var(--white);
       border-radius: var(--radius);
-      border: 1px solid rgba(0,0,0,0.06);
+      border: none;
       overflow: hidden;
       max-width: 480px;
       box-shadow: var(--shadow-3d);
