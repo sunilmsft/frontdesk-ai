@@ -162,14 +162,14 @@
     .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 500; }
 
     /* Problem */
-    .problem { background: #f8fafc; }
+    .problem { background: #f1f5f9; }
     .problem-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
     .problem-card {
       background: white; border-radius: 12px; padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
       transition: all 0.3s; position: relative; overflow: hidden;
     }
-    .problem-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+    .problem-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
     .problem-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--accent), var(--warm)); opacity: 0; transition: opacity 0.3s;
@@ -187,16 +187,16 @@
     .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
     .solution-card {
       background: linear-gradient(135deg, #f0fdfa, #f0f9ff); border-radius: 14px; padding: 26px;
-      box-shadow: 0 1px 3px rgba(13,148,136,0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(13,148,136,0.06);
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
     }
-    .solution-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(13,148,136,0.08); }
+    .solution-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(13,148,136,0.12); }
     .solution-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
     .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
     .solution-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
 
     /* How */
-    .how { background: #f8fafc; }
+    .how { background: #f1f5f9; }
     .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 32px; position: relative; }
     .steps-grid::before {
       content: ''; position: absolute; top: 24px; left: 16%; right: 16%;
@@ -208,6 +208,7 @@
       display: flex; align-items: center; justify-content: center;
       font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900;
       color: var(--accent); margin: 0 auto 12px; position: relative; z-index: 2; transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .step:hover .step-num { background: var(--accent); color: white; box-shadow: 0 4px 16px rgba(13,148,136,0.25); }
     .step h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
@@ -281,10 +282,10 @@
     .pricing { background: white; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
     .price-card {
-      background: #f8fafc; border-radius: 14px; padding: 28px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;
+      background: white; border-radius: 14px; padding: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04); position: relative; transition: all 0.3s;
     }
-    .price-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    .price-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
     .price-card.featured {
       background: linear-gradient(135deg, #0f172a, #1e293b); color: white;
       box-shadow: 0 6px 24px rgba(13,148,136,0.15);
