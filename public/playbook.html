@@ -40,21 +40,65 @@
     .topbar {
       position: sticky; top: 0; z-index: 100;
       background: var(--navy);
-      padding: 14px 20px;
+      padding: 12px 20px;
       display: flex; align-items: center; justify-content: space-between;
       box-shadow: 0 2px 12px rgba(0,0,0,0.15);
     }
     .topbar h1 {
       font-family: 'DM Serif Display', serif;
-      color: #fff; font-size: 1.2rem; font-weight: 400;
+      color: #fff; font-size: 1.15rem; font-weight: 400;
     }
     .topbar .updated {
-      color: rgba(255,255,255,0.5); font-size: 0.75rem;
+      color: rgba(255,255,255,0.5); font-size: 0.7rem;
     }
     .menu-btn {
       display: none; background: none; border: none;
       color: #fff; font-size: 1.5rem; cursor: pointer; padding: 4px 8px;
     }
+
+    /* ── Search Bar ── */
+    .search-bar {
+      position: sticky; top: 48px; z-index: 99;
+      background: var(--surface);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .search-wrap {
+      max-width: 1200px; margin: 0 auto;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%; padding: 10px 16px 10px 40px;
+      border: 2px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; font-family: inherit;
+      background: var(--bg); color: var(--text);
+      transition: border-color 0.2s;
+    }
+    .search-wrap input:focus {
+      outline: none; border-color: var(--accent);
+      background: #fff;
+    }
+    .search-wrap .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: 1rem; pointer-events: none;
+    }
+    .search-wrap .clear-btn {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); font-size: 1.1rem;
+      cursor: pointer; padding: 4px 8px; display: none;
+    }
+    .search-wrap .clear-btn.show { display: block; }
+    .search-info {
+      font-size: 0.75rem; color: var(--muted);
+      margin-top: 6px; display: none;
+    }
+    .search-info.show { display: block; }
+    mark {
+      background: #fef08a; color: var(--text);
+      padding: 1px 2px; border-radius: 2px;
+    }
+    .section.search-hidden { display: none; }
 
     /* ── Layout ── */
     .layout {
@@ -63,17 +107,17 @@
 
     /* ── Sidebar ── */
     .sidebar {
-      width: 260px; min-width: 260px;
-      position: sticky; top: 56px; height: calc(100vh - 56px);
-      overflow-y: auto; padding: 20px 16px;
+      width: 240px; min-width: 240px;
+      position: sticky; top: 100px; height: calc(100vh - 100px);
+      overflow-y: auto; padding: 12px 10px;
       border-right: 1px solid var(--border);
       background: var(--surface);
     }
     .sidebar a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; margin: 2px 0;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; margin: 1px 0;
       border-radius: 8px; text-decoration: none;
-      color: var(--muted); font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); font-size: 0.8rem; font-weight: 500;
       transition: all 0.15s ease;
     }
     .sidebar a:hover, .sidebar a.active {
@@ -92,12 +136,12 @@
     /* ── Main ── */
     .main {
       flex: 1; min-width: 0;
-      padding: 24px 32px 80px;
+      padding: 16px 28px 80px;
     }
 
     /* ── Sections ── */
     .section {
-      margin-bottom: 32px;
+      margin-bottom: 16px;
       background: var(--surface);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -130,9 +174,9 @@
 
     /* ── Content Typography ── */
     .section-body h3 {
-      font-size: 0.95rem; font-weight: 700;
+      font-size: 0.85rem; font-weight: 700;
       color: var(--accent); text-transform: uppercase;
-      letter-spacing: 1.5px; margin: 28px 0 12px;
+      letter-spacing: 1.5px; margin: 20px 0 10px;
     }
     .section-body h3:first-child { margin-top: 4px; }
     .section-body p { margin: 8px 0; color: var(--text); }
@@ -231,6 +275,8 @@
     /* ── Mobile ── */
     @media (max-width: 768px) {
       .menu-btn { display: block; }
+      .search-bar { top: 44px; padding: 8px 12px; }
+      .search-wrap input { padding: 9px 14px 9px 36px; font-size: 0.85rem; }
       .sidebar {
         position: fixed; left: -300px;
         top: 0; height: 100vh; z-index: 200;
@@ -245,12 +291,19 @@
         background: rgba(0,0,0,0.4); display: none;
       }
       .overlay.show { display: block; }
-      .main { padding: 16px 16px 60px; }
-      .section-body { padding: 16px; }
-      .section-header { padding: 14px 16px; }
-      .section-header h2 { font-size: 0.95rem; }
-      table { font-size: 0.8rem; }
-      th, td { padding: 8px 10px; }
+      .main { padding: 10px 12px 60px; }
+      .section { margin-bottom: 10px; }
+      .section-body { padding: 14px; }
+      .section-header { padding: 12px 14px; gap: 10px; }
+      .section-header .icon { width: 30px; height: 30px; font-size: 0.95rem; }
+      .section-header h2 { font-size: 0.9rem; }
+      table { font-size: 0.78rem; }
+      th, td { padding: 7px 8px; }
+      .callout { padding: 10px 14px; font-size: 0.85rem; }
+      .section-body h3 { font-size: 0.8rem; margin: 16px 0 8px; }
+      .section-body p, .section-body li { font-size: 0.88rem; }
+      .topbar { padding: 10px 14px; }
+      .topbar h1 { font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -261,6 +314,16 @@
   <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
   <h1>WelcomeMat Playbook</h1>
   <span class="updated">May 21, 2026</span>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search playbook... (e.g. Kesia, pricing, Turso, referral)" autocomplete="off">
+    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+    <div class="search-info" id="searchInfo"></div>
+  </div>
 </div>
 
 <!-- Overlay for mobile sidebar -->
@@ -1038,26 +1101,35 @@
 </div>
 
 <script>
-  // Toggle section collapse
+  // ── Section collapse ──
   function toggleSection(header) {
     header.closest('.section').classList.toggle('collapsed');
   }
 
-  // Mobile sidebar
+  // Start all sections collapsed
+  document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+
+  // ── Mobile sidebar ──
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('overlay').classList.toggle('show');
   }
 
-  // Close sidebar on nav click (mobile)
+  // Close sidebar + expand target section on nav click
   document.querySelectorAll('.sidebar a').forEach(a => {
-    a.addEventListener('click', () => {
+    a.addEventListener('click', (e) => {
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('overlay').classList.remove('show');
+      const targetId = a.getAttribute('href').replace('#', '');
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.classList.remove('collapsed');
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
     });
   });
 
-  // Active sidebar link on scroll
+  // ── Active sidebar link on scroll ──
   const sections = document.querySelectorAll('.section[id]');
   const navLinks = document.querySelectorAll('.sidebar a');
   const observer = new IntersectionObserver(entries => {
@@ -1070,6 +1142,138 @@
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(s => observer.observe(s));
+
+  // ── Search ──
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const searchInfo = document.getElementById('searchInfo');
+  let searchTimeout;
+
+  // Store original HTML for each section body (for restoring after highlight)
+  const originalHTML = new Map();
+  document.querySelectorAll('.section-body').forEach(body => {
+    originalHTML.set(body, body.innerHTML);
+  });
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(doSearch, 200);
+    clearBtn.classList.toggle('show', searchInput.value.length > 0);
+  });
+
+  // Keyboard shortcut: / to focus search, Escape to clear
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+    if (e.key === 'Escape' && document.activeElement === searchInput) {
+      clearSearch();
+    }
+  });
+
+  function clearSearch() {
+    searchInput.value = '';
+    clearBtn.classList.remove('show');
+    searchInfo.classList.remove('show');
+    // Restore original content and collapse all
+    document.querySelectorAll('.section').forEach(s => {
+      s.classList.remove('search-hidden');
+      s.classList.add('collapsed');
+      const body = s.querySelector('.section-body');
+      if (body && originalHTML.has(body)) body.innerHTML = originalHTML.get(body);
+    });
+    searchInput.blur();
+  }
+
+  function doSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query || query.length < 2) {
+      // Reset
+      document.querySelectorAll('.section').forEach(s => {
+        s.classList.remove('search-hidden');
+        s.classList.add('collapsed');
+        const body = s.querySelector('.section-body');
+        if (body && originalHTML.has(body)) body.innerHTML = originalHTML.get(body);
+      });
+      searchInfo.classList.remove('show');
+      return;
+    }
+
+    let matchCount = 0;
+    let sectionCount = 0;
+
+    document.querySelectorAll('.section').forEach(section => {
+      const body = section.querySelector('.section-body');
+      if (!body || !originalHTML.has(body)) return;
+
+      // Restore original first
+      body.innerHTML = originalHTML.get(body);
+
+      const text = body.textContent.toLowerCase();
+      if (text.includes(query)) {
+        section.classList.remove('search-hidden', 'collapsed');
+        sectionCount++;
+
+        // Highlight matches in text nodes
+        const matches = highlightText(body, query);
+        matchCount += matches;
+      } else {
+        section.classList.add('search-hidden');
+        section.classList.add('collapsed');
+      }
+    });
+
+    searchInfo.textContent = matchCount > 0
+      ? `${matchCount} match${matchCount !== 1 ? 'es' : ''} in ${sectionCount} section${sectionCount !== 1 ? 's' : ''}`
+      : 'No matches found';
+    searchInfo.classList.add('show');
+  }
+
+  function highlightText(root, query) {
+    let count = 0;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    const nodesToReplace = [];
+
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const parent = node.parentNode;
+      // Skip script, style, code, and already-highlighted nodes
+      if (['SCRIPT','STYLE','CODE','PRE','MARK'].includes(parent.tagName)) continue;
+      const idx = node.textContent.toLowerCase().indexOf(query);
+      if (idx === -1) continue;
+      nodesToReplace.push(node);
+    }
+
+    nodesToReplace.forEach(node => {
+      const text = node.textContent;
+      const frag = document.createDocumentFragment();
+      let lastIdx = 0;
+      let lowerText = text.toLowerCase();
+      let searchIdx = lowerText.indexOf(query, lastIdx);
+
+      while (searchIdx !== -1) {
+        count++;
+        // Text before match
+        if (searchIdx > lastIdx) {
+          frag.appendChild(document.createTextNode(text.slice(lastIdx, searchIdx)));
+        }
+        // Highlighted match
+        const mark = document.createElement('mark');
+        mark.textContent = text.slice(searchIdx, searchIdx + query.length);
+        frag.appendChild(mark);
+        lastIdx = searchIdx + query.length;
+        searchIdx = lowerText.indexOf(query, lastIdx);
+      }
+      // Remaining text
+      if (lastIdx < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+      }
+      node.parentNode.replaceChild(frag, node);
+    });
+
+    return count;
+  }
 </script>
 
 </body>
