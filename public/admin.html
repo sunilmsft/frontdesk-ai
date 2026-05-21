@@ -172,6 +172,7 @@
           </div>
           <div class="sidebar-item" id="sidebarClients" onclick="showClients()">
             <div class="name">👥 Clients</div>
+            <span class="badge" id="renewalBadge" style="display:none; background: #d97706;">0</span>
           </div>
           <div class="sidebar-divider"></div>
           <div class="sidebar-section">Businesses</div>
@@ -364,6 +365,25 @@
       if (!stats) return;
       const mrr = businesses.reduce((s, b) => s + (parseFloat(b.monthly_rate) || 0), 0);
       const withDomain = businesses.filter(b => b.domain).length;
+
+      // Renewal alerts count (expired + within 30 days)
+      const now = new Date();
+      const urgentRenewals = businesses.filter(b => {
+        if (!b.domain_renews_at) return false;
+        const days = Math.ceil((new Date(b.domain_renews_at) - now) / (1000 * 60 * 60 * 24));
+        return days <= 30;
+      });
+      const renewalBadge = document.getElementById('renewalBadge');
+      if (renewalBadge) {
+        if (urgentRenewals.length > 0) {
+          renewalBadge.textContent = urgentRenewals.length;
+          renewalBadge.style.display = 'inline';
+          renewalBadge.style.background = urgentRenewals.some(b => Math.ceil((new Date(b.domain_renews_at) - now) / 86400000) < 0) ? '#dc2626' : '#d97706';
+        } else {
+          renewalBadge.style.display = 'none';
+        }
+      }
+
       document.getElementById('statsBar').innerHTML = `
         <div class="stat-card" onclick="showClients()" title="View all clients">
           <div class="label">👥 Clients</div>
@@ -1281,6 +1301,13 @@
         return;
       }
 
+      const now = new Date();
+      const daysUntil = (dateStr) => {
+        if (!dateStr) return null;
+        const d = new Date(dateStr);
+        return Math.ceil((d - now) / (1000 * 60 * 60 * 24));
+      };
+
       // Filter
       let filtered = businesses.filter(b => {
         const q = clientsFilter.toLowerCase();
@@ -1297,6 +1324,7 @@
           case 'plan': va = a.plan || ''; vb = b.plan || ''; break;
           case 'rate': va = parseFloat(a.monthly_rate) || 0; vb = parseFloat(b.monthly_rate) || 0; break;
           case 'domain': va = a.domain || ''; vb = b.domain || ''; break;
+          case 'renewal': va = a.domain_renews_at || '9999'; vb = b.domain_renews_at || '9999'; break;
           case 'addons': va = (JSON.parse(a.addons || '[]')).length; vb = (JSON.parse(b.addons || '[]')).length; break;
           case 'since': va = a.client_since || ''; vb = b.client_since || ''; break;
           default: va = ''; vb = '';
@@ -1311,6 +1339,17 @@
       const withDomain = businesses.filter(b => b.domain).length;
       const totalAddons = businesses.reduce((s, b) => { try { return s + JSON.parse(b.addons || '[]').length; } catch { return s; } }, 0);
 
+      // Renewal alerts
+      const renewalAlerts = businesses
+        .filter(b => b.domain_renews_at)
+        .map(b => ({ ...b, _daysLeft: daysUntil(b.domain_renews_at) }))
+        .filter(b => b._daysLeft !== null && b._daysLeft <= 60)
+        .sort((a, b) => a._daysLeft - b._daysLeft);
+
+      const expiredDomains = renewalAlerts.filter(b => b._daysLeft < 0);
+      const urgentRenewals = renewalAlerts.filter(b => b._daysLeft >= 0 && b._daysLeft <= 30);
+      const upcomingRenewals = renewalAlerts.filter(b => b._daysLeft > 30 && b._daysLeft <= 60);
+
       document.getElementById('clientsCount').textContent = filtered.length + ' of ' + businesses.length + ' clients';
 
       const sortTh = (col, label) => {
@@ -1324,7 +1363,69 @@
         return m[plan] || plan || '—';
       };
 
+      const renewalBadge = (b) => {
+        if (!b.domain_renews_at) return '<span style="color: #ccc;">—</span>';
+        const days = daysUntil(b.domain_renews_at);
+        const dateStr = new Date(b.domain_renews_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        if (days < 0) return `<span style="background: #fef2f2; color: #dc2626; padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 600;">⚠ Expired ${Math.abs(days)}d ago</span>`;
+        if (days <= 30) return `<span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 600;">🔔 ${days}d — ${dateStr}</span>`;
+        if (days <= 60) return `<span style="background: #eff6ff; color: #1e40af; padding: 3px 8px; border-radius: 8px; font-size: 11px;">${dateStr}</span>`;
+        return `<span style="color: #666; font-size: 12px;">${dateStr}</span>`;
+      };
+
+      // Alerts banner
+      let alertsHtml = '';
+      if (renewalAlerts.length > 0) {
+        const alertItems = [];
+        if (expiredDomains.length > 0) {
+          alertItems.push(...expiredDomains.map(b =>
+            `<div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">
+              <span style="font-size: 18px;">🚨</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; color: #dc2626; font-size: 13px;">${escapeHtml(b.name)} — domain expired ${Math.abs(b._daysLeft)} days ago</div>
+                <div style="font-size: 11px; color: #999;">${escapeHtml(b.domain)} · ${b.domain_registrar || 'Unknown registrar'} · ${b.domain_auto_renew ? '✅ Auto-renew ON' : '❌ Auto-renew OFF'}</div>
+              </div>
+              <button class="btn btn-sm" style="background: #dc2626; color: white; white-space: nowrap;" onclick="selectBusiness('${b.id}'); switchBizTab('client');">Review →</button>
+            </div>`
+          ));
+        }
+        if (urgentRenewals.length > 0) {
+          alertItems.push(...urgentRenewals.map(b =>
+            `<div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;">
+              <span style="font-size: 18px;">🔔</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; color: #92400e; font-size: 13px;">${escapeHtml(b.name)} — renews in ${b._daysLeft} days</div>
+                <div style="font-size: 11px; color: #999;">${escapeHtml(b.domain)} · ${b.domain_registrar || 'Unknown registrar'} · ${b.domain_auto_renew ? '✅ Auto-renew ON' : '❌ Auto-renew OFF'} · ${b.domain_cost ? '$' + b.domain_cost : ''}</div>
+              </div>
+              <button class="btn btn-sm" style="background: #d97706; color: white; white-space: nowrap;" onclick="selectBusiness('${b.id}'); switchBizTab('client');">Review →</button>
+            </div>`
+          ));
+        }
+        if (upcomingRenewals.length > 0) {
+          alertItems.push(...upcomingRenewals.map(b =>
+            `<div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;">
+              <span style="font-size: 18px;">📅</span>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; color: #1e40af; font-size: 13px;">${escapeHtml(b.name)} — renews in ${b._daysLeft} days</div>
+                <div style="font-size: 11px; color: #999;">${escapeHtml(b.domain)} · ${b.domain_registrar || 'Unknown registrar'} · ${b.domain_auto_renew ? '✅ Auto-renew ON' : '❌ Auto-renew OFF'}</div>
+              </div>
+              <button class="btn btn-sm btn-secondary" style="white-space: nowrap;" onclick="selectBusiness('${b.id}'); switchBizTab('client');">View →</button>
+            </div>`
+          ));
+        }
+        alertsHtml = `
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #888; letter-spacing: 0.5px; margin-bottom: 8px;">⏰ Renewal Alerts</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              ${alertItems.join('')}
+            </div>
+          </div>
+        `;
+      }
+
       container.innerHTML = `
+        ${alertsHtml}
+
         <div class="clients-summary">
           <div class="cs-card"><div class="cs-label">Total Clients</div><div class="cs-value">${businesses.length}</div></div>
           <div class="cs-card"><div class="cs-label">Monthly MRR</div><div class="cs-value" style="color: #059669;">$${totalMRR.toFixed(0)}</div></div>
@@ -1350,12 +1451,13 @@
               ${sortTh('plan', 'Plan')}
               ${sortTh('rate', 'Rate')}
               ${sortTh('domain', 'Domain')}
+              ${sortTh('renewal', 'Renewal')}
               ${sortTh('addons', 'Add-ons')}
               ${sortTh('since', 'Client Since')}
             </tr>
           </thead>
           <tbody>
-            ${filtered.length === 0 ? '<tr><td colspan="6" style="text-align: center; color: #999; padding: 30px;">No matching clients</td></tr>' : ''}
+            ${filtered.length === 0 ? '<tr><td colspan="7" style="text-align: center; color: #999; padding: 30px;">No matching clients</td></tr>' : ''}
             ${filtered.map(b => {
               const addons = (() => { try { return JSON.parse(b.addons || '[]'); } catch { return []; } })();
               const addonEmojis = { 'google-reviews': '⭐', 'before-after': '📸', 'quoting-agent': '🤖', 'booking': '📅', 'review-nudge': '💬', 'whatsapp-cta': '📱', 'custom-domain': '🌐' };
@@ -1373,6 +1475,7 @@
                   <td>${planLabel(b.plan)}</td>
                   <td>${b.monthly_rate ? '<strong>$' + escapeHtml(b.monthly_rate) + '</strong>/mo' : '<span style="color: #ccc;">—</span>'}</td>
                   <td>${b.domain ? '<span class="client-domain-badge">' + escapeHtml(b.domain) + '</span>' : '<span class="client-no-domain">—</span>'}</td>
+                  <td>${renewalBadge(b)}</td>
                   <td>${addons.length > 0 ? addons.map(a => '<span class="client-addon-pill">' + (addonEmojis[a] || '') + '</span>').join('') : '<span style="color: #ccc;">—</span>'}</td>
                   <td>${b.client_since ? new Date(b.client_since).toLocaleDateString('en-US', {month:'short', year:'numeric'}) : '<span style="color: #ccc;">—</span>'}</td>
                 </tr>
