@@ -570,4 +570,69 @@ router.delete('/pipeline/:id', async (req, res) => {
   res.json({ message: 'Pipeline record deleted' });
 });
 
+// ============================================================
+// Google Places Search (for Place ID lookup)
+// ============================================================
+
+/**
+ * GET /api/admin/places/search?q=... — Search Google Places and return candidates
+ * Used by admin UI to find and verify the correct Google Place ID for a business
+ */
+router.get('/places/search', async (req, res) => {
+  const query = req.query.q;
+  if (!query || query.trim().length < 2) {
+    return res.status(400).json({ error: 'Search query (q) is required (min 2 chars)' });
+  }
+
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  if (!apiKey) {
+    return res.status(503).json({ error: 'Google Places API key not configured' });
+  }
+
+  try {
+    const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
+      },
+      body: JSON.stringify({ textQuery: query.trim(), maxResultCount: 5 })
+    });
+
+    if (!searchResp.ok) {
+      const errText = await searchResp.text();
+      console.error('Google Places search error:', searchResp.status, errText);
+      return res.status(502).json({ error: 'Google Places API error' });
+    }
+
+    const data = await searchResp.json();
+    const results = (data.places || []).map(p => ({
+      placeId: p.id,
+      name: p.displayName?.text || '',
+      address: p.formattedAddress || '',
+      rating: p.rating || null,
+      totalReviews: p.userRatingCount || 0,
+      googleMapsUrl: p.googleMapsUri || null,
+    }));
+
+    res.json({ results });
+  } catch (err) {
+    console.error('Google Places search failed:', err.message);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
+/**
+ * POST /api/admin/reviews/clear-cache/:businessId — Clear cached reviews for a business
+ * Used when changing the Place ID so fresh reviews load immediately
+ */
+router.post('/reviews/clear-cache/:businessId', async (req, res) => {
+  await db.execute({
+    sql: 'DELETE FROM reviews_cache WHERE business_id = ?',
+    args: [req.params.businessId]
+  });
+  res.json({ message: 'Reviews cache cleared' });
+});
+
 module.exports = router;

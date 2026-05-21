@@ -472,6 +472,32 @@
           <input type="text" readonly value='<script src="${window.location.origin}/widget/frontdesk-widget.js" data-business="${b.slug}" data-server="${window.location.origin}"><\/script>'
                  onclick="this.select()" style="background: #f5f5f5; font-family: monospace; font-size: 11px;">
         </div>
+
+        <!-- Google Reviews / Place ID -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 700; color: #334155;">⭐ Google Reviews</div>
+            ${b.google_place_id
+              ? '<span style="background: #d1fae5; color: #065f46; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 600;">✓ Connected</span>'
+              : '<span style="background: #fef3c7; color: #92400e; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 600;">Not connected</span>'}
+          </div>
+          ${b.google_place_id ? `
+            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 12px;">
+              <div style="color: #64748b; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Current Place ID</div>
+              <div style="margin-top: 4px; font-family: monospace; color: #334155; word-break: break-all;">${escapeHtml(b.google_place_id)}</div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="clearPlaceId()" style="font-size: 11px;">Disconnect Google Reviews</button>
+            <span style="margin-left: 8px; font-size: 11px; color: #999;">or search below to change</span>
+          ` : `
+            <div style="font-size: 13px; color: #666; margin-bottom: 12px;">Search for this business on Google to connect their reviews.</div>
+          `}
+          <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <input type="text" id="placeSearchQuery" placeholder="Search Google for this business..." value="${escapeAttr((b.name || '') + ' ' + (b.service_area || ''))}" style="flex: 1;">
+            <button class="btn btn-primary btn-sm" onclick="searchGooglePlaces()" id="placeSearchBtn">🔍 Search</button>
+          </div>
+          <div id="placeSearchResults" style="margin-top: 12px;"></div>
+        </div>
+
         <div class="field">
           <label>System Prompt</label>
           <textarea id="editPrompt">${escapeHtml(b.system_prompt)}</textarea>
@@ -496,6 +522,7 @@
           business_type: document.getElementById('editBizType').value,
           service_area: document.getElementById('editServiceArea').value,
           plan: document.getElementById('editPlan').value,
+          google_place_id: selectedBiz.google_place_id || null,
         }),
       });
       if (res.ok) {
@@ -1364,6 +1391,88 @@
         await loadPipeline();
       } else {
         alert((await res.json()).error || 'Error adding lead');
+      }
+    }
+
+    // --- Google Places Search (Place ID picker) ---
+    async function searchGooglePlaces() {
+      const query = document.getElementById('placeSearchQuery').value.trim();
+      if (!query) return;
+      const btn = document.getElementById('placeSearchBtn');
+      const container = document.getElementById('placeSearchResults');
+      btn.disabled = true; btn.textContent = '⏳ Searching...';
+      container.innerHTML = '';
+
+      try {
+        const res = await authFetch(`${API}/places/search?q=${encodeURIComponent(query)}`);
+        if (!res.ok) {
+          const err = await res.json();
+          container.innerHTML = '<div style="color: #dc2626; font-size: 13px; padding: 8px 0;">' + escapeHtml(err.error || 'Search failed') + '</div>';
+          return;
+        }
+        const data = await res.json();
+        if (data.results.length === 0) {
+          container.innerHTML = '<div style="color: #999; font-size: 13px; padding: 8px 0;">No results found. Try a different search term.</div>';
+          return;
+        }
+        container.innerHTML = data.results.map(r => {
+          const isSelected = selectedBiz.google_place_id === r.placeId;
+          const stars = r.rating ? '⭐ ' + r.rating.toFixed(1) + ' (' + r.totalReviews + ' reviews)' : 'No reviews yet';
+          return `
+            <div style="background: white; border: 1px solid ${isSelected ? '#10b981' : '#e2e8f0'}; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; ${isSelected ? 'box-shadow: 0 0 0 2px rgba(16,185,129,0.2);' : ''}">
+              <div style="min-width: 0; flex: 1;">
+                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">${escapeHtml(r.name)}</div>
+                <div style="font-size: 12px; color: #666; margin-top: 2px;">${escapeHtml(r.address)}</div>
+                <div style="font-size: 12px; color: #888; margin-top: 4px;">${stars}</div>
+                ${r.googleMapsUrl ? '<a href="' + escapeAttr(r.googleMapsUrl) + '" target="_blank" style="font-size: 11px; color: #2563eb; text-decoration: none;">View on Google Maps →</a>' : ''}
+              </div>
+              <div style="flex-shrink: 0;">
+                ${isSelected
+                  ? '<span style="background: #d1fae5; color: #065f46; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;">✓ Connected</span>'
+                  : '<button class="btn btn-primary btn-sm" onclick="confirmPlaceId(\'' + escapeAttr(r.placeId) + '\', \'' + escapeAttr(r.name) + '\', \'' + escapeAttr(r.address) + '\')" style="white-space: nowrap;">Connect this</button>'}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = '<div style="color: #dc2626; font-size: 13px; padding: 8px 0;">Search failed: ' + escapeHtml(err.message) + '</div>';
+      } finally {
+        btn.disabled = false; btn.textContent = '🔍 Search';
+      }
+    }
+
+    async function confirmPlaceId(placeId, name, address) {
+      if (!confirm(`Connect Google Reviews from:\n\n${name}\n${address}\n\nto ${selectedBiz.name}?`)) return;
+      const res = await authFetch(`${API}/businesses/${selectedBiz.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ google_place_id: placeId }),
+      });
+      if (res.ok) {
+        selectedBiz = await res.json();
+        await loadBusinesses();
+        renderBizDetail();
+        alert('Google Reviews connected! Reviews will show on the site within 24 hours (or immediately for new connections).');
+        // Clear reviews cache so fresh data loads next time
+        await authFetch(`${API}/reviews/clear-cache/${selectedBiz.id}`, { method: 'POST' }).catch(() => {});
+      } else {
+        alert('Error connecting Google Reviews');
+      }
+    }
+
+    async function clearPlaceId() {
+      if (!confirm('Disconnect Google Reviews? The reviews section will be hidden on the site.')) return;
+      const res = await authFetch(`${API}/businesses/${selectedBiz.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ google_place_id: null }),
+      });
+      if (res.ok) {
+        selectedBiz = await res.json();
+        await loadBusinesses();
+        renderBizDetail();
+      } else {
+        alert('Error disconnecting Google Reviews');
       }
     }
 
