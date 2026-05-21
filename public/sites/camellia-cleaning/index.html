@@ -10,6 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
       --primary: #1c1c1c;
@@ -270,7 +271,7 @@
 
     /* === SERVICES === */
     .services {
-      background: var(--white);
+      background: #f2f1ef;
       position: relative;
       overflow: hidden;
     }
@@ -330,17 +331,18 @@
     .service-card:hover::before { transform: scaleX(1); }
     .service-card:hover::after { opacity: 1; }
     .service-icon {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       background: linear-gradient(135deg, var(--primary-pale), rgba(196,181,160,0.15));
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      color: var(--primary);
     }
+    .service-icon svg { width: 24px; height: 24px; }
     .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
     .service-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
 
@@ -369,17 +371,18 @@
       border-color: rgba(0,0,0,0.12);
     }
     .why-icon {
-      width: 68px;
-      height: 68px;
+      width: 64px;
+      height: 64px;
       margin: 0 auto 20px;
       background: linear-gradient(135deg, var(--primary-pale), var(--accent-light));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.7rem;
       box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      color: var(--primary);
     }
+    .why-icon svg { width: 26px; height: 26px; }
     .why-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .why-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -816,32 +819,32 @@
       <p class="section-text" data-i18n="servicesText">From weekly maintenance to deep cleans, we keep your space fresh and inviting.</p>
       <div class="services-grid">
         <div class="service-card">
-          <div class="service-icon">🏡</div>
+          <div class="service-icon"><i data-lucide="home"></i></div>
           <h3 data-i18n="svc1Title">Regular Cleaning</h3>
           <p data-i18n="svc1Text">Weekly, biweekly, or monthly visits. Dust, vacuum, mop, sanitize bathrooms and kitchen. A consistently clean home without the hassle.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🧹</div>
+          <div class="service-icon"><i data-lucide="sparkles"></i></div>
           <h3 data-i18n="svc2Title">Deep Cleaning</h3>
           <p data-i18n="svc2Text">Top-to-bottom intensive clean. Inside appliances, baseboards, light fixtures, behind furniture. Perfect for a fresh start or seasonal reset.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">📦</div>
+          <div class="service-icon"><i data-lucide="package"></i></div>
           <h3 data-i18n="svc3Title">Move-In / Move-Out</h3>
           <p data-i18n="svc3Text">Leave your old place spotless or start fresh in your new home. Every cabinet, closet, and corner gets attention.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🔨</div>
+          <div class="service-icon"><i data-lucide="hard-hat"></i></div>
           <h3 data-i18n="svc4Title">Post-Construction</h3>
           <p data-i18n="svc4Text">Dust, debris, and construction residue removed so your renovated space is move-in ready. We handle the mess so you don't have to.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🏨</div>
+          <div class="service-icon"><i data-lucide="bed"></i></div>
           <h3 data-i18n="svc5Title">Airbnb & Vacation Rentals</h3>
           <p data-i18n="svc5Text">Quick turnovers between guests. Fresh linens, restocked supplies, spotless bathrooms. Keep your 5-star rating effortless.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">✨</div>
+          <div class="service-icon"><i data-lucide="wand-sparkles"></i></div>
           <h3 data-i18n="svc6Title">Custom Requests</h3>
           <p data-i18n="svc6Text">Post-event clean-up, seasonal deep cleans, or something unique? We're flexible. Tell us what you need and we'll make it happen — no job is too small.</p>
         </div>
@@ -856,22 +859,22 @@
       <h2 class="section-title" data-i18n="whyTitle">We care about your home as much as you do</h2>
       <div class="why-grid">
         <div class="why-card">
-          <div class="why-icon">🌟</div>
+          <div class="why-icon"><i data-lucide="scan-eye"></i></div>
           <h3 data-i18n="why1Title">Detail-Obsessed</h3>
           <p data-i18n="why1Text">We don't cut corners — we clean them. Every visit follows our thorough checklist.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">🤝</div>
+          <div class="why-icon"><i data-lucide="handshake"></i></div>
           <h3 data-i18n="why2Title">Reliable & Consistent</h3>
           <p data-i18n="why2Text">Same cleaner every time. We show up on time, every time. You can count on us.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">🌿</div>
+          <div class="why-icon"><i data-lucide="leaf"></i></div>
           <h3 data-i18n="why3Title">Pet-Friendly & Eco-Safe</h3>
           <p data-i18n="why3Text">We love pets! Our products are tough on dirt but safe for your family, furry friends, and the planet.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">🗣️</div>
+          <div class="why-icon"><i data-lucide="languages"></i></div>
           <h3 data-i18n="why4Title">We Speak Your Language</h3>
           <p data-i18n="why4Text">Fluent in English, Portuguese, and Spanish. Communication should never be a barrier.</p>
         </div>
@@ -968,6 +971,9 @@
       <p>© 2026 {{BUSINESS_NAME}} · {{SERVICE_AREA}}</p>
       <p style="margin-top: 6px; font-size: 11px;">
         <span data-i18n="footerTagline">Professional cleaning you can trust</span>
+      </p>
+      <p style="margin-top: 10px; font-size: 10px; opacity: 0.5;">
+        Powered by <a href="https://frontdesk-ai-vx1s.onrender.com" target="_blank" style="color: rgba(255,255,255,0.6);">WelcomeMat</a>
       </p>
     </div>
   </footer>
@@ -1147,6 +1153,9 @@
       if (!picker.contains(e.target)) picker.classList.remove('open');
     });
   });
+  
+  // Initialize Lucide icons
+  lucide.createIcons();
   </script>
 
 </body>
