@@ -57,8 +57,10 @@ router.post('/chat', async (req, res) => {
       ? `\n\nIMPORTANT: The customer has selected ${langMap[lang] || lang}. You MUST respond in ${langMap[lang] || lang}.`
       : '';
 
+    const guardrail = `\n\nIMPORTANT GUARDRAIL: You are ONLY allowed to answer questions related to ${business.name} and its services. If a customer asks about something completely unrelated to the business (e.g. weather, trivia, coding, math, politics, personal advice, or anything not connected to ${business.name}), respond warmly with something like: "Great question, but I'm really only set up to help with ${business.name}-related questions! If there's anything I can help you with about our services, I'm here. Otherwise, feel free to reach out to us directly — we'd love to chat!" Do NOT answer off-topic questions. Always steer the conversation back to ${business.name}'s services.`;
+
     const openaiMessages = [
-    { role: 'system', content: business.system_prompt + dateContext + langInstruction },
+    { role: 'system', content: business.system_prompt + dateContext + langInstruction + guardrail },
     ...historyResult.rows.map(m => ({ role: m.role, content: m.content })),
   ];
 
