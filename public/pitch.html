@@ -107,7 +107,11 @@
       font-size: 13px; color: rgba(255,255,255,0.75); font-weight: 400; letter-spacing: 0.2px;
       white-space: nowrap;
     }
-    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 12.5px; font-weight: 500; transition: color 0.2s; letter-spacing: 0.2px; }
+    .nav-links a:hover { color: white; }
+    .nav-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
     .lang-select {
       appearance: none; -webkit-appearance: none;
       background: rgba(255,255,255,0.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.5)'/%3E%3C/svg%3E") no-repeat right 10px center;
@@ -457,6 +461,7 @@
       .showcase-grid { grid-template-columns: 1fr; }
       .showcase-after { transform: none; }
       .nav-cta { display: none; }
+      .nav-links { display: none !important; }
       .logo-tagline, .logo-divider { display: none; }
       .hero-actions { flex-direction: column; align-items: center; }
     }
@@ -476,10 +481,15 @@
           <text x="30" y="46" text-anchor="middle" fill="white" font-size="5" font-weight="700" font-family="sans-serif" opacity="0.9">W</text>
         </svg>
         <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
-        <div class="logo-divider"></div>
-        <div class="logo-tagline">We help businesses put out a better welcome.</div>
       </a>
       <div class="nav-right">
+        <div class="nav-links">
+          <a href="#how" data-i18n="navHow">How It Works</a>
+          <a href="#pricing" data-i18n="navPricing">Pricing</a>
+          <a href="#about" data-i18n="navAbout">About</a>
+          <a href="/contact" data-i18n="navContact">Contact</a>
+        </div>
+        <div class="nav-divider"></div>
         <select class="lang-select" onchange="setLang(this.value)">
           <option value="en" selected>English</option>
           <option value="es">Español</option>
@@ -579,7 +589,7 @@
     </div>
   </section>
 
-  <section class="how">
+  <section class="how" id="how">
     <div class="container">
       <div class="reveal" style="text-align:center;">
         <div class="section-eyebrow" style="justify-content:center;" data-i18n="howLabel">How It Works</div>
@@ -670,7 +680,7 @@
     </div></div>
   </section>
 
-  <section class="pricing">
+  <section class="pricing" id="pricing">
     <div class="container">
       <div class="reveal" style="text-align:center;">
         <div class="section-eyebrow" style="justify-content:center;" data-i18n="priceLabel">Simple Pricing</div>
@@ -721,6 +731,18 @@
     </div>
   </section>
 
+  <section class="cta" id="about" style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+    <div class="container reveal" style="text-align:center; max-width:640px;">
+      <div class="section-eyebrow" style="justify-content:center; color:#5eead4;"><span data-i18n="aboutLabel">About WelcomeMat</span></div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.5rem,3vw,2rem); font-weight:800; color:white; margin-bottom:16px;" data-i18n="aboutTitle">Why I started this</h2>
+      <p style="color:#94a3b8; font-size:0.95rem; line-height:1.75; margin-bottom:16px;" data-i18n="aboutText1">I'm Sunil — a product manager at Microsoft by day. Outside of work, I build small, useful things that solve everyday problems. WelcomeMat started when I kept meeting talented people — cleaners, landscapers, handymen — who were great at what they do but invisible online. No website, no Google listing, no way for customers to find them.</p>
+      <p style="color:#94a3b8; font-size:0.95rem; line-height:1.75; margin-bottom:24px;" data-i18n="aboutText2">I believe useful beats impressive. You shouldn't need a tech background or a big budget to look professional online. If you do great work, your customers should be able to find you — in English, Portuguese, or Spanish. That's what WelcomeMat is for.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="/contact" class="btn-primary" style="font-size:0.9rem;padding:12px 24px;" data-i18n="aboutCta">Get in Touch →</a>
+      </div>
+    </div>
+  </section>
+
   <section class="cta">
     <div class="container reveal">
       <h2 data-i18n="ctaTitle">Let's put your business on the map</h2>
@@ -736,6 +758,7 @@
         <div class="footer-name">WelcomeMat Digital</div>
       </div>
       <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
+      <p style="margin-top:8px;"><a href="#how" data-i18n="navHow">How It Works</a> · <a href="#pricing" data-i18n="navPricing">Pricing</a> · <a href="#about" data-i18n="navAbout">About</a> · <a href="/contact" data-i18n="navContact">Contact</a> · <a href="/onboard.html" data-i18n="navCta">Get Started</a></p>
       <p style="margin-top:6px;">© 2026 Welcome Mat Digital LLC</p>
     </div>
   </footer>
@@ -809,6 +832,10 @@
       setup2Name:'Website + Booking Setup', setup2Desc:'Everything above, plus customers can book appointments and request quotes right from your site.',
       setupOnce:'one-time', setupNote:'You can always add booking later.',
       priceCta:'Tell us about your business \u2192',
+      aboutLabel:'About WelcomeMat', aboutTitle:'Why I started this',
+      aboutText1:"I'm Sunil — a product manager at Microsoft by day. Outside of work, I build small, useful things that solve everyday problems. WelcomeMat started when I kept meeting talented people — cleaners, landscapers, handymen — who were great at what they do but invisible online. No website, no Google listing, no way for customers to find them.",
+      aboutText2:"I believe useful beats impressive. You shouldn't need a tech background or a big budget to look professional online. If you do great work, your customers should be able to find you — in English, Portuguese, or Spanish. That's what WelcomeMat is for.",
+      aboutCta:'Get in Touch →', navAbout:'About', navContact:'Contact', navHow:'How It Works', navPricing:'Pricing',
       ctaTitle:"Let's put your business on the map",
       ctaText:"Tell us about your business and we'll take it from there. Takes 5 minutes.",
       ctaBtn:'Get Started →'
@@ -861,6 +888,10 @@
       setup2Name:'Sitio Web + Reservas', setup2Desc:'Todo lo anterior, más tus clientes pueden agendar citas y pedir cotizaciones directo desde tu sitio.',
       setupOnce:'único pago', setupNote:'Siempre puedes agregar reservas después.',
       priceCta:'Cuéntanos sobre tu negocio →',
+      aboutLabel:'Sobre WelcomeMat', aboutTitle:'Por qué empecé esto',
+      aboutText1:'Soy Sunil — gerente de producto en Microsoft. Fuera del trabajo, construyo cosas pequeñas y útiles que resuelven problemas del día a día. WelcomeMat nació cuando conocí a personas talentosas — de limpieza, jardinería, mantenimiento — que eran excelentes en lo que hacen pero invisibles en internet. Sin sitio web, sin Google, sin forma de que sus clientes los encuentren.',
+      aboutText2:'Creo que lo útil vale más que lo impresionante. No deberías necesitar conocimientos técnicos ni un gran presupuesto para verse profesional en línea. Si haces un gran trabajo, tus clientes deberían poder encontrarte — en inglés, portugués o español. Para eso es WelcomeMat.',
+      aboutCta:'Contáctanos →', navAbout:'Nosotros', navContact:'Contacto', navHow:'Cómo Funciona', navPricing:'Precios',
       ctaTitle:'Pongamos tu negocio en el mapa', ctaText:'Cuéntanos sobre tu negocio y nosotros nos encargamos. Toma 5 minutos.', ctaBtn:'Comenzar →'
     },
     pt: {
@@ -911,6 +942,10 @@
       setup2Name:'Site + Agendamento', setup2Desc:'Tudo acima, mais seus clientes podem marcar horários e pedir orçamentos direto do seu site.',
       setupOnce:'pagamento único', setupNote:'Você sempre pode adicionar agendamento depois.',
       priceCta:'Conte sobre seu negócio →',
+      aboutLabel:'Sobre a WelcomeMat', aboutTitle:'Por que eu comecei isso',
+      aboutText1:'Sou o Sunil — gerente de produto na Microsoft. Fora do trabalho, eu construo coisas pequenas e úteis que resolvem problemas do dia a dia. A WelcomeMat nasceu quando eu conheci pessoas talentosas — faxineiras, jardineiros, eletricistas — que eram ótimas no que fazem mas invisíveis na internet. Sem site, sem Google, sem como os clientes encontrarem.',
+      aboutText2:'Eu acredito que o útil vale mais que o impressionante. Você não precisa entender de tecnologia nem ter um grande orçamento pra parecer profissional online. Se você faz um ótimo trabalho, seus clientes deveriam poder te encontrar — em inglês, português ou espanhol. Pra isso existe a WelcomeMat.',
+      aboutCta:'Entre em Contato →', navAbout:'Sobre', navContact:'Contato', navHow:'Como Funciona', navPricing:'Preços',
       ctaTitle:'Vamos colocar seu negócio no mapa', ctaText:'Conte sobre seu negócio e a gente cuida do resto. Leva 5 minutos.', ctaBtn:'Começar →'
     }
   };
