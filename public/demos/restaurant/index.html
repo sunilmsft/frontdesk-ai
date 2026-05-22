@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Oaxaca — Authentic Mexican Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c1810;
+      --accent: #c2553a;
+      --accent-light: #e8a07a;
+      --warm: #d4a843;
+      --terracotta: #c2553a;
+      --cream: #faf5ed;
+      --sage: #7a8b6f;
+      --bg: #faf5ed;
+      --bg-alt: #f0e8d8;
+      --text: #2c1810;
+      --text-muted: #7a6b5d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3 { font-family: 'Nunito', sans-serif; }
+    .hand { font-family: 'Caveat', cursive; }
+
+    /* === NAV — warm, inviting === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(44,24,16,0.95); backdrop-filter: blur(12px);
+      padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Caveat', cursive; font-size: 28px; font-weight: 700;
+      color: var(--cream); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: rgba(250,245,237,0.7); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent-light); }
+    .nav-cta {
+      background: var(--terracotta) !important; color: var(--cream) !important;
+      padding: 8px 20px; border-radius: 24px; font-weight: 700 !important;
+    }
+
+    /* === HERO — full-bleed food photo with warm overlay === */
+    .hero {
+      position: relative; min-height: 100vh;
+      background: linear-gradient(180deg, rgba(44,24,16,0.2) 0%, rgba(44,24,16,0.7) 60%, var(--primary) 100%),
+        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=80') center/cover;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 32px 60px; text-align: center;
+    }
+    .hero-hand {
+      font-family: 'Caveat', cursive; font-size: clamp(20px, 4vw, 32px);
+      color: var(--accent-light); margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px); font-weight: 800; color: var(--cream);
+      line-height: 1.05; margin-bottom: 16px;
+    }
+    .hero p { font-size: 18px; color: rgba(250,245,237,0.7); max-width: 500px; margin: 0 auto; line-height: 1.6; }
+    .hero-ctas { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-warm {
+      background: var(--terracotta); color: var(--cream); padding: 14px 32px;
+      border: none; border-radius: 28px; font-size: 16px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-warm:hover { background: #d4654a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(194,85,58,0.3); }
+    .btn-ghost {
+      background: transparent; color: var(--cream); padding: 14px 32px;
+      border: 2px solid rgba(250,245,237,0.3); border-radius: 28px;
+      font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+    /* === WAVY DIVIDER === */
+    .wave-divider {
+      background: var(--primary); position: relative;
+    }
+    .wave-divider svg { display: block; width: 100%; height: 60px; }
+    .wave-divider svg path { fill: var(--bg); }
+
+    /* === SECTIONS === */
+    section { padding: 80px 28px; }
+    .section-hand { font-family: 'Caveat', cursive; font-size: 22px; color: var(--terracotta); margin-bottom: 4px; }
+    section h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    section .subtitle { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.7; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* === STORY (instead of About first — story-driven) === */
+    .story { background: var(--bg-alt); }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .story-img {
+      width: 100%; height: 400px; object-fit: cover; border-radius: 20px;
+      border: 4px solid var(--cream); box-shadow: 8px 8px 0 var(--terracotta);
+    }
+    .story-text blockquote {
+      font-family: 'Caveat', cursive; font-size: 26px; line-height: 1.4;
+      color: var(--terracotta); margin-bottom: 16px;
+    }
+    .story-text p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 12px; }
+    .story-sig { font-family: 'Caveat', cursive; font-size: 28px; color: var(--text); margin-top: 16px; }
+    .story-role { font-size: 13px; color: var(--text-muted); }
+
+    /* === MENU HIGHLIGHTS — warm cards with emoji icons === */
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .menu-card {
+      background: var(--cream); border-radius: 20px; padding: 28px;
+      border: 2px solid transparent; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .menu-card:hover { border-color: var(--terracotta); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,24,16,0.1); }
+    .menu-emoji { font-size: 36px; margin-bottom: 12px; }
+    .menu-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .menu-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .menu-price { font-family: 'Caveat', cursive; font-size: 22px; color: var(--terracotta); margin-top: 12px; }
+
+    /* === GALLERY — organic, overlapping, playful === */
+    .gallery-organic {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 40px;
+    }
+    .gallery-organic img {
+      width: 100%; height: 220px; object-fit: cover; border-radius: 16px;
+      transition: transform 0.3s;
+    }
+    .gallery-organic img:hover { transform: rotate(-2deg) scale(1.05); }
+    .gallery-organic img:nth-child(2) { transform: translateY(20px); }
+    .gallery-organic img:nth-child(2):hover { transform: translateY(20px) rotate(2deg) scale(1.05); }
+    .gallery-organic img:nth-child(5) { transform: translateY(-15px); }
+    .gallery-organic img:nth-child(5):hover { transform: translateY(-15px) rotate(-1deg) scale(1.05); }
+
+    /* === HOURS — warm table === */
+    .hours-card {
+      background: var(--primary); color: var(--cream); border-radius: 20px;
+      padding: 40px; max-width: 500px; margin: 40px auto 0;
+    }
+    .hours-card h3 { font-family: 'Caveat', cursive; font-size: 28px; text-align: center; margin-bottom: 20px; color: var(--accent-light); }
+    .hours-row {
+      display: flex; justify-content: space-between; padding: 10px 0;
+      border-bottom: 1px solid rgba(250,245,237,0.1); font-size: 15px;
+    }
+    .hours-row:last-child { border: none; }
+    .hours-day { font-weight: 600; }
+    .hours-time { color: var(--accent-light); }
+    .hours-today { background: rgba(194,85,58,0.2); margin: 0 -16px; padding: 10px 16px; border-radius: 8px; }
+
+    /* === CTA BANNER — warm gradient === */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #4a2920 100%);
+      padding: 80px 28px; text-align: center; color: var(--cream);
+    }
+    .cta-banner .section-hand { color: var(--accent-light); }
+    .cta-banner h2 { color: var(--cream); }
+    .cta-banner p { color: rgba(250,245,237,0.6); font-size: 16px; margin-bottom: 32px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--primary); padding: 24px; text-align: center;
+      font-size: 12px; color: rgba(250,245,237,0.3);
+    }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { min-height: 85vh; padding-bottom: 40px; }
+      section { padding: 60px 20px; }
+      .story-grid { grid-template-columns: 1fr; }
+      .story-img { height: 280px; }
+      .gallery-organic { grid-template-columns: 1fr 1fr; }
+      .gallery-organic img:nth-child(2),
+      .gallery-organic img:nth-child(5) { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Casa <span>Oaxaca</span></a>
+  <div class="nav-links">
+    <a href="#menu">Menu</a>
+    <a href="#story">Our Story</a>
+    <a href="#gallery">Photos</a>
+    <a href="#hours">Hours</a>
+    <a href="#reserve" class="nav-cta">Reserve a Table</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-hand">✨ Family recipes since 1998</div>
+  <h1>Taste Oaxaca.<br>Feel home.</h1>
+  <p>Authentic Oaxacan cuisine made from scratch daily. Family-owned, community-loved, and always welcoming.</p>
+  <div class="hero-ctas">
+    <a href="#reserve" class="btn-warm">🪑 Reserve a Table</a>
+    <a href="#menu" class="btn-ghost">📋 See the Menu</a>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,25 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- STORY (before menu — story-first for restaurants) -->
+<section class="story" id="story">
+  <div class="container">
+    <div class="section-hand">Our story 🌮</div>
+    <h2>Three generations. One kitchen.</h2>
+    <div class="story-grid">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Restaurant interior" class="story-img">
+      <div class="story-text">
+        <blockquote>"Every dish we serve carries a piece of Oaxaca with it."</blockquote>
+        <p>My abuela started cooking for neighbors in our village outside Oaxaca City in 1978. When our family came to Washington, she brought her recipes — handwritten in a notebook that's now held together with tape and love.</p>
+        <p>Casa Oaxaca isn't trying to be trendy. We're trying to give you the same food that brought our family together around the table for three generations. Mole that takes two days. Tortillas made fresh every morning. Mezcal that tastes like the land it came from.</p>
+        <div class="story-sig">— Elena & Rodrigo Mendoza</div>
+        <div class="story-role">Owners & Head Cooks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU HIGHLIGHTS -->
+<section id="menu">
+  <div class="container">
+    <div class="section-hand">From our kitchen 🍽️</div>
+    <h2>Menu favorites</h2>
+    <p class="subtitle">Everything made from scratch. Vegetarian and gluten-free options available.</p>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-emoji">🫕</div>
+        <h3>Mole Negro</h3>
+        <p>Our signature. Slow-cooked 48 hours with 28 ingredients. Served over chicken with handmade tortillas and black beans.</p>
+        <div class="menu-price">$19</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🌽</div>
+        <h3>Tlayudas</h3>
+        <p>Giant crispy tortilla topped with black bean paste, Oaxaca cheese, avocado, and your choice of protein.</p>
+        <div class="menu-price">$16</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🥩</div>
+        <h3>Tasajo</h3>
+        <p>Thin-sliced dried beef, grilled and served with nopales, fresh salsa, and warm tortillas. A Oaxacan classic.</p>
+        <div class="menu-price">$18</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🧀</div>
+        <h3>Empanadas de Mole</h3>
+        <p>Handmade corn empanadas stuffed with mole amarillo and chicken. Served with crema and salsa verde.</p>
+        <div class="menu-price">$12</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🍫</div>
+        <h3>Chocolate Oaxaqueño</h3>
+        <p>Traditional hot chocolate made with stone-ground cacao, cinnamon, and piloncillo. Rich, warm, unforgettable.</p>
+        <div class="menu-price">$6</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🥃</div>
+        <h3>Mezcal Flight</h3>
+        <p>Three artisanal mezcals from small-batch producers in Oaxaca. Espadín, Tobalá, and seasonal selection.</p>
+        <div class="menu-price">$22</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-hand">Inside Casa Oaxaca 📸</div>
+    <h2>A seat at our table</h2>
+    <div class="gallery-organic">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Restaurant" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80" alt="Tacos" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Interior" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=600&q=80" alt="Mole" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Cooking" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&q=80" alt="Family dinner" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- HOURS -->
+<section id="hours">
+  <div class="container" style="text-align: center;">
+    <div class="section-hand">Visit us 🕐</div>
+    <h2>When we're here</h2>
+    <div class="hours-card">
+      <h3>Kitchen Hours</h3>
+      <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">Closed</span></div>
+      <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">11am – 9pm</span></div>
+      <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">11am – 9pm</span></div>
+      <div class="hours-row hours-today"><span class="hours-day">Thursday ← Today</span><span class="hours-time">11am – 9pm</span></div>
+      <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">11am – 10pm</span></div>
+      <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">10am – 10pm</span></div>
+      <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">10am – 8pm</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner" id="reserve">
+  <div class="section-hand">Come hungry, leave happy 🌶️</div>
+  <h2>Your table is ready</h2>
+  <p>Walk-ins welcome. Reservations recommended for weekends and parties of 6+.</p>
+  <div class="cta-buttons">
+    <a href="#" class="btn-warm">🪑 Reserve a Table</a>
+    <a href="tel:+14255557890" class="btn-ghost">📞 (425) 555-7890</a>
+    <a href="https://wa.me/14255557890" class="btn-ghost">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Casa Oaxaca · Issaquah, WA</p>
+  <p style="margin-top: 4px;">Powered by <strong style="color: rgba(250,245,237,0.4);">WelcomeMat</strong></p>
+</footer>
+
+</body>
+</html>

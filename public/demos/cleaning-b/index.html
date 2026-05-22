@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pristine — Premium Home Cleaning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a1a17;
+      --accent: #1a7a6d;
+      --accent-light: #2ab09e;
+      --accent-bg: #e8f5f2;
+      --bg: #fafbfb;
+      --bg-alt: #fff;
+      --text: #0a1a17;
+      --text-muted: #5f7370;
+      --border: #e5eae9;
+      --radius: 2px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Work Sans', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+
+    /* === NAV — minimal, lots of air === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 600; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent) !important; color: #fff !important;
+      padding: 10px 24px; border-radius: var(--radius); text-transform: uppercase !important;
+      letter-spacing: 1px !important; font-size: 11px !important;
+    }
+
+    /* === HERO — editorial split: text left, image right === */
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+      padding-top: 72px;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 60px 80px 60px; max-width: 600px; margin-left: auto;
+    }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+      color: var(--accent); margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 4.5vw, 56px); font-weight: 700; line-height: 1.08;
+      letter-spacing: -1.5px; margin-bottom: 24px;
+    }
+    .hero p { font-size: 17px; color: var(--text-muted); line-height: 1.7; max-width: 420px; }
+    .hero-ctas { margin-top: 36px; display: flex; gap: 16px; align-items: center; }
+    .btn-primary {
+      background: var(--accent); color: #fff; padding: 14px 36px; border: none;
+      border-radius: var(--radius); font-size: 13px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; text-decoration: none;
+      transition: all 0.2s; font-family: 'Poppins', sans-serif;
+    }
+    .btn-primary:hover { background: var(--accent-light); }
+    .btn-text { color: var(--text-muted); font-size: 13px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .btn-text:hover { color: var(--accent); }
+    .hero-image {
+      background: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1200&q=80') center/cover;
+    }
+
+    /* === CLIENTS STRIP === */
+    .clients {
+      padding: 32px 40px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 40px; background: var(--bg-alt);
+    }
+    .clients-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; white-space: nowrap; }
+    .client-logos { display: flex; gap: 32px; align-items: center; opacity: 0.35; flex-wrap: wrap; }
+    .client-logos span { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+
+    /* === SECTIONS === */
+    section { padding: 100px 40px; }
+    .section-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 16px; }
+    section h2 { font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    section .subtitle { font-size: 16px; color: var(--text-muted); max-width: 480px; line-height: 1.7; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    /* === SERVICES — numbered text list, no icons, pricing visible === */
+    .services { background: var(--bg-alt); }
+    .services-list { margin-top: 48px; }
+    .svc-row {
+      display: grid; grid-template-columns: 48px 1fr auto; gap: 24px;
+      align-items: baseline; padding: 28px 0;
+      border-bottom: 1px solid var(--border); transition: all 0.15s;
+    }
+    .svc-row:first-child { border-top: 1px solid var(--border); }
+    .svc-row:hover { padding-left: 12px; }
+    .svc-num { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: var(--accent); }
+    .svc-info h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .svc-info p { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
+    .svc-price { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .svc-price span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+
+    /* === STATS STRIP === */
+    .stats {
+      background: var(--primary); padding: 48px 40px;
+      display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Poppins', sans-serif; font-size: 40px; font-weight: 700; color: var(--accent-light); }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+    /* === REVIEWS — pull quotes, editorial style === */
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+    .review-card {
+      padding: 36px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg-alt);
+    }
+    .review-stars { color: var(--accent); font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
+    .review-card blockquote { font-size: 16px; line-height: 1.7; color: var(--text); font-style: italic; margin-bottom: 20px; }
+    .review-author { font-size: 13px; font-weight: 600; }
+    .review-meta { font-size: 12px; color: var(--text-muted); }
+
+    /* === ABOUT — no photo, credentials-first, stats === */
+    .about { background: var(--bg-alt); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; }
+    .about-text p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .credentials { list-style: none; }
+    .credentials li {
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px;
+    }
+    .cred-check { width: 20px; height: 20px; background: var(--accent-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--accent); flex-shrink: 0; }
+
+    /* === PROCESS — horizontal steps === */
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 48px; background: var(--border); }
+    .proc-step { background: var(--bg-alt); padding: 32px 24px; }
+    .proc-step .step-num { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+    .proc-step h3 { font-size: 16px; font-weight: 600; margin: 12px 0 8px; }
+    .proc-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* === AREAS === */
+    .areas-list { column-count: 3; margin-top: 32px; }
+    .areas-list li { list-style: none; padding: 8px 0; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+
+    /* === CTA === */
+    .cta-section { background: var(--accent-bg); text-align: center; }
+    .cta-section h2 { color: var(--primary); }
+    .cta-section p { margin: 0 auto 32px; color: var(--text-muted); }
+    .cta-row { display: flex; gap: 16px; justify-content: center; }
+
+    /* === FOOTER === */
+    footer { padding: 24px 40px; text-align: center; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-text { padding: 60px 24px; }
+      .hero-image { height: 300px; }
+      section { padding: 60px 20px; }
+      .reviews-grid, .about-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .areas-list { column-count: 2; }
+      .svc-row { grid-template-columns: 36px 1fr; }
+      .svc-price { grid-column: 2; font-size: 13px; }
+      .stats { gap: 40px; }
+      .clients { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Pristine.</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Book Online</a>
+  </div>
+</nav>
+
+<!-- HERO — editorial split -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Premium Home Cleaning</div>
+    <h1>Your home,<br>meticulously<br>maintained.</h1>
+    <p>Detailed, consistent cleaning for busy professionals who expect more. Background-checked teams, eco-friendly products, and a satisfaction guarantee on every visit.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Book a Cleaning</a>
+      <a href="#services" class="btn-text">View pricing →</a>
+    </div>
+  </div>
+  <div class="hero-image"></div>
+</section>
+
+<!-- CLIENT LOGOS -->
+<div class="clients">
+  <span class="clients-label">Trusted by</span>
+  <div class="client-logos">
+    <span>Redfin</span>
+    <span>Windermere</span>
+    <span>CBRE</span>
+    <span>Airbnb</span>
+    <span>Compass</span>
+  </div>
+</div>
+
+<!-- SERVICES — numbered list with pricing -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-eyebrow">Services & Pricing</div>
+    <h2>Transparent pricing.<br>No surprises.</h2>
+    <p class="subtitle">Every cleaning includes our 40-point checklist. Add-ons available at booking.</p>
+    <div class="services-list">
+      <div class="svc-row">
+        <span class="svc-num">01</span>
+        <div class="svc-info">
+          <h3>Standard Clean</h3>
+          <p>Kitchen, bathrooms, floors, dusting, and general tidying. Our most popular service for recurring clients.</p>
+        </div>
+        <div class="svc-price">From $149 <span>/ visit</span></div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">02</span>
+        <div class="svc-info">
+          <h3>Deep Clean</h3>
+          <p>Everything in Standard plus inside appliances, baseboards, window tracks, and detailed scrubbing. Recommended for first visits.</p>
+        </div>
+        <div class="svc-price">From $249 <span>/ visit</span></div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">03</span>
+        <div class="svc-info">
+          <h3>Move In / Move Out</h3>
+          <p>Top-to-bottom cleaning for vacant properties. Interior windows, inside cabinets, light fixtures, and wall spot cleaning.</p>
+        </div>
+        <div class="svc-price">From $349 <span>/ visit</span></div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">04</span>
+        <div class="svc-info">
+          <h3>Post-Construction</h3>
+          <p>Dust removal, debris cleanup, surface polishing, and detailed finishing for newly built or renovated spaces.</p>
+        </div>
+        <div class="svc-price">Custom <span>quote</span></div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">05</span>
+        <div class="svc-info">
+          <h3>Recurring Maintenance</h3>
+          <p>Weekly or biweekly visits with a dedicated team. Same crew each time. Priority scheduling and 10% recurring discount.</p>
+        </div>
+        <div class="svc-price">From $129 <span>/ visit</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">2,400+</div><div class="stat-label">Homes Cleaned</div></div>
+  <div class="stat"><div class="stat-num">4.9</div><div class="stat-label">Google Rating</div></div>
+  <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Rebook Rate</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Years in Business</div></div>
+</div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="section-eyebrow">Our Process</div>
+    <h2>How it works</h2>
+    <div class="process-steps">
+      <div class="proc-step">
+        <div class="step-num">Step 01</div>
+        <h3>Book online</h3>
+        <p>Choose your service, pick a date, and tell us about your home. Takes 2 minutes.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 02</div>
+        <h3>Confirm details</h3>
+        <p>We'll send a confirmation with your assigned team, arrival window, and checklist.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 03</div>
+        <h3>We clean</h3>
+        <p>Your team arrives on time, follows the checklist, and sends a completion photo when done.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 04</div>
+        <h3>You rate us</h3>
+        <p>Quick feedback after every visit. If anything's off, we come back within 24 hours — free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-eyebrow">Client Reviews</div>
+    <h2>What our clients say</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <blockquote>"I've tried four cleaning services in Bellevue. Pristine is the only one I've kept past the first month. They're consistent, thorough, and I never have to re-clean after them."</blockquote>
+        <div class="review-author">Sarah M.</div>
+        <div class="review-meta">Bellevue · Biweekly client since 2024</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <blockquote>"We use them for all our Airbnb turnovers. Same-day availability, reliable, and the properties always photograph well after. Worth every penny."</blockquote>
+        <div class="review-author">James & Priya R.</div>
+        <div class="review-meta">Kirkland · Property management, 4 units</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <blockquote>"The move-out clean they did on our Redmond townhouse was incredible. Our landlord returned the full deposit without even inspecting. That never happens."</blockquote>
+        <div class="review-author">David L.</div>
+        <div class="review-meta">Redmond · Move-out clean</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <blockquote>"I appreciate that they use the same team every time. My dog is anxious around strangers, and having familiar faces makes a huge difference."</blockquote>
+        <div class="review-author">Mina K.</div>
+        <div class="review-meta">Sammamish · Weekly client</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT — credentials-first, no personal photo -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-eyebrow">About Pristine</div>
+    <h2>Built on standards,<br>not shortcuts.</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Pristine was founded in 2020 by a team that came from hospitality management. We applied hotel-grade cleaning standards to residential homes — and it turned out people really wanted that.</p>
+        <p>Every team member goes through a 2-week training program, background check, and shadow period before they clean solo. We use eco-certified products exclusively and bring all our own equipment.</p>
+        <p>We're not the cheapest option. We're the one you don't have to think about.</p>
+      </div>
+      <ul class="credentials">
+        <li><span class="cred-check">✓</span> Licensed, bonded & insured ($2M liability)</li>
+        <li><span class="cred-check">✓</span> Background-checked teams</li>
+        <li><span class="cred-check">✓</span> Eco-friendly products only</li>
+        <li><span class="cred-check">✓</span> 100% satisfaction guarantee</li>
+        <li><span class="cred-check">✓</span> Same-team consistency</li>
+        <li><span class="cred-check">✓</span> 24-hour re-clean policy</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE AREAS -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Service Area</div>
+    <h2>Eastside coverage</h2>
+    <ul class="areas-list">
+      <li>Bellevue</li>
+      <li>Kirkland</li>
+      <li>Redmond</li>
+      <li>Sammamish</li>
+      <li>Issaquah</li>
+      <li>Woodinville</li>
+      <li>Bothell</li>
+      <li>Newcastle</li>
+      <li>Mercer Island</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="section-eyebrow">Get Started</div>
+    <h2>Book your first clean.</h2>
+    <p class="subtitle" style="margin: 0 auto 32px;">New clients get 15% off their first deep clean. No commitment required.</p>
+    <div class="cta-row">
+      <a href="#" class="btn-primary">Book Online</a>
+      <a href="tel:+14255559012" class="btn-text">or call (425) 555-9012</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Pristine Home Services · Bellevue, WA</p>
+  <p style="margin-top: 4px;">Powered by <strong>WelcomeMat</strong></p>
+</footer>
+
+</body>
+</html>

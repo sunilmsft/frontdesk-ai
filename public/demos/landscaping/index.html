@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evergreen Grounds — Professional Landscaping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a2e0a;
+      --accent: #4a7c23;
+      --accent-light: #6ba33a;
+      --warm: #d4a843;
+      --bg: #f7f6f2;
+      --bg-alt: #edebd7;
+      --text: #1a2e0a;
+      --text-muted: #5a6b4a;
+      --card-bg: #fff;
+      --radius: 4px;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --shadow-heavy: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Source Sans 3', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3, h4 { font-family: 'Bitter', serif; }
+
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(26,46,10,0.95); backdrop-filter: blur(12px);
+      padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Bitter', serif; font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; }
+    .nav-logo span { color: var(--warm); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--warm); }
+    .nav-cta { background: var(--warm) !important; color: var(--primary) !important; padding: 8px 20px; border-radius: var(--radius); font-weight: 700 !important; }
+
+    /* === HERO — full-width, stacked-bold === */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+      background: linear-gradient(180deg, rgba(26,46,10,0.3) 0%, rgba(26,46,10,0.85) 70%, var(--primary) 100%),
+        url('https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1600&q=80') center/cover;
+      padding: 140px 32px 60px;
+    }
+    .hero-content { max-width: 800px; }
+    .hero-badge {
+      display: inline-block; background: var(--warm); color: var(--primary);
+      font-family: 'Bitter', serif; font-size: 12px; font-weight: 700;
+      padding: 6px 16px; border-radius: var(--radius); text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: 20px;
+      animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 72px); font-weight: 800; color: #fff;
+      line-height: 1.05; margin-bottom: 16px;
+      animation: popIn 0.6s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .hero p {
+      font-size: 20px; color: rgba(255,255,255,0.8); max-width: 560px; line-height: 1.6;
+      animation: popIn 0.6s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .hero-ctas {
+      margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap;
+      animation: popIn 0.6s 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .btn-primary {
+      background: var(--warm); color: var(--primary); padding: 14px 32px;
+      border: none; border-radius: var(--radius); font-size: 16px; font-weight: 700;
+      font-family: 'Bitter', serif; cursor: pointer; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,168,67,0.4); }
+    .btn-secondary {
+      background: transparent; color: #fff; padding: 14px 32px;
+      border: 2px solid rgba(255,255,255,0.4); border-radius: var(--radius);
+      font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--warm); color: var(--warm); }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* === TRUST BAR === */
+    .trust-bar {
+      background: var(--primary); padding: 24px 32px;
+      display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 600; }
+    .trust-icon { width: 36px; height: 36px; background: var(--accent); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; }
+    .trust-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; }
+
+    /* === SECTIONS === */
+    section { padding: 80px 32px; }
+    .section-label {
+      font-family: 'Bitter', serif; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 3px; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    section h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
+    section .subtitle { font-size: 17px; color: var(--text-muted); max-width: 600px; line-height: 1.6; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* === SERVICES — bold cards with thick left border === */
+    .services { background: var(--bg-alt); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .service-card {
+      background: var(--card-bg); border-left: 5px solid var(--accent);
+      padding: 28px; border-radius: var(--radius);
+      box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .service-card:hover { transform: scale(1.03); box-shadow: var(--shadow-heavy); }
+    .service-icon {
+      width: 48px; height: 48px; background: var(--accent); border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    }
+    .service-icon svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2; }
+    .service-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .service-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* === WHY US — horizontal stat blocks === */
+    .why-us { background: var(--primary); color: #fff; }
+    .why-us .section-label { color: var(--warm); }
+    .why-us h2 { color: #fff; }
+    .why-us .subtitle { color: rgba(255,255,255,0.7); }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; margin-top: 40px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+      padding: 32px 24px; border-radius: var(--radius); text-align: center;
+    }
+    .stat-number { font-family: 'Bitter', serif; font-size: 48px; font-weight: 800; color: var(--warm); }
+    .stat-label { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+    /* === GALLERY — masonry-ish grid === */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-top: 40px;
+    }
+    .gallery-grid img {
+      width: 100%; height: 240px; object-fit: cover; border-radius: var(--radius);
+      transition: transform 0.3s; cursor: pointer;
+    }
+    .gallery-grid img:hover { transform: scale(1.05); }
+    .gallery-grid img:nth-child(1) { grid-row: span 2; height: 100%; }
+
+    /* === ABOUT — side by side, rugged feel === */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 40px;
+    }
+    .about-img {
+      width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius);
+      border: 4px solid var(--accent);
+    }
+    .about-text blockquote {
+      font-family: 'Bitter', serif; font-size: 22px; font-style: italic;
+      line-height: 1.5; color: var(--text); border-left: 4px solid var(--warm);
+      padding-left: 20px; margin-bottom: 20px;
+    }
+    .about-text p { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+    .about-sig { font-family: 'Bitter', serif; font-size: 18px; font-weight: 700; margin-top: 16px; }
+    .about-role { font-size: 13px; color: var(--text-muted); }
+
+    /* === AREAS === */
+    .areas-grid {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px;
+    }
+    .area-tag {
+      background: var(--accent); color: #fff; padding: 10px 20px;
+      border-radius: var(--radius); font-weight: 600; font-size: 14px;
+      transition: transform 0.15s;
+    }
+    .area-tag:hover { transform: translateY(-2px); }
+
+    /* === CTA BANNER === */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #2d5016 100%);
+      padding: 80px 32px; text-align: center; color: #fff;
+    }
+    .cta-banner h2 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 12px; }
+    .cta-banner p { font-size: 17px; color: rgba(255,255,255,0.7); margin-bottom: 32px; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--primary); padding: 24px 32px; text-align: center;
+      font-size: 12px; color: rgba(255,255,255,0.4);
+    }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { min-height: 80vh; padding: 100px 20px 40px; }
+      .hero h1 { font-size: 36px; }
+      .trust-bar { gap: 20px; }
+      section { padding: 60px 20px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid img:nth-child(1) { grid-row: span 1; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-img { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Evergreen<span>Grounds</span></a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#gallery">Work</a>
+    <a href="#about">About</a>
+    <a href="#areas">Areas</a>
+    <a href="#contact" class="nav-cta">Free Estimate</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Licensed & Insured · Since 2015</div>
+    <h1>Your yard.<br>Built to last.</h1>
+    <p>Full-service landscaping for homes and businesses across the Eastside. From weekly maintenance to complete transformations.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Get a Free Estimate</a>
+      <a href="tel:+14255551234" class="btn-secondary">📞 (425) 555-1234</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    Licensed & Insured
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+    4.9★ on Google (120+ reviews)
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    Same-week scheduling
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    500+ properties served
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2>Built for the Pacific Northwest</h2>
+    <p class="subtitle">From spring cleanups to year-round maintenance, we handle every season.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Lawn Maintenance</h3>
+        <p>Weekly mowing, edging, and blowing. Fertilization programs. Weed control. Your lawn stays sharp year-round.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3>Landscape Design</h3>
+        <p>Custom designs that work with the PNW climate. Native plants, hardscaping, water features, outdoor living spaces.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+        <h3>Hardscaping</h3>
+        <p>Patios, retaining walls, walkways, fire pits. We build structures that last decades, not seasons.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <h3>Seasonal Cleanups</h3>
+        <p>Spring prep, fall leaf removal, storm debris cleanup, gutter clearing. We handle the ugly jobs so you don't have to.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Irrigation Systems</h3>
+        <p>Installation, repair, and winterization. Smart controllers that save water and money. We keep your system dialed in.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></div>
+        <h3>Commercial Grounds</h3>
+        <p>HOAs, office parks, retail centers. Consistent crews, reliable scheduling, professional results every visit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us">
+  <div class="container">
+    <div class="section-label">Why Evergreen</div>
+    <h2>Numbers that speak for themselves</h2>
+    <p class="subtitle">We don't cut corners. We cut grass.</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">9</div>
+        <div class="stat-label">Years in business</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Properties maintained</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4.9</div>
+        <div class="stat-label">Google rating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Client retention rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-label">Our Work</div>
+    <h2>Before was fine. After is Evergreen.</h2>
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80" alt="Landscaped yard" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80" alt="Garden path" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?w=600&q=80" alt="Lawn maintenance" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1598902108854-d1446297d661?w=600&q=80" alt="Stone patio" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Outdoor living" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-label">Who We Are</div>
+    <h2>Not a franchise. Not a side gig.</h2>
+    <div class="about-grid">
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Marcus Rivera" class="about-img">
+      <div class="about-text">
+        <blockquote>"I started with a truck and a mower. Nine years later, I still show up to every first job myself."</blockquote>
+        <p>Evergreen Grounds is a family-run landscaping company based in Sammamish, WA. We've built our reputation one yard at a time — by showing up on time, doing clean work, and treating every property like it's our own.</p>
+        <p>Our crew of 8 are all full-time, year-round employees. No subcontractors. No revolving door. The same people who mow your lawn in April will clear your leaves in October.</p>
+        <div class="about-sig">Marcus Rivera</div>
+        <div class="about-role">Owner & Lead Landscaper</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AREAS -->
+<section id="areas">
+  <div class="container">
+    <div class="section-label">Service Area</div>
+    <h2>We cover the Eastside</h2>
+    <div class="areas-grid">
+      <span class="area-tag">Sammamish</span>
+      <span class="area-tag">Issaquah</span>
+      <span class="area-tag">Bellevue</span>
+      <span class="area-tag">Redmond</span>
+      <span class="area-tag">Kirkland</span>
+      <span class="area-tag">Woodinville</span>
+      <span class="area-tag">Bothell</span>
+      <span class="area-tag">North Bend</span>
+      <span class="area-tag">Snoqualmie</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="contact">
+  <h2>Ready to fix your yard for good?</h2>
+  <p>Free estimates. No obligations. We usually respond within a few hours.</p>
+  <div class="cta-buttons">
+    <a href="#" class="btn-primary">🔥 Get a Free Estimate</a>
+    <a href="tel:+14255551234" class="btn-secondary">📞 Call Now</a>
+    <a href="sms:+14255551234" class="btn-secondary">💬 Text Us</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Evergreen Grounds LLC · Sammamish, WA</p>
+  <p style="margin-top: 6px;">Powered by <strong style="color: rgba(255,255,255,0.6);">WelcomeMat</strong></p>
+</footer>
+
+</body>
+</html>

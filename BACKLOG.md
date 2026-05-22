@@ -46,6 +46,12 @@
 ## Onboarding Form Enhancements
 - [ ] **Contact channel picker** — During onboarding, let business owner choose which CTAs appear on their site (Quote Form, Text Us, WhatsApp, Call). Site builder renders only the selected options.
 - [ ] **Per-business notification email** — Store owner email in businesses table, route quote notifications to their email instead of global NOTIFICATION_EMAIL env var.
+- [ ] **Google Business Profile setup (opt-in)** — Conditional section on onboarding form:
+  - Toggle: "Want more customers to find you on Google?" with plain-English explainer (benefit-focused, no jargon — e.g. "When someone near you searches 'house cleaning near me,' your business shows up on the map with your phone number, hours, and reviews. It's free and we'll set it up for you.")
+  - Only shows extra fields when they click Yes/Next
+  - Collects: business address (or "no storefront" → service area), service areas (cities/zips), business category (we suggest based on their services), recovery phone number
+  - We create a business Gmail for them, set up Google Business Profile, hand them the credentials
+  - They just need to read us the verification postcard PIN when it arrives
 
 ## Onboarding Flow
 1. Share onboard link with business owner

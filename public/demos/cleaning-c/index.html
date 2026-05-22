@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparkle Crew — Home Cleaning That Slaps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a1535;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --accent-bg: #f0eeff;
+      --yellow: #ffeaa7;
+      --green: #00b894;
+      --pink: #fd79a8;
+      --bg: #f8f7ff;
+      --bg-alt: #fff;
+      --text: #1a1535;
+      --text-muted: #636380;
+      --radius: 24px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+
+    /* === NAV — playful pill style === */
+    nav {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+      background: rgba(26,21,53,0.92); backdrop-filter: blur(16px);
+      border-radius: 60px; padding: 10px 12px 10px 24px;
+      display: flex; align-items: center; gap: 24px;
+      box-shadow: 0 8px 32px rgba(26,21,53,0.2);
+    }
+    .nav-logo { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: var(--accent) !important; color: #fff !important;
+      padding: 10px 22px; border-radius: 60px; font-weight: 700 !important; font-size: 13px !important;
+    }
+
+    /* === HERO — big photo, bold overlay, badge heavy === */
+    .hero {
+      position: relative; min-height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+      background: linear-gradient(180deg, rgba(26,21,53,0.3) 0%, rgba(26,21,53,0.85) 100%),
+        url('https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=1600&q=80') center/cover;
+    }
+    .hero-inner { max-width: 640px; }
+    .hero-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .hero-badge {
+      padding: 6px 16px; border-radius: 60px; font-size: 13px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .badge-purple { background: var(--accent); color: #fff; }
+    .badge-yellow { background: var(--yellow); color: var(--primary); }
+    .badge-green { background: var(--green); color: #fff; }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 68px); font-weight: 800; color: #fff;
+      line-height: 1.05; margin-bottom: 16px;
+    }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .hero-ctas { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-big {
+      background: var(--accent); color: #fff; padding: 16px 36px;
+      border-radius: 60px; font-size: 16px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Outfit', sans-serif; border: none;
+    }
+    .btn-big:hover { background: var(--accent-light); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(108,92,231,0.3); }
+    .btn-pill {
+      background: rgba(255,255,255,0.15); color: #fff; padding: 16px 36px;
+      border-radius: 60px; font-size: 16px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; backdrop-filter: blur(8px);
+    }
+    .btn-pill:hover { background: rgba(255,255,255,0.25); }
+
+    /* === SECTIONS === */
+    section { padding: 80px 24px; }
+    .section-emoji { font-size: 32px; margin-bottom: 8px; }
+    section h2 { font-size: clamp(28px, 4.5vw, 44px); font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+    section .subtitle { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.7; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    /* === SERVICES — big emoji cards, playful === */
+    .services { background: var(--bg-alt); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px; margin-top: 40px;
+    }
+    .svc-card {
+      background: var(--bg); padding: 28px; border-radius: var(--radius);
+      border: 2px solid transparent; transition: all 0.25s; cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .svc-card:hover { border-color: var(--accent); transform: translateY(-6px) rotate(-0.5deg); box-shadow: 0 16px 40px rgba(108,92,231,0.12); }
+    .svc-emoji { font-size: 40px; margin-bottom: 12px; }
+    .svc-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+    .svc-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .svc-tag {
+      display: inline-block; margin-top: 12px; padding: 4px 12px; border-radius: 60px;
+      font-size: 11px; font-weight: 700; background: var(--accent-bg); color: var(--accent);
+    }
+
+    /* === BEFORE/AFTER === */
+    .ba-section { background: var(--primary); color: #fff; overflow: hidden; }
+    .ba-section h2 { color: #fff; }
+    .ba-section .subtitle { color: rgba(255,255,255,0.5); }
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 40px; border-radius: var(--radius); overflow: hidden; }
+    .ba-item { position: relative; height: 280px; }
+    .ba-item img { width: 100%; height: 100%; object-fit: cover; }
+    .ba-label {
+      position: absolute; top: 16px; left: 16px; padding: 6px 16px;
+      border-radius: 60px; font-size: 12px; font-weight: 700;
+    }
+    .ba-before { background: var(--pink); color: #fff; }
+    .ba-after { background: var(--green); color: #fff; }
+
+    /* === TEAM — grid with headshots and fun bios === */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
+    .team-card { text-align: center; }
+    .team-photo {
+      width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+      margin: 0 auto 16px; border: 4px solid var(--accent-bg);
+      transition: transform 0.3s;
+    }
+    .team-card:hover .team-photo { transform: scale(1.08) rotate(3deg); }
+    .team-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+    .team-role { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .team-bio { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* === GOOGLE REVIEWS STYLE === */
+    .social-proof { background: var(--bg-alt); }
+    .proof-header { display: flex; align-items: center; gap: 20px; margin-bottom: 32px; flex-wrap: wrap; }
+    .proof-score { font-family: 'Outfit', sans-serif; font-size: 56px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .proof-stars { color: #f1c40f; font-size: 24px; }
+    .proof-count { font-size: 14px; color: var(--text-muted); }
+    .proof-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .proof-card {
+      background: var(--bg); padding: 24px; border-radius: var(--radius);
+      border: 2px solid var(--accent-bg);
+    }
+    .proof-card .stars { color: #f1c40f; font-size: 14px; margin-bottom: 12px; }
+    .proof-card p { font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+    .proof-card .author { font-size: 13px; font-weight: 600; }
+    .proof-card .when { font-size: 11px; color: var(--text-muted); }
+
+    /* === AREAS — colorful chips === */
+    .area-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+    .area-chip {
+      padding: 10px 20px; border-radius: 60px; font-size: 14px; font-weight: 600;
+      transition: all 0.2s; cursor: default;
+    }
+    .area-chip:nth-child(odd) { background: var(--accent-bg); color: var(--accent); }
+    .area-chip:nth-child(even) { background: var(--yellow); color: var(--primary); }
+    .area-chip:hover { transform: translateY(-3px) rotate(-2deg); }
+
+    /* === CTA === */
+    .cta-section {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b7cf7 50%, var(--pink) 100%);
+      text-align: center; color: #fff; padding: 100px 24px;
+    }
+    .cta-section h2 { color: #fff; }
+    .cta-section p { color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .btn-white {
+      background: #fff; color: var(--accent); padding: 16px 36px;
+      border-radius: 60px; font-size: 16px; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s; font-family: 'Outfit', sans-serif;
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+
+    /* === FOOTER === */
+    footer { background: var(--primary); padding: 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); }
+
+    /* === ANIMATIONS — slide stagger === */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .svc-card { animation: slideUp 0.5s ease both; }
+    .svc-card:nth-child(1) { animation-delay: 0s; }
+    .svc-card:nth-child(2) { animation-delay: 0.08s; }
+    .svc-card:nth-child(3) { animation-delay: 0.16s; }
+    .svc-card:nth-child(4) { animation-delay: 0.24s; }
+    .svc-card:nth-child(5) { animation-delay: 0.32s; }
+    .svc-card:nth-child(6) { animation-delay: 0.4s; }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      nav { left: 12px; right: 12px; transform: none; padding: 8px 8px 8px 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { min-height: 85vh; }
+      section { padding: 60px 20px; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .proof-score { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV — floating pill -->
+<nav>
+  <a href="#" class="nav-logo">Sparkle<span>Crew</span></a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#team">Team</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact" class="nav-cta">Book Now ✨</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badges">
+      <span class="hero-badge badge-purple">✨ 5-Star Rated</span>
+      <span class="hero-badge badge-yellow">⚡ Same-Week Booking</span>
+      <span class="hero-badge badge-green">🌿 Eco-Friendly</span>
+    </div>
+    <h1>Clean homes.<br>Happy crew.<br>Zero stress.</h1>
+    <p>We're a tight-knit team that actually loves cleaning. Sounds weird? Maybe. But your home will thank us.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-big">✨ Book a Cleaning</a>
+      <a href="tel:+14255558765" class="btn-pill">📞 (425) 555-8765</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-emoji">🧹</div>
+    <h2>Pick your vibe</h2>
+    <p class="subtitle">Every cleaning comes with our good-vibes guarantee. Not happy? We come back. For free. Pinky promise.</p>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-emoji">🏠</div>
+        <h3>The Refresh</h3>
+        <p>Our standard clean. Kitchen, baths, floors, dusting — everything you need to feel like a functional adult again.</p>
+        <span class="svc-tag">Most popular</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-emoji">💎</div>
+        <h3>The Deep Dive</h3>
+        <p>We go where no sponge has gone before. Inside the oven, behind the fridge, that weird spot above the cabinets.</p>
+        <span class="svc-tag">First-timers fav</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-emoji">📦</div>
+        <h3>The Big Move</h3>
+        <p>Moving in or out? We'll make the place look so good your landlord might actually return your deposit.</p>
+        <span class="svc-tag">Full security deposit energy</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-emoji">🔄</div>
+        <h3>The Regular</h3>
+        <p>Weekly or biweekly. Same crew. Same time. Your home stays clean, and you get your weekends back.</p>
+        <span class="svc-tag">Save 15%</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-emoji">🏢</div>
+        <h3>The Office Glow-Up</h3>
+        <p>Small offices and co-working spaces. We clean after hours so your team shows up to a fresh space every morning.</p>
+        <span class="svc-tag">After-hours available</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-emoji">🎉</div>
+        <h3>The After-Party</h3>
+        <p>Post-event cleanup. We've seen it all and judged nothing. Text us, and we'll be there by morning.</p>
+        <span class="svc-tag">Weekend warriors</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="ba-section">
+  <div class="container">
+    <div class="section-emoji">📸</div>
+    <h2>The receipts</h2>
+    <p class="subtitle">Real photos from real cleans. No filters, no staging. Just elbow grease.</p>
+    <div class="ba-grid">
+      <div class="ba-item">
+        <span class="ba-label ba-before">Before 😬</span>
+        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80" alt="Before" loading="lazy">
+      </div>
+      <div class="ba-item">
+        <span class="ba-label ba-after">After ✨</span>
+        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80" alt="After" loading="lazy">
+      </div>
+      <div class="ba-item">
+        <span class="ba-label ba-before">Before 🫠</span>
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Before" loading="lazy">
+      </div>
+      <div class="ba-item">
+        <span class="ba-label ba-after">After 💅</span>
+        <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&q=80" alt="After" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="section-emoji">👋</div>
+    <h2>Meet the crew</h2>
+    <p class="subtitle">No faceless corporation. Just real people who take pride in what they do.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=80" alt="Jess" class="team-photo">
+        <h3>Jess</h3>
+        <div class="team-role">Founder & Lead Cleaner</div>
+        <div class="team-bio">Started Sparkle Crew in college. Still cleans 3 days a week because she genuinely loves it.</div>
+      </div>
+      <div class="team-card">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80" alt="Marcus" class="team-photo">
+        <h3>Marcus</h3>
+        <div class="team-role">Deep Clean Specialist</div>
+        <div class="team-bio">Former restaurant kitchen manager. His attention to detail is frankly unsettling (in a good way).</div>
+      </div>
+      <div class="team-card">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&q=80" alt="Luna" class="team-photo">
+        <h3>Luna</h3>
+        <div class="team-role">Eco & Supplies Lead</div>
+        <div class="team-bio">Mixes our custom eco-cleaning solutions. Will talk about vinegar ratios for hours if you let her.</div>
+      </div>
+      <div class="team-card">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80" alt="Kai" class="team-photo">
+        <h3>Kai</h3>
+        <div class="team-role">Move-In/Out Specialist</div>
+        <div class="team-bio">Has helped 200+ people get their deposits back. Landlords have a love-hate relationship with him.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS — Google-review style -->
+<section class="social-proof" id="reviews">
+  <div class="container">
+    <div class="proof-header">
+      <div class="proof-score">4.9</div>
+      <div>
+        <div class="proof-stars">★★★★★</div>
+        <div class="proof-count">127 reviews on Google</div>
+      </div>
+    </div>
+    <div class="proof-cards">
+      <div class="proof-card">
+        <div class="stars">★★★★★</div>
+        <p>"Jess and her crew are THE BEST. I've never left a Google review before but they earned it. My apartment has never looked this good."</p>
+        <div class="author">Taylor P.</div>
+        <div class="when">3 weeks ago</div>
+      </div>
+      <div class="proof-card">
+        <div class="stars">★★★★★</div>
+        <p>"Booked the after-party clean. They showed up at 8am, no judgment, and had the place spotless by noon. Legends. 🙌"</p>
+        <div class="author">Ryan & Sam</div>
+        <div class="when">1 month ago</div>
+      </div>
+      <div class="proof-card">
+        <div class="stars">★★★★★</div>
+        <p>"My move-out clean was incredible. Got my full deposit back on a place I thought was a lost cause. Kai is a wizard."</p>
+        <div class="author">Priya M.</div>
+        <div class="when">2 months ago</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AREAS -->
+<section>
+  <div class="container">
+    <div class="section-emoji">📍</div>
+    <h2>Where we sparkle</h2>
+    <div class="area-chips">
+      <span class="area-chip">Bellevue</span>
+      <span class="area-chip">Kirkland</span>
+      <span class="area-chip">Redmond</span>
+      <span class="area-chip">Sammamish</span>
+      <span class="area-chip">Issaquah</span>
+      <span class="area-chip">Woodinville</span>
+      <span class="area-chip">Bothell</span>
+      <span class="area-chip">Renton</span>
+      <span class="area-chip">Newcastle</span>
+      <span class="area-chip">Mercer Island</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Ready for a clean home<br>without the hassle?</h2>
+  <p>First-time clients get 20% off. No contracts, no commitments, just a really clean home.</p>
+  <a href="#" class="btn-white">✨ Book Your First Clean</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Sparkle Crew LLC · Bellevue, WA</p>
+  <p style="margin-top: 4px;">Powered by <strong style="color: rgba(255,255,255,0.4);">WelcomeMat</strong></p>
+</footer>
+
+</body>
+</html>
