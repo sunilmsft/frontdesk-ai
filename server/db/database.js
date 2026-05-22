@@ -132,6 +132,22 @@ async function initDb() {
 
     CREATE INDEX IF NOT EXISTS idx_quotes_business ON quote_requests(business_id);
     CREATE INDEX IF NOT EXISTS idx_quotes_status ON quote_requests(status);
+
+    CREATE TABLE IF NOT EXISTS contact_inquiries (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      business_name TEXT,
+      phone TEXT NOT NULL,
+      looking_for TEXT,
+      message TEXT,
+      language TEXT DEFAULT 'en',
+      translated_message TEXT,
+      referral TEXT,
+      status TEXT DEFAULT 'new' CHECK(status IN ('new', 'contacted', 'converted', 'closed')),
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_contact_status ON contact_inquiries(status);
   `);
 
   // Migration: widen submissions status CHECK constraint to include 'deleted'

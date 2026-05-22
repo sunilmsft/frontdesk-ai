@@ -53,12 +53,14 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/quote', require('./routes/quote'));
+app.use('/api/contact', require('./routes/contact'));
 app.use('/quote', require('./routes/quote'));
 app.use('/site', require('./routes/site'));
 
 // Clean URLs for static pages
 app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));
 app.get('/pitch', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'contact.html')));
 
 // Health check
 app.get('/health', (req, res) => {

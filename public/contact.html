@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — WelcomeMat</title>
+  <meta name="description" content="Get in touch with WelcomeMat. We'll help you build your online presence — in English, Spanish, or Portuguese.">
+  <link rel="canonical" href="https://welcomematdigital.com/contact">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --warm: #c8993e;
+      --navy: #1e3352;
+      --accent-light: #f0fdfa;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; font-size: 16px; overflow-x: hidden;
+    }
+
+    /* Nav — matches pitch.html */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 14px 0;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(16px);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text {
+      font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white;
+    }
+    .logo-text span { color: #5eead4; }
+
+    /* Language gate — matches onboard.html pattern */
+    .lang-gate {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    .lang-gate-inner { text-align: center; padding: 48px 24px; }
+    .lang-gate-inner h1 {
+      font-family: 'Playfair Display', serif;
+      color: white; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;
+    }
+    .lang-gate-inner p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 36px; }
+    .lang-gate-options { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .lang-gate-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 28px; background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.15); border-radius: 12px;
+      color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .lang-gate-btn:hover {
+      background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    .lang-gate-btn .flag { font-size: 1.5rem; }
+
+    /* Form page */
+    .app-content { display: none; }
+    .page-header {
+      background: #0f172a; padding: 100px 0 48px; text-align: center;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800;
+      color: white; margin-bottom: 8px;
+    }
+    .page-header p { color: #94a3b8; font-size: 1rem; max-width: 480px; margin: 0 auto; }
+
+    .form-wrapper {
+      max-width: 520px; margin: -32px auto 60px; padding: 0 24px; position: relative; z-index: 2;
+    }
+    .form-card {
+      background: white; border-radius: 16px; padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 13px; font-weight: 600;
+      margin-bottom: 5px; color: var(--text);
+    }
+    .field .hint { font-size: 11px; color: #999; margin-bottom: 5px; }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+    }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .field select {
+      appearance: none; -webkit-appearance: none;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat right 14px center;
+      padding-right: 36px; cursor: pointer;
+    }
+
+    .submit-btn {
+      width: 100%; padding: 14px; border: none; border-radius: 10px;
+      background: var(--accent); color: white; font-size: 15px;
+      font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(13,148,136,0.3);
+    }
+    .submit-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .success-msg {
+      display: none; text-align: center; padding: 32px;
+    }
+    .success-msg .icon { font-size: 48px; margin-bottom: 12px; }
+    .success-msg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: var(--text);
+    }
+    .success-msg p { color: var(--muted); font-size: 0.95rem; }
+
+    .error-msg {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;
+      padding: 10px 14px; font-size: 13px; color: #dc2626;
+      margin-bottom: 16px; display: none;
+    }
+
+    .lang-switch {
+      display: flex; justify-content: center; gap: 0; margin-top: 20px;
+      border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+      width: fit-content; margin-left: auto; margin-right: auto;
+    }
+    .lang-switch-btn {
+      padding: 6px 14px; font-size: 12px; font-weight: 500;
+      cursor: pointer; border: none; background: white; color: var(--muted);
+      transition: all 0.15s; font-family: inherit;
+    }
+    .lang-switch-btn.active { background: var(--text); color: white; }
+    .lang-switch-btn:hover:not(.active) { background: #f1f5f9; }
+
+    /* Footer */
+    .footer {
+      text-align: center; padding: 32px 24px;
+      font-size: 12px; color: var(--muted);
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 500px) {
+      .form-card { padding: 24px 20px; }
+      .lang-gate-options { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Language Gate -->
+  <div class="lang-gate" id="langGate">
+    <div class="lang-gate-inner">
+      <h1>👋 Let's talk</h1>
+      <p>Choose your language · Seleccione su idioma · Escolha seu idioma</p>
+      <div class="lang-gate-options">
+        <button class="lang-gate-btn" onclick="chooseLang('en')">
+          <span class="flag">🇺🇸</span> English
+        </button>
+        <button class="lang-gate-btn" onclick="chooseLang('es')">
+          <span class="flag">🇲🇽</span> Español
+        </button>
+        <button class="lang-gate-btn" onclick="chooseLang('pt')">
+          <span class="flag">🇧🇷</span> Português
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content (hidden until language chosen) -->
+  <div class="app-content" id="appContent">
+
+    <!-- Nav -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="/" class="logo">
+          <div class="logo-text">Welcome<span>Mat</span></div>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+      <h1 data-i18n="page_title">Tell us about your business</h1>
+      <p data-i18n="page_sub">We'll get back to you within 24 hours — by text, call, or WhatsApp. Whatever works best for you.</p>
+    </div>
+
+    <!-- Form -->
+    <div class="form-wrapper">
+      <div class="form-card" id="formCard">
+        <div class="error-msg" id="errorMsg"></div>
+
+        <form id="contactForm">
+          <div class="field">
+            <label data-i18n="lbl_name">Your Name *</label>
+            <input type="text" id="name" required data-i18n-ph="ph_name" placeholder="e.g. Maria Santos">
+          </div>
+
+          <div class="field">
+            <label data-i18n="lbl_business">Business Name</label>
+            <div class="hint" data-i18n="hint_business">If you have one — it's okay if you don't yet</div>
+            <input type="text" id="businessName" data-i18n-ph="ph_business" placeholder="e.g. Sparkle Clean Services">
+          </div>
+
+          <div class="field">
+            <label data-i18n="lbl_phone">Phone or WhatsApp *</label>
+            <div class="hint" data-i18n="hint_phone">We'll text you — no spam, promise</div>
+            <input type="tel" id="phone" required data-i18n-ph="ph_phone" placeholder="(206) 555-1234">
+          </div>
+
+          <div class="field">
+            <label data-i18n="lbl_looking_for">What are you looking for?</label>
+            <select id="lookingFor">
+              <option value="website" data-i18n="opt_website">A website for my business</option>
+              <option value="google" data-i18n="opt_google">Help showing up on Google</option>
+              <option value="both" data-i18n="opt_both">Website + Google — the full package</option>
+              <option value="not_sure" data-i18n="opt_not_sure">Not sure yet — just want to talk</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label data-i18n="lbl_message">Anything else you'd like us to know?</label>
+            <textarea id="message" data-i18n-ph="ph_message" placeholder="Tell us a little about your business, what you're looking for, or any questions you have..."></textarea>
+          </div>
+
+          <input type="hidden" id="referral" value="">
+
+          <button type="submit" class="submit-btn" id="submitBtn" data-i18n="btn_send">Send Message</button>
+        </form>
+
+        <div class="lang-switch">
+          <button class="lang-switch-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-switch-btn" onclick="setLang('es')">ES</button>
+          <button class="lang-switch-btn" onclick="setLang('pt')">PT</button>
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-msg" id="successMsg">
+        <div class="icon">✅</div>
+        <h2 data-i18n="success_title">We got your message!</h2>
+        <p data-i18n="success_sub">We'll reach out within 24 hours by text or WhatsApp. Talk soon!</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="/">WelcomeMat</a> · <span data-i18n="footer_text">Professional websites for local businesses</span>
+    </div>
+
+  </div>
+
+<script>
+  // ── i18n ──
+  const T = {
+    en: {
+      page_title: 'Tell us about your business',
+      page_sub: "We'll get back to you within 24 hours — by text, call, or WhatsApp. Whatever works best for you.",
+      lbl_name: 'Your Name *',
+      lbl_business: 'Business Name',
+      hint_business: "If you have one — it's okay if you don't yet",
+      lbl_phone: 'Phone or WhatsApp *',
+      hint_phone: "We'll text you — no spam, promise",
+      lbl_looking_for: 'What are you looking for?',
+      opt_website: 'A website for my business',
+      opt_google: 'Help showing up on Google',
+      opt_both: 'Website + Google — the full package',
+      opt_not_sure: "Not sure yet — just want to talk",
+      lbl_message: "Anything else you'd like us to know?",
+      ph_name: 'e.g. Maria Santos',
+      ph_business: 'e.g. Sparkle Clean Services',
+      ph_phone: '(206) 555-1234',
+      ph_message: "Tell us a little about your business, what you're looking for, or any questions you have...",
+      btn_send: 'Send Message',
+      btn_sending: 'Sending...',
+      success_title: 'We got your message!',
+      success_sub: "We'll reach out within 24 hours by text or WhatsApp. Talk soon!",
+      footer_text: 'Professional websites for local businesses',
+      err_required: 'Please fill in your name and phone number.',
+      err_phone: 'Please enter a valid phone number (at least 10 digits).',
+      err_generic: 'Something went wrong. Please try again or text us directly.'
+    },
+    es: {
+      page_title: 'Cuéntanos sobre tu negocio',
+      page_sub: 'Te responderemos en menos de 24 horas — por texto, llamada o WhatsApp. Como prefieras.',
+      lbl_name: 'Tu Nombre *',
+      lbl_business: 'Nombre del Negocio',
+      hint_business: 'Si tienes uno — está bien si aún no',
+      lbl_phone: 'Teléfono o WhatsApp *',
+      hint_phone: 'Te enviaremos un mensaje — sin spam, lo prometemos',
+      lbl_looking_for: '¿Qué estás buscando?',
+      opt_website: 'Un sitio web para mi negocio',
+      opt_google: 'Ayuda para aparecer en Google',
+      opt_both: 'Sitio web + Google — el paquete completo',
+      opt_not_sure: 'No estoy seguro/a — solo quiero hablar',
+      lbl_message: '¿Algo más que quieras contarnos?',
+      ph_name: 'ej. María García',
+      ph_business: 'ej. Limpieza Brillante',
+      ph_phone: '(206) 555-1234',
+      ph_message: 'Cuéntanos un poco sobre tu negocio, lo que buscas, o cualquier pregunta que tengas...',
+      btn_send: 'Enviar Mensaje',
+      btn_sending: 'Enviando...',
+      success_title: '¡Recibimos tu mensaje!',
+      success_sub: 'Te contactaremos en menos de 24 horas por texto o WhatsApp. ¡Hasta pronto!',
+      footer_text: 'Sitios web profesionales para negocios locales',
+      err_required: 'Por favor ingresa tu nombre y teléfono.',
+      err_phone: 'Por favor ingresa un número de teléfono válido (al menos 10 dígitos).',
+      err_generic: 'Algo salió mal. Intenta de nuevo o envíanos un mensaje directamente.'
+    },
+    pt: {
+      page_title: 'Conte-nos sobre o seu negócio',
+      page_sub: 'Respondemos em até 24 horas — por mensagem, ligação ou WhatsApp. O que funcionar melhor pra você.',
+      lbl_name: 'Seu Nome *',
+      lbl_business: 'Nome do Negócio',
+      hint_business: 'Se você tiver um — tudo bem se ainda não tiver',
+      lbl_phone: 'Telefone ou WhatsApp *',
+      hint_phone: 'Vamos te mandar uma mensagem — sem spam, prometemos',
+      lbl_looking_for: 'O que você está procurando?',
+      opt_website: 'Um site para o meu negócio',
+      opt_google: 'Ajuda para aparecer no Google',
+      opt_both: 'Site + Google — o pacote completo',
+      opt_not_sure: 'Ainda não sei — só quero conversar',
+      lbl_message: 'Mais alguma coisa que gostaria de nos contar?',
+      ph_name: 'ex. Maria Santos',
+      ph_business: 'ex. Camellia Cleaning Service',
+      ph_phone: '(206) 555-1234',
+      ph_message: 'Conte um pouco sobre seu negócio, o que você procura, ou qualquer dúvida que tenha...',
+      btn_send: 'Enviar Mensagem',
+      btn_sending: 'Enviando...',
+      success_title: 'Recebemos sua mensagem!',
+      success_sub: 'Entraremos em contato em até 24 horas por mensagem ou WhatsApp. Até logo!',
+      footer_text: 'Sites profissionais para negócios locais',
+      err_required: 'Por favor preencha seu nome e telefone.',
+      err_phone: 'Por favor insira um número de telefone válido (pelo menos 10 dígitos).',
+      err_generic: 'Algo deu errado. Tente novamente ou nos envie uma mensagem diretamente.'
+    }
+  };
+
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    const strings = T[lang] || T.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (strings[key]) el.textContent = strings[key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.getAttribute('data-i18n-ph');
+      if (strings[key]) el.placeholder = strings[key];
+    });
+    document.documentElement.lang = lang;
+    // Update lang switch buttons
+    document.querySelectorAll('.lang-switch-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+    });
+  }
+
+  function chooseLang(lang) {
+    document.getElementById('langGate').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+    applyLang(lang);
+  }
+
+  function setLang(lang) {
+    applyLang(lang);
+  }
+
+  // ── Referral tracking (from ?ref= query param) ──
+  const urlParams = new URLSearchParams(window.location.search);
+  const ref = urlParams.get('ref');
+  if (ref) {
+    document.getElementById('referral').value = ref;
+  }
+
+  // ── Phone formatting ──
+  const phoneInput = document.getElementById('phone');
+  phoneInput.addEventListener('input', function() {
+    let digits = this.value.replace(/\D/g, '');
+    if (digits.length > 10) digits = digits.slice(0, 10);
+    if (digits.length >= 7) {
+      this.value = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+    } else if (digits.length >= 4) {
+      this.value = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+    } else if (digits.length > 0) {
+      this.value = `(${digits}`;
+    }
+  });
+
+  // ── Form submit ──
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const strings = T[currentLang] || T.en;
+    const errorEl = document.getElementById('errorMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    errorEl.style.display = 'none';
+
+    const name = document.getElementById('name').value.trim();
+    const businessName = document.getElementById('businessName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const lookingFor = document.getElementById('lookingFor').value;
+    const message = document.getElementById('message').value.trim();
+    const referral = document.getElementById('referral').value;
+
+    if (!name || !phone) {
+      errorEl.textContent = strings.err_required;
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      errorEl.textContent = strings.err_phone;
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = strings.btn_sending;
+
+    try {
+      const resp = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, businessName, phone, lookingFor, message, language: currentLang, referral })
+      });
+
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data.error || strings.err_generic);
+      }
+
+      // Show success
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (err) {
+      errorEl.textContent = err.message || strings.err_generic;
+      errorEl.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = strings.btn_send;
+    }
+  });
+</script>
+</body>
+</html>
