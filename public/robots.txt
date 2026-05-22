@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
+# Internal/admin pages — not for public indexing
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /pick-color.html
+Disallow: /playbook.html
+Disallow: /stack-101.html
+
 Sitemap: https://welcomematdigital.com/sitemap.xml
