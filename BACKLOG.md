@@ -43,6 +43,10 @@
 - [x] Theme presets + auto-detect brand color from website
 - [x] Modern demo site + polished chat widget (SVG icons, animations)
 
+## Onboarding Form Enhancements
+- [ ] **Contact channel picker** — During onboarding, let business owner choose which CTAs appear on their site (Quote Form, Text Us, WhatsApp, Call). Site builder renders only the selected options.
+- [ ] **Per-business notification email** — Store owner email in businesses table, route quote notifications to their email instead of global NOTIFICATION_EMAIL env var.
+
 ## Onboarding Flow
 1. Share onboard link with business owner
 2. They fill out questionnaire (English or Spanish) → clicks "Submit"
