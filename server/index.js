@@ -52,6 +52,8 @@ app.use('/api', require('./routes/chat'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/reviews', require('./routes/reviews'));
+app.use('/api/quote', require('./routes/quote'));
+app.use('/quote', require('./routes/quote'));
 app.use('/site', require('./routes/site'));
 
 // Clean URLs for static pages

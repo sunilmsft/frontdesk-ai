@@ -250,6 +250,43 @@
       color: rgba(255,255,255,0.6);
     }
     .hero-trust-item svg { width: 16px; height: 16px; fill: var(--accent); }
+
+    /* === QUOTE MODAL === */
+    .quote-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .quote-overlay.open { display: flex; }
+    .quote-modal { background: var(--white); border-radius: var(--radius); max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px; position: relative; box-shadow: var(--shadow-lg); }
+    .quote-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); line-height: 1; padding: 4px 8px; border-radius: 8px; }
+    .quote-close:hover { background: var(--primary-pale); }
+    .quote-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+    .quote-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .quote-step { display: none; }
+    .quote-step.active { display: block; }
+    .quote-services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .quote-svc-btn { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 16px 12px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit; transition: all 0.25s cubic-bezier(0.22,1,0.36,1); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); }
+    .quote-svc-btn:hover { border-color: var(--accent); background: var(--accent-light); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.06); }
+    .quote-svc-btn:active { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .quote-svc-btn.selected { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 4px 14px rgba(196,181,160,0.3), 0 2px 4px rgba(0,0,0,0.04); }
+    .quote-field { margin-bottom: 16px; }
+    .quote-field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .quote-field input, .quote-field select, .quote-field textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--white); transition: border-color 0.2s; }
+    .quote-field input:focus, .quote-field select:focus, .quote-field textarea:focus { outline: none; border-color: var(--accent); }
+    .quote-field textarea { resize: vertical; min-height: 80px; }
+    .quote-nav { display: flex; gap: 10px; margin-top: 24px; }
+    .quote-nav .btn { flex: 1; text-align: center; }
+    .quote-back { background: var(--primary-pale); color: var(--text); }
+    .quote-back:hover { background: var(--border); }
+    .quote-submit { background: var(--accent); color: var(--text); }
+    .quote-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,181,160,0.4); }
+    .quote-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+    .quote-success { text-align: center; padding: 20px 0; }
+    .quote-success svg { width: 56px; height: 56px; color: #22c55e; margin-bottom: 16px; }
+    .quote-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 8px; }
+    .quote-success p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+    @media (max-width: 768px) {
+      .quote-modal { padding: 24px; }
+      .quote-services { grid-template-columns: 1fr; }
+    }
+
     .hero-photos {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -819,7 +856,7 @@
             </div>
           </div>
         </li>
-        <li><a href="#contact" class="nav-cta" data-i18n="navCta">Get a Free Estimate</a></li>
+        <li><a href="#" onclick="openQuoteModal();return false" class="nav-cta" data-i18n="navCta">Get a Free Quote</a></li>
       </ul>
       <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu" aria-expanded="false">☰</button>
       <div class="nav-lang nav-lang-mobile" id="langPickerMobile">
@@ -850,7 +887,7 @@
         <h1 data-i18n="heroTitle">A spotless home.<br>Every <em>single</em> time.</h1>
         <p class="hero-text" data-i18n="heroText">Professional residential and Airbnb cleaning across the Greater Seattle & Eastside area. We treat every home like it's our own.</p>
         <div class="hero-actions">
-          <a href="tel:{{PHONE}}" class="btn btn-primary" data-i18n="heroCta">📞 Call for Free Estimate</a>
+          <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="heroCta">✨ Get a Free Quote</button>
           <a href="#services" class="btn btn-outline" data-i18n="heroSecondary">View Services ↓</a>
         </div>
         <div class="hero-trust">
@@ -1038,7 +1075,7 @@
     <h2 data-i18n="ctaTitle">Ready for a cleaner home?</h2>
     <p data-i18n="ctaText">Get a free estimate — no obligation, no hassle. We'll get back to you within a few hours.</p>
     <div class="cta-contact">
-      <a href="tel:{{PHONE}}" class="btn btn-primary" data-i18n="ctaCall">📞 Call</a>
+      <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="ctaQuote">✨ Request a Quote</button>
       <a href="sms:{{PHONE}}" class="btn btn-outline" data-i18n="ctaText2">💬 Text Us</a>
       <a href="https://wa.me/12062910321" target="_blank" class="btn btn-outline" data-i18n="ctaWhatsapp">🟢 WhatsApp</a>
     </div>
@@ -1056,6 +1093,74 @@
       </p>
     </div>
   </footer>
+
+  <!-- Quote Request Modal -->
+  <div class="quote-overlay" id="quoteOverlay">
+    <div class="quote-modal">
+      <button class="quote-close" onclick="closeQuoteModal()" aria-label="Close">&times;</button>
+
+      <!-- Step 1: Pick a service -->
+      <div class="quote-step active" id="quoteStep1">
+        <div class="quote-title" data-i18n="qTitle">Get a Free Quote</div>
+        <div class="quote-subtitle" data-i18n="qPickService">What service are you interested in?</div>
+        <div class="quote-services"></div>
+      </div>
+
+      <!-- Step 2: Dynamic questions -->
+      <div class="quote-step" id="quoteStep2">
+        <div class="quote-title quote-step-title"></div>
+        <div class="quote-subtitle" data-i18n="qTellMore">Tell us a bit more so we can give you an accurate estimate.</div>
+        <div id="quoteQuestions"></div>
+        <div class="quote-nav">
+          <button class="btn quote-back" onclick="quoteBack()" data-i18n="qBack">← Back</button>
+          <button class="btn quote-submit" onclick="quoteToContact()" data-i18n="qNext">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Contact info -->
+      <div class="quote-step" id="quoteStep3">
+        <div class="quote-title" data-i18n="qAlmostDone">Almost done!</div>
+        <div class="quote-subtitle" data-i18n="qContactInfo">How can we reach you?</div>
+        <div class="quote-field">
+          <label data-i18n="qNameLabel">Your Name</label>
+          <input type="text" id="quoteName" required>
+        </div>
+        <div class="quote-field">
+          <label data-i18n="qPhoneLabel">Phone Number</label>
+          <input type="tel" id="quotePhone" required placeholder="(425) 555-1234" maxlength="14" oninput="formatPhone(this)">
+          <div id="quotePhoneHint" style="font-size:12px;margin-top:4px;color:#888;display:none"></div>
+        </div>
+        <div class="quote-field">
+          <label data-i18n="qEmailLabel">Email (optional)</label>
+          <input type="email" id="quoteEmail">
+        </div>
+        <div class="quote-field">
+          <label data-i18n="qAddressLabel">Address or Neighborhood</label>
+          <input type="text" id="quoteAddress" placeholder="e.g. 123 Main St, Bellevue or Issaquah area">
+        </div>
+        <div class="quote-field">
+          <label data-i18n="qNotesLabel">Anything else we should know? (optional)</label>
+          <textarea id="quoteNotes" rows="3" placeholder="e.g. I have 2 dogs, prefer eco-friendly products, need it by Friday..."></textarea>
+        </div>
+        <div class="quote-nav">
+          <button class="btn quote-back" onclick="quoteBack()" data-i18n="qBack">← Back</button>
+          <button class="btn quote-submit" id="quoteSubmitBtn" onclick="submitQuote()" data-i18n="qSubmit">Send Quote Request</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="quote-step" id="quoteSuccess">
+        <div class="quote-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3 data-i18n="qSuccessTitle">Quote request sent!</h3>
+          <p data-i18n="qSuccessText">Thank you! We'll review your request and get back to you within a few hours. Feel free to text or WhatsApp us anytime.</p>
+          <div style="margin-top: 20px">
+            <button class="btn quote-submit" onclick="closeQuoteModal()" data-i18n="qDone">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Chat Widget -->
   <script src="{{WIDGET_URL}}" data-business="{{BUSINESS_SLUG}}" async></script>
@@ -1078,10 +1183,10 @@
   // i18n translations
   const T = {
     en: {
-      navServices: 'Services', navAbout: 'About', navWork: 'Our Work', navAreas: 'Areas', navHours: 'Hours', navCta: 'Get a Free Estimate',
+      navServices: 'Services', navAbout: 'About', navWork: 'Our Work', navAreas: 'Areas', navHours: 'Hours', navCta: 'Get a Free Quote',
       heroTitle: 'A spotless home.<br>Every <em>single</em> time.',
       heroText: 'Professional residential and Airbnb cleaning across the Greater Seattle & Eastside area. We treat every home like it\'s our own.',
-      heroCta: '📞 Call for Free Estimate',
+      heroCta: '✨ Get a Free Quote',
       heroSecondary: 'View Services ↓',
       trustYears: '5+ Years Experience',
       trustLicensed: 'Licensed & Insured',
@@ -1105,7 +1210,7 @@
       hoursLabel: 'Hours', hoursTitle: 'When we\'re available',
       mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday', closed: 'Closed',
       ctaTitle: 'Ready for a cleaner home?', ctaText: 'Get a free estimate — no obligation, no hassle. We\'ll get back to you within a few hours.',
-      ctaCall: '📞 Call', ctaText2: '💬 Text Us', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '✨ Request a Quote', ctaText2: '💬 Text Us', ctaWhatsapp: '🟢 WhatsApp',
       footerTagline: 'Professional cleaning you can trust', footerContact: 'Contact us on WhatsApp',
       aboutLabel: 'About Us', aboutTitle: 'The heart behind Camellia', aboutPhotoSoon: 'Photo of Kesia coming soon',
       aboutHi: 'Hello! I\u2019m Kesia.',
@@ -1113,13 +1218,32 @@
       aboutP2: 'As a pet lover, I\u2019m more than happy to clean homes with furry family members. We treat every home with the same care and attention we\u2019d give our own.',
       aboutP3: 'My mission is simple: help people feel comfortable in their space. Whether it\u2019s a weekly visit or a one-time deep clean, we\u2019re here to make your home feel like home.',
       aboutSig: '\u2014 Kesia Fonseca', aboutRole: 'Owner & Founder',
-      widgetGreeting: 'Hi! 👋 Welcome to Camellia Cleaning. How can I help you today?'
+      widgetGreeting: 'Hi! 👋 Welcome to Camellia Cleaning. How can I help you today?',
+      qTitle: 'Get a Free Quote', qPickService: 'What service are you interested in?',
+      qTellMore: 'Tell us a bit more so we can give you an accurate estimate.',
+      qBack: '← Back', qNext: 'Next →', qSubmit: 'Send Quote Request', qSubmitting: 'Sending...',
+      qAlmostDone: 'Almost done!', qContactInfo: 'How can we reach you?',
+      qNameLabel: 'Your Name', qPhoneLabel: 'Phone Number', qEmailLabel: 'Email (optional)',
+      qAddressLabel: 'Address or Neighborhood', qNotesLabel: 'Anything else we should know? (optional)',
+      qSuccessTitle: 'Quote request sent!', qSuccessText: 'Thank you! We\'ll review your request and get back to you within a few hours. Feel free to text or WhatsApp us anytime.',
+      qDone: 'Done', qError: 'Something went wrong. Please try again or text us directly.',
+      qFrequency: 'How often?', qWeekly: 'Weekly', qBiweekly: 'Every 2 weeks', qMonthly: 'Monthly', qOneTime: 'One-time',
+      qBedrooms: 'How many bedrooms?', qBathrooms: 'How many bathrooms?',
+      qHomeSize: 'Approximate home size?', qUnder1k: 'Under 1,000 sqft', q1k2k: '1,000–2,000 sqft', q2k3k: '2,000–3,000 sqft', q3kPlus: '3,000+ sqft',
+      qFocusAreas: 'Any specific areas to focus on?',
+      qMoveType: 'Move-in or move-out?', qMoveIn: 'Move-in', qMoveOut: 'Move-out', qMoveBoth: 'Both',
+      qMoveDate: 'When is the move?', qPropertyType: 'Property type?', qApartment: 'Apartment', qHouse: 'House', qCondo: 'Condo', qTownhome: 'Townhome',
+      qWorkType: 'What type of construction?', qReadyWhen: 'When will construction be done?',
+      qAlreadyDone: 'Already done', qWithinWeek: 'Within a week', qWithinMonth: 'Within a month', q1MonthPlus: '1+ months',
+      qUnits: 'How many properties?', qTurnaround: 'Typical turnaround time?',
+      qSameDay: 'Same day', qNextDay: 'Next day', qFlexible: 'Flexible',
+      qDescribe: 'Tell us what you need'
     },
     pt: {
       navServices: 'Serviços', navAbout: 'Sobre', navWork: 'Nosso Trabalho', navAreas: 'Áreas', navHours: 'Horários', navCta: 'Orçamento Grátis',
       heroTitle: 'Uma casa impecável.<br>Todas as <em>vezes</em>.',
       heroText: 'Limpeza residencial e de Airbnb profissional em toda a região de Seattle e Eastside. Cuidamos da sua casa como se fosse a nossa.',
-      heroCta: '📞 Ligue para Orçamento Grátis',
+      heroCta: '✨ Peça um Orçamento Grátis',
       heroSecondary: 'Ver Serviços ↓',
       trustYears: '5+ Anos de Experiência',
       trustLicensed: 'Licenciada e Segurada',
@@ -1143,7 +1267,7 @@
       hoursLabel: 'Horários', hoursTitle: 'Quando estamos disponíveis',
       mon: 'Segunda', tue: 'Terça', wed: 'Quarta', thu: 'Quinta', fri: 'Sexta', sat: 'Sábado', sun: 'Domingo', closed: 'Fechado',
       ctaTitle: 'Pronta pra uma casa mais limpa?', ctaText: 'Peça um orçamento grátis — sem compromisso. Respondemos em poucas horas.',
-      ctaCall: '📞 Ligar', ctaText2: '💬 Mensagem', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '✨ Pedir Orçamento', ctaText2: '💬 Mensagem', ctaWhatsapp: '🟢 WhatsApp',
       footerTagline: 'Limpeza profissional de confiança', footerContact: 'Fale conosco no WhatsApp',
       aboutLabel: 'Sobre Nós', aboutTitle: 'O coração por trás da Camellia', aboutPhotoSoon: 'Foto da Kesia em breve',
       aboutHi: 'Olá! Eu sou a Kesia.',
@@ -1151,13 +1275,32 @@
       aboutP2: 'Como amante de animais, fico mais que feliz em limpar casas com membros peludos da família. Cuidamos de cada casa com o mesmo carinho que daríamos à nossa.',
       aboutP3: 'Minha missão é simples: ajudar as pessoas a se sentirem confortáveis em seus espaços. Seja uma visita semanal ou uma faxina completa, estamos aqui pra fazer sua casa se sentir como lar.',
       aboutSig: '\u2014 Kesia Fonseca', aboutRole: 'Proprietária e Fundadora',
-      widgetGreeting: 'Olá! 👋 Bem-vindo à Camellia Cleaning. Como posso ajudar?'
+      widgetGreeting: 'Olá! 👋 Bem-vindo à Camellia Cleaning. Como posso ajudar?',
+      qTitle: 'Peça um Orçamento Grátis', qPickService: 'Qual serviço te interessa?',
+      qTellMore: 'Conte um pouco mais para que possamos dar um orçamento preciso.',
+      qBack: '← Voltar', qNext: 'Próximo →', qSubmit: 'Enviar Pedido', qSubmitting: 'Enviando...',
+      qAlmostDone: 'Quase lá!', qContactInfo: 'Como podemos entrar em contato?',
+      qNameLabel: 'Seu Nome', qPhoneLabel: 'Telefone', qEmailLabel: 'Email (opcional)',
+      qAddressLabel: 'Endereço ou Bairro', qNotesLabel: 'Algo mais que devemos saber? (opcional)',
+      qSuccessTitle: 'Pedido enviado!', qSuccessText: 'Obrigado! Vamos analisar seu pedido e responder em poucas horas. Fique à vontade para nos enviar mensagem a qualquer momento.',
+      qDone: 'Fechar', qError: 'Algo deu errado. Tente novamente ou nos envie uma mensagem.',
+      qFrequency: 'Com que frequência?', qWeekly: 'Semanal', qBiweekly: 'Quinzenal', qMonthly: 'Mensal', qOneTime: 'Única vez',
+      qBedrooms: 'Quantos quartos?', qBathrooms: 'Quantos banheiros?',
+      qHomeSize: 'Tamanho aproximado da casa?', qUnder1k: 'Menos de 100m²', q1k2k: '100–200m²', q2k3k: '200–300m²', q3kPlus: '300m²+',
+      qFocusAreas: 'Alguma área específica para focar?',
+      qMoveType: 'Entrada ou saída?', qMoveIn: 'Entrada', qMoveOut: 'Saída', qMoveBoth: 'Ambos',
+      qMoveDate: 'Quando é a mudança?', qPropertyType: 'Tipo de imóvel?', qApartment: 'Apartamento', qHouse: 'Casa', qCondo: 'Condomínio', qTownhome: 'Sobrado',
+      qWorkType: 'Que tipo de obra?', qReadyWhen: 'Quando a obra estará pronta?',
+      qAlreadyDone: 'Já concluída', qWithinWeek: 'Em uma semana', qWithinMonth: 'Em um mês', q1MonthPlus: '1+ meses',
+      qUnits: 'Quantos imóveis?', qTurnaround: 'Tempo de preparo?',
+      qSameDay: 'Mesmo dia', qNextDay: 'Dia seguinte', qFlexible: 'Flexível',
+      qDescribe: 'Nos conte o que precisa'
     },
     es: {
       navServices: 'Servicios', navAbout: 'Nosotros', navWork: 'Nuestro Trabajo', navAreas: 'Áreas', navHours: 'Horarios', navCta: 'Presupuesto Gratis',
       heroTitle: 'Un hogar impecable.<br>Todas las <em>veces</em>.',
       heroText: 'Limpieza residencial y de Airbnb profesional en toda el área de Seattle y Eastside. Cuidamos tu hogar como si fuera el nuestro.',
-      heroCta: '📞 Llama para Presupuesto Gratis',
+      heroCta: '✨ Presupuesto Gratis',
       heroSecondary: 'Ver Servicios ↓',
       trustYears: '5+ Años de Experiencia',
       trustLicensed: 'Con Licencia y Seguro',
@@ -1181,7 +1324,7 @@
       hoursLabel: 'Horarios', hoursTitle: 'Cuándo estamos disponibles',
       mon: 'Lunes', tue: 'Martes', wed: 'Miércoles', thu: 'Jueves', fri: 'Viernes', sat: 'Sábado', sun: 'Domingo', closed: 'Cerrado',
       ctaTitle: '¿Listo para un hogar más limpio?', ctaText: 'Pide un presupuesto gratis — sin compromiso. Respondemos en pocas horas.',
-      ctaCall: '📞 Llamar', ctaText2: '💬 Mensaje', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '✨ Pedir Presupuesto', ctaText2: '💬 Mensaje', ctaWhatsapp: '🟢 WhatsApp',
       footerTagline: 'Limpieza profesional de confianza', footerContact: 'Contáctanos en WhatsApp',
       aboutLabel: 'Sobre Nosotros', aboutTitle: 'El corazón detrás de Camellia', aboutPhotoSoon: 'Foto de Kesia próximamente',
       aboutHi: '¡Hola! Soy Kesia.',
@@ -1189,7 +1332,26 @@
       aboutP2: 'Como amante de los animales, estoy más que feliz de limpiar hogares con miembros peludos de la familia. Cuidamos cada hogar con el mismo cariño que le daríamos al nuestro.',
       aboutP3: 'Mi misión es simple: ayudar a las personas a sentirse cómodas en su espacio. Ya sea una visita semanal o una limpieza profunda, estamos aquí para que tu casa se sienta como hogar.',
       aboutSig: '\u2014 Kesia Fonseca', aboutRole: 'Propietaria y Fundadora',
-      widgetGreeting: '\u00a1Hola! \ud83d\udc4b Bienvenido a Camellia Cleaning. \u00bfC\u00f3mo puedo ayudarte?'
+      widgetGreeting: '\u00a1Hola! \ud83d\udc4b Bienvenido a Camellia Cleaning. \u00bfC\u00f3mo puedo ayudarte?',
+      qTitle: 'Pide un Presupuesto Gratis', qPickService: '¿Qué servicio te interesa?',
+      qTellMore: 'Cuéntanos un poco más para darte un presupuesto preciso.',
+      qBack: '← Volver', qNext: 'Siguiente →', qSubmit: 'Enviar Solicitud', qSubmitting: 'Enviando...',
+      qAlmostDone: '¡Casi listo!', qContactInfo: '¿Cómo podemos contactarte?',
+      qNameLabel: 'Tu Nombre', qPhoneLabel: 'Teléfono', qEmailLabel: 'Email (opcional)',
+      qAddressLabel: 'Dirección o Vecindario', qNotesLabel: '¿Algo más que debamos saber? (opcional)',
+      qSuccessTitle: '¡Solicitud enviada!', qSuccessText: '¡Gracias! Revisaremos tu solicitud y te responderemos en pocas horas. No dudes en enviarnos un mensaje cuando quieras.',
+      qDone: 'Cerrar', qError: 'Algo salió mal. Intenta de nuevo o envíanos un mensaje.',
+      qFrequency: '¿Con qué frecuencia?', qWeekly: 'Semanal', qBiweekly: 'Quincenal', qMonthly: 'Mensual', qOneTime: 'Una vez',
+      qBedrooms: '¿Cuántas habitaciones?', qBathrooms: '¿Cuántos baños?',
+      qHomeSize: '¿Tamaño aproximado?', qUnder1k: 'Menos de 100m²', q1k2k: '100–200m²', q2k3k: '200–300m²', q3kPlus: '300m²+',
+      qFocusAreas: '¿Algún área específica?',
+      qMoveType: '¿Entrada o salida?', qMoveIn: 'Entrada', qMoveOut: 'Salida', qMoveBoth: 'Ambos',
+      qMoveDate: '¿Cuándo es la mudanza?', qPropertyType: '¿Tipo de propiedad?', qApartment: 'Apartamento', qHouse: 'Casa', qCondo: 'Condominio', qTownhome: 'Townhome',
+      qWorkType: '¿Qué tipo de construcción?', qReadyWhen: '¿Cuándo estará lista la obra?',
+      qAlreadyDone: 'Ya terminada', qWithinWeek: 'En una semana', qWithinMonth: 'En un mes', q1MonthPlus: '1+ meses',
+      qUnits: '¿Cuántas propiedades?', qTurnaround: '¿Tiempo de preparación?',
+      qSameDay: 'Mismo día', qNextDay: 'Día siguiente', qFlexible: 'Flexible',
+      qDescribe: 'Cuéntanos qué necesitas'
     }
   };
 
@@ -1307,6 +1469,248 @@
     ctaBanner.classList.add('reveal');
     revealObserver.observe(ctaBanner);
   }
+
+  // === QUOTE FORM LOGIC ===
+  const QUOTE_SERVICES = [
+    { key: 'regular', i18n: 'svc1Title', fallback: 'Regular Cleaning' },
+    { key: 'deep', i18n: 'svc2Title', fallback: 'Deep Cleaning' },
+    { key: 'move', i18n: 'svc3Title', fallback: 'Move-In / Move-Out' },
+    { key: 'construction', i18n: 'svc4Title', fallback: 'Post-Construction' },
+    { key: 'airbnb', i18n: 'svc5Title', fallback: 'Airbnb & Vacation Rentals' },
+    { key: 'custom', i18n: 'svc6Title', fallback: 'Custom Requests' }
+  ];
+
+  const QUOTE_QUESTIONS = {
+    regular: [
+      { name: 'frequency', type: 'select', i18n: 'qFrequency', fallback: 'How often?', options: [
+        { i18n: 'qWeekly', fallback: 'Weekly' },
+        { i18n: 'qBiweekly', fallback: 'Every 2 weeks' },
+        { i18n: 'qMonthly', fallback: 'Monthly' },
+        { i18n: 'qOneTime', fallback: 'One-time' }
+      ]},
+      { name: 'bedrooms', type: 'select', i18n: 'qBedrooms', fallback: 'How many bedrooms?', options: [
+        { fallback: '1' }, { fallback: '2' }, { fallback: '3' }, { fallback: '4' }, { fallback: '5+' }
+      ]},
+      { name: 'bathrooms', type: 'select', i18n: 'qBathrooms', fallback: 'How many bathrooms?', options: [
+        { fallback: '1' }, { fallback: '2' }, { fallback: '3' }, { fallback: '4+' }
+      ]}
+    ],
+    deep: [
+      { name: 'home_size', type: 'select', i18n: 'qHomeSize', fallback: 'Approximate home size?', options: [
+        { i18n: 'qUnder1k', fallback: 'Under 1,000 sqft' },
+        { i18n: 'q1k2k', fallback: '1,000–2,000 sqft' },
+        { i18n: 'q2k3k', fallback: '2,000–3,000 sqft' },
+        { i18n: 'q3kPlus', fallback: '3,000+ sqft' }
+      ]},
+      { name: 'focus_areas', type: 'text', i18n: 'qFocusAreas', fallback: 'Any specific areas to focus on?', placeholder: 'e.g. Kitchen, master bath...' }
+    ],
+    move: [
+      { name: 'move_type', type: 'select', i18n: 'qMoveType', fallback: 'Move-in or move-out?', options: [
+        { i18n: 'qMoveIn', fallback: 'Move-in' },
+        { i18n: 'qMoveOut', fallback: 'Move-out' },
+        { i18n: 'qMoveBoth', fallback: 'Both' }
+      ]},
+      { name: 'move_date', type: 'date', i18n: 'qMoveDate', fallback: 'When is the move?' },
+      { name: 'property_type', type: 'select', i18n: 'qPropertyType', fallback: 'Property type?', options: [
+        { i18n: 'qApartment', fallback: 'Apartment' },
+        { i18n: 'qHouse', fallback: 'House' },
+        { i18n: 'qCondo', fallback: 'Condo' },
+        { i18n: 'qTownhome', fallback: 'Townhome' }
+      ]}
+    ],
+    construction: [
+      { name: 'work_type', type: 'text', i18n: 'qWorkType', fallback: 'What type of construction?', placeholder: 'e.g. Kitchen remodel, full renovation...' },
+      { name: 'ready_when', type: 'select', i18n: 'qReadyWhen', fallback: 'When will construction be done?', options: [
+        { i18n: 'qAlreadyDone', fallback: 'Already done' },
+        { i18n: 'qWithinWeek', fallback: 'Within a week' },
+        { i18n: 'qWithinMonth', fallback: 'Within a month' },
+        { i18n: 'q1MonthPlus', fallback: '1+ months' }
+      ]}
+    ],
+    airbnb: [
+      { name: 'units', type: 'select', i18n: 'qUnits', fallback: 'How many properties?', options: [
+        { fallback: '1' }, { fallback: '2–3' }, { fallback: '4–5' }, { fallback: '6+' }
+      ]},
+      { name: 'turnaround', type: 'select', i18n: 'qTurnaround', fallback: 'Typical turnaround time?', options: [
+        { i18n: 'qSameDay', fallback: 'Same day' },
+        { i18n: 'qNextDay', fallback: 'Next day' },
+        { i18n: 'qFlexible', fallback: 'Flexible' }
+      ]}
+    ],
+    custom: [
+      { name: 'description', type: 'textarea', i18n: 'qDescribe', fallback: 'Tell us what you need', placeholder: 'Describe your cleaning needs...' }
+    ]
+  };
+
+  let quoteState = { step: 1, service: null, serviceKey: null, answers: {} };
+
+  function openQuoteModal() {
+    quoteState = { step: 1, service: null, serviceKey: null, answers: {} };
+    renderQuoteStep();
+    document.getElementById('quoteOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeQuoteModal() {
+    document.getElementById('quoteOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function qT(key, fallback) {
+    const lang = document.documentElement.lang || 'en';
+    return (T[lang] && T[lang][key]) || fallback;
+  }
+
+  function renderQuoteStep() {
+    const s1 = document.getElementById('quoteStep1');
+    const s2 = document.getElementById('quoteStep2');
+    const s3 = document.getElementById('quoteStep3');
+    const success = document.getElementById('quoteSuccess');
+    [s1, s2, s3, success].forEach(el => el.classList.remove('active'));
+
+    if (quoteState.step === 1) {
+      // Render service buttons
+      const grid = s1.querySelector('.quote-services');
+      grid.innerHTML = QUOTE_SERVICES.map(svc =>
+        `<button class="quote-svc-btn${quoteState.serviceKey === svc.key ? ' selected' : ''}" onclick="selectQuoteService('${svc.key}', this)">${qT(svc.i18n, svc.fallback)}</button>`
+      ).join('');
+      s1.classList.add('active');
+
+    } else if (quoteState.step === 2) {
+      // Render dynamic questions
+      const container = document.getElementById('quoteQuestions');
+      const questions = QUOTE_QUESTIONS[quoteState.serviceKey] || [];
+      container.innerHTML = questions.map(q => {
+        if (q.type === 'select') {
+          const opts = q.options.map(o => {
+            const val = o.fallback;
+            const label = qT(o.i18n, o.fallback);
+            return `<option value="${val}"${quoteState.answers[q.name] === val ? ' selected' : ''}>${label}</option>`;
+          }).join('');
+          return `<div class="quote-field"><label>${qT(q.i18n, q.fallback)}</label><select name="${q.name}" onchange="quoteState.answers['${q.name}']=this.value"><option value="">—</option>${opts}</select></div>`;
+        } else if (q.type === 'date') {
+          return `<div class="quote-field"><label>${qT(q.i18n, q.fallback)}</label><input type="date" name="${q.name}" value="${quoteState.answers[q.name] || ''}" onchange="quoteState.answers['${q.name}']=this.value"></div>`;
+        } else if (q.type === 'textarea') {
+          return `<div class="quote-field"><label>${qT(q.i18n, q.fallback)}</label><textarea name="${q.name}" placeholder="${q.placeholder || ''}" oninput="quoteState.answers['${q.name}']=this.value">${quoteState.answers[q.name] || ''}</textarea></div>`;
+        } else {
+          return `<div class="quote-field"><label>${qT(q.i18n, q.fallback)}</label><input type="text" name="${q.name}" placeholder="${q.placeholder || ''}" value="${quoteState.answers[q.name] || ''}" oninput="quoteState.answers['${q.name}']=this.value"></div>`;
+        }
+      }).join('');
+      s2.querySelector('.quote-step-title').textContent = quoteState.service;
+      s2.classList.add('active');
+
+    } else if (quoteState.step === 3) {
+      s3.classList.add('active');
+    }
+  }
+
+  function selectQuoteService(key, btn) {
+    const svc = QUOTE_SERVICES.find(s => s.key === key);
+    quoteState.serviceKey = key;
+    quoteState.service = qT(svc.i18n, svc.fallback);
+    quoteState.answers = {};
+    quoteState.step = 2;
+    renderQuoteStep();
+  }
+
+  function quoteBack() {
+    if (quoteState.step > 1) {
+      quoteState.step--;
+      renderQuoteStep();
+    }
+  }
+
+  function quoteToContact() {
+    quoteState.step = 3;
+    renderQuoteStep();
+  }
+
+  function formatPhone(input) {
+    let digits = input.value.replace(/\D/g, '').slice(0, 10);
+    if (digits.length > 6) digits = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+    else if (digits.length > 3) digits = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+    input.value = digits;
+    // Clear error hint on typing
+    const hint = document.getElementById('quotePhoneHint');
+    if (hint) { hint.style.display = 'none'; input.style.borderColor = ''; }
+  }
+
+  async function submitQuote() {
+    const name = document.getElementById('quoteName').value.trim();
+    const phone = document.getElementById('quotePhone').value.trim();
+    const email = document.getElementById('quoteEmail').value.trim();
+    const address = document.getElementById('quoteAddress').value.trim();
+    const notes = document.getElementById('quoteNotes').value.trim();
+    const submitBtn = document.getElementById('quoteSubmitBtn');
+
+    if (!name || !phone) {
+      document.getElementById('quoteName').style.borderColor = name ? '' : '#e11d48';
+      document.getElementById('quotePhone').style.borderColor = phone ? '' : '#e11d48';
+      return;
+    }
+
+    // Validate phone — at least 10 digits for US numbers
+    const phoneDigits = phone.replace(/\D/g, '');
+    const phoneHint = document.getElementById('quotePhoneHint');
+    if (phoneDigits.length < 10) {
+      document.getElementById('quotePhone').style.borderColor = '#e11d48';
+      const entered = phoneDigits.length;
+      phoneHint.style.display = 'block';
+      phoneHint.style.color = '#e11d48';
+      phoneHint.textContent = entered === 0
+        ? qT('qPhoneRequired', 'Phone number is required so we can reach you.')
+        : qT('qPhoneShort', 'That\'s only ' + entered + ' digits — US numbers need 10. Double-check?');
+      document.getElementById('quotePhone').focus();
+      return;
+    }
+    phoneHint.style.display = 'none';
+    document.getElementById('quotePhone').style.borderColor = '';
+
+    // Merge address and notes into answers
+    if (address) quoteState.answers.address = address;
+    if (notes) quoteState.answers.notes = notes;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = qT('qSubmitting', 'Sending...');
+
+    try {
+      const resp = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessSlug: '{{BUSINESS_SLUG}}',
+          service: quoteState.service,
+          answers: quoteState.answers,
+          customerName: name,
+          customerPhone: phone,
+          customerEmail: email || undefined
+        })
+      });
+
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => null);
+        throw new Error(data?.error || 'Failed');
+      }
+
+      // Show success
+      [document.getElementById('quoteStep1'), document.getElementById('quoteStep2'), document.getElementById('quoteStep3')].forEach(el => el.classList.remove('active'));
+      document.getElementById('quoteSuccess').classList.add('active');
+
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = qT('qSubmit', 'Send Quote Request');
+      alert(qT('qError', 'Something went wrong. Please try again or text us directly.'));
+    }
+  }
+
+  // Close modal on overlay click — only on step 1 (service selection). Once user starts filling, don't close accidentally.
+  document.getElementById('quoteOverlay').addEventListener('click', function(e) {
+    if (e.target === this && quoteState.step === 1) closeQuoteModal();
+  });
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeQuoteModal();
+  });
 
   // --- Google Reviews ---
   (async function loadReviews() {

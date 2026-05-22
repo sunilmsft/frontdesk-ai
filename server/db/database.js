@@ -115,6 +115,23 @@ async function initDb() {
 
     CREATE INDEX IF NOT EXISTS idx_pipeline_stage ON customer_pipeline(stage);
     CREATE INDEX IF NOT EXISTS idx_pipeline_submission ON customer_pipeline(submission_id);
+
+    CREATE TABLE IF NOT EXISTS quote_requests (
+      id TEXT PRIMARY KEY,
+      business_id TEXT NOT NULL,
+      service TEXT NOT NULL,
+      answers TEXT DEFAULT '{}',
+      customer_name TEXT NOT NULL,
+      customer_phone TEXT NOT NULL,
+      customer_email TEXT,
+      view_token TEXT NOT NULL,
+      status TEXT DEFAULT 'new' CHECK(status IN ('new', 'contacted', 'quoted', 'booked', 'closed')),
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (business_id) REFERENCES businesses(id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_quotes_business ON quote_requests(business_id);
+    CREATE INDEX IF NOT EXISTS idx_quotes_status ON quote_requests(status);
   `);
 
   // Migration: widen submissions status CHECK constraint to include 'deleted'
