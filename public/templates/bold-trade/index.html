@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BUSINESS_NAME}} — Professional Landscaping</title>
+  <meta name="description" content="Professional landscaping and lawn care in {{SERVICE_AREA}}. Design, maintenance, hardscaping, and seasonal cleanups. Get a free quote today!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    /* ==============================================
+       TEMPLATE: BOLD TRADE
+       DNA: stacked-bold / slab-bold / sharp / scale-pop / phosphor-fill
+       Accent: #2563eb (electric blue)
+       
+       Compare to Camellia (warm-organic / serif-elegant / rounded / subtle-rise / lucide-outline)
+       Every visual axis is intentionally opposite.
+       ============================================== */
+
+    :root {
+      --primary: #0f172a;
+      --primary-light: #1e293b;
+      --primary-pale: #f1f5f9;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --accent-light: #eff6ff;
+      --accent-glow: rgba(37, 99, 235, 0.15);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --bg: #ffffff;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+      --radius: 4px;       /* SHARP — Camellia uses 20px */
+      --radius-sm: 2px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === SCALE-POP ANIMATIONS (vs Camellia's subtle-rise) === */
+    .pop {
+      opacity: 0;
+      transform: scale(0.88);
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pop.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .pop-left {
+      opacity: 0;
+      transform: translateX(-40px) scale(0.95);
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pop-left.visible {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    .pop-right {
+      opacity: 0;
+      transform: translateX(40px) scale(0.95);
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pop-right.visible {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    /* Stagger children */
+    .stagger > *:nth-child(1) { transition-delay: 0s; }
+    .stagger > *:nth-child(2) { transition-delay: 0.08s; }
+    .stagger > *:nth-child(3) { transition-delay: 0.16s; }
+    .stagger > *:nth-child(4) { transition-delay: 0.24s; }
+    .stagger > *:nth-child(5) { transition-delay: 0.32s; }
+    .stagger > *:nth-child(6) { transition-delay: 0.4s; }
+
+    /* === NAVIGATION === */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      transition: all 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(15, 23, 42, 0.97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      padding: 10px 24px;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+    }
+    .nav-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      object-fit: cover;
+      border: 2px solid rgba(37, 99, 235, 0.5);
+    }
+    .nav-logo-text {
+      font-family: 'Bitter', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: white !important;
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-dark) !important; transform: translateY(-1px); }
+    .nav-mobile { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+
+    /* === HERO — FULL-WIDTH STACKED (vs Camellia's split grid) === */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      background: var(--primary);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+    }
+    /* Geometric pattern instead of Camellia's dots */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(30deg, rgba(37,99,235,0.05) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.05) 87.5%),
+        linear-gradient(150deg, rgba(37,99,235,0.05) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.05) 87.5%),
+        linear-gradient(30deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%),
+        linear-gradient(150deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%);
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+    }
+    /* Blue accent bar at top */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--accent);
+      z-index: 2;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 140px 24px 80px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .hero-content { color: white; max-width: 800px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 8px 18px;
+      border-radius: var(--radius);
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: 'Bitter', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+      display: block;
+    }
+    .hero-text {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.05); }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .number {
+      font-family: 'Bitter', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .hero-stat .label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* === SECTION SHARED === */
+    .section { padding: 100px 24px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bitter', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .section-text {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    /* === SERVICES — FULL-WIDTH ALTERNATING (vs Camellia's card grid) === */
+    .services {
+      background: var(--primary-pale);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 48px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--white);
+      padding: 40px 32px;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      border-bottom: 3px solid transparent;
+    }
+    .service-card:hover {
+      background: var(--accent-light);
+      border-bottom-color: var(--accent);
+      transform: scale(1.02);
+      z-index: 1;
+    }
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 26px;
+    }
+    .service-card h3 {
+      font-family: 'Bitter', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .service-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* === WHY US — HORIZONTAL STRIP (vs Camellia's centered card grid) === */
+    .why-section {
+      background: var(--primary);
+      color: white;
+    }
+    .why-section .section-label { color: rgba(255,255,255,0.4); }
+    .why-section .section-title { color: white; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 48px;
+    }
+    .why-card {
+      padding: 36px 28px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.35s;
+    }
+    .why-card:last-child { border-right: none; }
+    .why-card:hover { background: rgba(37,99,235,0.1); }
+    .why-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 20px;
+      color: var(--accent);
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+    }
+    .why-card h3 {
+      font-family: 'Bitter', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+    .why-card p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    /* === ABOUT — FULL-BLEED IMAGE + TEXT OVERLAY (vs Camellia's side-by-side grid) === */
+    .about {
+      background: var(--white);
+      position: relative;
+    }
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 500px;
+      margin-top: 48px;
+    }
+    .about-photo {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .about-photo-placeholder {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      padding: 40px;
+    }
+    .about-photo-placeholder .icon { font-size: 4rem; margin-bottom: 12px; display: block; }
+    .about-content {
+      background: var(--primary);
+      color: white;
+      padding: 60px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .about-content h3 {
+      font-family: 'Bitter', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .about-content p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-sig {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .about-sig .name {
+      font-family: 'Bitter', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+    }
+    .about-sig .role {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* === GALLERY — MASONRY-STYLE (vs Camellia's uniform grid) === */
+    .gallery { background: var(--primary-pale); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 200px;
+      gap: 4px;
+      margin-top: 48px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .gallery-item {
+      overflow: hidden;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      position: relative;
+    }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .gallery-item:hover img { transform: scale(1.08); }
+
+    /* === REVIEWS === */
+    .reviews-section { background: var(--white); }
+    .reviews-summary { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
+    .reviews-stars { display: flex; gap: 2px; }
+    .reviews-stars svg { width: 24px; height: 24px; fill: #f59e0b; }
+    .reviews-rating { font-size: 1.8rem; font-weight: 800; color: var(--text); font-family: 'Bitter', serif; }
+    .reviews-count { color: var(--text-muted); font-size: 0.9rem; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .review-card {
+      background: var(--primary-pale);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+      transition: transform 0.3s;
+    }
+    .review-card:hover { transform: translateX(4px); }
+    .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .review-avatar-placeholder {
+      width: 40px; height: 40px; border-radius: var(--radius); background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 16px; flex-shrink: 0;
+    }
+    .review-author { font-weight: 700; font-size: 0.9rem; }
+    .review-time { font-size: 0.78rem; color: var(--text-muted); }
+    .review-stars { display: flex; gap: 1px; margin-bottom: 8px; }
+    .review-stars svg { width: 14px; height: 14px; fill: #f59e0b; }
+    .review-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+    .reviews-powered { display: flex; align-items: center; gap: 6px; margin-top: 24px; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* === AREAS — GRID BLOCKS (vs Camellia's pill tags) === */
+    .areas-section { background: var(--white); }
+    .areas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 4px;
+      margin-top: 32px;
+    }
+    .area-block {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.25s;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .area-block:hover { background: var(--accent); transform: scale(1.03); }
+    .area-block i { font-size: 16px; }
+
+    /* === HOURS — COMPACT DARK (vs Camellia's white card) === */
+    .hours-section { background: var(--primary-pale); }
+    .hours-table {
+      margin-top: 32px;
+      background: var(--primary);
+      border-radius: var(--radius);
+      overflow: hidden;
+      max-width: 480px;
+      color: white;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 24px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day { font-weight: 700; }
+    .hours-row .time { color: rgba(255,255,255,0.6); }
+    .hours-row.today { background: var(--accent); }
+    .hours-row.today .time { color: rgba(255,255,255,0.9); }
+
+    /* === CTA BANNER — ACCENT-DRIVEN (vs Camellia's dark gradient) === */
+    .cta-banner {
+      background: var(--accent);
+      color: white;
+      padding: 100px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(0,0,0,0.1) 0%, transparent 60%);
+    }
+    .cta-banner h2 {
+      font-family: 'Bitter', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      text-transform: uppercase;
+      position: relative;
+    }
+    .cta-banner p { color: rgba(255,255,255,0.85); margin-bottom: 32px; font-size: 1.1rem; position: relative; }
+    .cta-contact {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .cta-contact .btn {
+      font-size: 15px;
+      padding: 16px 28px;
+      min-width: 180px;
+      justify-content: center;
+    }
+    .cta-contact .btn-white {
+      background: white;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .cta-contact .btn-white:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .cta-contact .btn-outline {
+      border: 2px solid rgba(255,255,255,0.5);
+      color: white;
+    }
+    .cta-contact .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+    /* === FOOTER === */
+    .footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.4);
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .hero-inner { padding-top: 100px; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .hero-stat .number { font-size: 1.6rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .why-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .about-split { grid-template-columns: 1fr; }
+      .about-photo { min-height: 300px; }
+      .about-content { padding: 40px 24px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
+      .gallery-item.wide { grid-column: span 1; }
+      .nav-links { display: none; flex-direction: column; }
+      .nav-links.show { display: flex; position: absolute; top: 100%; left: 0; right: 0; background: rgba(15,23,42,0.97); backdrop-filter: blur(12px); padding: 16px 0; }
+      .nav-links.show li { padding: 12px 24px; }
+      .nav-mobile { display: block; }
+      .section { padding: 60px 24px; }
+      .cta-contact { flex-direction: column; align-items: center; }
+      .areas-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-text">{{BUSINESS_NAME}}</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services" data-i18n="navServices">Services</a></li>
+        <li><a href="#about" data-i18n="navAbout">About</a></li>
+        <li><a href="#gallery" data-i18n="navWork">Work</a></li>
+        <li><a href="#areas" data-i18n="navAreas">Areas</a></li>
+        <li><a href="#contact" class="nav-cta" data-i18n="navCta">Free Quote</a></li>
+      </ul>
+      <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero — full-width centered (vs Camellia's split layout) -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge"><i class="ph-fill ph-tree"></i> Serving {{SERVICE_AREA}}</div>
+        <h1 data-i18n="heroTitle">Your yard.<br><em>Done right.</em></h1>
+        <p class="hero-text" data-i18n="heroText">Professional landscaping and lawn care that makes your property stand out. Design, build, maintain — we handle it all.</p>
+        <div class="hero-actions">
+          <a href="tel:{{PHONE}}" class="btn btn-primary" data-i18n="heroCta"><i class="ph-fill ph-phone"></i> Get a Free Quote</a>
+          <a href="#services" class="btn btn-outline" data-i18n="heroSecondary">See Our Work ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="number" data-i18n="statYears">10+</div>
+            <div class="label" data-i18n="statYearsLabel">Years Experience</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number" data-i18n="statProjects">500+</div>
+            <div class="label" data-i18n="statProjectsLabel">Projects Done</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number" data-i18n="statRating">5.0</div>
+            <div class="label" data-i18n="statRatingLabel">Google Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services — 3-col grid with borders (vs Camellia's floating cards) -->
+  <section class="section services" id="services">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="servicesLabel">What We Do</div>
+      <h2 class="section-title pop" data-i18n="servicesTitle">Landscaping that lasts</h2>
+      <p class="section-text pop" data-i18n="servicesText">From design to maintenance, we keep your outdoor space looking its best year-round.</p>
+      <div class="services-grid stagger">
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-leaf"></i></div>
+          <h3 data-i18n="svc1Title">Lawn Maintenance</h3>
+          <p data-i18n="svc1Text">Weekly mowing, edging, and blowing. We keep your lawn looking sharp and healthy all season long.</p>
+        </div>
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-tree"></i></div>
+          <h3 data-i18n="svc2Title">Landscape Design</h3>
+          <p data-i18n="svc2Text">Custom designs that match your style and budget. From garden beds to full property makeovers.</p>
+        </div>
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-wall"></i></div>
+          <h3 data-i18n="svc3Title">Hardscaping</h3>
+          <p data-i18n="svc3Text">Patios, retaining walls, walkways, and fire pits. Built to last with quality materials and craftsmanship.</p>
+        </div>
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-drop"></i></div>
+          <h3 data-i18n="svc4Title">Irrigation</h3>
+          <p data-i18n="svc4Text">Sprinkler installation and repair. Smart watering systems that keep your landscape green and your water bill low.</p>
+        </div>
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-sun"></i></div>
+          <h3 data-i18n="svc5Title">Seasonal Cleanup</h3>
+          <p data-i18n="svc5Text">Spring prep and fall cleanup. Leaf removal, bed prep, mulching, and pruning to keep things tidy.</p>
+        </div>
+        <div class="service-card pop">
+          <div class="service-icon"><i class="ph-fill ph-lightning"></i></div>
+          <h3 data-i18n="svc6Title">Outdoor Lighting</h3>
+          <p data-i18n="svc6Text">Landscape lighting that extends your outdoor living. Pathway lights, uplighting, and accent features.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us — dark horizontal strip (vs Camellia's white card grid) -->
+  <section class="section why-section">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="whyLabel">Why Us</div>
+      <h2 class="section-title pop" data-i18n="whyTitle">Built different</h2>
+      <div class="why-grid stagger">
+        <div class="why-card pop">
+          <div class="why-icon"><i class="ph-fill ph-shield-check"></i></div>
+          <h3 data-i18n="why1Title">Licensed & Insured</h3>
+          <p data-i18n="why1Text">Fully licensed, bonded, and insured. Your property is protected.</p>
+        </div>
+        <div class="why-card pop">
+          <div class="why-icon"><i class="ph-fill ph-clock-countdown"></i></div>
+          <h3 data-i18n="why2Title">On Time, Every Time</h3>
+          <p data-i18n="why2Text">We show up when we say we will. No excuses, no rescheduling.</p>
+        </div>
+        <div class="why-card pop">
+          <div class="why-icon"><i class="ph-fill ph-camera"></i></div>
+          <h3 data-i18n="why3Title">Photo Updates</h3>
+          <p data-i18n="why3Text">Progress photos after every visit. See exactly what was done.</p>
+        </div>
+        <div class="why-card pop">
+          <div class="why-icon"><i class="ph-fill ph-chat-centered-text"></i></div>
+          <h3 data-i18n="why4Title">Easy Communication</h3>
+          <p data-i18n="why4Text">Text, call, or chat. We respond fast and keep you in the loop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About — split dark/photo (vs Camellia's airy side-by-side) -->
+  <section class="section about" id="about">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="aboutLabel">About</div>
+      <h2 class="section-title pop" data-i18n="aboutTitle">The crew behind the work</h2>
+      <div class="about-split">
+        <div class="about-photo">
+          <div class="about-photo-placeholder">
+            <span class="icon">🌿</span>
+            Owner photo here
+          </div>
+        </div>
+        <div class="about-content pop-right">
+          <h3 data-i18n="aboutHi">We're a local crew that takes pride in the work.</h3>
+          <p data-i18n="aboutP1">Started this company because we saw too many landscapers cutting corners. We believe your property deserves better than that.</p>
+          <p data-i18n="aboutP2">Every job gets the same level of care — whether it's a weekly mow or a full backyard transformation. We're not the cheapest, but we're the ones you won't have to call back.</p>
+          <div class="about-sig">
+            <div class="name" data-i18n="aboutSig">— {{OWNER_NAME}}</div>
+            <div class="role" data-i18n="aboutRole">Owner & Lead Crew</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery — masonry with tall/wide items (vs Camellia's uniform grid) -->
+  <section class="section gallery" id="gallery">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="galleryLabel">Our Work</div>
+      <h2 class="section-title pop" data-i18n="galleryTitle">Real projects. Real results.</h2>
+      <p class="section-text pop" data-i18n="galleryText">Photos from our actual job sites — no stock images, just work we're proud of.</p>
+      <div class="gallery-grid stagger">
+        <div class="gallery-item tall pop">Photo 1</div>
+        <div class="gallery-item pop">Photo 2</div>
+        <div class="gallery-item pop">Photo 3</div>
+        <div class="gallery-item pop">Photo 4</div>
+        <div class="gallery-item wide pop">Photo 5 — wide shot</div>
+        <div class="gallery-item pop">Photo 6</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="section reviews-section" id="reviews" style="display:none;">
+    <div class="section-inner">
+      <div class="section-label pop">What Customers Say</div>
+      <h2 class="section-title pop">Customer reviews</h2>
+      <div class="reviews-summary pop" id="reviewsSummary"></div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+      <div class="reviews-powered pop">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Reviews from Google
+      </div>
+    </div>
+  </section>
+
+  <!-- Areas — dark grid blocks (vs Camellia's rounded pills) -->
+  <section class="section areas-section" id="areas">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="areasLabel">Service Areas</div>
+      <h2 class="section-title pop" data-i18n="areasTitle">Where we work</h2>
+      <div class="areas-grid stagger">
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Everett</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Marysville</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Lake Stevens</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Snohomish</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Mukilteo</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Lynnwood</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Mill Creek</div>
+        <div class="area-block pop"><i class="ph-fill ph-map-pin"></i> Bothell</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hours — dark compact table (vs Camellia's white card) -->
+  <section class="section hours-section" id="hours">
+    <div class="section-inner">
+      <div class="section-label pop" data-i18n="hoursLabel">Hours</div>
+      <h2 class="section-title pop" data-i18n="hoursTitle">When we're available</h2>
+      <div class="hours-table pop">
+        <div class="hours-row"><span class="day">Monday</span><span class="time">7:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Tuesday</span><span class="time">7:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Wednesday</span><span class="time">7:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Thursday</span><span class="time">7:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Friday</span><span class="time">7:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Saturday</span><span class="time">8:00 AM – 4:00 PM</span></div>
+        <div class="hours-row"><span class="day">Sunday</span><span class="time">Closed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA — Accent blue banner (vs Camellia's dark gradient) -->
+  <section class="section cta-banner" id="contact">
+    <h2 data-i18n="ctaTitle">Ready to transform your yard?</h2>
+    <p data-i18n="ctaText">Free estimates. No pressure. Let's talk about what your property needs.</p>
+    <div class="cta-contact">
+      <a href="tel:{{PHONE}}" class="btn btn-white"><i class="ph-fill ph-phone"></i> Call Now</a>
+      <a href="sms:{{PHONE}}" class="btn btn-outline"><i class="ph-fill ph-chat-text"></i> Text Us</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 {{BUSINESS_NAME}}. All rights reserved.</p>
+    <p style="margin-top: 8px; font-size: 11px; opacity: 0.6;">Powered by <a href="https://welcomematdigital.com">WelcomeMat</a></p>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scale-pop animations (vs Camellia's fade-up)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.pop, .pop-left, .pop-right').forEach(el => observer.observe(el));
+
+    // Highlight today in hours
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const today = days[new Date().getDay()];
+    document.querySelectorAll('.hours-row').forEach(row => {
+      if (row.querySelector('.day')?.textContent === today) row.classList.add('today');
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.nav-links')?.classList.remove('show');
+      });
+    });
+  </script>
+
+  <!-- Chat widget placeholder -->
+  <!-- <script src="{{SERVER_URL}}/widget/frontdesk-widget.js" data-business="{{SLUG}}" data-server="{{SERVER_URL}}"></script> -->
+
+</body>
+</html>
