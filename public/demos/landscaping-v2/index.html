@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greenline Landscapes — Design, Install & Maintain</title>
+  <meta name="description" content="Premium landscaping services: lawn care, garden design, hardscaping, and seasonal maintenance. Serving the Eastside since 2015.">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2c4a2c;
+      --sage: #5a7a5a;
+      --sage-light: #7fa37f;
+      --terracotta: #c4704b;
+      --terracotta-light: #d4865f;
+      --sand: #f5f0e8;
+      --cream: #fdfbf7;
+      --charcoal: #2d3029;
+      --charcoal-light: #4a4f46;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--charcoal); }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--forest); }
+
+    /* === NAV === */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px; background: var(--forest);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700;
+      color: var(--cream); text-decoration: none; letter-spacing: -0.5px;
+    }
+    .nav-brand span { color: var(--sage-light); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: rgba(253,251,247,0.7); font-size: 14px;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cream); }
+    .nav-cta {
+      background: var(--terracotta); color: #fff; padding: 10px 22px;
+      border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none;
+      transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.3px;
+      box-shadow: 0 3px 10px rgba(196,112,75,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .nav-cta:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+
+    /* === HERO === */
+    .hero {
+      display: grid; grid-template-columns: 1.2fr 1fr; min-height: 520px;
+      background: var(--cream); align-items: center; padding: 40px;
+      gap: 48px; max-width: 1200px; margin: 0 auto;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 40px 24px 40px 32px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(90,122,90,0.08); border-radius: 20px;
+      padding: 6px 14px; font-size: 11px; font-weight: 600;
+      color: var(--sage); text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 24px; width: fit-content;
+    }
+    .hero-text h1 {
+      font-size: clamp(36px, 4.5vw, 56px); font-weight: 700;
+      line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero-text h1 em {
+      font-style: italic; color: var(--sage);
+    }
+    .hero-text p {
+      font-size: 17px; line-height: 1.7; color: var(--charcoal-light);
+      max-width: 440px; margin-bottom: 32px;
+    }
+    .hero-ctas { display: flex; gap: 14px; }
+    .btn-primary {
+      background: var(--terracotta); color: #fff; padding: 15px 30px;
+      border: none; border-radius: 6px; font-size: 14px; font-weight: 700;
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.4px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(196,112,75,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-primary:hover { background: var(--terracotta-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(196,112,75,0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .btn-secondary {
+      background: rgba(44,74,44,0.06); color: var(--forest); padding: 15px 30px;
+      border: none; border-radius: 6px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    .btn-secondary:hover { background: rgba(44,74,44,0.1); }
+
+    .hero-images {
+      overflow: hidden; border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .hero-images img {
+      width: 100%; height: 400px; object-fit: cover; display: block;
+    }
+
+    /* === TRUST BAR === */
+    .trust-bar {
+      display: flex; justify-content: center; align-items: center; gap: 48px;
+      padding: 28px 32px; background: var(--forest); color: rgba(253,251,247,0.85);
+      font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+    }
+    .trust-bar span { display: flex; align-items: center; gap: 8px; }
+
+    /* === SERVICES === */
+    .services {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .services-header {
+      text-align: center; margin-bottom: 56px;
+    }
+    .services-header h2 {
+      font-size: 36px; margin-bottom: 12px;
+    }
+    .services-header p {
+      font-size: 16px; color: var(--charcoal-light); max-width: 520px; margin: 0 auto;
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .service-card {
+      background: var(--cream); border-radius: 12px; padding: 32px 28px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .service-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(90,122,90,0.1); display: flex; align-items: center;
+      justify-content: center; font-size: 22px; margin-bottom: 20px;
+    }
+    .service-card h3 {
+      font-size: 20px; font-weight: 600; margin-bottom: 10px;
+      font-family: 'DM Sans', sans-serif; color: var(--forest);
+    }
+    .service-card p {
+      font-size: 14px; color: var(--charcoal-light); line-height: 1.6;
+    }
+
+    /* === PROCESS === */
+    .process {
+      background: var(--cream); padding: 80px 48px;
+      border-top: 1px solid rgba(90,122,90,0.08);
+      border-bottom: 1px solid rgba(90,122,90,0.08);
+    }
+    .process-inner { max-width: 1100px; margin: 0 auto; }
+    .process h2 { text-align: center; font-size: 34px; margin-bottom: 56px; }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+    }
+    .step {
+      text-align: center; position: relative;
+    }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--sage); color: #fff; display: inline-flex;
+      align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; margin-bottom: 16px;
+      box-shadow: 0 3px 10px rgba(90,122,90,0.3);
+    }
+    .step h3 {
+      font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+      color: var(--forest); margin-bottom: 8px;
+    }
+    .step p { font-size: 13px; color: var(--charcoal-light); line-height: 1.5; }
+
+    /* === GALLERY === */
+    .gallery {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .gallery h2 { text-align: center; font-size: 34px; margin-bottom: 48px; }
+    .gallery-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      grid-template-rows: 240px 240px; gap: 12px;
+    }
+    .gallery-grid img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 10px;
+    }
+    .gallery-grid img:first-child {
+      grid-row: span 2;
+    }
+
+    /* === TESTIMONIAL === */
+    .testimonial {
+      background: var(--forest); padding: 80px 48px; text-align: center;
+    }
+    .testimonial blockquote {
+      max-width: 640px; margin: 0 auto;
+      font-family: 'Playfair Display', serif; font-size: 24px;
+      font-style: italic; color: rgba(253,251,247,0.9);
+      line-height: 1.6; margin-bottom: 24px;
+    }
+    .testimonial cite {
+      font-style: normal; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: rgba(253,251,247,0.5); font-weight: 500;
+    }
+    .testimonial .stars {
+      color: var(--terracotta-light); font-size: 20px; margin-bottom: 20px;
+    }
+
+    /* === CTA === */
+    .cta-section {
+      padding: 80px 48px; text-align: center;
+      background: var(--sand);
+    }
+    .cta-section h2 { font-size: 34px; margin-bottom: 14px; }
+    .cta-section p {
+      font-size: 16px; color: var(--charcoal-light); margin-bottom: 32px;
+      max-width: 440px; margin-left: auto; margin-right: auto;
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--charcoal); padding: 36px 48px; text-align: center;
+      font-size: 13px; color: rgba(253,251,247,0.5);
+      border-top: 1px solid rgba(253,251,247,0.06);
+    }
+    footer a { color: var(--sage-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer p + p { margin-top: 6px; color: rgba(253,251,247,0.3); }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-images { display: none; }
+      .hero-text { padding: 60px 32px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-grid img:first-child { grid-row: auto; }
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .trust-bar { flex-direction: column; gap: 12px; }
+      .hero-text h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand"><span>☘</span> Greenline</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="#quote" class="nav-cta">Free Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">☘ Serving the Eastside since 2015</div>
+    <h1>Landscapes that <em>grow</em> with you.</h1>
+    <p>From weekly mowing to full backyard transformations — we design, build, and maintain outdoor spaces that feel like home.</p>
+    <div class="hero-ctas">
+      <a href="#quote" class="btn-primary">Get a Free Quote</a>
+      <a href="#gallery" class="btn-secondary">See Our Work</a>
+    </div>
+  </div>
+  <div class="hero-images">
+    <img src="https://images.unsplash.com/photo-1734079692079-aae7e24a7035?w=800&q=80" alt="Landscaper laying fresh turf">
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <span>✓ Licensed & Insured</span>
+  <span>★ 4.9 stars — 85 reviews</span>
+  <span>⏱ Free estimates within 24 hrs</span>
+  <span>🌿 Eco-friendly options</span>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <h2>What We Do</h2>
+    <p>Full-service landscaping from design through seasonal care. Everything your property needs, one team.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🌱</div>
+      <h3>Lawn Care</h3>
+      <p>Weekly mowing, edging, fertilization, and aeration. Keep your lawn thick, green, and healthy year-round.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🌸</div>
+      <h3>Garden Design</h3>
+      <p>Custom planting plans with native and ornamental species. Flower beds, borders, and seasonal color.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🪨</div>
+      <h3>Hardscaping</h3>
+      <p>Patios, retaining walls, walkways, and fire pits. Durable materials with clean craftsmanship.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💧</div>
+      <h3>Irrigation</h3>
+      <p>Smart sprinkler systems, drip lines, and seasonal adjustments. Save water without sacrificing coverage.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🍂</div>
+      <h3>Seasonal Cleanup</h3>
+      <p>Spring prep, fall leaf removal, mulching, and bed clearing. Keep your yard tidy through every season.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✂️</div>
+      <h3>Hedge & Shrub Trimming</h3>
+      <p>Precision shaping, overgrowth control, and ornamental pruning. Crisp lines, healthy plants.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <h2>How It Works</h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Tell Us Your Vision</h3>
+        <p>Fill out a quick form or call us. Share photos, ideas, or just a rough budget.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>On-Site Consultation</h3>
+        <p>We visit your property, take measurements, and discuss options face-to-face.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Design & Proposal</h3>
+        <p>You receive a detailed plan with pricing. No surprises, no pressure.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Build & Maintain</h3>
+        <p>We bring it to life on schedule, then keep it looking great season after season.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <h2>Recent Projects</h2>
+  <div class="gallery-grid">
+    <img src="https://images.unsplash.com/photo-1734079692160-fcbe4be6ab96?w=800&q=80" alt="Landscaper with wheelbarrow">
+    <img src="https://plus.unsplash.com/premium_photo-1661963981959-76c59c589ba4?w=600&q=80" alt="Topiary trimming with cordless trimmer">
+    <img src="https://plus.unsplash.com/premium_photo-1682098326871-95eac6cf4f25?w=600&q=80" alt="Gardener mowing lawn">
+    <img src="https://plus.unsplash.com/premium_photo-1666985732128-b8acafd17652?w=600&q=80" alt="Paver and turf grid design">
+    <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?w=600&q=80" alt="Manicured green lawn">
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial" id="testimonials">
+  <div class="stars">★★★★★</div>
+  <blockquote>"They turned our neglected backyard into something we actually use every weekend. The patio, the plantings — it all came together perfectly."</blockquote>
+  <cite>— Rachel T., Kirkland</cite>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="quote">
+  <h2>Ready to love your yard?</h2>
+  <p>Get a no-pressure quote in under 24 hours. We'll come to you.</p>
+  <a href="#" class="btn-primary" onclick="return false;">Schedule a Free Consultation</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 Greenline Landscapes · Bellevue, WA · (425) XXX-XXXX</p>
+  <p>Powered by <a href="https://trywelcomemat.com">WelcomeMat</a></p>
+</footer>
+
+<!-- WelcomeMat Chat Widget -->
+<script src="/widget/frontdesk-widget.js" data-business="plateau-kitchen" data-server=""></script>
+</body>
+</html>
