@@ -148,9 +148,18 @@ async function main() {
   console.log(`   Trade: ${content.trade}`);
   console.log(`   Color: ${content.accentColor}`);
 
-  // Read template
+  // Pick template based on trade
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-  const templatePath = path.join(__dirname, '..', 'public', 'templates', 'bold-trade', 'index.html');
+  const tradeTemplateMap = {
+    'cleaning': 'fresh-clean',
+    'carpet-cleaning': 'fresh-clean',
+    'janitorial': 'fresh-clean',
+    'maid-service': 'fresh-clean',
+    'housekeeping': 'fresh-clean',
+  };
+  const templateName = tradeTemplateMap[content.trade] || 'bold-trade';
+  console.log(`   Template: ${templateName}`);
+  const templatePath = path.join(__dirname, '..', 'public', 'templates', templateName, 'index.html');
   let html = fs.readFileSync(templatePath, 'utf8');
 
   // Replace placeholders
@@ -159,6 +168,29 @@ async function main() {
   html = html.replaceAll('{{SERVICE_AREA}}', content.serviceArea);
   html = html.replaceAll('{{OWNER_NAME}}', content.ownerName);
   html = html.replaceAll('{{SLUG}}', slug);
+
+  // Hero image — pick based on trade keywords in business name
+  {
+    const nameLower = name.toLowerCase();
+    const heroImages = {
+      // Cleaning trades (fresh-clean template)
+      'carpet':  'https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=1600&q=80',
+      'floor':   'https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=1600&q=80',
+      'rug':     'https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=1600&q=80',
+      'maid':    'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
+      'house':   'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
+      // Tree trades (bold-trade template)
+      'tree':    'https://images.unsplash.com/photo-1754321889123-0485c7fea5f1?w=1600&q=80',
+      'arborist':'https://images.unsplash.com/photo-1754321889123-0485c7fea5f1?w=1600&q=80',
+      // Junk / hauling trades (bold-trade template)
+      'junk':    'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
+      'haul':    'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
+      'removal': 'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
+      'default': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
+    };
+    const match = Object.keys(heroImages).find(k => k !== 'default' && nameLower.includes(k));
+    html = html.replaceAll('{{HERO_IMAGE}}', heroImages[match] || heroImages['default']);
+  }
   html = html.replaceAll('{{SERVER_URL}}', 'https://frontdesk-ai-vx1s.onrender.com');
 
   // Replace meta description
@@ -166,21 +198,24 @@ async function main() {
     `<meta name="description" content="${content.metaDesc}">`);
 
   // Replace title trade
-  html = html.replace(/— Professional Landscaping/, `— ${content.svc1Title}`);
+  html = html.replace(/— Professional (Landscaping|Cleaning)/, `— ${content.svc1Title}`);
 
-  // Replace accent color
+  // Replace accent color (both templates)
   if (content.accentColor) {
-    html = html.replace(/--accent: #2563eb;/, `--accent: ${content.accentColor};`);
-    html = html.replace(/--accent-dark: #1d4ed8;/, `--accent-dark: ${content.accentColor};`);
+    html = html.replace(/--accent: #[0-9a-fA-F]{6};/, `--accent: ${content.accentColor};`);
+    html = html.replace(/--accent-dark: #[0-9a-fA-F]{6};/, `--accent-dark: ${content.accentColor};`);
+    html = html.replace(/--accent-light: #[0-9a-fA-F]{6};/, `--accent-light: ${content.accentColor};`);
   }
 
-  // Replace hero content
-  html = html.replace(/data-i18n="heroTitle">Your yard\.<br><em>Done right\.<\/em>/, 
-    `data-i18n="heroTitle">${content.tagline}`);
+  // Replace hero content (both templates)
+  html = html.replace(/<h1 data-i18n="heroTitle">[^]*?<\/h1>/, 
+    `<h1 data-i18n="heroTitle">${content.tagline}</h1>`);
   html = html.replace(/(data-i18n="heroText">)[^<]*/, `$1${content.heroText}`);
 
-  // Replace hero icon
-  html = html.replace(/ph-fill ph-tree"><\/i> Serving/, `ph-fill ${content.heroIcon}"></i> Serving`);
+  // Replace hero icon (bold-trade only, fresh-clean has no icons)
+  if (templateName === 'bold-trade') {
+    html = html.replace(/ph-fill ph-tree"><\/i> Serving/, `ph-fill ${content.heroIcon}"></i> Serving`);
+  }
 
   // Replace stats
   html = html.replace(/(data-i18n="statYears">)[^<]*/, `$1${content.statYears}`);
@@ -250,15 +285,23 @@ async function main() {
     html = html.replace('<div class="reviews-grid" id="reviewsGrid"></div>',
       `<div class="reviews-grid" id="reviewsGrid">${reviewCards}</div>`);
 
-    // Add Reviews to nav
-    html = html.replace(
-      '<li><a href="#areas" data-i18n="navAreas">Areas</a></li>',
-      '<li><a href="#reviews">Reviews</a></li>\n        <li><a href="#areas" data-i18n="navAreas">Areas</a></li>'
-    );
+    // Add Reviews to nav (handle both template structures)
+    if (templateName === 'bold-trade') {
+      html = html.replace(
+        '<li><a href="#areas" data-i18n="navAreas">Areas</a></li>',
+        '<li><a href="#reviews">Reviews</a></li>\n        <li><a href="#areas" data-i18n="navAreas">Areas</a></li>'
+      );
+    } else {
+      html = html.replace(
+        '<a href="#about">About</a>',
+        '<a href="#reviews">Reviews</a>\n    <a href="#about">About</a>'
+      );
+    }
   }
   // Add demo banner
+  const bannerFont = templateName === 'fresh-clean' ? "'Work Sans',sans-serif" : "'Source Sans 3',sans-serif";
   html = html.replace('<body>', `<body>
-  <div style="background:#0f172a; color:white; text-align:center; padding:10px 16px; font-size:13px; font-family:'Source Sans 3',sans-serif; position:relative; z-index:1001;">
+  <div style="background:#0f172a; color:white; text-align:center; padding:10px 16px; font-size:13px; font-family:${bannerFont}; position:relative; z-index:1001;">
     🎨 This is a <strong>free preview</strong> built by <a href="https://welcomematdigital.com" style="color:#5eead4; text-decoration:underline;">WelcomeMat</a> — want to make it yours? <a href="https://welcomematdigital.com/contact" style="color:#5eead4; text-decoration:underline;">Let's talk</a>
   </div>`);
 

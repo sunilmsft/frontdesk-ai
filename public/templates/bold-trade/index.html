@@ -163,6 +163,12 @@
       background: var(--primary);
       overflow: hidden;
     }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      background: url('{{HERO_IMAGE}}') center/cover no-repeat;
+      opacity: 0.18;
+    }
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -677,6 +683,7 @@
   <!-- Hero — full-width centered (vs Camellia's split layout) -->
   <section class="hero">
     <div class="hero-bg"></div>
+    <div class="hero-img"></div>
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-badge"><i class="ph-fill ph-tree"></i> Serving {{SERVICE_AREA}}</div>

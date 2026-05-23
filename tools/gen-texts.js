@@ -78,5 +78,5 @@ for (let i = 1; i < lines.length; i++) {
   count++;
 }
 
-fs.writeFileSync(csvPath, output.join('\n'), 'utf8');
+fs.writeFileSync(csvPath, '\uFEFF' + output.join('\n'), 'utf8');
 console.log(`\n✅ Added "Message" column to ${csvPath} — ${count} messages generated.\n`);

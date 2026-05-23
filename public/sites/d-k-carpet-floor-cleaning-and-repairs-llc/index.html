@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D. K. Carpet, Floor Cleaning and Repairs LLC — Carpet Cleaning</title>
+  <meta name="description" content="D. K. Carpet, Floor Cleaning and Repairs LLC offers expert carpet cleaning and repair services in Kent, WA. Get a free quote today!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==============================================
+       TEMPLATE: FRESH CLEAN
+       DNA: editorial-split / geometric-sans / sharp / subtle / text-minimal
+       Accent: #1a7a6d (teal — overridden by GPT)
+       Trade: cleaning, carpet cleaning, janitorial
+       ============================================== */
+
+    :root {
+      --primary: #0a1a17;
+      --accent: #3C8CBA;
+      --accent-light: #3C8CBA;
+      --accent-bg: #e8f5f2;
+      --bg: #fafbfb;
+      --bg-alt: #fff;
+      --text: #0a1a17;
+      --text-muted: #5f7370;
+      --border: #e5eae9;
+      --radius: 2px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Work Sans', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,26,23,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 600; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: var(--accent) !important; color: #fff !important;
+      padding: 10px 24px; border-radius: var(--radius); text-transform: uppercase !important;
+      letter-spacing: 1px !important; font-size: 11px !important; text-decoration: none;
+    }
+
+    /* === HERO — full-width centered === */
+    .hero {
+      min-height: 88vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 40px 80px;
+      background: var(--primary);
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.2;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--accent); z-index: 2;
+    }
+    .hero-inner { max-width: 700px; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+      color: var(--accent); margin-bottom: 24px; opacity: 0.9;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px); font-weight: 700; line-height: 1.08;
+      letter-spacing: -1.5px; margin-bottom: 24px; color: #fff;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    .hero-ctas { margin-top: 36px; display: flex; gap: 16px; align-items: center; justify-content: center; }
+    .btn-primary {
+      background: var(--accent); color: #fff; padding: 14px 36px; border: none;
+      border-radius: var(--radius); font-size: 13px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; text-decoration: none;
+      transition: all 0.2s; font-family: 'Poppins', sans-serif;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-text { color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .btn-text:hover { color: #fff; }
+
+    /* === SECTIONS === */
+    section { padding: 100px 40px; }
+    .section-eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 16px; }
+    section h2 { font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    section .subtitle { font-size: 16px; color: var(--text-muted); max-width: 480px; line-height: 1.7; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    /* === SERVICES — numbered list === */
+    .services { background: var(--bg-alt); }
+    .services-list { margin-top: 48px; }
+    .svc-row {
+      display: grid; grid-template-columns: 48px 1fr; gap: 24px;
+      align-items: baseline; padding: 28px 0;
+      border-bottom: 1px solid var(--border); transition: all 0.15s;
+    }
+    .svc-row:first-child { border-top: 1px solid var(--border); }
+    .svc-row:hover { padding-left: 12px; }
+    .svc-num { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: var(--accent); }
+    .svc-info h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .svc-info p { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
+
+    /* === STATS STRIP === */
+    .stats {
+      background: var(--primary); padding: 48px 40px;
+      display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Poppins', sans-serif; font-size: 40px; font-weight: 700; color: var(--accent-bg); }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+    /* === PROCESS === */
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 48px; background: var(--border); }
+    .proc-step { background: var(--bg-alt); padding: 32px 24px; }
+    .proc-step .step-num { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+    .proc-step h3 { font-size: 16px; font-weight: 600; margin: 12px 0 8px; }
+    .proc-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* === REVIEWS === */
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+    .reviews-summary { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .reviews-stars svg { width: 22px; height: 22px; fill: var(--accent); }
+    .reviews-rating { font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 700; }
+    .reviews-count { font-size: 14px; color: var(--text-muted); }
+    .review-card {
+      padding: 36px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg-alt);
+    }
+    .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .review-avatar-placeholder {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--accent-bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px; color: var(--accent);
+    }
+    .review-author { font-size: 14px; font-weight: 600; }
+    .review-time { font-size: 12px; color: var(--text-muted); }
+    .review-stars svg { width: 14px; height: 14px; fill: var(--accent); }
+    .review-text { font-size: 15px; line-height: 1.7; color: var(--text); margin-top: 12px; font-style: italic; }
+
+    /* === ABOUT — credentials-first === */
+    .about { background: var(--bg-alt); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; }
+    .about-text p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .about-sig { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; margin-top: 8px; }
+    .credentials { list-style: none; }
+    .credentials li {
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px;
+    }
+    .cred-check { width: 20px; height: 20px; background: var(--accent-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--accent); flex-shrink: 0; }
+
+    /* === AREAS === */
+    .areas-list { column-count: 3; margin-top: 32px; list-style: none; }
+    .areas-list li { padding: 8px 0; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+
+    /* === CTA === */
+    .cta-section { background: var(--accent-bg); text-align: center; }
+    .cta-section h2 { color: var(--primary); }
+    .cta-section p { margin: 0 auto 32px; color: var(--text-muted); }
+    .cta-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer { padding: 24px 40px; text-align: center; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      section { padding: 60px 20px; }
+      .reviews-grid, .about-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .areas-list { column-count: 2; }
+      .svc-row { grid-template-columns: 36px 1fr; }
+      .stats { gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div style="background:#0f172a; color:white; text-align:center; padding:10px 16px; font-size:13px; font-family:'Work Sans',sans-serif; position:relative; z-index:1001;">
+    🎨 This is a <strong>free preview</strong> built by <a href="https://welcomematdigital.com" style="color:#5eead4; text-decoration:underline;">WelcomeMat</a> — want to make it yours? <a href="https://welcomematdigital.com/contact" style="color:#5eead4; text-decoration:underline;">Let's talk</a>
+  </div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">D. K. Carpet, Floor Cleaning and Repairs LLC</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#areas" data-i18n="navAreas">Areas</a>
+    <a href="#contact" class="nav-cta">Get a Quote</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow" data-i18n="heroEyebrow">Professional Cleaning</div>
+    <h1 data-i18n="heroTitle">Revive Your Floors<br><em>with Expert Care</em></h1>
+    <p data-i18n="heroText">We bring new life to your carpets and floors, one job at a time.</p>
+    <div class="hero-ctas">
+      <a href="tel:(253) 630-1004" class="btn-primary">Call (253) 630-1004</a>
+      <a href="#services" class="btn-text">View services →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num" data-i18n="statYears">5+</div><div class="stat-label">Years in Business</div></div>
+  <div class="stat"><div class="stat-num" data-i18n="statProjects">100+</div><div class="stat-label">Jobs Completed</div></div>
+  <div class="stat"><div class="stat-num" data-i18n="statRating">4.6</div><div class="stat-label">Google Rating</div></div>
+</div>
+
+<!-- SERVICES — numbered list -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-eyebrow">Services</div>
+    <h2>What we do.</h2>
+    <p class="subtitle">Every job done right — no shortcuts, no surprises.</p>
+    <div class="services-list">
+      <div class="svc-row">
+        <span class="svc-num">01</span>
+        <div class="svc-info">
+          <h3 data-i18n="svc1Title">Carpet Cleaning</h3>
+          <p data-i18n="svc1Text">Our thorough carpet cleaning service removes dirt and stains, revitalizing your carpets for a fresh look and feel.</p>
+        </div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">02</span>
+        <div class="svc-info">
+          <h3 data-i18n="svc2Title">Carpet Repair</h3>
+          <p data-i18n="svc2Text">We specialize in carpet patching and repair, ensuring seamless fixes that blend perfectly with your existing flooring.</p>
+        </div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">03</span>
+        <div class="svc-info">
+          <h3 data-i18n="svc3Title">Floor Cleaning</h3>
+          <p data-i18n="svc3Text">From hardwood to tile, our floor cleaning services will leave your surfaces sparkling and well-maintained.</p>
+        </div>
+      </div>
+      <div class="svc-row">
+        <span class="svc-num">04</span>
+        <div class="svc-info">
+          <h3 data-i18n="svc4Title">Stain Removal</h3>
+          <p data-i18n="svc4Text">Stubborn stains? Our expert team uses advanced techniques to tackle even the toughest stains, restoring your carpets to their best.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="section-eyebrow">How It Works</div>
+    <h2>Simple process.</h2>
+    <div class="process-steps">
+      <div class="proc-step">
+        <div class="step-num">Step 01</div>
+        <h3>Call or text</h3>
+        <p>Tell us what you need — we'll give you an honest quote on the spot.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 02</div>
+        <h3>We schedule</h3>
+        <p>Pick a time that works. We confirm your crew and arrival window.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 03</div>
+        <h3>We clean</h3>
+        <p>Our team arrives on time, follows the checklist, and leaves your space spotless.</p>
+      </div>
+      <div class="proc-step">
+        <div class="step-num">Step 04</div>
+        <h3>You review</h3>
+        <p>Not happy? We come back and make it right — no questions asked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS (hidden until injected) -->
+<section id="reviews" class="reviews-section">
+  <div class="container">
+    <div class="section-eyebrow">Reviews</div>
+    <h2>What our customers say</h2>
+    <div class="reviews-summary pop" id="reviewsSummary">
+      <div class="reviews-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+      <div class="reviews-rating">4.6</div>
+      <div class="reviews-count">36 reviews on Google</div></div>
+    <div class="reviews-grid" id="reviewsGrid">
+        <div class="review-card pop">
+          <div class="review-header">
+            <div class="review-avatar-placeholder">R</div>
+            <div>
+              <div class="review-author">Ram Supramanian</div>
+              <div class="review-time">5 months ago</div>
+            </div>
+          </div>
+          <div class="review-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+          <div class="review-text">Got a carpet patch replacement job done at a remote location in Kent, WA. Jason was very communicative, quick, efficient.</div>
+        </div>
+
+        <div class="review-card pop">
+          <div class="review-header">
+            <div class="review-avatar-placeholder">R</div>
+            <div>
+              <div class="review-author">Russell Thompson</div>
+              <div class="review-time">7 months ago</div>
+            </div>
+          </div>
+          <div class="review-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+          <div class="review-text">Darren was fantastic.  Really helpful, was quick and fair with pricing.  Went above and beyond, will use again in the future for sure!</div>
+        </div>
+
+        <div class="review-card pop">
+          <div class="review-header">
+            <div class="review-avatar-placeholder">C</div>
+            <div>
+              <div class="review-author">Claudia Garcia</div>
+              <div class="review-time">a year ago</div>
+            </div>
+          </div>
+          <div class="review-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+          <div class="review-text">Darren is absolutely great and knowledgeable. He took care of our new home and everything looks amazing. He went out of the immediate service area to take care of our prior rental carpets. They look better than we first moved in. We will share our experience with friends, family, and neighbors. We will definitely come back for all future carpet needs. Thank you DK.</div>
+        </div>
+
+        <div class="review-card pop">
+          <div class="review-header">
+            <div class="review-avatar-placeholder">S</div>
+            <div>
+              <div class="review-author">Steven Lowe</div>
+              <div class="review-time">a year ago</div>
+            </div>
+          </div>
+          <div class="review-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+          <div class="review-text">We just had multiple holes in the carpet on our stairs patched by Darren. He did an amazing job, using the materials efficiently and recommending pulling carpet from inconspicuous places (like the back of a closet). His price was very reasonable and work was superb.</div>
+        </div>
+
+        <div class="review-card pop">
+          <div class="review-header">
+            <div class="review-avatar-placeholder">M</div>
+            <div>
+              <div class="review-author">Michael Shearer</div>
+              <div class="review-time">3 years ago</div>
+            </div>
+          </div>
+          <div class="review-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+          <div class="review-text">Darren did a great job.  He takes pride in his owner/operated business and his work shows it.  Our carpets hadn’t been cleaned in 6 years.  Darren brought back new life.  Our wood floors also were cleaned and look great.  His prices are very reasonable and well worth it.  I wont hesitate to call him again and to recommend his as well.</div>
+        </div></div>
+  </div>
+</section>
+
+<!-- ABOUT — credentials-first -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-eyebrow">About Us</div>
+    <h2>Why people trust us.</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p data-i18n="aboutHi">Welcome to D. K. Carpet, Floor Cleaning and Repairs LLC!</p>
+        <p data-i18n="aboutP1">Founded with a passion for cleanliness and quality, we strive to provide exceptional carpet and floor care services that exceed our clients' expectations.</p>
+        <p data-i18n="aboutP2">What sets us apart is our commitment to personalized service and attention to detail. Each job is handled with pride, ensuring every client is satisfied.</p>
+        <div class="about-sig">— Darren</div>
+      </div>
+      <ul class="credentials">
+        <li><span class="cred-check">✓</span> Licensed &amp; insured</li>
+        <li><span class="cred-check">✓</span> Background-checked teams</li>
+        <li><span class="cred-check">✓</span> Eco-friendly products</li>
+        <li><span class="cred-check">✓</span> 100% satisfaction guarantee</li>
+        <li><span class="cred-check">✓</span> Consistent crew every visit</li>
+        <li><span class="cred-check">✓</span> Serving Kent, WA</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE AREAS -->
+<section id="areas">
+  <div class="container">
+    <div class="section-eyebrow">Service Area</div>
+    <h2>Where we work</h2>
+    <p class="subtitle">Proudly serving Kent, WA and surrounding communities.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="section-eyebrow">Get Started</div>
+    <h2>Ready for a cleaner space?</h2>
+    <p class="subtitle" style="margin: 0 auto 32px;">Give us a call or send a text — we'll get back to you fast.</p>
+    <div class="cta-row">
+      <a href="tel:(253) 630-1004" class="btn-primary">Call (253) 630-1004</a>
+      <a href="sms:(253) 630-1004" class="btn-text">or text us →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 D. K. Carpet, Floor Cleaning and Repairs LLC · Kent, WA</p>
+  <p style="margin-top: 4px;">Powered by <a href="https://welcomematdigital.com"><strong>WelcomeMat</strong></a></p>
+</footer>
+
+<!-- Chat widget (disabled for demo) -->
+<!-- <script src="https://frontdesk-ai-vx1s.onrender.com/widget/frontdesk-widget.js" data-server="https://frontdesk-ai-vx1s.onrender.com" data-business="d-k-carpet-floor-cleaning-and-repairs-llc"></script> -->
+
+</body>
+</html>
