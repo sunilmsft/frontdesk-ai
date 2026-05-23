@@ -3,7 +3,7 @@
  *
  * Usage: Add this to any website:
  * <script src="https://your-server.com/widget/frontdesk-widget.js"
- *         data-business="plateau-kitchen"
+ *         data-business="demo"
  *         data-server="https://your-server.com"></script>
  */
 (function () {
