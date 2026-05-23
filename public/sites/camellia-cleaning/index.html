@@ -756,44 +756,7 @@
     .nav-lang-option.active { background: var(--primary-pale); font-weight: 600; }
     .nav-lang-option .flag { font-size: 18px; }
 
-    /* === PREVIEW BANNER === */
-    .preview-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10000;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: white;
-      text-align: center;
-      padding: 10px 48px 10px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    }
-    .preview-banner span { opacity: 0.9; font-weight: 400; }
-    .preview-banner .preview-close {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .preview-banner .preview-close:hover { background: rgba(255,255,255,0.3); }
-    body.has-preview-banner { padding-top: 42px; }
-    body.has-preview-banner .nav { top: 42px; }
+
 
     .nav-lang-mobile { display: none; margin-left: 0; }
 
@@ -815,13 +778,7 @@
     }
   </style>
 </head>
-<body class="has-preview-banner">
-
-  <!-- Preview Banner -->
-  <div class="preview-banner" id="previewBanner">
-    ✨ PREVIEW — <span>This is a preview of your website. Not live yet.</span>
-    <button class="preview-close" onclick="document.getElementById('previewBanner').remove(); document.body.classList.remove('has-preview-banner');" aria-label="Dismiss">&times;</button>
-  </div>
+<body>
 
   <!-- Navigation -->
   <nav class="nav" id="nav">
@@ -1772,6 +1729,6 @@
   })();
   </script>
 
-<script src="/widget/frontdesk-widget.js" data-business="plateau-kitchen" data-server=""></script>
+<script src="/widget/frontdesk-widget.js" data-business="camellia-cleaning" data-server=""></script>
 </body>
 </html>
