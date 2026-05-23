@@ -256,6 +256,12 @@ async function main() {
       '<li><a href="#reviews">Reviews</a></li>\n        <li><a href="#areas" data-i18n="navAreas">Areas</a></li>'
     );
   }
+  // Add demo banner
+  html = html.replace('<body>', `<body>
+  <div style="background:#0f172a; color:white; text-align:center; padding:10px 16px; font-size:13px; font-family:'Source Sans 3',sans-serif; position:relative; z-index:1001;">
+    🎨 This is a <strong>free preview</strong> built by <a href="https://welcomematdigital.com" style="color:#5eead4; text-decoration:underline;">WelcomeMat</a> — want to make it yours? <a href="https://welcomematdigital.com/contact" style="color:#5eead4; text-decoration:underline;">Let's talk</a>
+  </div>`);
+
   // Create output dir
   const outDir = path.join(__dirname, '..', 'public', 'sites', slug);
   
