@@ -605,6 +605,16 @@ router.get('/places/search', async (req, res) => {
   }
 
   try {
+    const searchBody = { textQuery: query.trim(), maxResultCount: 5 };
+
+    // Add location bias — use provided lat/lng or default to Seattle metro
+    const lat = parseFloat(req.query.lat) || 47.6062;
+    const lng = parseFloat(req.query.lng) || -122.3321;
+    const radius = parseFloat(req.query.radius) || 50000; // 50km default
+    searchBody.locationBias = {
+      circle: { center: { latitude: lat, longitude: lng }, radius }
+    };
+
     const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
       method: 'POST',
       headers: {
@@ -612,7 +622,7 @@ router.get('/places/search', async (req, res) => {
         'X-Goog-Api-Key': apiKey,
         'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
       },
-      body: JSON.stringify({ textQuery: query.trim(), maxResultCount: 5 })
+      body: JSON.stringify(searchBody)
     });
 
     if (!searchResp.ok) {
