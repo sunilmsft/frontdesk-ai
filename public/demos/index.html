@@ -3,142 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WelcomeMat — Demo Sites by Category</title>
-  <meta name="description" content="See what a professional website looks like for your trade. Live demos for locksmith, tree service, cleaning, carpet care, junk removal, auto detailing, and mobile notary businesses.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>WelcomeMat — See What Your Website Could Look Like</title>
+  <meta name="description" content="Live website demos for local service businesses. See what a professional site looks like for your trade — tree service, landscaping, cleaning, locksmith, and more. Built by WelcomeMat.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --mint: #6ee7b7;
+      --mint-dim: rgba(110,231,183,0.08);
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --text-mute: #64748b;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* Header */
-    .header {
-      text-align: center;
-      padding: 60px 24px 40px;
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px; border-bottom: 1px solid var(--border);
     }
-    .header h1 {
-      font-size: clamp(28px, 5vw, 44px);
-      font-weight: 800;
-      letter-spacing: -1px;
-      margin-bottom: 12px;
+    .nav-brand {
+      font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+      color: var(--text); text-decoration: none;
     }
-    .header h1 span { color: #6ee7b7; }
-    .header p {
-      font-size: 17px;
-      color: #94a3b8;
-      max-width: 520px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .nav-brand span { color: var(--mint); }
+    .nav-link {
+      font-size: 13px; font-weight: 600; color: var(--mint);
+      text-decoration: none; padding: 8px 18px; border: 1px solid var(--mint);
+      border-radius: 6px; transition: all 0.2s;
+    }
+    .nav-link:hover { background: var(--mint); color: var(--bg); }
+
+    /* Hero */
+    .hero {
+      text-align: center; padding: 64px 24px 20px;
+      max-width: 680px; margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--mint);
+      background: var(--mint-dim); padding: 6px 14px; border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 5vw, 46px); font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: italic; color: var(--mint); }
+    .hero p {
+      font-size: 17px; color: var(--text-dim); line-height: 1.7;
+      max-width: 520px; margin: 0 auto 12px;
+    }
+    .hero-sub {
+      font-size: 14px; color: var(--text-mute); margin-bottom: 0;
+    }
+
+    /* Value strip */
+    .value-strip {
+      display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+      padding: 28px 24px; margin: 0 auto;
+      max-width: 800px;
+    }
+    .value-strip span {
+      font-size: 13px; color: var(--text-dim); font-weight: 500;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .value-strip .check { color: var(--mint); font-weight: 700; }
+
+    /* Section label */
+    .section-label {
+      text-align: center; padding: 40px 24px 24px;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-mute);
     }
 
     /* Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
+      gap: 24px; max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;
     }
 
     /* Card */
     .card {
-      background: #1e293b;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #334155;
+      background: var(--card); border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
+      cursor: pointer; text-decoration: none; color: inherit; display: block;
     }
     .card:hover {
-      transform: translateY(-4px);
-      border-color: #6ee7b7;
-      box-shadow: 0 12px 40px rgba(110, 231, 183, 0.08);
+      transform: translateY(-4px); border-color: var(--mint);
+      box-shadow: 0 12px 40px var(--mint-dim);
     }
-    .card-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
-    .card-body {
-      padding: 20px 24px 24px;
-    }
+    .card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .card-body { padding: 20px 24px 24px; }
     .card-category {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #6ee7b7;
-      margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--mint); margin-bottom: 8px;
     }
-    .card-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #f1f5f9;
-    }
-    .card-desc {
-      font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
+    .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+    .card-desc { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
     .card-cta {
-      display: inline-block;
-      margin-top: 16px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #6ee7b7;
-      letter-spacing: 0.3px;
+      display: inline-block; margin-top: 16px; font-size: 13px;
+      font-weight: 600; color: var(--mint); letter-spacing: 0.3px;
     }
     .card-cta::after { content: ' →'; }
 
+    /* CTA Banner */
+    .cta-banner {
+      text-align: center; padding: 60px 24px;
+      border-top: 1px solid var(--border);
+      max-width: 600px; margin: 0 auto;
+    }
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; margin-bottom: 12px;
+    }
+    .cta-banner p { font-size: 15px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.6; }
+    .cta-btn {
+      display: inline-block; background: var(--mint); color: var(--bg);
+      padding: 14px 32px; border-radius: 8px; font-weight: 700;
+      font-size: 15px; text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(110,231,183,0.2);
+    }
+    .cta-btn:hover { background: #a7f3d0; transform: translateY(-2px); }
+
     /* Footer */
     .footer {
-      text-align: center;
-      padding: 40px 24px 60px;
-      border-top: 1px solid #1e293b;
+      text-align: center; padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--text-mute);
     }
-    .footer p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
-    .footer a {
-      display: inline-block;
-      background: #6ee7b7;
-      color: #0f172a;
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 14px;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-    .footer a:hover { background: #a7f3d0; }
+    .footer a { color: var(--mint); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
 
     @media (max-width: 600px) {
-      .header { padding: 40px 16px 24px; }
-      .grid { padding: 0 16px 60px; gap: 16px; }
+      .hero { padding: 40px 16px 16px; }
+      .grid { padding: 0 16px 40px; gap: 16px; }
+      .value-strip { gap: 16px; }
+      .nav { padding: 12px 16px; }
     }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>See your <span>trade</span> come alive</h1>
-  <p>Real demos for real businesses. Pick your industry and see what your site could look like — built in under a day.</p>
+<!-- Nav -->
+<nav class="nav">
+  <a href="/" class="nav-brand">Welcome<span>Mat</span></a>
+  <a href="/" class="nav-link">What is WelcomeMat?</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">Live Examples</div>
+  <h1>This is what <em>your</em> website could look like</h1>
+  <p>Pick your trade below. Each demo is a real, working website — built in under a day for local service businesses like yours.</p>
+  <p class="hero-sub">Every site is unique. No cookie-cutter templates.</p>
 </div>
 
-<div class="grid">
+<!-- Value strip -->
+<div class="value-strip">
+  <span><span class="check">✓</span> Professional design</span>
+  <span><span class="check">✓</span> Works on phones</span>
+  <span><span class="check">✓</span> AI assistant built in</span>
+  <span><span class="check">✓</span> Ready in 24 hours</span>
+</div>
 
-  <a class="card" href="/demos/quickturn-locksmith/">
-    <img class="card-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" alt="Locksmith">
-    <div class="card-body">
-      <div class="card-category">Locksmith</div>
-      <div class="card-title">QuickTurn Locksmith</div>
-      <div class="card-desc">24/7 emergency lockout service, rekeying, smart lock installs. Bold design that builds trust instantly.</div>
-      <span class="card-cta">View demo</span>
-    </div>
-  </a>
+<!-- Demos -->
+<div class="section-label">Find Your Trade</div>
+
+<div class="grid">
 
   <a class="card" href="/demos/tree-service/">
     <img class="card-img" src="https://images.unsplash.com/photo-1626828476637-5bd713ef9f22?w=600&q=80" alt="Tree Service">
@@ -155,7 +193,27 @@
     <div class="card-body">
       <div class="card-category">Landscaping</div>
       <div class="card-title">Greenline Landscapes</div>
-      <div class="card-desc">Design, install, and maintain. Elegant, light aesthetic with warm terracotta accents.</div>
+      <div class="card-desc">Design, install, and maintain. Elegant aesthetic with warm terracotta accents.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
+
+  <a class="card" href="/demos/quickturn-locksmith/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1553272725-086100aecf5e?w=600&q=80" alt="Locksmith">
+    <div class="card-body">
+      <div class="card-category">Locksmith</div>
+      <div class="card-title">QuickTurn Locksmith</div>
+      <div class="card-desc">24/7 emergency lockout service, rekeying, smart lock installs. Bold design that builds trust instantly.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
+
+  <a class="card" href="/demos/pristine-home-cleaning/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="House Cleaning">
+    <div class="card-body">
+      <div class="card-category">House Cleaning</div>
+      <div class="card-title">Pristine Home Cleaning</div>
+      <div class="card-desc">Regular, deep, and move-in/out cleaning. Warm design that builds trust with homeowners.</div>
       <span class="card-cta">View demo</span>
     </div>
   </a>
@@ -180,16 +238,6 @@
     </div>
   </a>
 
-  <a class="card" href="/demos/signready-mobile-notary/">
-    <img class="card-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Mobile Notary">
-    <div class="card-body">
-      <div class="card-category">Mobile Notary</div>
-      <div class="card-title">SignReady Notary</div>
-      <div class="card-desc">Loan signings, apostilles, mobile closings. Professional design that screams reliability.</div>
-      <span class="card-cta">View demo</span>
-    </div>
-  </a>
-
   <a class="card" href="/demos/pacific-carpet-care/">
     <img class="card-img" src="https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=600&q=80" alt="Carpet Cleaning">
     <div class="card-body">
@@ -200,74 +248,28 @@
     </div>
   </a>
 
-  <a class="card" href="/demos/pristine-home-cleaning/">
-    <img class="card-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="House Cleaning">
+  <a class="card" href="/demos/signready-mobile-notary/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Mobile Notary">
     <div class="card-body">
-      <div class="card-category">House Cleaning</div>
-      <div class="card-title">Pristine Home Cleaning</div>
-      <div class="card-desc">Regular, deep, and move-in/out cleaning. Warm design that builds trust with homeowners.</div>
+      <div class="card-category">Mobile Notary</div>
+      <div class="card-title">SignReady Notary</div>
+      <div class="card-desc">Loan signings, apostilles, mobile closings. Professional design that screams reliability.</div>
       <span class="card-cta">View demo</span>
     </div>
   </a>
 
 </div>
 
-<div class="footer">
-  <p style="margin-bottom: 40px; font-size: 16px; color: #94a3b8;">Personalized previews we've already sent out:</p>
+<!-- CTA Banner -->
+<div class="cta-banner">
+  <h2>Don't see your trade?</h2>
+  <p>We build websites for all kinds of local service businesses — painters, handymen, salons, contractors, and more. We'll create a free preview for your business in 24 hours.</p>
+  <a href="/" class="cta-btn">Learn More About WelcomeMat</a>
 </div>
 
-<div class="grid" style="padding-bottom: 40px;">
-
-  <a class="card" href="/sites/bigfoot-tree-care/">
-    <div class="card-body">
-      <div class="card-category">Tree Service</div>
-      <div class="card-title">Bigfoot Tree Care</div>
-      <div class="card-desc">Kent, WA — 27 reviews. Personalized preview sent.</div>
-      <span class="card-cta">View preview</span>
-    </div>
-  </a>
-
-  <a class="card" href="/sites/tree-service-by-northwest/">
-    <div class="card-body">
-      <div class="card-category">Tree Service</div>
-      <div class="card-title">Tree Service By Northwest</div>
-      <div class="card-desc">75 reviews. Personalized preview sent.</div>
-      <span class="card-cta">View preview</span>
-    </div>
-  </a>
-
-  <a class="card" href="/sites/aloha-junk-removal/">
-    <div class="card-body">
-      <div class="card-category">Junk Removal</div>
-      <div class="card-title">Aloha Junk Removal</div>
-      <div class="card-desc">33 reviews. Personalized preview sent.</div>
-      <span class="card-cta">View preview</span>
-    </div>
-  </a>
-
-  <a class="card" href="/sites/legacy-services-carpet-cleaning-llc/">
-    <div class="card-body">
-      <div class="card-category">Carpet Cleaning</div>
-      <div class="card-title">Legacy Services Carpet Cleaning</div>
-      <div class="card-desc">Auburn, WA — 45 reviews. Personalized preview sent.</div>
-      <span class="card-cta">View preview</span>
-    </div>
-  </a>
-
-  <a class="card" href="/sites/d-k-carpet-floor-cleaning-and-repairs-llc/">
-    <div class="card-body">
-      <div class="card-category">Carpet Cleaning</div>
-      <div class="card-title">D.K. Carpet &amp; Floor Cleaning</div>
-      <div class="card-desc">Kent, WA — 36 reviews. Personalized preview sent.</div>
-      <span class="card-cta">View preview</span>
-    </div>
-  </a>
-
-</div>
-
+<!-- Footer -->
 <div class="footer">
-  <p>Don't see your trade? We'll build a custom demo for your business in 24 hours.</p>
-  <a href="/pitch">Learn more about WelcomeMat →</a>
+  <p>&copy; 2025 <a href="/">WelcomeMat</a> · Professional websites for local businesses</p>
 </div>
 
 </body>
