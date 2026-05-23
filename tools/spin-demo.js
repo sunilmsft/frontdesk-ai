@@ -84,23 +84,31 @@ ${reviewTexts || '(no reviews available)'}
 
 Return ONLY a JSON object with these exact keys (all values are strings):
 {
-  "trade": "one word trade category like landscaping, painting, tree-service, cleaning, etc",
+  "trade": "one word trade category like landscaping, painting, tree-service, cleaning, locksmithing, detailing, notary, junk-removal, etc",
   "tagline": "short punchy tagline for the hero, 4-8 words, use <br><em>emphasis</em> on key phrase",
   "heroText": "one sentence describing what they do, casual and confident",
-  "heroIcon": "phosphor icon name for their trade (e.g. ph-tree, ph-paint-roller, ph-broom, ph-truck)",
+  "heroIcon": "phosphor icon name for their trade (e.g. ph-tree, ph-paint-roller, ph-broom, ph-truck, ph-key, ph-car, ph-stamp, ph-recycle)",
   "metaDesc": "SEO meta description, ~150 chars",
+  "servicesTitle": "catchy services section headline, 3-5 words, specific to this trade",
+  "servicesText": "one sentence describing what they offer overall",
   "svc1Title": "service 1 name",
-  "svc1Text": "service 1 description, 1-2 sentences",
-  "svc1Icon": "phosphor icon name",
+  "svc1Text": "service 1 description, 1-2 sentences, specific to THIS trade",
+  "svc1Icon": "phosphor icon name (ph-xxx format)",
   "svc2Title": "service 2 name",
-  "svc2Text": "service 2 description",
+  "svc2Text": "service 2 description, specific to THIS trade",
   "svc2Icon": "phosphor icon name",
   "svc3Title": "service 3 name",
-  "svc3Text": "service 3 description",
+  "svc3Text": "service 3 description, specific to THIS trade",
   "svc3Icon": "phosphor icon name",
   "svc4Title": "service 4 name",
-  "svc4Text": "service 4 description",
+  "svc4Text": "service 4 description, specific to THIS trade",
   "svc4Icon": "phosphor icon name",
+  "svc5Title": "service 5 name",
+  "svc5Text": "service 5 description, specific to THIS trade",
+  "svc5Icon": "phosphor icon name",
+  "svc6Title": "service 6 name",
+  "svc6Text": "service 6 description, specific to THIS trade",
+  "svc6Icon": "phosphor icon name",
   "aboutHi": "short intro sentence about the business, warm and personal",
   "aboutP1": "first about paragraph, why they started or what drives them",
   "aboutP2": "second about paragraph, what makes them different",
@@ -108,10 +116,12 @@ Return ONLY a JSON object with these exact keys (all values are strings):
   "ownerName": "best guess at owner name from reviews or business name, or just 'The ${name} Team'",
   "statYears": "estimated years in business or just '5+'",
   "statProjects": "estimated jobs done or '100+'",
-  "accentColor": "hex color that fits their trade (blue for water/cleaning, green for landscaping, orange for construction, etc)"
+  "accentColor": "hex color that fits their trade (gold/amber for locksmith, green for tree/landscaping, orange for junk/hauling, blue for cleaning/detailing, navy for notary, red for roofing, etc)"
 }
 
-Infer services from the business type and reviews. Be specific to THEIR trade, not generic. Keep copy casual and confident — these are working tradespeople, not corporate brands.`;
+CRITICAL: All 6 services MUST be specific to the business trade. If this is a locksmith, ALL 6 services should be locksmith services. If detailing, all 6 should be detailing services. NEVER include landscaping, seasonal cleanup, or outdoor lighting unless the business IS a landscaper.
+
+Keep copy casual and confident — these are working tradespeople, not corporate brands.`;
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
@@ -279,12 +289,22 @@ async function main() {
   html = html.replace(/(data-i18n="statProjects">)[^<]*/, `$1${content.statProjects}`);
   html = html.replace(/(data-i18n="statRating">)[^<]*/, `$1${rating}`);
 
-  // Replace services
+  // Replace services section header
+  if (content.servicesTitle) {
+    html = html.replace(/(data-i18n="servicesTitle">)[^<]*/, `$1${content.servicesTitle}`);
+  }
+  if (content.servicesText) {
+    html = html.replace(/(data-i18n="servicesText">)[^<]*/, `$1${content.servicesText}`);
+  }
+
+  // Replace ALL 6 services (titles, text, AND icons)
   const svcReplacements = [
     ['svc1Title', 'svc1Text', 'svc1Icon'],
     ['svc2Title', 'svc2Text', 'svc2Icon'],
     ['svc3Title', 'svc3Text', 'svc3Icon'],
     ['svc4Title', 'svc4Text', 'svc4Icon'],
+    ['svc5Title', 'svc5Text', 'svc5Icon'],
+    ['svc6Title', 'svc6Text', 'svc6Icon'],
   ];
   for (const [titleKey, textKey, iconKey] of svcReplacements) {
     if (content[titleKey]) {
@@ -292,6 +312,11 @@ async function main() {
     }
     if (content[textKey]) {
       html = html.replace(new RegExp(`(data-i18n="${textKey}">)[^<]*`), `$1${content[textKey]}`);
+    }
+    if (content[iconKey]) {
+      // Replace the icon in the service card preceding this title
+      const iconRegex = new RegExp(`(<div class="service-icon"><i class="ph-fill )[^"]*("(?:><\/i>)?<\/div>\\s*(?:<\/div>\\s*)?\\s*<h3 data-i18n="${titleKey}")`, 's');
+      html = html.replace(iconRegex, `$1${content[iconKey]}$2`);
     }
   }
 

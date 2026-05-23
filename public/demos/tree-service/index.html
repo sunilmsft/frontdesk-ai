@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summit Tree Care — Professional Tree Service, Eastside WA</title>
+  <meta name="description" content="Expert tree removal, pruning, and stump grinding for homes and businesses on the Eastside. Licensed, insured, and trusted by 200+ property owners.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Bitter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bark: #1a1209;
+      --forest: #2d4a22;
+      --forest-light: #4a7c33;
+      --amber: #d4930d;
+      --amber-light: #f0c040;
+      --cream: #f8f5ef;
+      --stone: #e8e2d6;
+      --text: #1a1209;
+      --text-muted: #6b5e4a;
+      --danger: #c0392b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Bitter', serif; }
+
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(26,18,9,0.97); backdrop-filter: blur(10px);
+      padding: 12px 32px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Bitter', serif; font-size: 22px; font-weight: 700;
+      color: var(--cream); text-decoration: none; display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo svg { width: 28px; height: 28px; fill: var(--forest-light); }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: rgba(248,245,239,0.6); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber-light); }
+    .nav-cta {
+      background: var(--amber) !important; color: var(--bark) !important;
+      padding: 7px 16px; border-radius: 4px; font-weight: 700 !important; font-size: 12px !important;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .nav-cta:hover { background: var(--amber-light) !important; }
+
+    /* === EMERGENCY STRIP === */
+    .emergency-strip {
+      position: fixed; top: 52px; width: 100%; z-index: 99;
+      background: var(--danger); color: white; text-align: center;
+      padding: 8px 16px; font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .emergency-strip a { color: white; text-decoration: underline; font-weight: 700; }
+
+    /* === HERO — dramatic diagonal clip === */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      background: var(--bark);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1626828476637-5bd713ef9f22?w=1600&q=80') center/cover;
+      opacity: 0.35;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,18,9,0.95) 0%, rgba(26,18,9,0.6) 50%, transparent 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 680px;
+      padding: 140px 48px 80px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(248,245,239,0.1); border: 1px solid rgba(248,245,239,0.3);
+      padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      color: var(--cream); text-transform: uppercase; letter-spacing: 1.5px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 72px); font-weight: 700; color: var(--cream);
+      line-height: 1.05; margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--amber); }
+    .hero-text {
+      font-size: 18px; color: rgba(248,245,239,0.7); line-height: 1.7;
+      max-width: 520px; margin-bottom: 36px;
+    }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-solid {
+      background: var(--amber); color: var(--bark); padding: 16px 32px;
+      border: none; border-radius: 6px; font-size: 15px; font-weight: 700;
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-solid:hover { background: var(--amber-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,147,13,0.35), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .btn-outline {
+      background: rgba(248,245,239,0.06); color: var(--cream); padding: 16px 32px;
+      border: none; border-radius: 6px;
+      font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .btn-outline:hover { background: rgba(248,245,239,0.1); color: var(--amber); box-shadow: 0 6px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1); }
+
+    /* === TRUST STRIP === */
+    .trust-strip {
+      background: var(--forest); padding: 24px 32px;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 32px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(248,245,239,0.9); font-size: 14px; font-weight: 600;
+    }
+    .trust-item svg { width: 20px; height: 20px; fill: var(--amber); flex-shrink: 0; }
+
+    /* === SERVICES — zigzag full-width bands === */
+    .service-band {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 420px;
+    }
+    .service-band:nth-child(even) .service-photo { order: 2; }
+    .service-band:nth-child(even) .service-info { order: 1; }
+    .service-photo {
+      background-size: cover; background-position: center;
+      position: relative;
+    }
+    .service-photo::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(26,18,9,0.1) 0%, rgba(26,18,9,0.05) 100%);
+    }
+    .service-info {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 60px 48px;
+    }
+    .service-band:nth-child(odd) .service-info { background: var(--cream); }
+    .service-band:nth-child(even) .service-info { background: var(--stone); }
+    .service-number {
+      font-family: 'Bitter', serif; font-size: 64px; font-weight: 700;
+      color: rgba(26,18,9,0.08); line-height: 1; margin-bottom: -10px;
+    }
+    .service-info h3 {
+      font-size: 28px; font-weight: 700; margin-bottom: 12px; color: var(--text);
+    }
+    .service-info p {
+      font-size: 16px; color: var(--text-muted); line-height: 1.8; max-width: 420px;
+    }
+    .service-tag {
+      display: inline-block; margin-top: 16px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--forest);
+      border: 1.5px solid var(--forest-light); padding: 4px 12px; border-radius: 3px;
+    }
+
+    /* === BEFORE/AFTER === */
+    .before-after {
+      background: var(--bark); padding: 80px 32px; color: var(--cream);
+    }
+    .ba-header { text-align: center; margin-bottom: 48px; }
+    .ba-header h2 { color: var(--cream); font-size: clamp(28px, 4vw, 40px); margin-bottom: 8px; }
+    .ba-header p { color: rgba(248,245,239,0.5); font-size: 16px; }
+    .ba-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+      max-width: 900px; margin: 0 auto; border-radius: 8px; overflow: hidden;
+    }
+    .ba-item { position: relative; height: 300px; overflow: hidden; }
+    .ba-item img { width: 100%; height: 100%; object-fit: cover; }
+    .ba-label {
+      position: absolute; bottom: 12px; left: 12px;
+      background: rgba(26,18,9,0.8); color: var(--cream); padding: 6px 14px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; border-radius: 3px;
+    }
+    .ba-label.after { background: var(--forest); }
+
+    /* === STATS === */
+    .stats {
+      background: var(--stone); padding: 60px 32px;
+      display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Bitter', serif; font-size: 48px; font-weight: 700;
+      color: var(--forest); line-height: 1;
+    }
+    .stat-label { font-size: 14px; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
+
+    /* === TESTIMONIALS — no cards, just big quotes === */
+    .testimonials { padding: 80px 32px; }
+    .testimonials-inner { max-width: 800px; margin: 0 auto; }
+    .testimonials h2 { text-align: center; font-size: clamp(28px, 4vw, 38px); margin-bottom: 48px; }
+    .testimonial {
+      border-left: 4px solid var(--amber); padding: 24px 0 24px 32px;
+      margin-bottom: 40px;
+    }
+    .testimonial blockquote {
+      font-size: 18px; line-height: 1.7; color: var(--text); font-style: italic;
+      margin-bottom: 12px;
+    }
+    .testimonial cite {
+      font-style: normal; font-size: 14px; color: var(--text-muted); font-weight: 600;
+    }
+    .testimonial .stars { color: var(--amber); font-size: 16px; margin-bottom: 8px; }
+
+    /* === ABOUT — full-width dark text, no photo === */
+    .about {
+      background: var(--bark); color: var(--cream);
+      padding: 80px 32px;
+    }
+    .about-content {
+      max-width: 720px; margin: 0 auto;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .about-content h2 { color: var(--cream); font-size: 32px; margin-bottom: 20px; }
+    .about-content p { color: rgba(248,245,239,0.7); line-height: 1.8; margin-bottom: 16px; font-size: 15px; }
+    .about-sig {
+      margin-top: 20px; font-size: 18px; font-weight: 700; color: var(--amber);
+    }
+    .about-role { font-size: 13px; color: rgba(248,245,239,0.4); }
+
+    /* === CTA === */
+    .cta {
+      background: linear-gradient(135deg, var(--forest) 0%, #1a3a12 100%);
+      padding: 80px 32px; text-align: center; color: var(--cream);
+    }
+    .cta h2 { color: var(--cream); font-size: clamp(28px, 4vw, 40px); margin-bottom: 12px; }
+    .cta p { color: rgba(248,245,239,0.6); font-size: 16px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--bark); padding: 32px; text-align: center;
+      font-size: 13px; color: rgba(248,245,239,0.6); border-top: 1px solid rgba(248,245,239,0.08);
+    }
+    footer a { color: var(--amber); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer p + p { margin-top: 6px; color: rgba(248,245,239,0.35); }
+
+    /* === QUOTE MODAL === */
+    .quote-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .quote-overlay.open { display: flex; }
+    .quote-modal { background: var(--cream); border-radius: 8px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 36px; position: relative; box-shadow: 0 24px 48px rgba(0,0,0,0.3); }
+    .quote-close { position: absolute; top: 14px; right: 14px; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-muted); line-height: 1; padding: 4px 8px; border-radius: 4px; }
+    .quote-close:hover { background: var(--stone); }
+    .quote-title { font-family: 'Bitter', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+    .quote-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .quote-step { display: none; }
+    .quote-step.active { display: block; }
+    .quote-services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .quote-svc { background: white; border: 2px solid var(--stone); border-radius: 6px; padding: 16px 12px; text-align: center; cursor: pointer; font-size: 14px; font-weight: 600; font-family: inherit; transition: all 0.2s; color: var(--text); }
+    .quote-svc:hover { border-color: var(--forest-light); background: rgba(45,74,34,0.05); transform: translateY(-2px); }
+    .quote-svc.selected { border-color: var(--forest); background: rgba(45,74,34,0.08); }
+    .quote-field { margin-bottom: 16px; }
+    .quote-field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .quote-field input, .quote-field select, .quote-field textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--stone); border-radius: 6px; font-size: 15px; font-family: inherit; background: white; transition: border-color 0.2s; }
+    .quote-field input:focus, .quote-field select:focus, .quote-field textarea:focus { outline: none; border-color: var(--forest-light); }
+    .quote-field textarea { resize: vertical; min-height: 60px; }
+    .quote-nav { display: flex; gap: 10px; margin-top: 24px; }
+    .qbtn { flex: 1; padding: 14px 20px; border: none; border-radius: 4px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; text-align: center; transition: all 0.2s; }
+    .qbtn-back { background: var(--stone); color: var(--text); }
+    .qbtn-back:hover { background: #d4cfc5; }
+    .qbtn-next { background: var(--amber); color: var(--bark); }
+    .qbtn-next:hover { background: var(--amber-light); transform: translateY(-1px); }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .emergency-strip { font-size: 12px; top: 48px; }
+      .hero-content { padding: 120px 24px 60px; }
+      .hero h1 { font-size: 38px; }
+      .trust-strip { gap: 16px; padding: 20px 16px; }
+      .trust-item { font-size: 12px; }
+      .service-band { grid-template-columns: 1fr; }
+      .service-band:nth-child(even) .service-photo { order: 0; }
+      .service-band:nth-child(even) .service-info { order: 0; }
+      .service-photo { height: 250px; }
+      .service-info { padding: 40px 24px; }
+      .service-number { font-size: 48px; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .ba-item { height: 220px; }
+      .about { padding: 60px 20px; }
+      .about-content { padding: 0; }
+      .stats { gap: 24px; }
+      .stat-num { font-size: 36px; }
+      .testimonial { padding-left: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C10.9 2 10 2.9 10 4v1.07A7.997 7.997 0 0 0 4 12c0 4.42 3.58 8 8 8s8-3.58 8-8a7.997 7.997 0 0 0-6-7.93V4c0-1.1-.9-2-2-2zm0 4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6z"/></svg>
+    Summit <span>Tree Care</span>
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#work">Our Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#" onclick="return false;" class="nav-cta">📞 (425) XXX-XXXX</a>
+  </div>
+</nav>
+
+<!-- EMERGENCY STRIP -->
+<div class="emergency-strip">
+  ⚡ Storm damage? We respond within 2 hours. <a href="#" onclick="return false;">Call now →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
+      ISA Certified · Licensed & Insured
+    </div>
+    <h1>Trees are our<br><em>craft.</em></h1>
+    <p class="hero-text">Expert tree removal, precision pruning, and complete stump grinding. Trusted by 200+ homeowners across the Eastside since 2012.</p>
+    <div class="hero-ctas">
+      <a href="#" onclick="openQuote(); return false;" class="btn-solid">Get a Free Estimate</a>
+      <a href="#work" class="btn-outline">See Our Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+    Licensed & Insured
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
+    4.9★ on Google (75 reviews)
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+    Same-Day Emergency Response
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+    Free Estimates
+  </div>
+</div>
+
+<!-- SERVICES — Zigzag bands -->
+<section id="services">
+  <div class="service-band">
+    <div class="service-photo" style="background-image: url('https://images.unsplash.com/photo-1510662179966-f3e62f0fb4fe?w=800&q=80');"></div>
+    <div class="service-info">
+      <div class="service-number">01</div>
+      <h3>Tree Removal</h3>
+      <p>From hazardous leaners to massive trunks next to your house — we bring them down safely. Crane-assisted when needed. Every job leaves your property cleaner than we found it.</p>
+      <span class="service-tag">Hazard trees · Storm damage · Lot clearing</span>
+    </div>
+  </div>
+
+  <div class="service-band">
+    <div class="service-photo" style="background: linear-gradient(135deg, #2d4a22 0%, #1a3015 100%); display: flex; align-items: center; justify-content: center;"><div style="font-size: 80px; opacity: 0.2;">✂️</div></div>
+    <div class="service-info">
+      <div class="service-number">02</div>
+      <h3>Pruning & Shaping</h3>
+      <p>Health cuts, crown reduction, deadwood removal, and structural pruning. We follow ISA standards because your trees deserve better than a hack job.</p>
+      <span class="service-tag">Crown thinning · Vista pruning · Fruit trees</span>
+    </div>
+  </div>
+
+  <div class="service-band">
+    <div class="service-photo" style="background-image: url('https://images.unsplash.com/photo-1631364902305-5fbf4a418a12?w=800&q=80');"></div>
+    <div class="service-info">
+      <div class="service-number">03</div>
+      <h3>Stump Grinding</h3>
+      <p>That eyesore in your yard? Gone. We grind 6–8 inches below grade so you can plant, build, or just enjoy flat ground again. Chips hauled or left for mulch — your call.</p>
+      <span class="service-tag">Below-grade grinding · Root removal · Replanting prep</span>
+    </div>
+  </div>
+
+  <div class="service-band">
+    <div class="service-photo" style="background-image: url('https://images.unsplash.com/photo-1732213429504-20baa74c5e4b?w=800&q=80');"></div>
+    <div class="service-info">
+      <div class="service-number">04</div>
+      <h3>Emergency Storm Response</h3>
+      <p>When a tree comes down at 2am and it's blocking your driveway or sitting on your roof — we answer the phone. On-site within 2 hours, 24/7, 365 days.</p>
+      <span class="service-tag">24/7 availability · Insurance claims · Priority dispatch</span>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE/AFTER -->
+<section class="before-after" id="work">
+  <div class="ba-header">
+    <h2>The difference we make</h2>
+    <p>Real transformations from real properties on the Eastside</p>
+  </div>
+  <div class="ba-grid">
+    <div class="ba-item">
+      <img src="https://images.unsplash.com/photo-1732213429504-20baa74c5e4b?w=800&q=80" alt="Before - fallen tree blocking yard" loading="lazy">
+      <div class="ba-label">Before</div>
+    </div>
+    <div class="ba-item">
+      <img src="https://images.unsplash.com/photo-1510662179966-f3e62f0fb4fe?w=800&q=80" alt="After - clean cut logs stacked" loading="lazy">
+      <div class="ba-label after">After</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">12+</div>
+    <div class="stat-label">Years on the Eastside</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">200+</div>
+    <div class="stat-label">Trees removed safely</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">4.9★</div>
+    <div class="stat-label">Google rating</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Property damage claims</div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="testimonials-inner">
+    <h2>What homeowners say</h2>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <blockquote>"They took down a 90-foot Douglas fir that was 8 feet from our house. I was terrified, but these guys were calm, methodical, and the tree came down in pieces without touching a single shingle. Worth every penny."</blockquote>
+      <cite>— Mark T., Sammamish</cite>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Storm knocked a big-leaf maple onto our fence at 3am on a Sunday. Called Summit and they were here by 5am. Had the whole thing cleared and the fence patched by noon. These guys are the real deal."</blockquote>
+      <cite>— Jennifer L., Bellevue</cite>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <blockquote>"We had 6 stumps from previous owners. They ground all of them below grade in one morning. Now our backyard actually looks like a yard. Crew was professional, cleaned up everything, even raked the chips smooth."</blockquote>
+      <cite>— David & Amy K., Kirkland</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-content">
+    <h2>Arborists, not just tree cutters.</h2>
+    <p>Summit Tree Care was started in 2012 by two ISA-certified arborists who got tired of watching people butcher trees. We believe every tree deserves a proper assessment before anyone picks up a saw.</p>
+    <p>Sometimes that means we'll tell you NOT to cut it — just prune it, cable it, or leave it alone. We'd rather lose a job than take down a healthy tree that just needed some attention.</p>
+    <p>When removal IS the answer, we do it right. Proper rigging, proper cuts, proper cleanup. Your property will look better when we leave than when we arrived.</p>
+    <div class="about-sig">— The Summit Crew</div>
+    <div class="about-role">Bellevue, WA · Serving the Eastside since 2012</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Got a tree that needs attention?</h2>
+  <p>Free estimates for any job, any size. We'll come out, look at it, and give you honest options — no pressure.</p>
+  <div class="cta-buttons">
+    <a href="#" onclick="return false;" class="btn-solid">📞 (425) XXX-XXXX</a>
+    <a href="#" onclick="openQuote(); return false;" class="btn-outline">Request Estimate Online</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Summit Tree Care · Licensed, Bonded & Insured · Bellevue, WA</p>
+  <p style="margin-top: 6px;">Powered by <a href="https://welcomematdigital.com"><strong>WelcomeMat</strong></a></p>
+</footer>
+
+<!-- QUOTE MODAL -->
+<div class="quote-overlay" id="quoteOverlay">
+  <div class="quote-modal">
+    <button class="quote-close" onclick="closeQuote()">&times;</button>
+
+    <!-- Step 1: Pick a service -->
+    <div class="quote-step active" id="qStep1">
+      <h3 class="quote-title">Get a Free Estimate</h3>
+      <p class="quote-subtitle">What do you need help with?</p>
+      <div class="quote-services">
+        <button class="quote-svc" onclick="pickService(this)">🪓 Tree Removal</button>
+        <button class="quote-svc" onclick="pickService(this)">✂️ Pruning & Trimming</button>
+        <button class="quote-svc" onclick="pickService(this)">🪵 Stump Grinding</button>
+        <button class="quote-svc" onclick="pickService(this)">⚡ Emergency / Storm</button>
+        <button class="quote-svc" onclick="pickService(this)">🌳 Health Assessment</button>
+        <button class="quote-svc" onclick="pickService(this)">🏗️ Land Clearing</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Details -->
+    <div class="quote-step" id="qStep2">
+      <h3 class="quote-title">A few details</h3>
+      <p class="quote-subtitle">This helps us give you an accurate estimate.</p>
+      <div class="quote-field">
+        <label>How many trees?</label>
+        <select id="qTrees">
+          <option>1</option><option>2–3</option><option>4–6</option><option>7+</option><option>Not sure</option>
+        </select>
+      </div>
+      <div class="quote-field">
+        <label>Approximate tree height</label>
+        <select id="qHeight">
+          <option>Under 20 ft</option><option>20–40 ft</option><option>40–60 ft</option><option>Over 60 ft</option><option>Not sure</option>
+        </select>
+      </div>
+      <div class="quote-field">
+        <label>Any obstacles nearby? (house, fence, power lines)</label>
+        <input type="text" id="qObstacles" placeholder="e.g. 10 ft from house, near power line">
+      </div>
+      <div class="quote-nav">
+        <button class="qbtn qbtn-back" onclick="quoteBack()">← Back</button>
+        <button class="qbtn qbtn-next" onclick="quoteNext()">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Contact -->
+    <div class="quote-step" id="qStep3">
+      <h3 class="quote-title">Almost done!</h3>
+      <p class="quote-subtitle">How can we reach you?</p>
+      <div class="quote-field">
+        <label>Your Name</label>
+        <input type="text" id="qName" required>
+      </div>
+      <div class="quote-field">
+        <label>Phone Number</label>
+        <input type="tel" id="qPhone" required placeholder="(425) 555-1234">
+      </div>
+      <div class="quote-field">
+        <label>Address or Neighborhood</label>
+        <input type="text" id="qAddr" placeholder="e.g. Sammamish, WA or 123 Main St">
+      </div>
+      <div class="quote-field">
+        <label>Anything else? (optional)</label>
+        <textarea id="qNotes" rows="2" placeholder="e.g. tree is dead, leaning toward neighbor's yard"></textarea>
+      </div>
+      <div class="quote-nav">
+        <button class="qbtn qbtn-back" onclick="quoteBack()">← Back</button>
+        <button class="qbtn qbtn-next" onclick="submitQuote()">Send Request</button>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="quote-step" id="qSuccess">
+      <div style="text-align:center; padding: 20px 0;">
+        <div style="font-size:48px; margin-bottom:16px;">✅</div>
+        <h3 class="quote-title">Request sent!</h3>
+        <p class="quote-subtitle">We'll review and get back to you within a few hours. Usually same day.</p>
+        <button class="qbtn qbtn-next" onclick="closeQuote()" style="margin-top:20px;">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WelcomeMat Chat Widget -->
+<script src="/widget/frontdesk-widget.js" data-business="demo" data-server="https://frontdesk-ai-vx1s.onrender.com"></script>
+
+<script>
+// Quote modal logic
+function openQuote() { document.getElementById('quoteOverlay').classList.add('open'); }
+function closeQuote() {
+  document.getElementById('quoteOverlay').classList.remove('open');
+  // Reset to step 1
+  document.querySelectorAll('.quote-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('qStep1').classList.add('active');
+  document.querySelectorAll('.quote-svc').forEach(b => b.classList.remove('selected'));
+}
+function pickService(btn) {
+  document.querySelectorAll('.quote-svc').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => {
+    document.querySelectorAll('.quote-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('qStep2').classList.add('active');
+  }, 200);
+}
+function quoteNext() {
+  document.querySelectorAll('.quote-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('qStep3').classList.add('active');
+}
+function quoteBack() {
+  const steps = document.querySelectorAll('.quote-step');
+  let active;
+  steps.forEach((s, i) => { if (s.classList.contains('active')) active = i; });
+  steps.forEach(s => s.classList.remove('active'));
+  steps[active - 1].classList.add('active');
+}
+function submitQuote() {
+  document.querySelectorAll('.quote-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('qSuccess').classList.add('active');
+}
+// Close on overlay click
+document.getElementById('quoteOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeQuote();
+});
+</script>
+
+</body>
+</html>
