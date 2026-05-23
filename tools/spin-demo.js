@@ -301,8 +301,8 @@ async function main() {
   // Add demo banner
   const bannerFont = templateName === 'fresh-clean' ? "'Work Sans',sans-serif" : "'Source Sans 3',sans-serif";
   html = html.replace('<body>', `<body>
-  <div style="background:#0f172a; color:white; text-align:center; padding:10px 16px; font-size:13px; font-family:${bannerFont}; position:relative; z-index:1001;">
-    🎨 This is a <strong>free preview</strong> built by <a href="https://welcomematdigital.com" style="color:#5eead4; text-decoration:underline;">WelcomeMat</a> — want to make it yours? <a href="https://welcomematdigital.com/contact" style="color:#5eead4; text-decoration:underline;">Let's talk</a>
+  <div style="background:#f0fdf4; color:#1e293b; text-align:center; padding:5px 16px; font-size:11px; font-family:${bannerFont}; position:relative; z-index:1001; letter-spacing:0.3px; border-bottom:1px solid #d1fae5;">
+    🎨 Preview for <strong>${name}</strong> — <a href="https://welcomematdigital.com/contact" style="color:#0d9488; text-decoration:underline;">Make it yours</a>
   </div>`);
 
   // Create output dir
