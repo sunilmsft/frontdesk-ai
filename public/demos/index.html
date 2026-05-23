@@ -3,257 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WelcomeMat — Archetype Showcase</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>WelcomeMat — Demo Sites by Category</title>
+  <meta name="description" content="See what a professional website looks like for your trade. Live demos for locksmith, tree service, cleaning, carpet care, junk removal, auto detailing, and mobile notary businesses.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'DM Sans', sans-serif; background: #0f1117; color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
 
-    /* === TOP BAR === */
-    .topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 24px; background: #181b23; border-bottom: 1px solid #2a2d38;
-      flex-shrink: 0;
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 60px 24px 40px;
     }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .logo { font-size: 18px; font-weight: 700; }
-    .logo span { color: #818cf8; }
-    .badge { font-size: 11px; background: rgba(129,140,248,0.15); color: #818cf8; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+    .header h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .header h1 span { color: #6ee7b7; }
+    .header p {
+      font-size: 17px;
+      color: #94a3b8;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
 
-    /* === TABS === */
-    .tabs {
-      display: flex; gap: 4px; padding: 10px 24px; background: #14161e;
-      border-bottom: 1px solid #2a2d38; overflow-x: auto; flex-shrink: 0;
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
     }
-    .tab {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 18px; border-radius: 8px; cursor: pointer;
-      border: 1px solid transparent; transition: all 0.15s;
-      background: transparent; color: #94a3b8; font-size: 13px; font-weight: 500;
-      white-space: nowrap;
-    }
-    .tab:hover { background: #1e2130; color: #e2e8f0; }
-    .tab.active { background: #1e2130; border-color: #818cf8; color: #fff; }
-    .tab-swatch {
-      width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
-      border: 2px solid rgba(255,255,255,0.1);
-    }
-    .tab-meta { display: flex; flex-direction: column; }
-    .tab-name { font-weight: 600; font-size: 13px; }
-    .tab-archetype { font-size: 10px; opacity: 0.6; }
-    .tab-group { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 2px; }
-    .tag-cleaning { background: rgba(108,92,231,0.15); color: #a29bfe; }
-    .tag-landscaping { background: rgba(74,124,35,0.2); color: #6ba33a; }
-    .tag-salon { background: rgba(201,149,107,0.2); color: #c9956b; }
-    .tag-handyman { background: rgba(232,93,4,0.15); color: #ff8c42; }
-    .tag-restaurant { background: rgba(194,85,58,0.15); color: #e07a5f; }
-    .tabs-divider { width: 1px; height: 32px; background: #2a2d38; flex-shrink: 0; margin: 0 4px; }
 
-    /* === INFO BAR (DNA axes) === */
-    .infobar {
-      display: flex; align-items: center; gap: 20px; padding: 8px 24px;
-      background: #14161e; border-bottom: 1px solid #2a2d38; flex-shrink: 0;
-      overflow-x: auto;
+    /* Card */
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
-    .dna-pill {
-      display: flex; align-items: center; gap: 6px; font-size: 11px;
-      color: #64748b; white-space: nowrap;
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #6ee7b7;
+      box-shadow: 0 12px 40px rgba(110, 231, 183, 0.08);
     }
-    .dna-pill strong { color: #94a3b8; font-weight: 600; }
-    .dna-pill .val { color: #818cf8; background: rgba(129,140,248,0.1); padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .card-body {
+      padding: 20px 24px 24px;
+    }
+    .card-category {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6ee7b7;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #f1f5f9;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .card-cta {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6ee7b7;
+      letter-spacing: 0.3px;
+    }
+    .card-cta::after { content: ' →'; }
 
-    /* === DEVICE TOOLBAR === */
-    .device-bar {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 8px 24px; background: #181b23; border-bottom: 1px solid #2a2d38; flex-shrink: 0;
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 24px 60px;
+      border-top: 1px solid #1e293b;
     }
-    .device-btn {
-      padding: 5px 14px; border-radius: 6px; border: 1px solid #2a2d38;
-      background: transparent; color: #94a3b8; font-size: 12px; font-weight: 500;
-      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    .footer p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+    .footer a {
+      display: inline-block;
+      background: #6ee7b7;
+      color: #0f172a;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.15s;
     }
-    .device-btn.active { background: #818cf8; color: #fff; border-color: #818cf8; }
-    .device-btn:hover:not(.active) { border-color: #64748b; color: #e2e8f0; }
-    .open-link {
-      margin-left: auto; font-size: 12px; color: #818cf8; text-decoration: none;
-      padding: 5px 14px; border: 1px solid rgba(129,140,248,0.3); border-radius: 6px;
-      transition: all 0.15s;
-    }
-    .open-link:hover { background: rgba(129,140,248,0.1); }
+    .footer a:hover { background: #a7f3d0; }
 
-    /* === PREVIEW === */
-    .preview-area {
-      flex: 1; display: flex; align-items: flex-start; justify-content: center;
-      padding: 24px; overflow: hidden; background: #0c0e14;
-    }
-    .preview-frame {
-      background: #fff; border-radius: 12px; overflow: hidden;
-      box-shadow: 0 0 60px rgba(0,0,0,0.5); transition: width 0.3s, height 0.3s;
-      position: relative;
-    }
-    .preview-frame iframe {
-      width: 100%; height: 100%; border: none; display: block;
+    @media (max-width: 600px) {
+      .header { padding: 40px 16px 24px; }
+      .grid { padding: 0 16px 60px; gap: 16px; }
     }
   </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="logo">Welcome<span>Mat</span></div>
-    <span class="badge">Archetype Showcase</span>
-  </div>
-  <span style="font-size: 12px; color: #64748b;">5 axes · 1,600+ combos</span>
+<div class="header">
+  <h1>See your <span>trade</span> come alive</h1>
+  <p>Real demos for real businesses. Pick your industry and see what your site could look like — built in under a day.</p>
 </div>
 
-<!-- TABS -->
-<div class="tabs" id="tabs"></div>
+<div class="grid">
 
-<!-- DNA INFO BAR -->
-<div class="infobar" id="infobar"></div>
-
-<!-- DEVICE TOOLBAR -->
-<div class="device-bar">
-  <button class="device-btn active" data-w="100%" data-h="100%">💻 Desktop</button>
-  <button class="device-btn" data-w="768px" data-h="100%">📱 Tablet</button>
-  <button class="device-btn" data-w="375px" data-h="100%">📲 Mobile</button>
-  <a class="open-link" id="openLink" href="#" target="_blank">Open in new tab ↗</a>
-</div>
-
-<!-- PREVIEW -->
-<div class="preview-area">
-  <div class="preview-frame" id="previewFrame">
-    <iframe id="previewIframe" src="about:blank"></iframe>
-  </div>
-</div>
-
-<script>
-const archetypes = [
-  // === CROSS-VERTICAL DEMOS ===
-  {
-    name: 'Camellia Cleaning',
-    archetype: 'Soft & Trustworthy',
-    color: '#c4b5a0',
-    group: 'cleaning',
-    url: '/sites/camellia-cleaning/index.html',
-    dna: { layout: 'warm-organic', typography: 'serif-elegant (Lora + Open Sans)', shapes: 'rounded (12px)', animation: 'subtle-rise', icons: 'lucide-outline', accent: '#c4b5a0' }
-  },
-  {
-    name: 'Evergreen Grounds',
-    archetype: 'Rugged & Reliable',
-    color: '#4a7c23',
-    group: 'landscaping',
-    url: '/demos/landscaping/index.html',
-    dna: { layout: 'stacked-bold', typography: 'slab-bold (Bitter + Source Sans 3)', shapes: 'sharp (4px)', animation: 'scale-pop', icons: 'phosphor-fill', accent: '#4a7c23' }
-  },
-  {
-    name: 'Studio Miel',
-    archetype: 'Premium & Minimal',
-    color: '#c9956b',
-    group: 'salon',
-    url: '/demos/salon/index.html',
-    dna: { layout: 'editorial', typography: 'geometric (Poppins + Work Sans)', shapes: 'mixed (2px)', animation: 'none (instant)', icons: 'text-only', accent: '#c9956b' }
-  },
-  {
-    name: 'Ironclad Home Svcs',
-    archetype: 'Energetic & Modern',
-    color: '#e85d04',
-    group: 'handyman',
-    url: '/demos/handyman/index.html',
-    dna: { layout: 'clean-grid', typography: 'sans-modern (Outfit + Inter)', shapes: 'sharp (4px)', animation: 'slide-stagger', icons: 'custom-blob gradient', accent: '#e85d04' }
-  },
-  {
-    name: 'Casa Oaxaca',
-    archetype: 'Warm & Familial',
-    color: '#c2553a',
-    group: 'restaurant',
-    url: '/demos/restaurant/index.html',
-    dna: { layout: 'warm-organic', typography: 'hand-friendly (Caveat + Nunito)', shapes: 'organic (wavy, 20px)', animation: 'subtle-rise', icons: 'emoji-native', accent: '#c2553a' }
-  },
-  // === WITHIN-VERTICAL: CLEANING VARIANTS ===
-  {
-    name: 'Pristine',
-    archetype: 'Premium & Minimal',
-    color: '#1a7a6d',
-    group: 'cleaning',
-    url: '/demos/cleaning-b/index.html',
-    dna: { layout: 'editorial', typography: 'geometric (Poppins + Work Sans)', shapes: 'sharp (2px)', animation: 'none (instant)', icons: 'text-only (numbered)', accent: '#1a7a6d' }
-  },
-  {
-    name: 'Sparkle Crew',
-    archetype: 'Energetic & Community',
-    color: '#6c5ce7',
-    group: 'cleaning',
-    url: '/demos/cleaning-c/index.html',
-    dna: { layout: 'clean-grid', typography: 'sans-modern (Outfit + Inter)', shapes: 'pill (24px)', animation: 'slide-stagger', icons: 'emoji-native', accent: '#6c5ce7' }
-  }
-];
-
-const tabsEl = document.getElementById('tabs');
-const infobarEl = document.getElementById('infobar');
-const iframe = document.getElementById('previewIframe');
-const frame = document.getElementById('previewFrame');
-const openLink = document.getElementById('openLink');
-let active = 0;
-
-// Build tabs
-let lastGroup = null;
-archetypes.forEach((a, i) => {
-  // Add divider before cleaning variants
-  if (i === 5) {
-    const divider = document.createElement('div');
-    divider.className = 'tabs-divider';
-    tabsEl.appendChild(divider);
-  }
-  const tab = document.createElement('div');
-  tab.className = 'tab' + (i === 0 ? ' active' : '');
-  const groupIcons = { cleaning: '🧹', landscaping: '🌿', salon: '💇', handyman: '🔧', restaurant: '🍽️' };
-  const icon = groupIcons[a.group] || '';
-  tab.innerHTML = `
-    <div class="tab-swatch" style="background: ${a.color}"></div>
-    <div class="tab-meta">
-      <span class="tab-name">${a.name}</span>
-      <span class="tab-archetype">${a.archetype}</span>
-      <span class="tab-group tag-${a.group}">${icon} ${a.group}</span>
+  <a class="card" href="/demos/quickturn-locksmith/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" alt="Locksmith">
+    <div class="card-body">
+      <div class="card-category">Locksmith</div>
+      <div class="card-title">QuickTurn Locksmith</div>
+      <div class="card-desc">24/7 emergency lockout service, rekeying, smart lock installs. Bold design that builds trust instantly.</div>
+      <span class="card-cta">View demo</span>
     </div>
-  `;
-  tab.addEventListener('click', () => switchTo(i));
-  tabsEl.appendChild(tab);
-});
+  </a>
 
-// Device buttons
-document.querySelectorAll('.device-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    frame.style.width = btn.dataset.w;
-    frame.style.height = btn.dataset.h;
-  });
-});
+  <a class="card" href="/demos/summit-tree-care/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1754321889123-0485c7fea5f1?w=600&q=80" alt="Tree Service">
+    <div class="card-body">
+      <div class="card-category">Tree Service</div>
+      <div class="card-title">Summit Tree Care</div>
+      <div class="card-desc">Trimming, removal, stump grinding, and emergency storm damage. Rugged look that matches the work.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
 
-function switchTo(i) {
-  active = i;
-  const a = archetypes[i];
+  <a class="card" href="/demos/clear-it-out-junk-removal/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=600&q=80" alt="Junk Removal">
+    <div class="card-body">
+      <div class="card-category">Junk Removal</div>
+      <div class="card-title">Clear It Out Hauling</div>
+      <div class="card-desc">Same-day pickup, estate cleanouts, construction debris. Clean layout that gets the phone ringing.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
 
-  // Update tabs
-  document.querySelectorAll('.tab').forEach((t, j) => t.classList.toggle('active', j === i));
+  <a class="card" href="/demos/mirror-finish-auto-detailing/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=600&q=80" alt="Auto Detailing">
+    <div class="card-body">
+      <div class="card-category">Auto Detailing</div>
+      <div class="card-title">Mirror Finish Detailing</div>
+      <div class="card-desc">Interior/exterior packages, ceramic coating, paint correction. Premium look for premium work.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
 
-  // Update iframe
-  iframe.src = a.url;
-  openLink.href = a.url;
+  <a class="card" href="/demos/signready-mobile-notary/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Mobile Notary">
+    <div class="card-body">
+      <div class="card-category">Mobile Notary</div>
+      <div class="card-title">SignReady Notary</div>
+      <div class="card-desc">Loan signings, apostilles, mobile closings. Professional design that screams reliability.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
 
-  // Update DNA info bar
-  infobarEl.innerHTML = Object.entries(a.dna).map(([key, val]) =>
-    `<div class="dna-pill"><strong>${key}:</strong> <span class="val">${val}</span></div>`
-  ).join('');
-}
+  <a class="card" href="/demos/pacific-carpet-care/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=600&q=80" alt="Carpet Cleaning">
+    <div class="card-body">
+      <div class="card-category">Carpet Cleaning</div>
+      <div class="card-title">Pacific Carpet Care</div>
+      <div class="card-desc">Deep steam cleaning, stain removal, upholstery care. Fresh design that matches fresh results.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
 
-// Initial load
-frame.style.width = '100%';
-frame.style.height = '100%';
-switchTo(0);
-</script>
+  <a class="card" href="/demos/pristine-home-cleaning/">
+    <img class="card-img" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="House Cleaning">
+    <div class="card-body">
+      <div class="card-category">House Cleaning</div>
+      <div class="card-title">Pristine Home Cleaning</div>
+      <div class="card-desc">Regular, deep, and move-in/out cleaning. Warm design that builds trust with homeowners.</div>
+      <span class="card-cta">View demo</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer">
+  <p>Don't see your trade? We'll build a custom demo for your business in 24 hours.</p>
+  <a href="/pitch">Learn more about WelcomeMat →</a>
+</div>
 
 </body>
 </html>

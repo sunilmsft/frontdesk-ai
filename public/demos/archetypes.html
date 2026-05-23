@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WelcomeMat — Archetype Showcase</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: #0f1117; color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* === TOP BAR === */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; background: #181b23; border-bottom: 1px solid #2a2d38;
+      flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .logo { font-size: 18px; font-weight: 700; }
+    .logo span { color: #818cf8; }
+    .badge { font-size: 11px; background: rgba(129,140,248,0.15); color: #818cf8; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+
+    /* === TABS === */
+    .tabs {
+      display: flex; gap: 4px; padding: 10px 24px; background: #14161e;
+      border-bottom: 1px solid #2a2d38; overflow-x: auto; flex-shrink: 0;
+    }
+    .tab {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 18px; border-radius: 8px; cursor: pointer;
+      border: 1px solid transparent; transition: all 0.15s;
+      background: transparent; color: #94a3b8; font-size: 13px; font-weight: 500;
+      white-space: nowrap;
+    }
+    .tab:hover { background: #1e2130; color: #e2e8f0; }
+    .tab.active { background: #1e2130; border-color: #818cf8; color: #fff; }
+    .tab-swatch {
+      width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+    .tab-meta { display: flex; flex-direction: column; }
+    .tab-name { font-weight: 600; font-size: 13px; }
+    .tab-archetype { font-size: 10px; opacity: 0.6; }
+    .tab-group { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 2px; }
+    .tag-cleaning { background: rgba(108,92,231,0.15); color: #a29bfe; }
+    .tag-landscaping { background: rgba(74,124,35,0.2); color: #6ba33a; }
+    .tag-salon { background: rgba(201,149,107,0.2); color: #c9956b; }
+    .tag-handyman { background: rgba(232,93,4,0.15); color: #ff8c42; }
+    .tag-restaurant { background: rgba(194,85,58,0.15); color: #e07a5f; }
+    .tabs-divider { width: 1px; height: 32px; background: #2a2d38; flex-shrink: 0; margin: 0 4px; }
+
+    /* === INFO BAR (DNA axes) === */
+    .infobar {
+      display: flex; align-items: center; gap: 20px; padding: 8px 24px;
+      background: #14161e; border-bottom: 1px solid #2a2d38; flex-shrink: 0;
+      overflow-x: auto;
+    }
+    .dna-pill {
+      display: flex; align-items: center; gap: 6px; font-size: 11px;
+      color: #64748b; white-space: nowrap;
+    }
+    .dna-pill strong { color: #94a3b8; font-weight: 600; }
+    .dna-pill .val { color: #818cf8; background: rgba(129,140,248,0.1); padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+
+    /* === DEVICE TOOLBAR === */
+    .device-bar {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 8px 24px; background: #181b23; border-bottom: 1px solid #2a2d38; flex-shrink: 0;
+    }
+    .device-btn {
+      padding: 5px 14px; border-radius: 6px; border: 1px solid #2a2d38;
+      background: transparent; color: #94a3b8; font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    .device-btn.active { background: #818cf8; color: #fff; border-color: #818cf8; }
+    .device-btn:hover:not(.active) { border-color: #64748b; color: #e2e8f0; }
+    .open-link {
+      margin-left: auto; font-size: 12px; color: #818cf8; text-decoration: none;
+      padding: 5px 14px; border: 1px solid rgba(129,140,248,0.3); border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .open-link:hover { background: rgba(129,140,248,0.1); }
+
+    /* === PREVIEW === */
+    .preview-area {
+      flex: 1; display: flex; align-items: flex-start; justify-content: center;
+      padding: 24px; overflow: hidden; background: #0c0e14;
+    }
+    .preview-frame {
+      background: #fff; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,0,0,0.5); transition: width 0.3s, height 0.3s;
+      position: relative;
+    }
+    .preview-frame iframe {
+      width: 100%; height: 100%; border: none; display: block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">Welcome<span>Mat</span></div>
+    <span class="badge">Archetype Showcase</span>
+  </div>
+  <span style="font-size: 12px; color: #64748b;">5 axes · 1,600+ combos</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs" id="tabs"></div>
+
+<!-- DNA INFO BAR -->
+<div class="infobar" id="infobar"></div>
+
+<!-- DEVICE TOOLBAR -->
+<div class="device-bar">
+  <button class="device-btn active" data-w="100%" data-h="100%">💻 Desktop</button>
+  <button class="device-btn" data-w="768px" data-h="100%">📱 Tablet</button>
+  <button class="device-btn" data-w="375px" data-h="100%">📲 Mobile</button>
+  <a class="open-link" id="openLink" href="#" target="_blank">Open in new tab ↗</a>
+</div>
+
+<!-- PREVIEW -->
+<div class="preview-area">
+  <div class="preview-frame" id="previewFrame">
+    <iframe id="previewIframe" src="about:blank"></iframe>
+  </div>
+</div>
+
+<script>
+const archetypes = [
+  // === CROSS-VERTICAL DEMOS ===
+  {
+    name: 'Camellia Cleaning',
+    archetype: 'Soft & Trustworthy',
+    color: '#c4b5a0',
+    group: 'cleaning',
+    url: '/sites/camellia-cleaning/index.html',
+    dna: { layout: 'warm-organic', typography: 'serif-elegant (Lora + Open Sans)', shapes: 'rounded (12px)', animation: 'subtle-rise', icons: 'lucide-outline', accent: '#c4b5a0' }
+  },
+  {
+    name: 'Evergreen Grounds',
+    archetype: 'Rugged & Reliable',
+    color: '#4a7c23',
+    group: 'landscaping',
+    url: '/demos/landscaping/index.html',
+    dna: { layout: 'stacked-bold', typography: 'slab-bold (Bitter + Source Sans 3)', shapes: 'sharp (4px)', animation: 'scale-pop', icons: 'phosphor-fill', accent: '#4a7c23' }
+  },
+  {
+    name: 'Studio Miel',
+    archetype: 'Premium & Minimal',
+    color: '#c9956b',
+    group: 'salon',
+    url: '/demos/salon/index.html',
+    dna: { layout: 'editorial', typography: 'geometric (Poppins + Work Sans)', shapes: 'mixed (2px)', animation: 'none (instant)', icons: 'text-only', accent: '#c9956b' }
+  },
+  {
+    name: 'Ironclad Home Svcs',
+    archetype: 'Energetic & Modern',
+    color: '#e85d04',
+    group: 'handyman',
+    url: '/demos/handyman/index.html',
+    dna: { layout: 'clean-grid', typography: 'sans-modern (Outfit + Inter)', shapes: 'sharp (4px)', animation: 'slide-stagger', icons: 'custom-blob gradient', accent: '#e85d04' }
+  },
+  {
+    name: 'Casa Oaxaca',
+    archetype: 'Warm & Familial',
+    color: '#c2553a',
+    group: 'restaurant',
+    url: '/demos/restaurant/index.html',
+    dna: { layout: 'warm-organic', typography: 'hand-friendly (Caveat + Nunito)', shapes: 'organic (wavy, 20px)', animation: 'subtle-rise', icons: 'emoji-native', accent: '#c2553a' }
+  },
+  // === WITHIN-VERTICAL: CLEANING VARIANTS ===
+  {
+    name: 'Pristine',
+    archetype: 'Premium & Minimal',
+    color: '#1a7a6d',
+    group: 'cleaning',
+    url: '/demos/cleaning-b/index.html',
+    dna: { layout: 'editorial', typography: 'geometric (Poppins + Work Sans)', shapes: 'sharp (2px)', animation: 'none (instant)', icons: 'text-only (numbered)', accent: '#1a7a6d' }
+  },
+  {
+    name: 'Sparkle Crew',
+    archetype: 'Energetic & Community',
+    color: '#6c5ce7',
+    group: 'cleaning',
+    url: '/demos/cleaning-c/index.html',
+    dna: { layout: 'clean-grid', typography: 'sans-modern (Outfit + Inter)', shapes: 'pill (24px)', animation: 'slide-stagger', icons: 'emoji-native', accent: '#6c5ce7' }
+  }
+];
+
+const tabsEl = document.getElementById('tabs');
+const infobarEl = document.getElementById('infobar');
+const iframe = document.getElementById('previewIframe');
+const frame = document.getElementById('previewFrame');
+const openLink = document.getElementById('openLink');
+let active = 0;
+
+// Build tabs
+let lastGroup = null;
+archetypes.forEach((a, i) => {
+  // Add divider before cleaning variants
+  if (i === 5) {
+    const divider = document.createElement('div');
+    divider.className = 'tabs-divider';
+    tabsEl.appendChild(divider);
+  }
+  const tab = document.createElement('div');
+  tab.className = 'tab' + (i === 0 ? ' active' : '');
+  const groupIcons = { cleaning: '🧹', landscaping: '🌿', salon: '💇', handyman: '🔧', restaurant: '🍽️' };
+  const icon = groupIcons[a.group] || '';
+  tab.innerHTML = `
+    <div class="tab-swatch" style="background: ${a.color}"></div>
+    <div class="tab-meta">
+      <span class="tab-name">${a.name}</span>
+      <span class="tab-archetype">${a.archetype}</span>
+      <span class="tab-group tag-${a.group}">${icon} ${a.group}</span>
+    </div>
+  `;
+  tab.addEventListener('click', () => switchTo(i));
+  tabsEl.appendChild(tab);
+});
+
+// Device buttons
+document.querySelectorAll('.device-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    frame.style.width = btn.dataset.w;
+    frame.style.height = btn.dataset.h;
+  });
+});
+
+function switchTo(i) {
+  active = i;
+  const a = archetypes[i];
+
+  // Update tabs
+  document.querySelectorAll('.tab').forEach((t, j) => t.classList.toggle('active', j === i));
+
+  // Update iframe
+  iframe.src = a.url;
+  openLink.href = a.url;
+
+  // Update DNA info bar
+  infobarEl.innerHTML = Object.entries(a.dna).map(([key, val]) =>
+    `<div class="dna-pill"><strong>${key}:</strong> <span class="val">${val}</span></div>`
+  ).join('');
+}
+
+// Initial load
+frame.style.width = '100%';
+frame.style.height = '100%';
+switchTo(0);
+</script>
+
+</body>
+</html>

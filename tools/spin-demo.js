@@ -13,6 +13,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const bizQuery = process.argv[2];
 const fallbackCity = process.argv[3] || '';
+const isDemo = process.argv.includes('--demo'); // Generic category demo mode
 
 if (!bizQuery) {
   console.log(`
@@ -22,11 +23,12 @@ if (!bizQuery) {
 
   Usage:
     node tools/spin-demo.js "Business Name" "City, WA"
+    node tools/spin-demo.js "Business Name" "City, WA" --demo   (generic category demo)
 
   Examples:
     node tools/spin-demo.js "Bigfoot Tree Care" "Kent, WA"
-    node tools/spin-demo.js "Vazquez Painting LLC" "Kent, WA"
-    node tools/spin-demo.js "Legacy Services Carpet cleaning" "Auburn, WA"
+    node tools/spin-demo.js "Summit Tree Care" "Seattle, WA" --demo
+    node tools/spin-demo.js "QuickTurn Locksmith" "Bellevue, WA" --demo
   `);
   process.exit(0);
 }
@@ -123,19 +125,44 @@ Infer services from the business type and reviews. Be specific to THEIR trade, n
 
 // --- Step 3: Build the site ---
 async function main() {
-  console.log(`\n🔍 Looking up "${bizQuery}"...`);
-  
-  const biz = await findBusiness(bizQuery, fallbackCity);
-  if (!biz) {
-    console.error('❌ Business not found on Google. Try a more specific name or add the city.');
-    process.exit(1);
-  }
+  let biz, name, phone, rating, reviews, address;
 
-  const name = biz.displayName?.text || bizQuery;
-  const phone = biz.nationalPhoneNumber || '(000) 000-0000';
-  const rating = biz.rating || '5.0';
-  const reviews = biz.userRatingCount || 0;
-  const address = biz.formattedAddress || '';
+  if (isDemo) {
+    // Generic demo mode — no Google lookup needed
+    name = bizQuery;
+    phone = '(555) 123-4567';
+    rating = '4.9';
+    reviews = 47;
+    address = fallbackCity || 'Seattle, WA';
+    biz = {
+      displayName: { text: name },
+      formattedAddress: address,
+      nationalPhoneNumber: phone,
+      rating: parseFloat(rating),
+      userRatingCount: reviews,
+      types: [],
+      reviews: []
+    };
+    console.log(`\n🎨 Creating category demo: "${name}" (${address})`);
+  } else {
+    console.log(`\n🔍 Looking up "${bizQuery}"...`);
+    biz = await findBusiness(bizQuery, fallbackCity);
+    if (!biz) {
+      console.error('❌ Business not found on Google. Try a more specific name or add the city.');
+      console.error('   Tip: Use --demo flag to create a generic category demo.');
+      process.exit(1);
+    }
+    name = biz.displayName?.text || bizQuery;
+    phone = biz.nationalPhoneNumber || '(000) 000-0000';
+    rating = biz.rating || '5.0';
+    reviews = biz.userRatingCount || 0;
+    address = biz.formattedAddress || '';
+
+    console.log(`✅ Found: ${name}`);
+    console.log(`   📍 ${address}`);
+    console.log(`   📞 ${phone}`);
+    console.log(`   ⭐ ${rating} (${reviews} reviews)\n`);
+  }
 
   console.log(`✅ Found: ${name}`);
   console.log(`   📍 ${address}`);
@@ -156,6 +183,7 @@ async function main() {
     'janitorial': 'fresh-clean',
     'maid-service': 'fresh-clean',
     'housekeeping': 'fresh-clean',
+    'notary': 'fresh-clean',
   };
   const templateName = tradeTemplateMap[content.trade] || 'bold-trade';
   console.log(`   Template: ${templateName}`);
@@ -179,6 +207,7 @@ async function main() {
       'rug':     'https://images.unsplash.com/photo-1758523670739-0d26a3ee976d?w=1600&q=80',
       'maid':    'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
       'house':   'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
+      'clean':   'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
       // Tree trades (bold-trade template)
       'tree':    'https://images.unsplash.com/photo-1754321889123-0485c7fea5f1?w=1600&q=80',
       'arborist':'https://images.unsplash.com/photo-1754321889123-0485c7fea5f1?w=1600&q=80',
@@ -186,6 +215,25 @@ async function main() {
       'junk':    'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
       'haul':    'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
       'removal': 'https://images.unsplash.com/photo-1628464682320-6a9ae020cb2b?w=1600&q=80',
+      // Locksmith
+      'lock':    'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600&q=80',
+      'key':     'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600&q=80',
+      // Auto detailing
+      'detail':  'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=1600&q=80',
+      'auto':    'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=1600&q=80',
+      // Notary
+      'notary':  'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80',
+      'sign':    'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80',
+      // Concrete / paving
+      'concrete':'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80',
+      'pav':     'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80',
+      // Landscaping
+      'landscap':'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1600&q=80',
+      'lawn':    'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1600&q=80',
+      // Painting
+      'paint':   'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1600&q=80',
+      // Roofing
+      'roof':    'https://images.unsplash.com/photo-1632759145351-1d592919f522?w=1600&q=80',
       'default': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80',
     };
     const match = Object.keys(heroImages).find(k => k !== 'default' && nameLower.includes(k));
@@ -300,22 +348,30 @@ async function main() {
   }
   // Add demo banner
   const bannerFont = templateName === 'fresh-clean' ? "'Work Sans',sans-serif" : "'Source Sans 3',sans-serif";
+  const bannerText = isDemo
+    ? `✨ This could be <strong>your</strong> website — <a href="https://welcomematdigital.com/pitch" style="color:#0d9488; text-decoration:underline;">See how it works</a>`
+    : `🎨 Preview for <strong>${name}</strong> — <a href="https://welcomematdigital.com/contact" style="color:#0d9488; text-decoration:underline;">Make it yours</a>`;
   html = html.replace('<body>', `<body>
   <div style="background:#f0fdf4; color:#1e293b; text-align:center; padding:5px 16px; font-size:11px; font-family:${bannerFont}; position:relative; z-index:1001; letter-spacing:0.3px; border-bottom:1px solid #d1fae5;">
-    🎨 Preview for <strong>${name}</strong> — <a href="https://welcomematdigital.com/contact" style="color:#0d9488; text-decoration:underline;">Make it yours</a>
+    ${bannerText}
   </div>`);
 
-  // Create output dir
-  const outDir = path.join(__dirname, '..', 'public', 'sites', slug);
+  // Create output dir — demos go to public/demos/, real leads go to public/sites/
+  const baseDir = isDemo ? 'demos' : 'sites';
+  const outDir = path.join(__dirname, '..', 'public', baseDir, slug);
   
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), html, 'utf8');
 
   console.log(`\n🎉 Demo site created!`);
-  console.log(`   📁 public/sites/${slug}/index.html`);
-  console.log(`   🌐 Local:  http://localhost:3001/sites/${slug}/`);
-  console.log(`   🌐 Live:   https://welcomematdigital.com/sites/${slug}/`);
-  console.log(`\n   Send this link to ${name} when they respond to your text!\n`);
+  console.log(`   📁 public/${baseDir}/${slug}/index.html`);
+  console.log(`   🌐 Local:  http://localhost:3001/${baseDir}/${slug}/`);
+  console.log(`   🌐 Live:   https://welcomematdigital.com/${baseDir}/${slug}/`);
+  if (!isDemo) {
+    console.log(`\n   Send this link to ${name} when they respond to your text!\n`);
+  } else {
+    console.log(`\n   Use this demo link in outreach for ${content.trade} businesses!\n`);
+  }
 }
 
 main().catch(err => { console.error('Error:', err.message); process.exit(1); });
