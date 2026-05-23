@@ -181,6 +181,22 @@ async function initDb() {
       ]
     });
   }
+  // Seed: "demo" business for category demo sites
+  const demoExists = await db.execute({ sql: "SELECT id FROM businesses WHERE slug = 'demo'", args: [] });
+  if (demoExists.rows.length === 0) {
+    await db.execute({
+      sql: `INSERT INTO businesses (id, name, slug, system_prompt, welcome_message, theme_color, active)
+            VALUES (?, ?, ?, ?, ?, ?, 1)`,
+      args: [
+        'demo-00000000-0000-0000-0000-000000000000',
+        'WelcomeMat Demo',
+        'demo',
+        `You are a friendly, professional AI assistant for a local service business. This is a live demo of the WelcomeMat chat widget. Your job is to show visitors how the AI chat works by being helpful, warm, and responsive. Answer questions as if you are the business's front desk — greet warmly, offer to schedule estimates or answer questions about services, hours, and pricing. Keep responses short (2-3 sentences). If asked what services the business offers, say something like "We offer a full range of services — what can I help you with today?" Be conversational and casual but professional. End messages by encouraging them to call or text to book. If someone asks about WelcomeMat itself, briefly explain: "This is WelcomeMat — an AI-powered chat widget that answers customer questions 24/7. The business owner can try it free at welcomematdigital.com."`,
+        'Hi there! 👋 Thanks for stopping by. How can I help you today?',
+        '#0d9488'
+      ]
+    });
+  }
 }
 
 module.exports = { db, initDb };

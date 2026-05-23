@@ -197,6 +197,15 @@ async function main() {
   html = html.replaceAll('{{OWNER_NAME}}', content.ownerName);
   html = html.replaceAll('{{SLUG}}', slug);
 
+  // Enable chat widget — use "demo" business for demo mode, actual slug for real leads
+  const widgetBiz = isDemo ? 'demo' : slug;
+  const serverUrl = 'https://frontdesk-ai-vx1s.onrender.com';
+  // Handle both attribute orderings in templates
+  html = html.replace(
+    /<!--\s*<script src="[^"]*\/widget\/frontdesk-widget\.js"[^>]*><\/script>\s*-->/,
+    `<script src="${serverUrl}/widget/frontdesk-widget.js" data-business="${widgetBiz}" data-server="${serverUrl}"></script>`
+  );
+
   // Hero image — pick based on trade keywords in business name
   {
     const nameLower = name.toLowerCase();
