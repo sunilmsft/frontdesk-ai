@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Southern Spice — Authentic South Indian Cuisine | Redmond, WA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a0a05;
+      --maroon: #7a1a1a;
+      --accent: #c9981a;
+      --accent-light: #e2b84d;
+      --gold: #c9981a;
+      --cream: #fdf6ec;
+      --bg: #fdf6ec;
+      --bg-alt: #f3eadb;
+      --text: #2d1a0e;
+      --text-muted: #7a6b5d;
+      --warm-dark: #3d2416;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(26,10,5,0.97); backdrop-filter: blur(14px);
+      padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(201,152,26,0.15);
+    }
+    .nav-logo { text-decoration: none; display: flex; flex-direction: column; line-height: 1; }
+    .nav-logo .logo-name {
+      font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800;
+      color: var(--cream); letter-spacing: 0.5px;
+    }
+    .nav-logo .logo-tag {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+      color: var(--accent); letter-spacing: 4px; text-transform: uppercase;
+      margin-top: 1px;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: rgba(253,246,236,0.65); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: linear-gradient(180deg, var(--accent) 0%, #a67c14 100%) !important;
+      color: var(--primary) !important;
+      padding: 9px 22px; border-radius: 24px; font-weight: 700 !important;
+      box-shadow: 0 2px 10px rgba(201,152,26,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative; min-height: 100vh;
+      background: linear-gradient(180deg, rgba(26,10,5,0.15) 0%, rgba(26,10,5,0.55) 40%, rgba(26,10,5,0.9) 75%, var(--primary) 100%),
+        url('https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1600&q=80') center/cover;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 32px 64px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(201,152,26,0.22) 0%, rgba(201,152,26,0.12) 100%);
+      border: none;
+      padding: 10px 26px; border-radius: 28px; font-size: 12px; font-weight: 700;
+      color: var(--accent-light); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+    }
+    .hero h1 {
+      font-size: clamp(44px, 9vw, 80px); font-weight: 900; color: var(--cream);
+      line-height: 1.02; margin-bottom: 10px;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+    .hero-rule {
+      width: 60px; height: 3px; background: var(--accent); margin: 12px auto 16px;
+      border-radius: 2px;
+    }
+    .hero p {
+      font-size: 17px; color: rgba(253,246,236,0.72); max-width: 540px;
+      margin: 0 auto; line-height: 1.7; font-weight: 400;
+    }
+    .hero-ctas { margin-top: 36px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* === BUTTONS === */
+    .btn-primary {
+      background: linear-gradient(180deg, var(--accent) 0%, #a67c14 100%);
+      color: var(--primary); padding: 15px 34px;
+      border: none; border-radius: 28px;
+      font-size: 15px; font-weight: 700; letter-spacing: 0.3px;
+      text-decoration: none; transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 18px rgba(201,152,26,0.35), 0 1px 3px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(201,152,26,0.4), 0 2px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .btn-outline {
+      background: linear-gradient(180deg, rgba(253,246,236,0.14) 0%, rgba(253,246,236,0.06) 100%);
+      color: var(--cream); padding: 15px 34px;
+      border: none; border-radius: 28px;
+      font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover {
+      color: var(--accent-light);
+      background: linear-gradient(180deg, rgba(253,246,236,0.2) 0%, rgba(253,246,236,0.1) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .btn-dark {
+      background: linear-gradient(180deg, var(--warm-dark) 0%, var(--primary) 100%);
+      color: var(--cream); padding: 15px 34px;
+      border: 1px solid rgba(201,152,26,0.15); border-radius: 28px;
+      font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .btn-dark:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    /* === WAVE === */
+    .wave-divider { background: var(--primary); position: relative; }
+    .wave-divider svg { display: block; width: 100%; height: 60px; }
+    .wave-divider svg path { fill: var(--bg); }
+
+    /* === SECTIONS === */
+    section { padding: 80px 28px; }
+    .section-label {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    section h2 {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800; line-height: 1.15; margin-bottom: 14px;
+      color: var(--text);
+    }
+    section .subtitle { font-size: 15px; color: var(--text-muted); max-width: 520px; line-height: 1.8; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* === STORY === */
+    .story { background: var(--bg-alt); }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 40px; }
+    .story-img {
+      width: 100%; height: 420px; object-fit: cover; border-radius: 16px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .story-text blockquote {
+      font-family: 'Playfair Display', serif; font-size: 22px; font-style: italic;
+      line-height: 1.5; color: var(--warm-dark); margin-bottom: 20px;
+      padding-left: 20px;
+      border-left: 3px solid var(--accent);
+    }
+    .story-text p { font-size: 15px; color: var(--text-muted); line-height: 1.85; margin-bottom: 14px; }
+
+    /* === MENU === */
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; margin-top: 40px;
+      background: rgba(0,0,0,0.06); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+    .menu-item {
+      background: var(--cream); padding: 28px 32px;
+      transition: background 0.2s;
+    }
+    .menu-item:hover { background: #fff; }
+    .menu-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .menu-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700; color: var(--text);
+    }
+    .menu-item .price {
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--accent); white-space: nowrap; margin-left: 12px;
+    }
+    .menu-item p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+    .menu-item .badge {
+      display: inline-block; font-size: 9px; font-weight: 700;
+      color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    /* === GALLERY === */
+    .gallery-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 220px 220px;
+      gap: 12px; margin-top: 40px;
+    }
+    .gallery-grid img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+      transition: transform 0.3s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .gallery-grid img:hover { transform: scale(1.03); }
+    .gallery-grid img:first-child { grid-row: 1 / 3; }
+
+    /* === AYCE BANNER === */
+    .ayce-banner {
+      background: var(--warm-dark); border-radius: 16px;
+      padding: 44px; text-align: center; max-width: 700px;
+      margin: 48px auto 0; color: var(--cream);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    .ayce-banner h3 {
+      font-size: 24px; margin-bottom: 10px; color: var(--accent-light);
+    }
+    .ayce-banner p { color: rgba(253,246,236,0.7); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+
+    /* === HOURS === */
+    .hours-card {
+      background: var(--primary); color: var(--cream); border-radius: 16px;
+      padding: 40px; max-width: 500px; margin: 40px auto 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    .hours-card h3 {
+      font-family: 'Playfair Display', serif; font-size: 26px;
+      text-align: center; margin-bottom: 24px; color: var(--accent);
+    }
+    .hours-row {
+      display: flex; justify-content: space-between; padding: 11px 0;
+      border-bottom: 1px solid rgba(253,246,236,0.07); font-size: 14px;
+    }
+    .hours-row:last-child { border: none; }
+    .hours-day { font-weight: 600; color: rgba(253,246,236,0.8); }
+    .hours-time { color: var(--accent); font-weight: 600; }
+
+    /* === LOCATION === */
+    .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .location-info h3 { font-size: 18px; margin-bottom: 12px; font-family: 'Playfair Display', serif; }
+    .location-info p { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 8px; }
+    .location-info a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .location-info a:hover { text-decoration: underline; }
+
+    /* === CTA === */
+    .cta-banner {
+      background: linear-gradient(160deg, var(--primary) 0%, var(--warm-dark) 100%);
+      padding: 80px 28px; text-align: center; color: var(--cream);
+    }
+    .cta-banner .section-label { color: var(--accent); }
+    .cta-banner h2 { color: var(--cream); }
+    .cta-banner p { color: rgba(253,246,236,0.55); font-size: 16px; margin-bottom: 36px; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--primary); padding: 24px; text-align: center;
+      font-size: 12px; color: rgba(253,246,236,0.25);
+    }
+    footer a { color: rgba(253,246,236,0.4); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { min-height: 85vh; padding-bottom: 40px; }
+      section { padding: 60px 20px; }
+      .story-grid, .location-grid { grid-template-columns: 1fr; }
+      .story-img { height: 280px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-grid img { height: 180px; }
+      .gallery-grid img:first-child { grid-row: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="logo-name">Southern Spice</span>
+    <span class="logo-tag">Indian Cuisine</span>
+  </a>
+  <div class="nav-links">
+    <a href="#menu">Menu</a>
+    <a href="#about">About</a>
+    <a href="#gallery">Photos</a>
+    <a href="#hours">Hours</a>
+    <a href="https://www.southernspicewa.com/s/order" target="_blank" class="nav-cta">Order Online</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Eastside's Favorite Biryani</div>
+  <h1>Southern<br>Spice</h1>
+  <div class="hero-rule"></div>
+  <p>From fiery Hyderabadi biryanis to crispy appetizers — real South Indian flavors, imported spices, and recipes worth traveling for. Dine in, all-you-can-eat, or order online.</p>
+  <div class="hero-ctas">
+    <a href="https://www.southernspicewa.com/s/order" target="_blank" class="btn-primary">Order Online</a>
+    <a href="#menu" class="btn-outline">See the Menu</a>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,25 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="story" id="about">
+  <div class="container">
+    <div class="section-label">Our Story</div>
+    <h2>A dream that's been<br>cooking for years</h2>
+    <div class="story-grid">
+      <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=700&q=80" alt="Indian food spread with curries and naan" class="story-img">
+      <div class="story-text">
+        <blockquote>"From the southern region of the Indian sub-continent, we import the most exotic and flavorful spices to create authentic dishes."</blockquote>
+        <p>Southern Spice brings the bold, fiery flavors of South India to the Eastside. Every biryani is layered with imported spices, every appetizer is fried to perfection, and every dish is a love letter to the cuisine of Hyderabad, Andhra, and beyond.</p>
+        <p>Whether you're craving our legendary Chicken 65 Biryani, the crispy Bheemavaram Chicken Pakodi, or the tender Goat Dum Biryani — we promise an authentic dining experience you won't soon forget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <div class="section-label">From Our Kitchen</div>
+    <h2>Menu favorites</h2>
+    <p class="subtitle">Biryanis, appetizers, curries, and tandoori specialties. Vegetarian options available. Every dish made fresh with imported spices.</p>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Chicken 65 Biryani</h3>
+          <span class="price">$16.99–$34.99</span>
+        </div>
+        <p>Our #1 bestseller. Spicy chicken 65 pieces layered with fragrant basmati rice, saffron, and aromatic spices. Regular or family size.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Goat Dum Biryani</h3>
+          <span class="price">$17.99–$35.99</span>
+        </div>
+        <p>Slow-cooked goat with bone-in pieces, layered with basmati rice and sealed with dum — the traditional Hyderabadi way.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Mylavaram Chicken Biryani</h3>
+          <span class="price">$16.99–$34.99</span>
+        </div>
+        <p>A regional specialty from Mylavaram — bold spices, tender chicken, and fragrant rice. A Southern Spice signature.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Pepper Chicken</h3>
+          <span class="price">$13.99</span>
+        </div>
+        <p>Bone-in chicken tossed with cracked black pepper, curry leaves, and a fiery spice blend. South Indian comfort food at its best.</p>
+      </div>
+      <div class="menu-item">
+        <div class="badge">Chef Special</div>
+        <div class="menu-item-header">
+          <h3>Spicy Chicken Wings</h3>
+          <span class="price">$13.99</span>
+        </div>
+        <p>Bellevue location exclusive. Crispy wings tossed in our chef's special spice blend.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Crispy Corn</h3>
+          <span class="price">$10.99</span>
+        </div>
+        <p>Golden fried corn kernels tossed with curry leaves, green chili, and a pinch of chaat masala. The perfect starter.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Tandoori Chicken</h3>
+          <span class="price">$14.99</span>
+        </div>
+        <p>Marinated overnight in yogurt and spices, roasted in a traditional clay tandoor until smoky and tender.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-header">
+          <h3>Methi Chaman</h3>
+          <span class="price">$14.99</span>
+        </div>
+        <p>Paneer cubes simmered in a creamy fenugreek gravy. Rich, aromatic, and vegetarian-friendly.</p>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 36px;">
+      <a href="https://www.southernspicewa.com/s/order" target="_blank" class="btn-primary">See Full Menu & Order Online</a>
+    </div>
+
+    <!-- ALL YOU CAN EAT -->
+    <div class="ayce-banner">
+      <h3>All You Can Eat</h3>
+      <p>Experience the full range of Southern Spice flavors. Biryanis, curries, appetizers, and more — eat until you're truly satisfied. Dine-in only.</p>
+      <a href="tel:+14255029050" class="btn-primary">Call to Reserve</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-label">A Peek Inside</div>
+    <h2>Made with fire, served with pride</h2>
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80" alt="Indian food feast" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Fresh naan bread" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Samosa with chutney" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=600&q=80" alt="Butter chicken and naan" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=600&q=80" alt="Indian cuisine" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & LOCATION -->
+<section id="hours">
+  <div class="container">
+    <div class="location-grid">
+      <div>
+        <div class="section-label">Visit Us</div>
+        <h2>Find us in Redmond</h2>
+        <div class="location-info" style="margin-top: 20px;">
+          <h3>Location</h3>
+          <p>Overlake Business Center South<br>15112 NE 24th St<br>Redmond, WA 98052</p>
+          <p><a href="https://www.google.com/maps/dir/?api=1&destination=15112+NE+24th+St+Redmond+WA+98052">Get Directions →</a></p>
+          <h3 style="margin-top: 20px;">Contact</h3>
+          <p><a href="tel:+14255029050">(425) 502-9050</a></p>
+        </div>
+      </div>
+      <div>
+        <div class="hours-card">
+          <h3>Kitchen Hours</h3>
+          <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">11am – 10pm</span></div>
+          <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">11am – 10pm</span></div>
+          <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">11am – 10pm</span></div>
+          <div class="hours-row"><span class="hours-day">Thursday</span><span class="hours-time">11am – 10pm</span></div>
+          <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">11am – 12am</span></div>
+          <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">11am – 12am</span></div>
+          <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">11am – 9:30pm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <div class="container">
+    <div class="section-label">Craving Something?</div>
+    <h2>Your biryani is waiting.</h2>
+    <p>Dine in for the all-you-can-eat experience, or order online for pickup. Real South Indian flavors, no shortcuts.</p>
+    <div class="cta-buttons">
+      <a href="https://www.southernspicewa.com/s/order" target="_blank" class="btn-primary">Order Online</a>
+      <a href="tel:+14255029050" class="btn-outline">(425) 502-9050</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 Southern Spice &middot; Redmond, WA</p>
+  <p style="margin-top: 8px;">Site by <a href="https://welcomematdigital.com">WelcomeMat</a></p>
+</footer>
+
+<!-- WelcomeMat Chat Widget -->
+<script src="https://welcomematdigital.com/widget/frontdesk-widget.js" data-business="demo" data-server="https://welcomematdigital.com"></script>
+
+</body>
+</html>
