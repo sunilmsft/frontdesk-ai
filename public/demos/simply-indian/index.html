@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simply Indian — Authentic Indian Cuisine | Bellevue, WA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a0a0a;
+      --accent: #b91c1c;
+      --accent-light: #f59e0b;
+      --gold: #f59e0b;
+      --cream: #fef9f0;
+      --bg: #fef9f0;
+      --bg-alt: #f7f0e3;
+      --text: #1a0a0a;
+      --text-muted: #6b5c4f;
+      --deep-red: #7f1d1d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; color: var(--text); background: var(--bg); }
+    h1, h2, h3 { font-family: 'Nunito', sans-serif; }
+
+    /* === NAV === */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(26,10,10,0.95); backdrop-filter: blur(12px);
+      padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      text-decoration: none; display: flex; flex-direction: column; line-height: 1;
+    }
+    .nav-logo .logo-simply {
+      font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700;
+      color: var(--gold);
+    }
+    .nav-logo .logo-indian {
+      font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 800;
+      color: var(--cream); letter-spacing: 1px; margin-top: -4px;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: rgba(254,249,240,0.7); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--accent) !important; color: var(--cream) !important;
+      padding: 8px 20px; border-radius: 24px; font-weight: 700 !important;
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative; min-height: 100vh;
+      background: linear-gradient(180deg, rgba(26,10,10,0.15) 0%, rgba(26,10,10,0.7) 60%, var(--primary) 100%),
+        url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&q=80') center/cover;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 32px 60px; text-align: center;
+    }
+    .hero-hand {
+      font-family: 'Caveat', cursive; font-size: clamp(20px, 4vw, 32px);
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px); font-weight: 800; color: var(--cream);
+      line-height: 1.05; margin-bottom: 16px;
+    }
+    .hero-subtitle {
+      font-family: 'Nunito', sans-serif; font-size: 16px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold); font-weight: 600;
+      margin-top: -8px; margin-bottom: 8px;
+    }
+    .hero p { font-size: 18px; color: rgba(254,249,240,0.7); max-width: 540px; margin: 0 auto; line-height: 1.6; }
+    .hero-ctas { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-warm {
+      background: var(--accent); color: var(--cream); padding: 14px 32px;
+      border: none; border-radius: 28px; font-size: 16px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-warm:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(185,28,28,0.3); }
+    .btn-ghost {
+      background: transparent; color: var(--cream); padding: 14px 32px;
+      border: 2px solid rgba(254,249,240,0.3); border-radius: 28px;
+      font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* === WAVE === */
+    .wave-divider { background: var(--primary); position: relative; }
+    .wave-divider svg { display: block; width: 100%; height: 60px; }
+    .wave-divider svg path { fill: var(--bg); }
+
+    /* === SECTIONS === */
+    section { padding: 80px 28px; }
+    .section-hand { font-family: 'Caveat', cursive; font-size: 22px; color: var(--accent); margin-bottom: 4px; }
+    section h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    section .subtitle { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.7; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* === STORY === */
+    .story { background: var(--bg-alt); }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .story-img {
+      width: 100%; height: 400px; object-fit: cover; border-radius: 20px;
+      border: 4px solid var(--cream); box-shadow: 8px 8px 0 var(--accent);
+    }
+    .story-text blockquote {
+      font-family: 'Caveat', cursive; font-size: 26px; line-height: 1.4;
+      color: var(--accent); margin-bottom: 16px;
+    }
+    .story-text p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 12px; }
+
+    /* === MENU === */
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .menu-card {
+      background: var(--cream); border-radius: 20px; padding: 28px;
+      border: 2px solid transparent; transition: all 0.3s;
+    }
+    .menu-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,10,10,0.1); }
+    .menu-emoji { font-size: 36px; margin-bottom: 12px; }
+    .menu-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .menu-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .menu-price { font-family: 'Caveat', cursive; font-size: 22px; color: var(--accent); margin-top: 12px; }
+
+    /* === GALLERY === */
+    .gallery-organic {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 40px;
+    }
+    .gallery-organic img {
+      width: 100%; height: 220px; object-fit: cover; border-radius: 16px; transition: transform 0.3s;
+    }
+    .gallery-organic img:hover { transform: rotate(-2deg) scale(1.05); }
+    .gallery-organic img:nth-child(2) { transform: translateY(20px); }
+    .gallery-organic img:nth-child(2):hover { transform: translateY(20px) rotate(2deg) scale(1.05); }
+    .gallery-organic img:nth-child(5) { transform: translateY(-15px); }
+    .gallery-organic img:nth-child(5):hover { transform: translateY(-15px) rotate(-1deg) scale(1.05); }
+
+    /* === CATERING BANNER === */
+    .catering-banner {
+      background: var(--bg-alt); border: 2px solid var(--gold); border-radius: 20px;
+      padding: 40px; text-align: center; max-width: 700px; margin: 40px auto 0;
+    }
+    .catering-banner h3 { font-size: 24px; margin-bottom: 8px; }
+    .catering-banner p { color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+
+    /* === HOURS === */
+    .hours-card {
+      background: var(--primary); color: var(--cream); border-radius: 20px;
+      padding: 40px; max-width: 500px; margin: 40px auto 0;
+    }
+    .hours-card h3 { font-family: 'Caveat', cursive; font-size: 28px; text-align: center; margin-bottom: 20px; color: var(--gold); }
+    .hours-row {
+      display: flex; justify-content: space-between; padding: 10px 0;
+      border-bottom: 1px solid rgba(254,249,240,0.1); font-size: 15px;
+    }
+    .hours-row:last-child { border: none; }
+    .hours-day { font-weight: 600; }
+    .hours-time { color: var(--gold); }
+
+    /* === LOCATION === */
+    .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .location-info h3 { font-size: 20px; margin-bottom: 12px; }
+    .location-info p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 8px; }
+    .location-info a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .location-info a:hover { text-decoration: underline; }
+
+    /* === CTA === */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #3a1510 100%);
+      padding: 80px 28px; text-align: center; color: var(--cream);
+    }
+    .cta-banner .section-hand { color: var(--gold); }
+    .cta-banner h2 { color: var(--cream); }
+    .cta-banner p { color: rgba(254,249,240,0.6); font-size: 16px; margin-bottom: 32px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--primary); padding: 24px; text-align: center;
+      font-size: 12px; color: rgba(254,249,240,0.3);
+    }
+    footer a { color: rgba(254,249,240,0.5); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* === MOBILE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { min-height: 85vh; padding-bottom: 40px; }
+      section { padding: 60px 20px; }
+      .story-grid, .location-grid { grid-template-columns: 1fr; }
+      .story-img { height: 280px; }
+      .gallery-organic { grid-template-columns: 1fr 1fr; }
+      .gallery-organic img:nth-child(2),
+      .gallery-organic img:nth-child(5) { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="logo-simply">Simply</span><span class="logo-indian">Indian</span></a>
+  <div class="nav-links">
+    <a href="#menu">Menu</a>
+    <a href="#about">About</a>
+    <a href="#gallery">Photos</a>
+    <a href="#hours">Hours</a>
+    <a href="https://simplyindian.square.site/s/order" target="_blank" class="nav-cta">Order Online</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-hand">✨ Authentic flavors, simply done right</div>
+  <h1>Simply<br>Indian</h1>
+  <div class="hero-subtitle">Authentic Indian Cuisine</div>
+  <p>From rich butter chicken to aromatic biryanis — real Indian home cooking in the heart of Bellevue. Dine in, takeout, or catering for any occasion.</p>
+  <div class="hero-ctas">
+    <a href="https://simplyindian.square.site/s/order" target="_blank" class="btn-warm">🛒 Order Online</a>
+    <a href="#menu" class="btn-ghost">📋 See the Menu</a>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,25 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="story" id="about">
+  <div class="container">
+    <div class="section-hand">Our kitchen 🍛</div>
+    <h2>Simply authentic. Simply delicious.</h2>
+    <div class="story-grid">
+      <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=600&q=80" alt="Butter chicken with naan" class="story-img">
+      <div class="story-text">
+        <blockquote>"Food that takes you home — no matter where home is."</blockquote>
+        <p>Simply Indian brings the warmth of Indian home cooking to Bellevue's Factoria neighborhood. Every dish is prepared with authentic spices, fresh ingredients, and recipes passed down through generations.</p>
+        <p>Whether it's our aromatic biryanis, creamy butter chicken, or crispy jumbo samosas — we believe great Indian food should be accessible, comforting, and made with love. We also cater for all occasions with our own delivery staff, so your next party can taste like India.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU HIGHLIGHTS -->
+<section id="menu">
+  <div class="container">
+    <div class="section-hand">From our kitchen 🍽️</div>
+    <h2>Menu favorites</h2>
+    <p class="subtitle">Vegetarian and non-vegetarian options. Gluten-free available. Every dish made fresh to order.</p>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-emoji">🧈</div>
+        <h3>Butter Chicken [Boneless] + Rice</h3>
+        <p>Gluten free. Traditionally known as murgh makhani — chicken in a spiced tomato and butter sauce. Served with basmati rice.</p>
+        <div class="menu-price">$16</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🍚</div>
+        <h3>Chicken 65 Biryani [Boneless]</h3>
+        <p>Boneless chicken pieces cooked with basmati rice, flavored with saffron and aromatic spices. Available in regular or family size.</p>
+        <div class="menu-price">$17–$42</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🥟</div>
+        <h3>Jumbo Samosa (Vegetarian)</h3>
+        <p>Served with mint and tamarind chutney. Made with potato and peas curry filling. Available as single or pair.</p>
+        <div class="menu-price">$3–$5</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🫓</div>
+        <h3>Naan Bread</h3>
+        <p>Soft Indian bread fresh from the tandoor. Options: Garlic Naan, Butter Naan, Bullet Naan (Masala Naan), or Plain Naan.</p>
+        <div class="menu-price">$2–$2.50</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🫙</div>
+        <h3>Tomato Pickle (8 Oz)</h3>
+        <p>Homemade Indian tomato pickle. The perfect spicy-tangy sidekick for any meal. Take a jar home.</p>
+        <div class="menu-price">$4</div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-emoji">🥦</div>
+        <h3>Cauliflower Pickle (8 Oz)</h3>
+        <p>Homemade cauliflower pickle with traditional Indian spices. A crunchy, tangy addition to any plate.</p>
+        <div class="menu-price">$4</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 32px;">
+      <a href="https://simplyindian.square.site/s/order" target="_blank" class="btn-warm">🛒 See Full Menu & Order Online</a>
+    </div>
+
+    <!-- CATERING -->
+    <div class="catering-banner">
+      <h3>🎉 We Cater!</h3>
+      <p>Hosting a party, corporate event, or family gathering? We cater for all occasions with door delivery by our own staff. Let us bring India to your table.</p>
+      <a href="tel:+14254144765" class="btn-warm">📞 Call for Catering</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-hand">A peek inside 📸</div>
+    <h2>Made with love, served with pride</h2>
+    <div class="gallery-organic">
+      <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Indian food spread" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Biryani" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=600&q=80" alt="Butter chicken" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Samosa" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Naan bread" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=600&q=80" alt="Indian cuisine" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & LOCATION -->
+<section id="hours">
+  <div class="container">
+    <div class="location-grid">
+      <div>
+        <div class="section-hand">Visit us 📍</div>
+        <h2>Find us in Bellevue</h2>
+        <div class="location-info" style="margin-top: 20px;">
+          <h3>📍 Location</h3>
+          <p>Near Factoria Mall<br>Bellevue, WA</p>
+          <p><a href="https://www.google.com/maps/dir/?api=1&destination=Simply+Indian+Restaurant+Bellevue+WA">Get Directions →</a></p>
+          <h3 style="margin-top: 20px;">📞 Contact</h3>
+          <p><a href="tel:+14254144765">(425) 414-4765</a></p>
+          <p><a href="mailto:simplyindianwa@gmail.com">simplyindianwa@gmail.com</a></p>
+          <div style="margin-top: 16px; display: flex; gap: 12px;">
+            <a href="https://www.facebook.com/simplyindianbellevue" style="color: var(--text-muted); font-size: 14px;">Facebook</a>
+            <a href="https://yelp.com/biz/simply-indian-restaurant-factoria-bellevue-bellevue" style="color: var(--text-muted); font-size: 14px;">Yelp</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="hours-card">
+          <h3>Kitchen Hours</h3>
+          <div class="hours-row"><span class="hours-day">Monday–Sunday</span><span class="hours-time">Open Daily</span></div>
+          <div class="hours-row"><span class="hours-day">Lunch</span><span class="hours-time">11:30am – 2:30pm</span></div>
+          <div class="hours-row"><span class="hours-day">Dinner</span><span class="hours-time">5:00pm – 9:30pm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <div class="container">
+    <div class="section-hand">Hungry? 🤤</div>
+    <h2>Your table is waiting.</h2>
+    <p>Dine in, pick up, or let us cater your next event. Simply delicious, always.</p>
+    <div class="cta-buttons">
+      <a href="https://simplyindian.square.site/s/order" target="_blank" class="btn-warm">🛒 Order Online</a>
+      <a href="tel:+14254144765" class="btn-ghost">📞 (425) 414-4765</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Simply Indian · Bellevue, WA</p>
+  <p style="margin-top: 8px;">Site by <a href="https://welcomematdigital.com">WelcomeMat</a></p>
+</footer>
+
+<!-- WelcomeMat Chat Widget -->
+<script src="https://welcomematdigital.com/widget/frontdesk-widget.js" data-business="demo" data-server="https://welcomematdigital.com"></script>
+
+</body>
+</html>
