@@ -234,6 +234,36 @@
       border: none;
     }
     .btn-outline:hover { background: rgba(255,255,255,0.15); }
+    .btn-icon-badge {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: rgba(255,255,255,0.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 1px 2px rgba(0,0,0,0.18);
+      flex-shrink: 0;
+    }
+    .btn-icon-badge svg {
+      width: 12px;
+      height: 12px;
+      stroke-width: 2.2;
+      stroke: currentColor;
+      color: var(--text);
+    }
+    .btn-outline .btn-icon-badge {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.28);
+    }
+    .btn-outline .btn-icon-badge svg {
+      color: #ffffff;
+    }
+    .btn-icon-badge.whatsapp svg {
+      color: #25d366;
+    }
     .hero-trust {
       display: flex;
       align-items: center;
@@ -844,7 +874,7 @@
         <h1 data-i18n="heroTitle">A spotless home.<br>Every <em>single</em> time.</h1>
         <p class="hero-text" data-i18n="heroText">Professional residential and Airbnb cleaning across the Greater Seattle & Eastside area. We treat every home like it's our own.</p>
         <div class="hero-actions">
-          <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="heroCta">✨ Get a Free Quote</button>
+          <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="heroCta"><span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Get a Free Quote</button>
           <a href="#services" class="btn btn-outline" data-i18n="heroSecondary">View Services ↓</a>
         </div>
         <div class="hero-trust">
@@ -1032,9 +1062,9 @@
     <h2 data-i18n="ctaTitle">Ready for a cleaner home?</h2>
     <p data-i18n="ctaText">Get a free estimate — no obligation, no hassle. We'll get back to you within a few hours.</p>
     <div class="cta-contact">
-      <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="ctaQuote">✨ Request a Quote</button>
-      <a href="sms:{{PHONE}}" class="btn btn-outline" data-i18n="ctaText2">💬 Text Us</a>
-      <a href="https://wa.me/12062910321" target="_blank" class="btn btn-outline" data-i18n="ctaWhatsapp">🟢 WhatsApp</a>
+      <button onclick="openQuoteModal()" class="btn btn-primary" data-i18n="ctaQuote"><span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Request a Quote</button>
+      <a href="sms:{{PHONE}}" class="btn btn-outline" data-i18n="ctaText2"><span class="btn-icon-badge"><i data-lucide="message-circle"></i></span> Text Us</a>
+      <a href="https://wa.me/12062910321" target="_blank" class="btn btn-outline" data-i18n="ctaWhatsapp"><span class="btn-icon-badge whatsapp"><i data-lucide="message-circle"></i></span> WhatsApp</a>
     </div>
   </section>
 
@@ -1143,7 +1173,7 @@
       navServices: 'Services', navAbout: 'About', navWork: 'Our Work', navAreas: 'Areas', navHours: 'Hours', navCta: 'Get a Free Quote',
       heroTitle: 'A spotless home.<br>Every <em>single</em> time.',
       heroText: 'Professional residential and Airbnb cleaning across the Greater Seattle & Eastside area. We treat every home like it\'s our own.',
-      heroCta: '✨ Get a Free Quote',
+      heroCta: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Get a Free Quote',
       heroSecondary: 'View Services ↓',
       trustYears: '5+ Years Experience',
       trustLicensed: 'Licensed & Insured',
@@ -1167,7 +1197,7 @@
       hoursLabel: 'Hours', hoursTitle: 'When we\'re available',
       mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday', closed: 'Closed',
       ctaTitle: 'Ready for a cleaner home?', ctaText: 'Get a free estimate — no obligation, no hassle. We\'ll get back to you within a few hours.',
-      ctaQuote: '✨ Request a Quote', ctaText2: '💬 Text Us', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Request a Quote', ctaText2: '<span class="btn-icon-badge"><i data-lucide="message-circle"></i></span> Text Us', ctaWhatsapp: '<span class="btn-icon-badge whatsapp"><i data-lucide="message-circle"></i></span> WhatsApp',
       footerTagline: 'Professional cleaning you can trust', footerContact: 'Contact us on WhatsApp',
       aboutLabel: 'About Us', aboutTitle: 'The heart behind Camellia', aboutPhotoSoon: 'Photo of Kesia coming soon',
       aboutHi: 'Hello! I\u2019m Kesia.',
@@ -1200,7 +1230,7 @@
       navServices: 'Serviços', navAbout: 'Sobre', navWork: 'Nosso Trabalho', navAreas: 'Áreas', navHours: 'Horários', navCta: 'Orçamento Grátis',
       heroTitle: 'Uma casa impecável.<br>Todas as <em>vezes</em>.',
       heroText: 'Limpeza residencial e de Airbnb profissional em toda a região de Seattle e Eastside. Cuidamos da sua casa como se fosse a nossa.',
-      heroCta: '✨ Peça um Orçamento Grátis',
+      heroCta: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Peça um Orçamento Grátis',
       heroSecondary: 'Ver Serviços ↓',
       trustYears: '5+ Anos de Experiência',
       trustLicensed: 'Licenciada e Segurada',
@@ -1224,7 +1254,7 @@
       hoursLabel: 'Horários', hoursTitle: 'Quando estamos disponíveis',
       mon: 'Segunda', tue: 'Terça', wed: 'Quarta', thu: 'Quinta', fri: 'Sexta', sat: 'Sábado', sun: 'Domingo', closed: 'Fechado',
       ctaTitle: 'Pronta pra uma casa mais limpa?', ctaText: 'Peça um orçamento grátis — sem compromisso. Respondemos em poucas horas.',
-      ctaQuote: '✨ Pedir Orçamento', ctaText2: '💬 Mensagem', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Pedir Orçamento', ctaText2: '<span class="btn-icon-badge"><i data-lucide="message-circle"></i></span> Mensagem', ctaWhatsapp: '<span class="btn-icon-badge whatsapp"><i data-lucide="message-circle"></i></span> WhatsApp',
       footerTagline: 'Limpeza profissional de confiança', footerContact: 'Fale conosco no WhatsApp',
       aboutLabel: 'Sobre Nós', aboutTitle: 'O coração por trás da Camellia', aboutPhotoSoon: 'Foto da Kesia em breve',
       aboutHi: 'Olá! Eu sou a Kesia.',
@@ -1257,7 +1287,7 @@
       navServices: 'Servicios', navAbout: 'Nosotros', navWork: 'Nuestro Trabajo', navAreas: 'Áreas', navHours: 'Horarios', navCta: 'Presupuesto Gratis',
       heroTitle: 'Un hogar impecable.<br>Todas las <em>veces</em>.',
       heroText: 'Limpieza residencial y de Airbnb profesional en toda el área de Seattle y Eastside. Cuidamos tu hogar como si fuera el nuestro.',
-      heroCta: '✨ Presupuesto Gratis',
+      heroCta: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Presupuesto Gratis',
       heroSecondary: 'Ver Servicios ↓',
       trustYears: '5+ Años de Experiencia',
       trustLicensed: 'Con Licencia y Seguro',
@@ -1281,7 +1311,7 @@
       hoursLabel: 'Horarios', hoursTitle: 'Cuándo estamos disponibles',
       mon: 'Lunes', tue: 'Martes', wed: 'Miércoles', thu: 'Jueves', fri: 'Viernes', sat: 'Sábado', sun: 'Domingo', closed: 'Cerrado',
       ctaTitle: '¿Listo para un hogar más limpio?', ctaText: 'Pide un presupuesto gratis — sin compromiso. Respondemos en pocas horas.',
-      ctaQuote: '✨ Pedir Presupuesto', ctaText2: '💬 Mensaje', ctaWhatsapp: '🟢 WhatsApp',
+      ctaQuote: '<span class="btn-icon-badge"><i data-lucide="sparkles"></i></span> Pedir Presupuesto', ctaText2: '<span class="btn-icon-badge"><i data-lucide="message-circle"></i></span> Mensaje', ctaWhatsapp: '<span class="btn-icon-badge whatsapp"><i data-lucide="message-circle"></i></span> WhatsApp',
       footerTagline: 'Limpieza profesional de confianza', footerContact: 'Contáctanos en WhatsApp',
       aboutLabel: 'Sobre Nosotros', aboutTitle: 'El corazón detrás de Camellia', aboutPhotoSoon: 'Foto de Kesia próximamente',
       aboutHi: '¡Hola! Soy Kesia.',
@@ -1319,6 +1349,7 @@
       const key = el.getAttribute('data-i18n');
       if (T[lang] && T[lang][key]) el.innerHTML = T[lang][key];
     });
+    lucide.createIcons();
     // Update both dropdowns (desktop + mobile)
     document.querySelectorAll('.nav-lang').forEach(picker => {
       picker.classList.remove('open');
