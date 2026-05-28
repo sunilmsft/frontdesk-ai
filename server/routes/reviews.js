@@ -14,7 +14,7 @@ const MANUAL_REVIEW_FALLBACKS = {
   }
 };
 
-function normalizePlaceId(rawValue) {
+function extractPlaceIdFromValue(rawValue) {
   if (!rawValue) return null;
 
   let value = String(rawValue).trim();
@@ -24,7 +24,7 @@ function normalizePlaceId(rawValue) {
     value = value.slice('places/'.length);
   }
 
-  // If user pasted a Google Maps URL, try extracting place identifiers from common params/patterns.
+  // Parse common Google Maps URL formats for explicit place ID fields.
   if (/^https?:\/\//i.test(value)) {
     try {
       const u = new URL(value);
@@ -48,7 +48,44 @@ function normalizePlaceId(rawValue) {
     return chIMatch[1];
   }
 
+  if (/^https?:\/\//i.test(value)) {
+    return null;
+  }
+
   return value;
+}
+
+async function normalizePlaceId(rawValue) {
+  if (!rawValue) return null;
+
+  let value = String(rawValue).trim();
+  if (!value) return null;
+
+  const direct = extractPlaceIdFromValue(value);
+  if (direct) return direct;
+
+  // Handle short links by following redirects and extracting the place ID from final URL.
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const u = new URL(value);
+      const shortHosts = new Set(['share.google', 'maps.app.goo.gl', 'goo.gl']);
+      if (shortHosts.has(u.hostname.toLowerCase())) {
+        const resp = await fetch(value, {
+          method: 'GET',
+          redirect: 'follow',
+          headers: {
+            'User-Agent': 'Mozilla/5.0'
+          }
+        });
+        const redirected = extractPlaceIdFromValue(resp.url);
+        if (redirected) return redirected;
+      }
+    } catch {
+      // Best effort only.
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -66,7 +103,7 @@ router.get('/:slug', async (req, res) => {
       args: [slug]
     });
     const biz = bizResult.rows[0];
-    const placeId = normalizePlaceId(biz?.google_place_id);
+    const placeId = await normalizePlaceId(biz?.google_place_id);
     if (!biz || !placeId) {
       if (manualFallback) return res.json(manualFallback);
       return res.json({ reviews: [], rating: null, totalReviews: 0 });
