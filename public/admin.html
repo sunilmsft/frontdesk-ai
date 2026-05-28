@@ -597,6 +597,14 @@
             <button class="btn btn-primary btn-sm" onclick="searchGooglePlaces()" id="placeSearchBtn">🔍 Search</button>
           </div>
           <div id="placeSearchResults" style="margin-top: 12px;"></div>
+
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #d5dbe3;">
+            <div style="font-size: 12px; color: #667085; margin-bottom: 8px;">Can't find it in search? Paste Google Place ID or a Google Maps URL.</div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="manualPlaceIdInput" placeholder="ChIJ... or https://maps.google.com/..." value="${escapeAttr(b.google_place_id || '')}" style="flex: 1; font-family: monospace; font-size: 12px;">
+              <button class="btn btn-primary btn-sm" onclick="saveManualPlaceId()" id="manualPlaceIdBtn">Save Place ID</button>
+            </div>
+          </div>
         </div>
 
         <div class="field">
@@ -1961,6 +1969,40 @@
         await authFetch(`${API}/reviews/clear-cache/${selectedBiz.id}`, { method: 'POST' }).catch(() => {});
       } else {
         alert('Error connecting Google Reviews');
+      }
+    }
+
+    async function saveManualPlaceId() {
+      const input = document.getElementById('manualPlaceIdInput');
+      if (!input) return;
+      const rawValue = input.value.trim();
+      if (!rawValue) {
+        alert('Paste a Google Place ID or Maps URL first.');
+        return;
+      }
+
+      const btn = document.getElementById('manualPlaceIdBtn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+
+      try {
+        const res = await authFetch(`${API}/businesses/${selectedBiz.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ google_place_id: rawValue }),
+        });
+
+        if (!res.ok) {
+          alert('Error saving Place ID');
+          return;
+        }
+
+        selectedBiz = await res.json();
+        await authFetch(`${API}/reviews/clear-cache/${selectedBiz.id}`, { method: 'POST' }).catch(() => {});
+        await loadBusinesses();
+        renderBizDetail();
+        alert('Place ID saved. Reviews will auto-refresh from Google.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Save Place ID'; }
       }
     }
 

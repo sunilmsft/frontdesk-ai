@@ -605,34 +605,128 @@ router.get('/places/search', async (req, res) => {
   }
 
   try {
-    const searchBody = { textQuery: query.trim(), maxResultCount: 5 };
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
+    };
 
-    // Add location bias — use provided lat/lng or default to Seattle metro
+    // Add location bias first (best for local businesses), then fall back to broader search.
     const lat = parseFloat(req.query.lat) || 47.6062;
     const lng = parseFloat(req.query.lng) || -122.3321;
     const radius = parseFloat(req.query.radius) || 50000; // 50km default
-    searchBody.locationBias = {
-      circle: { center: { latitude: lat, longitude: lng }, radius }
-    };
 
-    const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': apiKey,
-        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri'
+    const attempts = [
+      {
+        textQuery: query.trim(),
+        maxResultCount: 5,
+        languageCode: 'en',
+        regionCode: 'US',
+        locationBias: {
+          circle: { center: { latitude: lat, longitude: lng }, radius }
+        }
       },
-      body: JSON.stringify(searchBody)
-    });
+      {
+        textQuery: query.trim(),
+        maxResultCount: 8,
+        languageCode: 'en',
+        regionCode: 'US'
+      },
+      {
+        textQuery: `${query.trim()} Sammamish WA`,
+        maxResultCount: 8,
+        languageCode: 'en',
+        regionCode: 'US'
+      }
+    ];
 
-    if (!searchResp.ok) {
-      const errText = await searchResp.text();
-      console.error('Google Places search error:', searchResp.status, errText);
-      return res.status(502).json({ error: 'Google Places API error' });
+    let allPlaces = [];
+
+    for (const body of attempts) {
+      const searchResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body)
+      });
+
+      if (!searchResp.ok) {
+        const errText = await searchResp.text();
+        console.error('Google Places search error:', searchResp.status, errText);
+        continue;
+      }
+
+      const data = await searchResp.json();
+      if (Array.isArray(data.places) && data.places.length > 0) {
+        allPlaces = allPlaces.concat(data.places);
+      }
+
+      if (allPlaces.length >= 5) {
+        break;
+      }
     }
 
-    const data = await searchResp.json();
-    const results = (data.places || []).map(p => ({
+    // If New Places API returns nothing, try legacy Places text search/find place as fallback.
+    if (allPlaces.length === 0) {
+      const legacyQueries = [query.trim(), `${query.trim()} Sammamish WA`];
+
+      for (const q of legacyQueries) {
+        try {
+          const legacyUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(q)}&region=us&key=${encodeURIComponent(apiKey)}`;
+          const legacyResp = await fetch(legacyUrl);
+          if (!legacyResp.ok) continue;
+
+          const legacyData = await legacyResp.json();
+          if (Array.isArray(legacyData.results) && legacyData.results.length > 0) {
+            allPlaces = allPlaces.concat(legacyData.results.map(p => ({
+              id: p.place_id,
+              displayName: { text: p.name || '' },
+              formattedAddress: p.formatted_address || '',
+              rating: p.rating || null,
+              userRatingCount: p.user_ratings_total || 0,
+              googleMapsUri: p.place_id ? `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(p.place_id)}` : null,
+            })));
+          }
+        } catch (err) {
+          console.error('Legacy text search fallback failed:', err.message);
+        }
+
+        if (allPlaces.length > 0) break;
+      }
+
+      if (allPlaces.length === 0) {
+        try {
+          const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query.trim())}&inputtype=textquery&fields=place_id,name,formatted_address,rating,user_ratings_total&key=${encodeURIComponent(apiKey)}`;
+          const findResp = await fetch(findPlaceUrl);
+          if (findResp.ok) {
+            const findData = await findResp.json();
+            if (Array.isArray(findData.candidates) && findData.candidates.length > 0) {
+              allPlaces = allPlaces.concat(findData.candidates.map(p => ({
+                id: p.place_id,
+                displayName: { text: p.name || '' },
+                formattedAddress: p.formatted_address || '',
+                rating: p.rating || null,
+                userRatingCount: p.user_ratings_total || 0,
+                googleMapsUri: p.place_id ? `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(p.place_id)}` : null,
+              })));
+            }
+          }
+        } catch (err) {
+          console.error('Legacy find place fallback failed:', err.message);
+        }
+      }
+    }
+
+    // De-dupe by place ID and cap response size.
+    const seen = new Set();
+    const uniquePlaces = [];
+    for (const p of allPlaces) {
+      if (!p?.id || seen.has(p.id)) continue;
+      seen.add(p.id);
+      uniquePlaces.push(p);
+      if (uniquePlaces.length >= 8) break;
+    }
+
+    const results = uniquePlaces.map(p => ({
       placeId: p.id,
       name: p.displayName?.text || '',
       address: p.formattedAddress || '',

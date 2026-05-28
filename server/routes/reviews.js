@@ -4,6 +4,52 @@ const { db } = require('../db/database');
 
 const GOOGLE_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const MANUAL_REVIEW_FALLBACKS = {
+  'camellia-cleaning': {
+    reviews: [],
+    rating: 5.0,
+    totalReviews: 1,
+    googleMapsUrl: 'https://www.google.com/search?q=Camellia+Cleaning+Service',
+    source: 'manual-fallback'
+  }
+};
+
+function normalizePlaceId(rawValue) {
+  if (!rawValue) return null;
+
+  let value = String(rawValue).trim();
+  if (!value) return null;
+
+  if (value.startsWith('places/')) {
+    value = value.slice('places/'.length);
+  }
+
+  // If user pasted a Google Maps URL, try extracting place identifiers from common params/patterns.
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const u = new URL(value);
+      const placeIdParam = u.searchParams.get('place_id') || u.searchParams.get('query_place_id');
+      if (placeIdParam) value = placeIdParam;
+
+      const qParam = u.searchParams.get('q');
+      if (qParam && qParam.startsWith('place_id:')) {
+        value = qParam.slice('place_id:'.length);
+      }
+
+      const oneSMatch = value.match(/!1s(ChI[A-Za-z0-9_-]+)/);
+      if (oneSMatch) value = oneSMatch[1];
+    } catch {
+      // Keep original if URL parsing fails.
+    }
+  }
+
+  const chIMatch = value.match(/(ChI[A-Za-z0-9_-]+)/);
+  if (chIMatch) {
+    return chIMatch[1];
+  }
+
+  return value;
+}
 
 /**
  * GET /api/reviews/:slug — Return cached Google reviews for a business
@@ -12,6 +58,7 @@ const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 router.get('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
+    const manualFallback = MANUAL_REVIEW_FALLBACKS[slug] || null;
 
     // Look up business and its Google Place ID
     const bizResult = await db.execute({
@@ -19,7 +66,9 @@ router.get('/:slug', async (req, res) => {
       args: [slug]
     });
     const biz = bizResult.rows[0];
-    if (!biz || !biz.google_place_id) {
+    const placeId = normalizePlaceId(biz?.google_place_id);
+    if (!biz || !placeId) {
+      if (manualFallback) return res.json(manualFallback);
       return res.json({ reviews: [], rating: null, totalReviews: 0 });
     }
 
@@ -38,10 +87,10 @@ router.get('/:slug', async (req, res) => {
 
     // Fetch from Google Places API (New)
     if (!GOOGLE_API_KEY) {
+      if (manualFallback) return res.json(manualFallback);
       return res.json({ reviews: [], rating: null, totalReviews: 0 });
     }
 
-    const placeId = biz.google_place_id;
     const url = `https://places.googleapis.com/v1/places/${placeId}`;
     const response = await fetch(url, {
       headers: {
@@ -56,6 +105,7 @@ router.get('/:slug', async (req, res) => {
       if (cached.rows.length > 0) {
         return res.json(JSON.parse(cached.rows[0].data));
       }
+      if (manualFallback) return res.json(manualFallback);
       return res.json({ reviews: [], rating: null, totalReviews: 0 });
     }
 
