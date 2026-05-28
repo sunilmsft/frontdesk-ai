@@ -1671,76 +1671,13 @@
 
   // --- Google Reviews ---
   (async function loadReviews() {
-    const curatedTestimonials = [
-      {
-        author: 'Sammamish homeowner',
-        relativeTime: 'Client feedback',
-        rating: 5,
-        text: 'Our home looked spotless after the deep clean. They were on time, respectful, and very detail-oriented in the kitchen and bathrooms.'
-      },
-      {
-        author: 'Issaquah family',
-        relativeTime: 'Client feedback',
-        rating: 5,
-        text: 'We booked recurring cleaning and the consistency has been excellent. Great communication, and every visit leaves the house feeling fresh.'
-      },
-      {
-        author: 'Eastside Airbnb host',
-        relativeTime: 'Client feedback',
-        rating: 5,
-        text: 'Turnovers have been reliable and thorough. Guests keep mentioning how clean the space is, and that has helped our ratings stay strong.'
-      }
-    ];
-
-    function renderCuratedFallback() {
-      const reviewsSection = document.getElementById('reviews');
-      const summary = document.getElementById('reviewsSummary');
-      const grid = document.getElementById('reviewsGrid');
-      if (!reviewsSection || !summary || !grid) return;
-
-      reviewsSection.style.display = '';
-      summary.innerHTML = `
-        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-          <span class="reviews-rating">5.0</span>
-          <div class="reviews-stars">${Array.from({ length: 5 }, () => '<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="#f59e0b"/></svg>').join('')}</div>
-          <span class="reviews-count">Featured client testimonials</span>
-        </div>
-      `;
-
-      grid.innerHTML = curatedTestimonials.map((r) => {
-        const stars = Array.from({ length: 5 }, (_, i) =>
-          `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < r.rating ? '#f59e0b' : '#e5e7eb'}"/></svg>`
-        ).join('');
-        const avatar = `<div class="review-avatar-placeholder">${r.author.charAt(0).toUpperCase()}</div>`;
-        return `
-          <div class="review-card reveal">
-            <div class="review-header">
-              ${avatar}
-              <div>
-                <div class="review-author">${r.author}</div>
-                <div class="review-time">${r.relativeTime}</div>
-              </div>
-            </div>
-            <div class="review-stars">${stars}</div>
-            <div class="review-text">${r.text}</div>
-          </div>
-        `;
-      }).join('');
-
-      grid.querySelectorAll('.review-card').forEach((card, i) => {
-        card.style.transitionDelay = `${i * 0.1}s`;
-        revealObserver.observe(card);
-      });
-    }
-
     try {
       const resp = await fetch('/api/reviews/{{BUSINESS_SLUG}}');
       if (!resp.ok) return;
       const data = await resp.json();
       const hasSummary = Number.isFinite(data.rating) && (data.totalReviews || 0) > 0;
       const hasCards = Array.isArray(data.reviews) && data.reviews.length > 0;
-      if (!hasCards) {
-        renderCuratedFallback();
+      if (!hasSummary && !hasCards) {
         return;
       }
 
@@ -1749,41 +1686,58 @@
 
       // Summary
       const summary = document.getElementById('reviewsSummary');
-      const starsHtml = Array.from({ length: 5 }, (_, i) =>
-        `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < Math.round(data.rating) ? '#f59e0b' : '#e5e7eb'}"/></svg>`
-      ).join('');
       const googleUrl = data.googleMapsUrl || '#';
-      summary.innerHTML = `
-        <a href="${googleUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;text-decoration:none;flex-wrap:wrap;">
-          <span class="reviews-rating">${data.rating?.toFixed(1) || ''}</span>
-          <div class="reviews-stars">${starsHtml}</div>
-          <span class="reviews-count" style="text-decoration:underline;">${data.totalReviews} reviews on Google</span>
-        </a>
-      `;
+      if (hasSummary) {
+        const starsHtml = Array.from({ length: 5 }, (_, i) =>
+          `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < Math.round(data.rating) ? '#f59e0b' : '#e5e7eb'}"/></svg>`
+        ).join('');
+        summary.innerHTML = `
+          <a href="${googleUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;text-decoration:none;flex-wrap:wrap;">
+            <span class="reviews-rating">${data.rating?.toFixed(1) || ''}</span>
+            <div class="reviews-stars">${starsHtml}</div>
+            <span class="reviews-count" style="text-decoration:underline;">${data.totalReviews} reviews on Google</span>
+          </a>
+        `;
+      } else {
+        summary.innerHTML = '';
+      }
 
       // Cards
       const grid = document.getElementById('reviewsGrid');
-      grid.innerHTML = data.reviews.map(r => {
-        const stars = Array.from({ length: 5 }, (_, i) =>
-          `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < r.rating ? '#f59e0b' : '#e5e7eb'}"/></svg>`
-        ).join('');
-        const avatar = r.authorPhoto
-          ? `<img class="review-avatar" src="${r.authorPhoto}" alt="${r.author}">`
-          : `<div class="review-avatar-placeholder">${r.author.charAt(0).toUpperCase()}</div>`;
-        return `
-          <div class="review-card reveal">
-            <div class="review-header">
-              ${avatar}
-              <div>
-                <div class="review-author">${r.author}</div>
-                <div class="review-time">${r.relativeTime}</div>
+      if (hasCards) {
+        grid.innerHTML = data.reviews.map(r => {
+          const stars = Array.from({ length: 5 }, (_, i) =>
+            `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < r.rating ? '#f59e0b' : '#e5e7eb'}"/></svg>`
+          ).join('');
+          const avatar = r.authorPhoto
+            ? `<img class="review-avatar" src="${r.authorPhoto}" alt="${r.author}">`
+            : `<div class="review-avatar-placeholder">${r.author.charAt(0).toUpperCase()}</div>`;
+          return `
+            <div class="review-card reveal">
+              <div class="review-header">
+                ${avatar}
+                <div>
+                  <div class="review-author">${r.author}</div>
+                  <div class="review-time">${r.relativeTime}</div>
+                </div>
               </div>
+              <div class="review-stars">${stars}</div>
+              <div class="review-text">${r.text}</div>
             </div>
-            <div class="review-stars">${stars}</div>
-            <div class="review-text">${r.text}</div>
+          `;
+        }).join('');
+      } else {
+        grid.innerHTML = `
+          <div class="review-card reveal" style="grid-column: 1 / -1; text-align: center;">
+            <div class="review-text" style="font-size: 1rem; color: var(--text);">
+              Live review excerpts are currently unavailable.
+            </div>
+            <div style="margin-top: 14px;">
+              <a href="${googleUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Read Reviews on Google</a>
+            </div>
           </div>
         `;
-      }).join('');
+      }
 
       // Animate review cards
       grid.querySelectorAll('.review-card').forEach((card, i) => {
@@ -1791,8 +1745,7 @@
         revealObserver.observe(card);
       });
     } catch (e) {
-      // Keep this section populated even if the API is temporarily unavailable.
-      renderCuratedFallback();
+      // Silently fail — reviews are optional
     }
   })();
   </script>
