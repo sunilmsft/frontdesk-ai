@@ -36,16 +36,29 @@ function extractPlaceIdFromValue(rawValue) {
         value = qParam.slice('place_id:'.length);
       }
 
-      const oneSMatch = value.match(/!1s(ChI[A-Za-z0-9_-]+)/);
-      if (oneSMatch) value = oneSMatch[1];
+      // Try to extract Place ID from !1s parameter (could be ChI... or hex format)
+      const oneSMatch = value.match(/!1s([^!]+)/);
+      if (oneSMatch) {
+        const oneSValue = oneSMatch[1];
+        // If it's ChI format, use it directly
+        if (oneSValue.startsWith('ChI')) return oneSValue;
+        // Otherwise keep trying other patterns
+        value = oneSValue;
+      }
     } catch {
       // Keep original if URL parsing fails.
     }
   }
 
+  // Look for ChI format anywhere in the string
   const chIMatch = value.match(/(ChI[A-Za-z0-9_-]+)/);
   if (chIMatch) {
     return chIMatch[1];
+  }
+
+  // If we have a hex ID format (0x...:0x...), keep it to try with API
+  if (/^0x[a-f0-9]+:0x[a-f0-9]+$/i.test(value)) {
+    return value;
   }
 
   if (/^https?:\/\//i.test(value)) {
