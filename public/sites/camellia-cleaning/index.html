@@ -1739,7 +1739,7 @@
       const data = await resp.json();
       const hasSummary = Number.isFinite(data.rating) && (data.totalReviews || 0) > 0;
       const hasCards = Array.isArray(data.reviews) && data.reviews.length > 0;
-      if (!hasSummary && !hasCards) {
+      if (!hasCards) {
         renderCuratedFallback();
         return;
       }
@@ -1763,40 +1763,27 @@
 
       // Cards
       const grid = document.getElementById('reviewsGrid');
-      if (hasCards) {
-        grid.innerHTML = data.reviews.map(r => {
-          const stars = Array.from({ length: 5 }, (_, i) =>
-            `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < r.rating ? '#f59e0b' : '#e5e7eb'}"/></svg>`
-          ).join('');
-          const avatar = r.authorPhoto
-            ? `<img class="review-avatar" src="${r.authorPhoto}" alt="${r.author}">`
-            : `<div class="review-avatar-placeholder">${r.author.charAt(0).toUpperCase()}</div>`;
-          return `
-            <div class="review-card reveal">
-              <div class="review-header">
-                ${avatar}
-                <div>
-                  <div class="review-author">${r.author}</div>
-                  <div class="review-time">${r.relativeTime}</div>
-                </div>
+      grid.innerHTML = data.reviews.map(r => {
+        const stars = Array.from({ length: 5 }, (_, i) =>
+          `<svg viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" fill="${i < r.rating ? '#f59e0b' : '#e5e7eb'}"/></svg>`
+        ).join('');
+        const avatar = r.authorPhoto
+          ? `<img class="review-avatar" src="${r.authorPhoto}" alt="${r.author}">`
+          : `<div class="review-avatar-placeholder">${r.author.charAt(0).toUpperCase()}</div>`;
+        return `
+          <div class="review-card reveal">
+            <div class="review-header">
+              ${avatar}
+              <div>
+                <div class="review-author">${r.author}</div>
+                <div class="review-time">${r.relativeTime}</div>
               </div>
-              <div class="review-stars">${stars}</div>
-              <div class="review-text">${r.text}</div>
             </div>
-          `;
-        }).join('');
-      } else {
-        grid.innerHTML = `
-          <div class="review-card reveal" style="grid-column: 1 / -1; text-align: center;">
-            <div class="review-text" style="font-size: 1rem; color: var(--text);">
-              Reviews are available on Google.
-            </div>
-            <div style="margin-top: 14px;">
-              <a href="${googleUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="display: inline-block; text-decoration: none;">See Google Reviews</a>
-            </div>
+            <div class="review-stars">${stars}</div>
+            <div class="review-text">${r.text}</div>
           </div>
         `;
-      }
+      }).join('');
 
       // Animate review cards
       grid.querySelectorAll('.review-card').forEach((card, i) => {
