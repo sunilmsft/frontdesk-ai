@@ -17,6 +17,18 @@
 - [ ] **Migrate SQLite → hosted DB** — Render ephemeral disk = data loss risk (PostgreSQL on Render or Supabase free)
 - [ ] **Cloud file storage** — for business photos/assets (can't use Render disk)
 
+## WelcomeMat Digital Holdco Restructure (May 28, 2026)
+**Why:** Twilio TFV rejection #2 cited "Brand Identity Mismatch" — gmail domain, no real site for Swoop, opt-in not branded. Fix is to present WelcomeMat Digital as the holdco with FrontDesk AI + Swoop as products, give Swoop its own real product page, privacy, and terms on welcomematdigital.com.
+- [x] **Homepage restructured** — `/` now serves WelcomeMat Digital holdco page (hero + 2 product cards + "what we believe"); old FrontDesk pitch moved to `/frontdesk` (and `/pitch` still works)
+- [x] **Swoop product page** at `/swoop` — hero, problem, 3-step how-it-works, audience chips, $19 Founding 5 pricing, mailto signup form, compliance callout
+- [x] **Swoop SMS Privacy Policy** at `/swoop/privacy.html` — names WelcomeMat Digital LLC, explains call-as-consent basis, STOP/HELP, Twilio + OpenAI data flow, retention, contact emails
+- [x] **Swoop Terms of Service** at `/swoop/terms.html` — acceptable use, SHAFT exclusions, founding pricing, no-uptime-guarantee, WA governing law
+- [x] **Copy de-tech pass** — replaced "software / tools / dashboards / AI-powered / platform" with trade-relatable language ("helper", "set up over a cup of coffee", "one headache at a time")
+- [ ] 🟡 **Translation pass for new pages** (USP) — wire `data-i18n` + add `es` and `pt` dictionaries to new `index.html` + `swoop/index.html` (privacy/terms can stay English). Multilingual is a brand differentiator — these pages currently break parity with `pitch.html`
+- [ ] 🟢 **Social copy templates** ("homegrown" voice) — Nextdoor intro post, Facebook group post, Marketplace reply template, "ask for a review" SMS, all using neighborly language like "homegrown", "your neighbors at WelcomeMat", "built down the road in Sammamish"
+- [ ] **Set up hello@welcomematdigital.com and privacy@welcomematdigital.com** — both are referenced on the new pages but don't exist yet
+- [ ] **Replace mailto signup with real form** — when Swoop has a backend that can accept signups (right now it's a `mailto:` shortcut)
+
 ## GTM — Pilot Outreach
 - [ ] Post in "Sammamish & Issaquah Restaurant Support" FB group (3.1K members)
 - [ ] Post in "Eastside Women's Small Business Owners" FB group (304 members)

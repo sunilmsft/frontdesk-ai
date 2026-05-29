@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WelcomeMat Digital — Helping local businesses get found and answer customers</title>
+  <meta name="description" content="We help local pros — plumbers, electricians, cleaners, restaurants, shops — get found by new customers and answer the ones they have. Meet FrontDesk AI and Swoop.">
+  <link rel="canonical" href="https://welcomematdigital.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://welcomematdigital.com/">
+  <meta property="og:title" content="WelcomeMat Digital — Helping local businesses get found and answer customers">
+  <meta property="og:description" content="For the local pros who keep our neighborhoods running. Meet FrontDesk AI and Swoop.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --warm: #c8993e;
+      --navy: #1e3352;
+      --accent-light: #f0fdfa;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; font-size: 16px; overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; }
+
+    /* Nav (same as pitch.html for brand consistency) */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 14px 0; transition: all 0.3s;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(16px);
+    }
+    .nav.scrolled {
+      background: rgba(15,23,42,0.97); box-shadow: 0 2px 12px rgba(0,0,0,0.25); padding: 10px 0;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text {
+      font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white;
+      display: flex; align-items: baseline;
+    }
+    .logo-text span { color: #5eead4; }
+    .logo-cursor {
+      display: inline-block; width: 14px; height: 14px; margin-left: -3px;
+      position: relative; top: 8px;
+      filter: drop-shadow(0 0 4px rgba(94,234,212,0.5));
+    }
+    .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta {
+      display: inline-block; background: var(--accent); color: white;
+      padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-hover); }
+
+    /* Hero */
+    .hero {
+      padding: 130px 0 72px; text-align: center;
+      position: relative; overflow: hidden; background: #0f172a; color: white;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(13,148,136,0.25), transparent),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(200,153,62,0.1), transparent);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+    .hero-badge {
+      display: inline-block; background: rgba(13,148,136,0.15); color: #5eead4;
+      font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 100px; margin-bottom: 22px;
+      letter-spacing: 0.3px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 900;
+      line-height: 1.15; margin-bottom: 18px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #5eead4, #2dd4bf, var(--warm));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.1rem; color: #94a3b8; max-width: 660px; margin: 0 auto 14px; line-height: 1.65; }
+    .hero-tagline {
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 1rem; color: rgba(255,255,255,0.75); margin-top: 8px;
+    }
+
+    /* Section header */
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .section-eyebrow::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 800;
+      line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.4px;
+    }
+    .section-text { font-size: 1rem; color: var(--muted); max-width: 620px; line-height: 1.65; }
+
+    /* Products */
+    .products { background: white; }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 36px;
+    }
+    .product-card {
+      background: white; border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.04);
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+    .product-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--warm));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+    .product-card:hover::before { opacity: 1; }
+
+    .product-badge {
+      display: inline-block; align-self: flex-start;
+      padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .product-badge.live { background: #dcfce7; color: #166534; }
+    .product-badge.early { background: #fef3c7; color: #92400e; }
+
+    .product-name {
+      font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 800;
+      margin-bottom: 6px; letter-spacing: -0.3px;
+    }
+    .product-tag { font-size: 0.92rem; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+    .product-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.65; margin-bottom: 18px; flex-grow: 1; }
+    .product-bullets { list-style: none; margin-bottom: 22px; }
+    .product-bullets li {
+      font-size: 0.88rem; color: var(--text); padding: 5px 0;
+      display: flex; align-items: start; gap: 8px;
+    }
+    .product-bullets li::before {
+      content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0;
+    }
+    .product-cta {
+      display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+      color: var(--accent); font-weight: 700; font-size: 0.92rem; text-decoration: none;
+      padding: 10px 0; border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .product-cta:hover { border-bottom-color: var(--accent); gap: 10px; }
+
+    /* Believe */
+    .believe { background: #f1f5f9; }
+    .believe-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 32px;
+    }
+    .believe-card {
+      background: white; border-radius: 12px; padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .believe-card h3 {
+      font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text);
+    }
+    .believe-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* Footer */
+    .footer { background: #0f172a; padding: 36px 0 28px; text-align: center; }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+    .footer-name { font-weight: 700; color: white; font-size: 13px; }
+    .footer p { font-size: 11.5px; color: #64748b; line-height: 1.7; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { color: #5eead4; }
+
+    @media (max-width: 768px) {
+      section { padding: 48px 0; }
+      .hero { padding: 100px 0 56px; }
+      .products-grid { grid-template-columns: 1fr; }
+      .believe-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg width="34" height="34" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="58" height="58" rx="14" fill="#1e3a5f"/>
+          <rect x="1" y="1" width="58" height="58" rx="14" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
+          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b"/>
+        </svg>
+        <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
+      </a>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="#believe">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/frontdesk" class="nav-cta">FrontDesk AI →</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">WelcomeMat Digital</div>
+      <h1>For the local pros who <em>keep our neighborhoods running</em></h1>
+      <p class="hero-sub">We help plumbers, cleaners, electricians, landscapers, restaurants, and shops do the two things that win more work: get found by new customers, and answer the ones who reach out. No long sign-ups. No manuals to read. No tech person needed.</p>
+      <div class="hero-tagline">You focus on your work. We take care of the rest.</div>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-eyebrow">What we do</div>
+      <h2 class="section-title">One headache at a time</h2>
+      <p class="section-text">Each one fixes one specific thing that gets in the way of doing your work. Pick what helps. Skip what doesn't.</p>
+
+      <div class="products-grid">
+        <div class="product-card">
+          <span class="product-badge live">Live</span>
+          <div class="product-name">FrontDesk AI</div>
+          <div class="product-tag">An always-on helper that answers customer questions</div>
+          <p class="product-desc">A friendly helper that sits on your website and your Google listing. When a customer asks about your hours, what you charge, whether you do their kind of job, or how to book you — it answers, day or night, in English, Spanish, Portuguese, or whatever language they speak.</p>
+          <ul class="product-bullets">
+            <li>Set up over a cup of coffee — not a whole afternoon</li>
+            <li>Speaks your customers' language, not just English</li>
+            <li>We also set up your website and your Google listing</li>
+          </ul>
+          <a href="/frontdesk" class="product-cta">Learn more about FrontDesk AI →</a>
+        </div>
+
+        <div class="product-card">
+          <span class="product-badge early">Early access</span>
+          <div class="product-name">Swoop</div>
+          <div class="product-tag">Never miss a customer call again</div>
+          <p class="product-desc">When you're under a sink, up a ladder, or driving between jobs, you can't always pick up. Swoop texts the caller back within seconds — like a helper who answers the phone when you can't — so they don't just call the next plumber on the list.</p>
+          <ul class="product-bullets">
+            <li>Texts the caller back in seconds — every time</li>
+            <li>Handles the common questions so you don't have to</li>
+            <li>$29–49 a month. No contract. Cancel any time.</li>
+          </ul>
+          <a href="/swoop" class="product-cta">Learn more about Swoop →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="believe" id="believe">
+    <div class="container">
+      <div class="section-eyebrow">What we believe</div>
+      <h2 class="section-title">Running your business shouldn't feel like using a computer</h2>
+      <p class="section-text">Big companies build for big companies. We build for the local pro who answers their own phone, drives their own truck, and doesn't have time to read a manual.</p>
+
+      <div class="believe-grid">
+        <div class="believe-card">
+          <h3>Sign up. Set up. Done.</h3>
+          <p>If we need to get on a call to explain how to use it, we built it wrong. You should be up and running while your coffee is still hot.</p>
+        </div>
+        <div class="believe-card">
+          <h3>Honest, fair pricing</h3>
+          <p>Small businesses run on small margins. We charge a few dollars a month — not thousands a year. No surprise setup fees. No annual contract holding you hostage.</p>
+        </div>
+        <div class="believe-card">
+          <h3>One headache at a time</h3>
+          <p>We don't sell big packages full of things you'll never use. Each one fixes one specific problem. You pick what helps. You skip what doesn't.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">
+        <svg width="20" height="20" viewBox="0 0 60 60" fill="none"><rect x="1" y="1" width="58" height="58" rx="14" fill="url(#fg)"/><path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><path d="M25 40V32H35V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/><defs><linearGradient id="fg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs></svg>
+        <div class="footer-name">WelcomeMat Digital</div>
+      </div>
+      <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
+      <p style="margin-top:8px;"><a href="/frontdesk">FrontDesk AI</a> · <a href="/swoop">Swoop</a> · <a href="/contact">Contact</a></p>
+      <p style="margin-top:6px;">© 2026 WelcomeMat Digital LLC. FrontDesk AI and Swoop are products of WelcomeMat Digital LLC.</p>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
+</body>
+</html>

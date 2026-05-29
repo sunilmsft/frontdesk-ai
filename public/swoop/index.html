@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swoop — Never miss a customer call again | WelcomeMat Digital</title>
+  <meta name="description" content="When a customer calls and you can't pick up, Swoop texts them back within seconds. They get an answer. You get the job — instead of losing it to the next plumber on the list.">
+  <link rel="canonical" href="https://welcomematdigital.com/swoop">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://welcomematdigital.com/swoop">
+  <meta property="og:title" content="Swoop — Never miss a customer call again">
+  <meta property="og:description" content="When a customer calls and you can't pick up, Swoop texts them back. They get an answer. You get the job.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa; --text: #0f172a; --muted: #64748b;
+      --accent: #0d9488; --accent-hover: #0f766e;
+      --warm: #c8993e; --navy: #1e3352;
+      --accent-light: #f0fdfa; --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; font-size: 16px; overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; }
+
+    /* Nav */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 14px 0; transition: all 0.3s;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(16px);
+    }
+    .nav.scrolled { background: rgba(15,23,42,0.97); box-shadow: 0 2px 12px rgba(0,0,0,0.25); padding: 10px 0; }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; color: white; display: flex; align-items: baseline; }
+    .logo-text span { color: #5eead4; }
+    .logo-cursor { display: inline-block; width: 14px; height: 14px; margin-left: -3px; position: relative; top: 8px; filter: drop-shadow(0 0 4px rgba(94,234,212,0.5)); }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta {
+      display: inline-block; background: var(--accent); color: white;
+      padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-hover); }
+
+    /* Hero */
+    .hero {
+      padding: 130px 0 64px; text-align: center;
+      position: relative; overflow: hidden; background: #0f172a; color: white;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(13,148,136,0.25), transparent),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(200,153,62,0.1), transparent);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .hero-badge {
+      display: inline-block; background: rgba(13,148,136,0.15); color: #5eead4;
+      font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 100px; margin-bottom: 22px; letter-spacing: 0.3px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 900;
+      line-height: 1.15; margin-bottom: 18px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #5eead4, #2dd4bf, var(--warm));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.08rem; color: #94a3b8; max-width: 640px; margin: 0 auto 28px; line-height: 1.65; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: white; padding: 13px 28px;
+      border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(13,148,136,0.3); border: none; cursor: pointer; font-family: inherit;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(13,148,136,0.4); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.08); color: #cbd5e1;
+      padding: 13px 26px; border-radius: 10px; font-weight: 600; font-size: 0.92rem;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.14); }
+
+    /* Section headers */
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .section-eyebrow::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
+      line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.4px;
+    }
+    .section-text { font-size: 1rem; color: var(--muted); max-width: 600px; line-height: 1.65; }
+
+    /* Problem */
+    .problem { background: white; }
+    .problem-quote {
+      max-width: 720px; margin: 32px auto 0;
+      background: #f1f5f9; border-left: 4px solid var(--accent);
+      padding: 24px 28px; border-radius: 8px;
+      font-size: 1.05rem; color: var(--text); line-height: 1.65; font-style: italic;
+    }
+    .problem-stat { margin-top: 16px; font-size: 0.92rem; color: var(--muted); }
+    .problem-stat strong { color: var(--text); font-weight: 700; }
+
+    /* How */
+    .how { background: #f1f5f9; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 36px; position: relative; }
+    .steps-grid::before {
+      content: ''; position: absolute; top: 24px; left: 16%; right: 16%;
+      height: 2px; background: linear-gradient(90deg, var(--accent), var(--warm), var(--accent)); opacity: 0.2;
+    }
+    .step { text-align: center; position: relative; background: transparent; }
+    .step-num {
+      width: 48px; height: 48px; background: white; border: 2px solid var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900;
+      color: var(--accent); margin: 0 auto 14px; position: relative; z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; max-width: 240px; margin: 0 auto; }
+
+    /* Who it's for */
+    .audience { background: white; }
+    .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+    .audience-chip {
+      display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+      background: var(--accent-light); border-radius: 10px;
+      font-size: 0.92rem; font-weight: 600; color: var(--text);
+    }
+    .audience-chip::before {
+      content: '✓'; width: 24px; height: 24px; background: var(--accent); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* Pricing */
+    .pricing { background: #f1f5f9; }
+    .pricing-card {
+      max-width: 480px; margin: 36px auto 0; text-align: center;
+      background: linear-gradient(135deg, #0f172a, #1e293b); color: white;
+      border-radius: 16px; padding: 36px 32px;
+      box-shadow: 0 8px 32px rgba(13,148,136,0.18);
+    }
+    .pricing-badge {
+      display: inline-block; padding: 5px 14px; background: rgba(94,234,212,0.15); color: #5eead4;
+      border-radius: 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.3px; margin-bottom: 18px;
+    }
+    .pricing-amount { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.1; }
+    .pricing-amount span { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 400; opacity: 0.55; }
+    .pricing-desc { font-size: 0.9rem; color: #94a3b8; margin: 6px 0 22px; }
+    .pricing-features { list-style: none; text-align: left; max-width: 340px; margin: 0 auto 24px; }
+    .pricing-features li {
+      font-size: 0.88rem; color: #cbd5e1; padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: start; gap: 8px;
+    }
+    .pricing-features li::before { content: '✓'; color: #5eead4; font-weight: 700; flex-shrink: 0; }
+
+    /* Early access CTA */
+    .signup { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 64px 0; text-align: center; }
+    .signup h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 12px; }
+    .signup p { color: #94a3b8; font-size: 0.98rem; max-width: 540px; margin: 0 auto 28px; }
+    .signup-form {
+      display: flex; gap: 8px; max-width: 480px; margin: 0 auto; flex-wrap: wrap; justify-content: center;
+    }
+    .signup-form input[type="email"] {
+      flex: 1; min-width: 240px;
+      padding: 13px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08); color: white; font-size: 0.95rem; font-family: inherit;
+    }
+    .signup-form input[type="email"]::placeholder { color: rgba(255,255,255,0.4); }
+    .signup-form input[type="email"]:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.12); }
+    .signup-note { font-size: 0.82rem; color: #64748b; margin-top: 14px; }
+
+    /* Compliance */
+    .compliance { background: white; padding: 48px 0; border-top: 1px solid var(--border); }
+    .compliance-box {
+      max-width: 720px; margin: 0 auto; background: #f8fafc; border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px 28px;
+    }
+    .compliance-box h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .compliance-box p { font-size: 0.86rem; color: var(--muted); line-height: 1.7; margin-bottom: 8px; }
+    .compliance-box a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .compliance-box a:hover { text-decoration: underline; }
+
+    /* Footer */
+    .footer { background: #0f172a; padding: 36px 0 28px; text-align: center; }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+    .footer-name { font-weight: 700; color: white; font-size: 13px; }
+    .footer p { font-size: 11.5px; color: #64748b; line-height: 1.7; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { color: #5eead4; }
+
+    @media (max-width: 768px) {
+      section { padding: 48px 0; }
+      .hero { padding: 100px 0 48px; }
+      .steps-grid, .audience-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .nav-links { display: none; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg width="34" height="34" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="58" height="58" rx="14" fill="#1e3a5f"/>
+          <rect x="1" y="1" width="58" height="58" rx="14" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
+          <path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <path d="M25 40V32H35V40" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b"/>
+        </svg>
+        <div class="logo-text">Welcome<span>Mat</span><svg class="logo-cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z" fill="#5eead4" opacity="0.85"/><path d="M13 13l6 6" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg></div>
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#signup" class="nav-cta">Join Early Access</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Swoop · from WelcomeMat Digital</div>
+      <h1>Never miss a customer call <em>again</em></h1>
+      <p class="hero-sub">When you're under a sink, up a ladder, or driving between jobs, you can't always pick up. Swoop texts the caller back within seconds with a friendly reply — so they don't just hang up and call the next plumber on the list.</p>
+      <div class="hero-actions">
+        <a href="#signup" class="btn-primary">Join the founding 5 →</a>
+        <a href="#how" class="btn-secondary">See how it works ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem">
+    <div class="container">
+      <div class="section-eyebrow">The problem</div>
+      <h2 class="section-title">A missed call is a lost job</h2>
+      <p class="section-text">If you're under a sink or on a roof, you can't always grab the phone. But the customer calling won't sit and wait — they just call the next name on Google.</p>
+      <div class="problem-quote">
+        "I lost three jobs last month because I was under a sink and couldn't pick up. By the time I called back, they'd already hired someone else."
+      </div>
+      <p class="problem-stat">— A plumber in Sammamish, March 2026. <strong>62% of people won't leave a voicemail.</strong> <strong>78%</strong> will call the next business on the list if no one gets back to them in 5 minutes.</p>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">Three steps. Set it up once. Forget about it.</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Customer calls</h3>
+          <p>Your phone rings. You're on a job, in a truck, in a basement. You can't pick up.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Swoop texts back</h3>
+          <p>In seconds, they get a friendly text from you: "Hi — sorry I missed you. What do you need help with?"</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Swoop handles the chat</h3>
+          <p>Swoop replies to the common questions — your hours, what you charge, whether you do their kind of job — then sends you the lead with the customer's address and what they need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="audience">
+    <div class="container">
+      <div class="section-eyebrow">Built for</div>
+      <h2 class="section-title">Home-service pros who answer their own phone</h2>
+      <div class="audience-grid">
+        <div class="audience-chip">Plumbers</div>
+        <div class="audience-chip">Electricians</div>
+        <div class="audience-chip">HVAC pros</div>
+        <div class="audience-chip">Landscapers</div>
+        <div class="audience-chip">Cleaners</div>
+        <div class="audience-chip">Roofers</div>
+        <div class="audience-chip">Handymen</div>
+        <div class="audience-chip">Painters</div>
+        <div class="audience-chip">Pest control</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-title">Simple monthly pricing. No contracts.</h2>
+      <div class="pricing-card">
+        <div class="pricing-badge">Founding 5 — first 5 customers</div>
+        <div class="pricing-amount">$19<span>/mo</span></div>
+        <div class="pricing-desc">First 5 customers · Free for 30 days · $19/mo lifetime after</div>
+        <ul class="pricing-features">
+          <li>Unlimited missed-call text-backs</li>
+          <li>Smart replies to your customers' common questions</li>
+          <li>A local phone number, included</li>
+          <li>STOP/HELP handled for you (carrier-compliant)</li>
+          <li>No contracts — cancel any time</li>
+        </ul>
+        <p style="color:#94a3b8; font-size:0.82rem;">Standard pricing after the founding cohort: $29–49/mo depending on volume.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="signup" id="signup">
+    <div class="container">
+      <h2>Join the founding 5</h2>
+      <p>We're picking 5 home-service businesses to launch with. First 30 days free. $19 a month for life after that. In return, you tell us what's working and what isn't.</p>
+      <form class="signup-form" action="mailto:hello@welcomematdigital.com" method="get" enctype="text/plain">
+        <input type="email" name="subject" placeholder="your@email.com" required>
+        <button type="submit" class="btn-primary">Apply →</button>
+      </form>
+      <p class="signup-note">No spam. We'll reply within 24 hours. Or email <a href="mailto:hello@welcomematdigital.com" style="color:#5eead4;">hello@welcomematdigital.com</a> directly.</p>
+    </div>
+  </section>
+
+  <section class="compliance">
+    <div class="container">
+      <div class="compliance-box">
+        <h3>Compliance &amp; trust</h3>
+        <p>Swoop only texts people who called your business first. Every reply includes <strong>STOP</strong> (unsubscribe) and <strong>HELP</strong> (support) instructions, as required by the TCPA and U.S. carrier rules. We never share your customers' phone numbers with third parties.</p>
+        <p>Read our <a href="/swoop/privacy.html">SMS Privacy Policy</a> and <a href="/swoop/terms.html">Terms of Service</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">
+        <svg width="20" height="20" viewBox="0 0 60 60" fill="none"><rect x="1" y="1" width="58" height="58" rx="14" fill="url(#fg)"/><path d="M18 40V26L30 17L42 26V40" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><path d="M25 40V32H35V40" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/><rect x="13" y="42" width="34" height="5" rx="2.5" fill="#d4a84b" opacity="0.8"/><defs><linearGradient id="fg" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#1e3352"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs></svg>
+        <div class="footer-name">Swoop · A WelcomeMat Digital product</div>
+      </div>
+      <p>Built with care in Sammamish, WA · For the businesses that make our neighborhoods great.</p>
+      <p style="margin-top:8px;"><a href="/">WelcomeMat Digital</a> · <a href="/frontdesk">FrontDesk AI</a> · <a href="/swoop/privacy.html">Privacy</a> · <a href="/swoop/terms.html">Terms</a> · <a href="/contact">Contact</a></p>
+      <p style="margin-top:6px;">© 2026 WelcomeMat Digital LLC. Swoop is a product of WelcomeMat Digital LLC.</p>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
+</body>
+</html>

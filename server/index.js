@@ -28,10 +28,10 @@ function isPlatformHost(req) {
   return PLATFORM_HOSTS.some(h => host === h || host.endsWith('.localhost'));
 }
 
-// Root route — serve pitch page for platform, business site for custom domains
+// Root route — serve WelcomeMat Digital holdco homepage for platform, business site for custom domains
 app.get('/', async (req, res, next) => {
   if (isPlatformHost(req)) {
-    return res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html'));
+    return res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
   }
   // Custom domain — look up business
   const host = (req.hostname || '').toLowerCase().replace(/^www\./, '');
@@ -42,7 +42,7 @@ app.get('/', async (req, res, next) => {
       return next();
     }
   } catch (_) {}
-  res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html'));
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -60,6 +60,8 @@ app.use('/site', require('./routes/site'));
 // Clean URLs for static pages
 app.get('/onboard', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'onboard.html')));
 app.get('/pitch', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+app.get('/frontdesk', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
+app.get('/swoop', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'swoop', 'index.html')));
 app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'contact.html')));
 
 // Health check
