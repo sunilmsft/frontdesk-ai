@@ -6,10 +6,35 @@ const GOOGLE_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 const MANUAL_REVIEW_FALLBACKS = {
   'camellia-cleaning': {
-    reviews: [],
+    reviews: [
+      {
+        author: 'SuniL',
+        authorPhoto: null,
+        rating: 5,
+        text: "We've been with Camellia Cleaning for over 6 years and there's a reason we've never switched. Kesia is incredibly reliable, detail-oriented, and treats our home like her own. Every visit, the house feels brand new. If you're looking for a cleaning service you can actually count on long-term, this is it. Highly recommend!",
+        time: '',
+        relativeTime: 'a week ago'
+      },
+      {
+        author: 'Ed Grando',
+        authorPhoto: null,
+        rating: 5,
+        text: 'I do regular cleanings with this company for some time and I am completely satisfied with the services provided people of higher professionalism I highly recommend!',
+        time: '',
+        relativeTime: '5 days ago'
+      },
+      {
+        author: 'Juliana Gentil',
+        authorPhoto: null,
+        rating: 5,
+        text: 'I am very satisfied with the cleaning work of this company in my house, I recommend it.',
+        time: '',
+        relativeTime: '5 days ago'
+      }
+    ],
     rating: 5.0,
-    totalReviews: 1,
-    googleMapsUrl: 'https://www.google.com/search?q=Camellia+Cleaning+Service',
+    totalReviews: 3,
+    googleMapsUrl: 'https://www.google.com/maps/place/Camellia+Cleaning+Service/@47.6188462,-122.212179,15z/data=!4m6!3m5!1s0xa0a0932f72e4f55b:0x6d8a3741f5832c98!8m2!3d47.6188462!4d-122.212179!16s%2Fg%2F11z7q3ncbc',
     source: 'manual-fallback'
   }
 };
