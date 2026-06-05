@@ -21,6 +21,14 @@
         .highlight { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin: 1rem 0; }
         .sms-example { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 0.875rem 1.125rem; margin: 0.75rem 0; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; color: #0f172a; }
         .legal-note { background: #fefce8; border-left: 4px solid #facc15; padding: 0.875rem 1.125rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem; }
+        .opt-in-steps { margin: 1.25rem 0 0.75rem; }
+        .step { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.125rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 0.625rem; }
+        .step-num { flex-shrink: 0; width: 32px; height: 32px; background: #3b82f6; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; }
+        .step-body { flex: 1; font-size: 0.95rem; color: #334155; }
+        .step-body strong { color: #0f172a; }
+        .not-bundled { background: #f8fafc; border-left: 4px solid #64748b; padding: 0.875rem 1.125rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem; }
+        .not-bundled strong { color: #0f172a; }
+        .not-bundled ul { margin-top: 0.5rem; margin-bottom: 0; }
         footer { text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.8rem; }
         footer a { color: #94a3b8; }
         .topnav { background:#0f172a; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
@@ -56,6 +64,40 @@
         </ul>
 
         <p>Swoop does not import, purchase, or accept uploaded phone number lists. Every recipient is a person who personally called the business within the prior 30 days.</p>
+
+        <h2 id="opt-in-flow">Opt-In Flow (Standalone Step)</h2>
+        <p>The opt-in to receive an SMS from a Swoop-enabled business is a <strong>single, standalone event</strong> &mdash; not bundled with any other agreement, term, marketing message, or account action. Here is the complete flow:</p>
+
+        <div class="opt-in-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body"><strong>Customer initiates contact</strong> by voluntarily dialing the business's published phone number. This call is the standalone opt-in action &mdash; no checkbox, no form, no bundled agreement, no purchase required.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body"><strong>Business misses the call.</strong> Swoop logs the missed-call event from the caller's number (the same number the customer voluntarily dialed from).</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body"><strong>A single confirmation SMS is sent within seconds</strong> back to the caller. The message contains only: the business name, the purpose (returning your missed call), the rate disclosure (Msg&amp;data rates may apply), and the opt-out keyword (reply STOP). It contains no marketing, no third-party content, and no bundled terms.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body"><strong>The customer can stop or get help at any time</strong> by replying STOP, HELP, or START. These keywords are enforced at the platform level by Swoop, independently of any business or third-party agreement.</div>
+          </div>
+        </div>
+
+        <div class="not-bundled">
+          <strong>What this opt-in is NOT bundled with:</strong>
+          <ul>
+            <li>Not a website checkbox combined with Terms of Service or Privacy Policy acceptance.</li>
+            <li>Not a purchase, sign-up, account creation, or login step.</li>
+            <li>Not a marketing list, promotional offer, or third-party data-sharing agreement.</li>
+            <li>Not a &ldquo;by clicking here you also agree to receive SMS&rdquo; combined consent.</li>
+          </ul>
+        </div>
+
+        <p>The opt-in is a single, customer-initiated phone call. The reply SMS is a transactional response to that call. Together they constitute the complete, standalone opt-in flow.</p>
 
         <h2>The First Message Customers Receive</h2>
         <p>The very first SMS sent to a caller always includes branded identification, an opt-out instruction, and rate disclosure. Example:</p>
@@ -102,7 +144,7 @@
             <li>Privacy: <a href="mailto:privacy@welcomematdigital.com">privacy@welcomematdigital.com</a></li>
         </ul>
 
-        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;">Last updated: May 29, 2026.</p>
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;">Last updated: June 4, 2026.</p>
     </div>
     <footer>
         &copy; 2026 WelcomeMat Digital LLC. Swoop is a product of WelcomeMat Digital LLC.<br>
