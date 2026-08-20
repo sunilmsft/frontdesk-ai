@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept Intake | WelcomeMat</title>
+  <meta name="description" content="Tell WelcomeMat about your business and share interest in a complimentary digital-experience concept.">
+  <link rel="canonical" href="https://welcomematdigital.com/concept">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy: #0f172a; --ink: #172033; --muted: #64748b; --green: #0d9488; --green-dark: #0f766e; --blue: #2563eb; --pale: #f0fdfa; --line: #dbe3ec; --error: #b42318; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #f8fafc; color: var(--ink); font: 16px/1.65 Inter, sans-serif; }
+    .topbar { background: var(--navy); padding: 16px 24px; }
+    .logo { display: inline-flex; align-items: baseline; color: #fff; font-size: 21px; font-weight: 800; letter-spacing: -.5px; text-decoration: none; }
+    .logo span { color: #5eead4; }
+    .hero { background: var(--navy); color: #fff; padding: 44px 24px 56px; }
+    .hero-inner, .main { max-width: 820px; margin: 0 auto; }
+    .eyebrow { color: #5eead4; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; margin: 0 0 12px; }
+    h1, h2 { font-family: 'Playfair Display', serif; line-height: 1.15; }
+    h1 { font-size: clamp(2.25rem, 7vw, 3.6rem); margin: 0 0 18px; max-width: 690px; }
+    .hero-accent { color: #5eead4; }
+    .hero-copy { color: #cbd5e1; font-size: 1.05rem; max-width: 650px; margin: 0; }
+    .possibilities { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 30px 0 18px; }
+    .possibility { border-top: 2px solid #2563eb; color: #fff; font-size: .84rem; font-weight: 600; padding: 10px 4px 0 0; }
+    .clarification { border-left: 2px solid #5eead4; color: #cbd5e1; font-size: .9rem; margin: 0; padding-left: 14px; }
+    .hero-cta { display: inline-block; background: #fff; border-radius: 7px; color: var(--navy); font-weight: 700; margin-top: 28px; padding: 13px 19px; text-decoration: none; }
+    .reassurance { color: #94a3b8; font-size: .8rem; margin: 10px 0 0 2px; }
+    .main { padding: 34px 24px 64px; }
+    .form-intro { margin-bottom: 20px; }
+    h2 { font-size: 2rem; margin: 0 0 7px; }
+    .form-intro p { color: var(--muted); margin: 0; }
+    .form-panel { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+    .field { margin-bottom: 16px; }
+    .field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    label, legend { color: var(--ink); display: block; font-size: .9rem; font-weight: 700; margin-bottom: 7px; }
+    .optional { color: var(--muted); font-size: .78rem; font-weight: 500; }
+    input, textarea { background: #fff; border: 1px solid #b9c6d4; border-radius: 6px; color: var(--ink); font: inherit; font-size: .95rem; padding: 10px 13px; width: 100%; }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.16); outline: 0; }
+    .helper { color: var(--muted); font-size: .8rem; margin: -2px 0 7px; }
+    fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+    .choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+    .choice { align-items: center; background: #f8fafc; border: 1px solid var(--line); border-radius: 6px; display: flex; gap: 9px; padding: 9px 12px; }
+    .choice:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .choice input { accent-color: var(--green); width: auto; }
+    .choice label { cursor: pointer; font-size: .86rem; font-weight: 500; margin: 0; }
+    .privacy-note, .submit-note { color: var(--muted); font-size: .8rem; }
+    .privacy-note { margin: 4px 0 5px; }
+    .submit-note { margin: 0 0 17px; }
+    .submit { background: var(--green); border: 0; border-radius: 6px; color: #fff; cursor: pointer; font: inherit; font-weight: 700; padding: 14px 20px; width: 100%; }
+    .submit:hover { background: var(--green-dark); }
+    .submit:focus-visible, .hero-cta:focus-visible, .logo:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
+    .submit:disabled { cursor: wait; opacity: .65; }
+    .form-error { background: #fff1f0; border: 1px solid #f7b4ae; border-radius: 6px; color: var(--error); font-size: .86rem; margin-bottom: 20px; padding: 11px 13px; }
+    [hidden] { display: none !important; }
+    .success { background: var(--pale); border: 1px solid #99f6e4; border-radius: 8px; padding: 30px; }
+    .success h2 { color: var(--navy); font-size: 1.8rem; }
+    .success p { color: var(--muted); margin: 0; }
+    .invalid { border-color: var(--error); }
+    .field-error { color: var(--error); font-size: .78rem; margin: 5px 0 0; }
+    @media (max-width: 700px) { .hero { padding-top: 36px; } .possibilities { grid-template-columns: repeat(2, 1fr); } .form-panel { padding: 22px 18px; } .choices, .field-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar"><a class="logo" href="/" aria-label="WelcomeMat home">Welcome<span>Mat</span></a></header>
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">SMALL BUSINESS OWNERS</p>
+      <h1>Imagine a <span class="hero-accent">smarter customer experience</span> for your business.</h1>
+      <p class="hero-copy">We’re selecting 3–5 small businesses and creating a complimentary concept tailored to each business.</p>
+      <div class="possibilities" aria-label="Concept possibilities">
+        <div class="possibility">Modern website</div><div class="possibility">Multilingual AI assistant</div><div class="possibility">Customer reviews</div><div class="possibility">Quote, inquiry, or booking experience</div>
+      </div>
+      <p class="clarification">Your concept will be shaped around your business and how your customers currently discover, connect with, and request help from you.</p>
+      <a class="hero-cta" href="#intake">Tell us about your business</a>
+      <p class="reassurance">No pressure. No commitment.</p>
+    </div>
+  </section>
+  <main class="main" id="intake">
+    <div class="form-intro"><h2>A little about your business</h2><p>Keep it simple. A few thoughtful details will help us create something relevant to your business.</p></div>
+    <div class="form-panel">
+      <div class="form-error" id="formError" role="alert" hidden></div>
+      <form id="conceptForm" novalidate>
+        <div class="field-row"><div class="field"><label for="name">Your name <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameError"><p class="field-error" id="nameError" hidden>Please enter your name.</p></div>
+        <div class="field"><label for="email">Email address <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" required aria-describedby="emailError"><p class="field-error" id="emailError" hidden>Please enter a valid email address.</p></div></div>
+        <div class="field"><label for="businessDescription">What does your business do? <span aria-hidden="true">*</span></label><p class="helper">A few sentences is plenty.</p><textarea id="businessDescription" name="businessDescription" required aria-describedby="businessDescriptionError"></textarea><p class="field-error" id="businessDescriptionError" hidden>Please tell us what your business does.</p></div>
+        <div class="field-row"><div class="field"><label for="businessName">Business name <span aria-hidden="true">*</span></label><input id="businessName" name="businessName" type="text" autocomplete="organization" required aria-describedby="businessNameError"><p class="field-error" id="businessNameError" hidden>Please enter your business name.</p></div>
+        <div class="field"><label for="serviceArea">Where is your business located, or what areas do you serve? <span aria-hidden="true">*</span></label><input id="serviceArea" name="serviceArea" type="text" required aria-describedby="serviceAreaError"><p class="field-error" id="serviceAreaError" hidden>Please tell us your location or service area.</p></div></div>
+        <fieldset><legend>What do you primarily want customers to do? <span aria-hidden="true">*</span></legend><div class="choices" id="actionChoices" aria-describedby="actionError">
+          <div class="choice"><input id="call" name="customerActions" type="checkbox" value="Call"><label for="call">Call</label></div><div class="choice"><input id="message" name="customerActions" type="checkbox" value="Send a message"><label for="message">Send a message</label></div><div class="choice"><input id="quote" name="customerActions" type="checkbox" value="Request a quote"><label for="quote">Request a quote</label></div><div class="choice"><input id="appointment" name="customerActions" type="checkbox" value="Book an appointment"><label for="appointment">Book an appointment</label></div><div class="choice"><input id="order" name="customerActions" type="checkbox" value="Place an order"><label for="order">Place an order</label></div><div class="choice"><input id="visit" name="customerActions" type="checkbox" value="Visit the business"><label for="visit">Visit the business</label></div><div class="choice"><input id="other" name="customerActions" type="checkbox" value="Other"><label for="other">Other</label></div>
+        </div><p class="field-error" id="actionError" hidden>Choose at least one option.</p></fieldset>
+        <div class="field"><label for="improvement">What would you most like to improve? <span aria-hidden="true">*</span></label><p class="helper">For example: helping customers understand your services, answering common questions, collecting quote details, simplifying booking, or presenting your business more professionally.</p><textarea id="improvement" name="improvement" required aria-describedby="improvementError"></textarea><p class="field-error" id="improvementError" hidden>Please tell us what you would most like to improve.</p></div>
+        <div class="field-row"><div class="field"><label for="onlinePresence">Website, Facebook, Instagram, Google Business Profile, or another link <span class="optional">(optional)</span></label><input id="onlinePresence" name="onlinePresence" type="text" autocomplete="url"></div>
+        <div class="field"><label for="languages">Which languages would be useful for your customers? <span class="optional">(optional)</span></label><input id="languages" name="languages" type="text" placeholder="English, Spanish, Hindi"></div></div>
+        <fieldset class="materials"><legend>Do you have existing materials we could use if your business is selected? <span class="optional">(optional)</span></legend><p class="helper">Optional — select all that apply. We’ll ask you to share them only if your business is selected.</p><div class="choices" id="materialChoices" aria-describedby="materialsError">
+          <div class="choice"><input id="materialLogo" name="availableMaterials" type="checkbox" value="Logo"><label for="materialLogo">Logo</label></div><div class="choice"><input id="materialPhotos" name="availableMaterials" type="checkbox" value="Business or product photos"><label for="materialPhotos">Business or product photos</label></div><div class="choice"><input id="materialMenu" name="availableMaterials" type="checkbox" value="Menu or service list"><label for="materialMenu">Menu or service list</label></div><div class="choice"><input id="materialBrand" name="availableMaterials" type="checkbox" value="Brand colors or guidelines"><label for="materialBrand">Brand colors or guidelines</label></div><div class="choice"><input id="materialReviews" name="availableMaterials" type="checkbox" value="Customer reviews"><label for="materialReviews">Customer reviews</label></div><div class="choice"><input id="materialNone" name="availableMaterials" type="checkbox" value="None yet"><label for="materialNone">None yet</label></div><div class="choice"><input id="materialUnsure" name="availableMaterials" type="checkbox" value="Not sure"><label for="materialUnsure">Not sure</label></div>
+        </div><p class="field-error" id="materialsError" hidden>Please choose valid material options.</p></fieldset>
+        <div class="field"><label for="anythingElse">Anything else you would like us to know? <span class="optional">(optional)</span></label><textarea id="anythingElse" name="anythingElse"></textarea></div>
+        <p class="privacy-note">We’ll use your information only to evaluate your submission and contact you about this experiment. We won’t sell your information, share it with third parties for marketing, or use it for unrelated promotional outreach.</p>
+        <p class="privacy-note">Your concept will remain private unless you give us permission to share it.</p>
+        <p class="submit-note">Submitting this form does not guarantee selection. If your business is a good fit for this experiment, we’ll contact you for a few additional details before creating the concept.</p>
+        <button class="submit" id="submitButton" type="submit">Submit my interest</button>
+      </form>
+      <div class="success" id="success" role="status" tabindex="-1" hidden><h2>Thank you! We’ve received your business information.</h2><p>We’ll review it and contact you if your business is selected for the experiment.</p></div>
+    </div>
+  </main>
+  <script>
+    const form = document.getElementById('conceptForm');
+    const errorBox = document.getElementById('formError');
+    const submitButton = document.getElementById('submitButton');
+    const materialOptions = ['Logo', 'Business or product photos', 'Menu or service list', 'Brand colors or guidelines', 'Customer reviews', 'None yet', 'Not sure'];
+    const requiredFields = ['name', 'email', 'businessName', 'businessDescription', 'serviceArea', 'improvement'];
+    function setFieldError(id, show) { const field = document.getElementById(id); const message = document.getElementById(`${id}Error`); if (!message) return; message.hidden = !show; field.classList.toggle('invalid', show); field.setAttribute('aria-invalid', String(show)); }
+    function validate() {
+      let valid = true;
+      requiredFields.forEach(id => { const field = document.getElementById(id); const isValid = field.value.trim() && (id !== 'email' || field.validity.valid); setFieldError(id, !isValid); valid = valid && Boolean(isValid); });
+      const actions = [...form.querySelectorAll('input[name="customerActions"]:checked')]; document.getElementById('actionError').hidden = actions.length > 0; valid = valid && actions.length > 0;
+      const materials = [...form.querySelectorAll('input[name="availableMaterials"]:checked')].map(input => input.value); const materialsValid = materials.every(value => materialOptions.includes(value)) && new Set(materials).size === materials.length && (!materials.some(value => value === 'None yet' || value === 'Not sure') || materials.length === 1); document.getElementById('materialsError').hidden = materialsValid; valid = valid && materialsValid;
+      if (!valid) { errorBox.textContent = 'Please check the highlighted fields.'; errorBox.hidden = false; const firstInvalid = document.querySelector('.invalid') || document.querySelector('input[name="customerActions"]'); firstInvalid.focus(); }
+      return valid;
+    }
+    form.addEventListener('submit', async event => {
+      event.preventDefault(); errorBox.hidden = true; if (!validate()) return;
+      submitButton.disabled = true; submitButton.textContent = 'Submitting…';
+      const data = Object.fromEntries(new FormData(form)); data.customerActions = [...form.querySelectorAll('input[name="customerActions"]:checked')].map(input => input.value); data.availableMaterials = [...form.querySelectorAll('input[name="availableMaterials"]:checked')].map(input => input.value);
+      try {
+        const response = await fetch('/api/concept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const result = await response.json(); if (!response.ok || !result.success) throw new Error(result.error || 'Submission failed');
+        form.hidden = true; document.getElementById('success').hidden = false; document.getElementById('success').focus();
+      } catch (error) { errorBox.textContent = error.message || 'Something went wrong. Please try again.'; errorBox.hidden = false; submitButton.disabled = false; submitButton.textContent = 'Submit my interest'; }
+    });
+    form.querySelectorAll('input[name="availableMaterials"]').forEach(input => input.addEventListener('change', () => {
+      const exclusive = input.value === 'None yet' || input.value === 'Not sure';
+      if (input.checked && exclusive) form.querySelectorAll('input[name="availableMaterials"]').forEach(other => { if (other !== input) other.checked = false; });
+      if (input.checked && !exclusive) form.querySelectorAll('input[name="availableMaterials"]').forEach(other => { if (other.value === 'None yet' || other.value === 'Not sure') other.checked = false; });
+    }));
+  </script>
+</body>
+</html>

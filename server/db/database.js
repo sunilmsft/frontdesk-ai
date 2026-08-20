@@ -148,7 +148,28 @@ async function initDb() {
     );
 
     CREATE INDEX IF NOT EXISTS idx_contact_status ON contact_inquiries(status);
+
+    CREATE TABLE IF NOT EXISTS concept_inquiries (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      business_name TEXT NOT NULL,
+      business_description TEXT NOT NULL,
+      service_area TEXT NOT NULL,
+      customer_actions TEXT NOT NULL,
+      improvement TEXT NOT NULL,
+      online_presence TEXT,
+      languages TEXT,
+      available_materials TEXT,
+      anything_else TEXT,
+      status TEXT DEFAULT 'new' CHECK(status IN ('new', 'reviewed', 'selected', 'closed')),
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_concept_status ON concept_inquiries(status);
   `);
+
+  try { await db.execute('ALTER TABLE concept_inquiries ADD COLUMN available_materials TEXT'); } catch (_) {}
 
   // Migration: widen submissions status CHECK constraint to include 'deleted'
   // SQLite doesn't support ALTER CHECK, but Turso/libSQL allows dropping and recreating.

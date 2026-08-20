@@ -54,6 +54,7 @@ app.use('/api/upload', require('./routes/upload'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/quote', require('./routes/quote'));
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/concept', require('./routes/concept'));
 app.use('/quote', require('./routes/quote'));
 app.use('/site', require('./routes/site'));
 
@@ -63,6 +64,7 @@ app.get('/pitch', (req, res) => res.sendFile(path.join(__dirname, '..', 'public'
 app.get('/frontdesk', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'pitch.html')));
 app.get('/swoop', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'swoop', 'index.html')));
 app.get('/contact', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'contact.html')));
+app.get('/concept', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'concept.html')));
 
 // Health check
 app.get('/health', (req, res) => {
