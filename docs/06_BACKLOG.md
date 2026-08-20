@@ -77,6 +77,19 @@
 - [ ] Build Maggie's Magic Services demo (first pilot candidate) using `pristine-home-cleaning` archetype
 - [ ] Cap intake at 3, rest go on waitlist
 
+### WelcomeMat concept candidate operations
+
+- [ ] **Concept Inquiry Actions v1.0**
+  - Define review status transitions for new → reviewed → selected → closed.
+  - Add internal admin notes without exposing them publicly.
+  - Add an admin action to email the inquiry owner using an approved template and recipient.
+  - Add archive behavior that removes an inquiry from the active view without destroying the record.
+  - Add guarded permanent deletion with confirmation, authorization, and an audit trail.
+- [ ] **Business archetype framework** — maintain starting structures for candidate types without turning them into fixed templates or invented content.
+- [ ] **Candidate follow-up and materials collection** — track unanswered questions, owner-approved facts, source links, assets, permissions, and reviewed translations.
+- [ ] **Concept generation workflow** — intake → qualify → request missing details/materials → approve scope → draft concept → owner review → publish or archive.
+- [ ] **Harden malformed `/concept` links** — safely redirect paths containing invisible Unicode characters to `/concept` after confirming the exact malformed-link patterns and preserving legitimate routes.
+
 ---
 
 ## 🛡️ Hardening (defensive — do AFTER pilot signups)
