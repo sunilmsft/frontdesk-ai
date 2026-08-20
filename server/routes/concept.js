@@ -8,7 +8,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SERVICE_AREA_MAX_LENGTH = 200;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const CONCEPT_NOTIFICATION_EMAIL = process.env.CONCEPT_NOTIFICATION_EMAIL || process.env.NOTIFICATION_EMAIL;
-const EMAIL_FROM = 'WelcomeMat <onboarding@resend.dev>';
+const EMAIL_FROM = 'WelcomeMat <notifications@welcomematdigital.com>';
 const ADMIN_URL = process.env.BASE_URL ? `${process.env.BASE_URL.replace(/\/$/, '')}/admin.html` : null;
 const MATERIAL_OPTIONS = [
   'Logo',
