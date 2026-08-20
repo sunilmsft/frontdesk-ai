@@ -5,6 +5,7 @@ const { db } = require('../db/database');
 const router = express.Router();
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SERVICE_AREA_MAX_LENGTH = 200;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const CONCEPT_NOTIFICATION_EMAIL = process.env.CONCEPT_NOTIFICATION_EMAIL || process.env.NOTIFICATION_EMAIL;
 const EMAIL_FROM = 'WelcomeMat <onboarding@resend.dev>';
@@ -58,8 +59,39 @@ function safeExternalUrl(value) {
   }
 }
 
+function redactRecipient(value) {
+  if (!value) return null;
+  const [localPart, domain] = String(value).split('@');
+  return domain ? `${localPart.slice(0, 1)}***@${domain}` : '[configured]';
+}
+
+function redactProviderMessage(value) {
+  return String(value || 'Unknown provider error')
+    .replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, '[redacted-email]')
+    .replace(/\s+/g, ' ')
+    .slice(0, 180);
+}
+
+console.log('  Concept notification config:', JSON.stringify({
+  apiKeyPresent: Boolean(RESEND_API_KEY),
+  recipientPresent: Boolean(CONCEPT_NOTIFICATION_EMAIL),
+  recipient: redactRecipient(CONCEPT_NOTIFICATION_EMAIL),
+  sender: EMAIL_FROM
+}));
+
 async function sendConceptNotification(inquiry) {
-  if (!RESEND_API_KEY || !CONCEPT_NOTIFICATION_EMAIL) return;
+  if (!RESEND_API_KEY || !CONCEPT_NOTIFICATION_EMAIL) {
+    console.error('  Concept notification skipped: missing configuration', JSON.stringify({
+      apiKeyPresent: Boolean(RESEND_API_KEY),
+      recipientPresent: Boolean(CONCEPT_NOTIFICATION_EMAIL)
+    }));
+    return;
+  }
+
+  console.log('  Concept notification attempted', JSON.stringify({
+    recipient: redactRecipient(CONCEPT_NOTIFICATION_EMAIL),
+    sender: EMAIL_FROM
+  }));
 
   const onlinePresence = safeExternalUrl(inquiry.onlinePresence);
   const fields = [
@@ -100,13 +132,24 @@ async function sendConceptNotification(inquiry) {
         text
       })
     });
+    const responseBody = await response.json().catch(() => ({}));
     if (!response.ok) {
-      console.error('Concept notification failed:', response.status);
+      console.error('  Concept notification rejected', JSON.stringify({
+        status: response.status,
+        providerCode: responseBody.name || responseBody.code || 'unknown',
+        message: redactProviderMessage(responseBody.message)
+      }));
       return;
     }
-    console.log('  Concept notification sent');
+    console.log('  Concept notification accepted', JSON.stringify({
+      status: response.status,
+      providerId: responseBody.id || 'unknown'
+    }));
   } catch (err) {
-    console.error('Concept notification error:', err.message);
+    console.error('  Concept notification transport error', JSON.stringify({
+      name: err.name || 'Error',
+      message: redactProviderMessage(err.message)
+    }));
   }
 }
 
@@ -120,6 +163,11 @@ router.post('/', async (req, res) => {
 
     if (missing.length > 0) {
       return res.status(400).json({ error: 'Please complete all required fields.' });
+    }
+
+    const serviceArea = String(body.serviceArea).trim();
+    if (serviceArea.length > SERVICE_AREA_MAX_LENGTH) {
+      return res.status(400).json({ error: 'Please enter a location or service area of 200 characters or fewer.' });
     }
 
     const email = String(body.email).trim();
@@ -157,7 +205,7 @@ router.post('/', async (req, res) => {
         email,
         String(body.businessName).trim(),
         String(body.businessDescription).trim(),
-        String(body.serviceArea).trim(),
+        serviceArea,
         JSON.stringify(customerActions),
         String(body.improvement).trim(),
         body.onlinePresence ? String(body.onlinePresence).trim() : null,
@@ -172,7 +220,7 @@ router.post('/', async (req, res) => {
       email,
       businessName: String(body.businessName).trim(),
       businessDescription: String(body.businessDescription).trim(),
-      serviceArea: String(body.serviceArea).trim(),
+      serviceArea,
       customerActions,
       improvement: String(body.improvement).trim(),
       onlinePresence: body.onlinePresence ? String(body.onlinePresence).trim() : null,
