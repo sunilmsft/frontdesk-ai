@@ -111,6 +111,29 @@
     .note-entry { padding: 8px 12px; background: #f8fafc; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
     .note-entry .note-time { color: #999; font-size: 10px; }
 
+    /* Concept inquiries */
+    .concept-row { border: 1px solid #eee; border-radius: 10px; margin-bottom: 10px; }
+    .concept-row-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; }
+    .concept-row-header:hover { background: #fafafa; border-radius: 10px; }
+    .concept-detail { display: none; padding: 0 18px 18px; border-top: 1px solid #f0f0f0; }
+    .concept-detail.open { display: block; }
+    .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 14px; }
+    .concept-field { font-size: 13px; line-height: 1.5; min-width: 0; }
+    .concept-field.full { grid-column: 1 / -1; }
+    .concept-field-label { display: block; color: #64748b; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 2px; }
+    .concept-field > div, .concept-field > a { overflow-wrap: anywhere; }
+    .concept-pager { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; font-size: 12px; color: #64748b; }
+    @media (max-width: 700px) {
+      .container.concept-active .stats-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout.concept-layout { grid-template-columns: 1fr; }
+      .layout.concept-layout > * { min-width: 0; }
+      .layout.concept-layout .panel { min-width: 0; width: 100%; }
+      .concept-grid { grid-template-columns: 1fr; }
+      .concept-field.full { grid-column: auto; }
+      .concept-row-header { align-items: flex-start; }
+      .concept-pager { flex-wrap: wrap; }
+    }
+
     /* Clients table */
     .clients-toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
     .clients-toolbar input { flex: 1; min-width: 180px; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; }
@@ -174,6 +197,10 @@
             <div class="name">👥 Clients</div>
             <span class="badge" id="renewalBadge" style="display:none; background: #d97706;">0</span>
           </div>
+          <div class="sidebar-item" id="sidebarConcept" onclick="showConceptInquiries()">
+            <div class="name">💡 Concept Inquiries</div>
+            <span class="badge" id="conceptBadge" style="display:none; background: #0f766e;">0</span>
+          </div>
           <div class="sidebar-divider"></div>
           <div class="sidebar-section">Businesses</div>
           <div id="bizList"></div>
@@ -194,6 +221,17 @@
             </div>
             <div class="biz-detail" id="submissionsList">
               <div class="empty-state">Loading submissions...</div>
+            </div>
+          </div>
+
+          <!-- Concept inquiries view -->
+          <div id="conceptView" style="display: none;">
+            <div class="panel-title">
+              <h2>Concept Inquiries</h2>
+              <span style="font-size: 12px; color: #999;" id="conceptSummary"></span>
+            </div>
+            <div class="biz-detail" id="conceptContent">
+              <div class="empty-state">Loading concept inquiries...</div>
             </div>
           </div>
 
@@ -349,7 +387,7 @@
 
     // --- Init ---
     async function init() {
-      await Promise.all([loadStats(), loadBusinesses(), loadSubmissions()]);
+      await Promise.all([loadStats(), loadBusinesses(), loadSubmissions(), loadConceptInquiries(1)]);
     }
 
     // --- Stats ---
@@ -439,28 +477,36 @@
     function showInbox() {
       currentView = 'inbox';
       selectedBiz = null;
+      document.querySelector('.container').classList.remove('concept-active');
+      document.querySelector('.layout').classList.remove('concept-layout');
       renderSidebar();
       document.getElementById('sidebarInbox').classList.add('active');
       document.getElementById('sidebarPipeline').classList.remove('active');
       document.getElementById('sidebarClients').classList.remove('active');
+      document.getElementById('sidebarConcept').classList.remove('active');
       document.getElementById('inboxView').style.display = 'block';
       document.getElementById('businessView').style.display = 'none';
       document.getElementById('pipelineView').style.display = 'none';
       document.getElementById('clientsView').style.display = 'none';
+      document.getElementById('conceptView').style.display = 'none';
       loadSubmissions();
     }
 
     async function selectBusiness(id) {
       currentView = 'business';
       selectedBiz = businesses.find(b => b.id === id);
+      document.querySelector('.container').classList.remove('concept-active');
+      document.querySelector('.layout').classList.remove('concept-layout');
       renderSidebar();
       document.getElementById('sidebarInbox').classList.remove('active');
       document.getElementById('sidebarPipeline').classList.remove('active');
       document.getElementById('sidebarClients').classList.remove('active');
+      document.getElementById('sidebarConcept').classList.remove('active');
       document.getElementById('inboxView').style.display = 'none';
       document.getElementById('businessView').style.display = 'block';
       document.getElementById('pipelineView').style.display = 'none';
       document.getElementById('clientsView').style.display = 'none';
+      document.getElementById('conceptView').style.display = 'none';
       document.getElementById('bizViewTitle').innerHTML = `<span onclick="showInbox()" style="cursor: pointer; color: #888; font-size: 18px;" title="Back to Inbox">←</span> ${escapeHtml(selectedBiz.name)}`;
       // Reset to conversations tab
       currentBizTab = 'conversations';
@@ -1203,6 +1249,103 @@
       return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
+    function safeExternalHref(value) {
+      try {
+        const url = new URL(String(value));
+        return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    // --- Concept inquiries ---
+    let conceptPage = 1;
+    const conceptPageSize = 10;
+
+    function showConceptInquiries() {
+      currentView = 'concept';
+      selectedBiz = null;
+      document.querySelector('.container').classList.add('concept-active');
+      document.querySelector('.layout').classList.add('concept-layout');
+      renderSidebar();
+      document.getElementById('sidebarInbox').classList.remove('active');
+      document.getElementById('sidebarPipeline').classList.remove('active');
+      document.getElementById('sidebarClients').classList.remove('active');
+      document.getElementById('sidebarConcept').classList.add('active');
+      document.getElementById('inboxView').style.display = 'none';
+      document.getElementById('businessView').style.display = 'none';
+      document.getElementById('pipelineView').style.display = 'none';
+      document.getElementById('clientsView').style.display = 'none';
+      document.getElementById('conceptView').style.display = 'block';
+      loadConceptInquiries(conceptPage);
+    }
+
+    async function loadConceptInquiries(page = 1) {
+      const container = document.getElementById('conceptContent');
+      if (!container) return;
+      container.innerHTML = '<div class="empty-state">Loading concept inquiries...</div>';
+      try {
+        const res = await authFetch(`${API}/concept-inquiries?page=${page}&pageSize=${conceptPageSize}`);
+        if (!res || !res.ok) throw new Error('Unable to load concept inquiries');
+        const data = await res.json();
+        conceptPage = data.page;
+        const badge = document.getElementById('conceptBadge');
+        if (badge) {
+          badge.textContent = data.total;
+          badge.style.display = data.total > 0 ? 'inline' : 'none';
+        }
+        document.getElementById('conceptSummary').textContent = `${data.total} total`;
+        if (data.items.length === 0) {
+          container.innerHTML = '<div class="empty-state">No concept inquiries yet.</div>';
+          return;
+        }
+        container.innerHTML = data.items.map((inquiry, index) => renderConceptInquiry(inquiry, index)).join('') + `
+          <div class="concept-pager">
+            <span>Page ${data.page} of ${Math.max(data.totalPages, 1)}</span>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="loadConceptInquiries(${data.page - 1})" ${data.page <= 1 ? 'disabled' : ''}>Previous</button>
+              <button class="btn btn-secondary btn-sm" onclick="loadConceptInquiries(${data.page + 1})" ${data.page >= data.totalPages ? 'disabled' : ''}>Next</button>
+            </div>
+          </div>`;
+      } catch (err) {
+        container.innerHTML = '<div class="empty-state" style="color:#dc2626;">Unable to load concept inquiries. Please try again.</div>';
+      }
+    }
+
+    function renderConceptInquiry(inquiry, index) {
+      const id = `concept-${conceptPage}-${index}`;
+      const onlineHref = safeExternalHref(inquiry.onlinePresence);
+      const listValue = value => Array.isArray(value) && value.length > 0 ? value.join(', ') : 'None provided';
+      const field = (label, value, full = false) => `<div class="concept-field${full ? ' full' : ''}"><span class="concept-field-label">${label}</span><div>${escapeHtml(value || 'None provided')}</div></div>`;
+      return `<div class="concept-row">
+        <div class="concept-row-header" onclick="toggleConceptInquiry('${id}')">
+          <div style="min-width:0;"><span id="${id}-arrow" style="font-size:10px;color:#999;margin-right:8px;">▶</span><strong>${escapeHtml(inquiry.businessName)}</strong><div style="font-size:12px;color:#666;margin-top:3px;">${escapeHtml(inquiry.ownerName)} · ${escapeHtml(inquiry.email)}</div></div>
+          <div style="text-align:right;flex-shrink:0;"><span class="stage-badge stage-reviewing">${escapeHtml(inquiry.status || 'new')}</span><div style="font-size:11px;color:#999;margin-top:5px;">${new Date(inquiry.submittedAt).toLocaleString()}</div></div>
+        </div>
+        <div id="${id}" class="concept-detail"><div class="concept-grid">
+          ${field('Owner name', inquiry.ownerName)}
+          <div class="concept-field"><span class="concept-field-label">Email address</span><a href="mailto:${escapeAttr(inquiry.email)}">${escapeHtml(inquiry.email)}</a></div>
+          ${field('Business name', inquiry.businessName)}
+          ${field('Location or service area', inquiry.serviceArea)}
+          ${field('Business description', inquiry.businessDescription, true)}
+          ${field('Desired customer actions', listValue(inquiry.customerActions))}
+          ${field('What they want to improve', inquiry.improvement)}
+          ${field('Customer languages', inquiry.languages)}
+          ${field('Available materials', listValue(inquiry.availableMaterials))}
+          <div class="concept-field"><span class="concept-field-label">Website or social link</span>${onlineHref ? `<a href="${escapeAttr(onlineHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(onlineHref)}</a>` : 'None provided'}</div>
+          ${field('Additional information', inquiry.additionalInformation, true)}
+          ${field('Submission date', new Date(inquiry.submittedAt).toLocaleString())}
+        </div></div>
+      </div>`;
+    }
+
+    function toggleConceptInquiry(id) {
+      const detail = document.getElementById(id);
+      const arrow = document.getElementById(`${id}-arrow`);
+      detail.classList.toggle('open');
+      arrow.textContent = detail.classList.contains('open') ? '▼' : '▶';
+    }
+
     // --- New Submission Alerts ---
     let lastSeenPendingCount = parseInt(localStorage.getItem('fd_last_pending') || '0');
     let notificationsEnabled = false;
@@ -1271,14 +1414,18 @@
     function showPipeline() {
       currentView = 'pipeline';
       selectedBiz = null;
+      document.querySelector('.container').classList.remove('concept-active');
+      document.querySelector('.layout').classList.remove('concept-layout');
       renderSidebar();
       document.getElementById('sidebarInbox').classList.remove('active');
       document.getElementById('sidebarPipeline').classList.add('active');
       document.getElementById('sidebarClients').classList.remove('active');
+      document.getElementById('sidebarConcept').classList.remove('active');
       document.getElementById('inboxView').style.display = 'none';
       document.getElementById('businessView').style.display = 'none';
       document.getElementById('pipelineView').style.display = 'block';
       document.getElementById('clientsView').style.display = 'none';
+      document.getElementById('conceptView').style.display = 'none';
       loadPipeline();
     }
 
@@ -1291,14 +1438,18 @@
     function showClients() {
       currentView = 'clients';
       selectedBiz = null;
+      document.querySelector('.container').classList.remove('concept-active');
+      document.querySelector('.layout').classList.remove('concept-layout');
       renderSidebar();
       document.getElementById('sidebarInbox').classList.remove('active');
       document.getElementById('sidebarPipeline').classList.remove('active');
       document.getElementById('sidebarClients').classList.add('active');
+      document.getElementById('sidebarConcept').classList.remove('active');
       document.getElementById('inboxView').style.display = 'none';
       document.getElementById('businessView').style.display = 'none';
       document.getElementById('pipelineView').style.display = 'none';
       document.getElementById('clientsView').style.display = 'block';
+      document.getElementById('conceptView').style.display = 'none';
       renderClientsView();
     }
 

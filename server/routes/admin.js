@@ -239,6 +239,74 @@ router.get('/submissions', async (req, res) => {
 });
 
 /**
+ * GET /api/admin/concept-inquiries — Paginated concept inquiries
+ */
+router.get('/concept-inquiries', async (req, res) => {
+  const pageSize = Number(req.query.pageSize ?? 10);
+  const page = Number(req.query.page ?? 1);
+  const validStatuses = ['new', 'reviewed', 'selected', 'closed'];
+  const status = req.query.status === undefined ? null : String(req.query.status);
+
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 50) {
+    return res.status(400).json({ error: 'page must be a positive integer and pageSize must be between 1 and 50' });
+  }
+  if (status !== null && !validStatuses.includes(status)) {
+    return res.status(400).json({ error: 'Invalid status filter' });
+  }
+
+  try {
+    const where = status ? ' WHERE status = ?' : '';
+    const args = status ? [status] : [];
+    const countResult = await db.execute({ sql: `SELECT COUNT(*) AS count FROM concept_inquiries${where}`, args });
+    const total = Number(countResult.rows[0]?.count || 0);
+    const result = await db.execute({
+      sql: `SELECT created_at, name, email, business_name, business_description, service_area,
+              customer_actions, improvement, online_presence, languages, available_materials,
+              anything_else, status
+            FROM concept_inquiries${where}
+            ORDER BY created_at DESC
+            LIMIT ? OFFSET ?`,
+      args: [...args, pageSize, (page - 1) * pageSize]
+    });
+
+    const parseArray = value => {
+      if (!value) return [];
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed.filter(item => typeof item === 'string') : [];
+      } catch (_) {
+        return [];
+      }
+    };
+
+    res.json({
+      items: result.rows.map(row => ({
+        submittedAt: row.created_at,
+        ownerName: row.name,
+        email: row.email,
+        businessName: row.business_name,
+        businessDescription: row.business_description,
+        serviceArea: row.service_area,
+        customerActions: parseArray(row.customer_actions),
+        improvement: row.improvement,
+        onlinePresence: row.online_presence,
+        languages: row.languages,
+        availableMaterials: parseArray(row.available_materials),
+        additionalInformation: row.anything_else,
+        status: row.status
+      })),
+      page,
+      pageSize,
+      total,
+      totalPages: Math.ceil(total / pageSize)
+    });
+  } catch (err) {
+    console.error('Concept inquiries admin query failed:', err.message);
+    res.status(500).json({ error: 'Unable to load concept inquiries' });
+  }
+});
+
+/**
  * POST /api/admin/submissions/:id/approve — Approve a submission and create the business
  * Body (optional overrides): { business_name, system_prompt, welcome_message, theme_color }
  */

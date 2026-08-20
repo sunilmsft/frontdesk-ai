@@ -5,6 +5,10 @@ const { db } = require('../db/database');
 const router = express.Router();
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const CONCEPT_NOTIFICATION_EMAIL = process.env.CONCEPT_NOTIFICATION_EMAIL || process.env.NOTIFICATION_EMAIL;
+const EMAIL_FROM = 'WelcomeMat <onboarding@resend.dev>';
+const ADMIN_URL = process.env.BASE_URL ? `${process.env.BASE_URL.replace(/\/$/, '')}/admin.html` : null;
 const MATERIAL_OPTIONS = [
   'Logo',
   'Business or product photos',
@@ -23,6 +27,88 @@ const REQUIRED_FIELDS = [
   'customerActions',
   'improvement'
 ];
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeSubjectBusinessName(value) {
+  const withoutTags = String(value ?? '').replace(/<[^>]*>/g, '');
+  const singleLine = withoutTags.replace(/[\r\n]+/g, ' ');
+  const compact = singleLine.replace(/\s+/g, ' ').trim().slice(0, 80).trim();
+  return compact || 'Unnamed business';
+}
+
+function formatList(value) {
+  if (!Array.isArray(value) || value.length === 0) return 'None provided';
+  return value.map(item => String(item)).join(', ');
+}
+
+function safeExternalUrl(value) {
+  try {
+    const url = new URL(String(value));
+    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function sendConceptNotification(inquiry) {
+  if (!RESEND_API_KEY || !CONCEPT_NOTIFICATION_EMAIL) return;
+
+  const onlinePresence = safeExternalUrl(inquiry.onlinePresence);
+  const fields = [
+    ['Owner name', inquiry.name],
+    ['Business name', inquiry.businessName],
+    ['Email', inquiry.email],
+    ['Business description', inquiry.businessDescription],
+    ['What they would most like to improve', inquiry.improvement],
+    ['Service area', inquiry.serviceArea],
+    ['Desired customer actions', formatList(inquiry.customerActions)],
+    ['Languages', inquiry.languages || 'None provided'],
+    ['Available materials', formatList(inquiry.availableMaterials)],
+    ['Additional information', inquiry.anythingElse || 'None provided'],
+    ['Submission timestamp', inquiry.createdAt]
+  ];
+  const text = fields.map(([label, value]) => `${label}: ${value}`).join('\n')
+    + (onlinePresence ? `\nOnline presence: ${onlinePresence}` : '')
+    + (ADMIN_URL ? `\nAdmin dashboard: ${ADMIN_URL}` : '');
+  const rows = fields.map(([label, value]) => `
+    <tr><td style="color:#64748b;padding:6px 12px 6px 0;vertical-align:top">${escapeHtml(label)}</td><td style="padding:6px 0;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`).join('');
+  const onlineRow = onlinePresence
+    ? `<tr><td style="color:#64748b;padding:6px 12px 6px 0">Online presence</td><td style="padding:6px 0"><a href="${escapeHtml(onlinePresence)}">${escapeHtml(onlinePresence)}</a></td></tr>`
+    : '';
+  const adminRow = ADMIN_URL
+    ? `<p><a href="${escapeHtml(ADMIN_URL)}">Open authenticated admin dashboard</a></p>`
+    : '';
+  const html = `<div style="font-family:-apple-system,system-ui,sans-serif;max-width:640px;margin:0 auto"><h2>New WelcomeMat concept inquiry</h2><table style="width:100%;border-collapse:collapse">${rows}${onlineRow}</table>${adminRow}</div>`;
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: EMAIL_FROM,
+        to: [CONCEPT_NOTIFICATION_EMAIL],
+        subject: `New WelcomeMat concept inquiry — ${sanitizeSubjectBusinessName(inquiry.businessName)}`,
+        html,
+        text
+      })
+    });
+    if (!response.ok) {
+      console.error('Concept notification failed:', response.status);
+      return;
+    }
+    console.log('  Concept notification sent');
+  } catch (err) {
+    console.error('Concept notification error:', err.message);
+  }
+}
 
 router.post('/', async (req, res) => {
   try {
@@ -81,7 +167,22 @@ router.post('/', async (req, res) => {
       ]
     });
 
-    console.log(`  📬 Concept inquiry from ${body.name} (${body.businessName})`);
+    const inquiry = {
+      name: String(body.name).trim(),
+      email,
+      businessName: String(body.businessName).trim(),
+      businessDescription: String(body.businessDescription).trim(),
+      serviceArea: String(body.serviceArea).trim(),
+      customerActions,
+      improvement: String(body.improvement).trim(),
+      onlinePresence: body.onlinePresence ? String(body.onlinePresence).trim() : null,
+      languages: body.languages ? String(body.languages).trim() : null,
+      availableMaterials,
+      anythingElse: body.anythingElse ? String(body.anythingElse).trim() : null,
+      createdAt: new Date().toISOString()
+    };
+    await sendConceptNotification(inquiry);
+    console.log('  Concept inquiry stored');
     res.json({ success: true, id });
   } catch (err) {
     console.error('Concept intake error:', err);
@@ -90,3 +191,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+module.exports.sanitizeSubjectBusinessName = sanitizeSubjectBusinessName;
