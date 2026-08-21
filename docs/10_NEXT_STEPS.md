@@ -6,6 +6,10 @@
 
 ## This week
 
+### BNI Eastside Connection readiness
+
+See the single-source tracker: [BNI September 3 readiness](welcomemat/BNI-SEP3-READINESS.md).
+
 ### 🥇 Get Kesia from "live preview" to "real customer"
 This is the single highest-leverage action. Until Kesia is a real, paying, referring customer, no system, no demo, no outreach matters.
 
