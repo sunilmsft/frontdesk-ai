@@ -43,7 +43,7 @@ The positioning remains a hypothesis until the meeting produces feedback. Avoid 
 | ID | Workstream | Deliverable | Status | Priority | Target date | Next action | Evidence/link | Notes/blockers |
 |---|---|---|---|---|---|---|---|---|
 | BNI-01 | Positioning and referral ask | 20–30-second introduction plus a specific referral ask | In progress | High | Aug. 21 | Draft, say aloud, and remove jargon | [Core positioning](#core-positioning-hypothesis) | Must connect customer problems to practical concepts; avoid three-business framing. |
-| BNI-02 | Homepage repositioning brief | Written brief for the broader WelcomeMat message and CTA path | Not started | High | Aug. 22 | Compare current homepage against the positioning hypothesis and list exact changes | [Published homepage](https://welcomematdigital.com/) | Current homepage leads with getting found/answering customers and shows FrontDesk AI/Swoop; do not implement in this tracker. |
+| BNI-02 | Homepage repositioning brief | WelcomeMat Digital Homepage Repositioning Brief v1.1 | Approved for Phase 1 implementation | High | Aug. 22 | Begin implementation only after confirming the unresolved decisions and preserving the Phase 1 scope | [Homepage repositioning brief v1.1](HOMEPAGE-REPOSITIONING-BRIEF.md) | Documentation only; homepage implementation remains not started and assistant delivery is phased. |
 | BNI-03 | Homepage implementation | Approved homepage changes implemented | Not started | High | Aug. 25 | Implement only after the brief and CTA destination are reviewed | [Homepage source](../../public/index.html) | Application change; outside this documentation checkpoint. |
 | BNI-04 | Homepage production validation | Production page, mobile layout, links, CTA, and QR destination checked | Not started | High | Aug. 26 | Validate the deployed experience after implementation | [Production homepage](https://welcomematdigital.com/) | Must include mobile checks and independent link/QR checks. |
 | BNI-05 | Business-card design and print order | Final double-sided card design and small initial print order | Not started | High | Aug. 27 | Lock positioning, contact details, URL, and QR destination before design | [Business-card checklist](#business-card-readiness-checklist) | Exact phone, email, URL, and print vendor remain to be confirmed. |
@@ -72,6 +72,7 @@ Current published references:
 - Concept intake: https://welcomematdigital.com/concept
 - Current source: [public/index.html](../../public/index.html)
 - Current Concept source: [public/concept.html](../../public/concept.html)
+- Repositioning brief: [HOMEPAGE-REPOSITIONING-BRIEF.md](HOMEPAGE-REPOSITIONING-BRIEF.md) — **v1.1, Approved for Phase 1 implementation**
 
 ## Business-Card Readiness Checklist
 
